@@ -113,7 +113,7 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# useful aliases
+## Useful aliases
 
 # Restart network connection
 alias nmr='sudo service network-manager restart'
@@ -130,10 +130,65 @@ alias remove='sudo apt-get autoremove'
 alias justlikenew='sudo apt-get update && sudo apt-get upgrade && sudo apt-get autoremove'
 # Don't let ping run forever
 alias ping='ping -c 4'
+# More useful shortcuts
+alias k='exit'
+alias ..='cd ..'
+alias mkdir='mkdir -pv'
+alias wget='wget -c'
+alias myip="curl http://ipecho.net/plain; echo"
+alias activate='chmod +x'
+alias reload='source ~/.bashrc'
+# Simple command aliases
+alias cp='cp -r'
+alias df='df -h'
+alias diff='colordiff'
 
+# Modify variables
 export PATH=/home/bradsherman/bin:$PATH
 export PATH=$PATH:/usr/local/go/bin
 export LD_LIBRARY_PATH=/usr/local/src:/home/bradsherman/Downloads/blpapi_cpp_3.8.18.1/Linux:/home/bradsherman/Downloads/blpapi_cpp_3.8.18.1/lib
 export EDITOR="vim"
 set -o noclobber
+
+## Now make some useful functions
+
+# Make a new directory and move into it
+mcd () {
+	mkdir $1
+	cd $1
+}
+
+# Extract any kind of compressed file format
+: '
+function extract {
+ if [ -z "$1" ]; then
+    # display usage if no parameters given
+    echo "Usage: extract <path/file_name>.<zip|rar|bz2|gz|tar|tbz2|tgz|Z|7z|xz|ex|tar.bz2|tar.gz|tar.xz>"
+ else
+    if [ -f $1 ] ; then
+        NAME=${1%.*}
+        mkdir $NAME && cd $NAME
+        case $1 in
+          *.tar.bz2)   tar xvjf ../$1    ;;
+          *.tar.gz)    tar xvzf ../$1    ;;
+          *.tar.xz)    tar xvJf ../$1    ;;
+          *.lzma)      unlzma ../$1      ;;
+          *.bz2)       bunzip2 ../$1     ;;
+          *.rar)       unrar x -ad ../$1 ;;
+          *.gz)        gunzip ../$1      ;;
+          *.tar)       tar xvf ../$1     ;;
+          *.tbz2)      tar xvjf ../$1    ;;
+          *.tgz)       tar xvzf ../$1    ;;
+          *.zip)       unzip ../$1       ;;
+          *.Z)         uncompress ../$1  ;;
+          *.7z)        7z x ../$1        ;;
+          *.xz)        unxz ../$1        ;;
+          *.exe)       cabextract ../$1  ;;
+          *)           echo "extract: '$1' - unknown archive method" ;;
+        esac
+    else
+        echo "$1 - file does not exist"
+    fi
+fi
+};'
 
