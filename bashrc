@@ -127,21 +127,29 @@ alias update='sudo apt-get update'
 alias upgrade='sudo apt-get upgrade'
 alias install='sudo apt-get install'
 alias remove='sudo apt-get autoremove'
-alias justlikenew='sudo apt-get update && sudo apt-get upgrade && sudo apt-get autoremove'
+alias U='sudo apt-get update && sudo apt-get upgrade && sudo apt-get autoremove'
 # Don't let ping run forever
 alias ping='ping -c 4'
 # More useful shortcuts
 alias k='exit'
-alias ..='cd ..'
+alias cd..='cd ..'
+alias '..'='cd ..'
+alias back='cd -'
 alias mkdir='mkdir -pv'
 alias wget='wget -c'
 alias myip="curl http://ipecho.net/plain; echo"
 alias activate='chmod +x'
 alias reload='source ~/.bashrc'
 # Simple command aliases
-alias cp='cp -r'
+alias cp='cp -vr'
+alias rm='rm -v'
 alias df='df -h'
 alias diff='colordiff'
+alias ln='ln -v'
+# Easily edit config files
+alias vi3='vim ~/.i3/config'
+alias vvim='vim ~/.vimrc'
+alias vbash='vim ~/.bashrc'
 
 # Modify variables
 export PATH=/home/bradsherman/bin:$PATH
