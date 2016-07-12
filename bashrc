@@ -157,6 +157,7 @@ export PATH=$PATH:/usr/local/go/bin
 export LD_LIBRARY_PATH=/usr/local/src:/home/bradsherman/Downloads/blpapi_cpp_3.8.18.1/Linux:/home/bradsherman/Downloads/blpapi_cpp_3.8.18.1/lib
 export EDITOR="vim"
 set -o noclobber
+set xkbmap -option caps:ctrl_modifier
 
 ## Now make some useful functions
 

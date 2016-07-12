@@ -225,13 +225,13 @@ bindsym $mod+shift+z exec i3lock -i /home/bradsherman/Pictures/full_wallpaper.pn
 exec_always --no-startup-id compton -f
 
 # Gap size
-gap_size 10
+#gap_size 10
 
 # Disable title bars
-new_window 1pixel
+#new_window 1pixel
 
 # Set wallpaper
-exec_always feh --bg-scale /home/bradsherman/Pictures/background.jpg
+#exec_always feh --bg-scale /home/bradsherman/Pictures/background.jpg
 
 # Set Scratchpad bindings
 bindsym $mod+Shift+minus move scratchpad
