@@ -85,8 +85,8 @@ noremap gV `[v`]
 vnoremap < <gv
 vnoremap > >gv
 " Swap caps and escape when entering vim, undo on exit
-au VimEnter * !xmodmap -e 'clear Lock' -e 'keycode 66 = Escape'
-au VimLeave * !xmodmap -e 'clear Lock' -e 'keycode 66 = Control_L'
+au VimEnter * !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
+au VimLeave * !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Control_L'
 
 set shortmess=a
 set cmdheight=2
