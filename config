@@ -15,7 +15,7 @@ set $mod Mod4
 # is used in the bar {} block below. ISO 10646 = Unicode
 
 #font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
-font pango:FantasqueSansMono 13
+font pango:System San Francisco Display 13
 
 # The font above is very space-efficient, that is, it looks good, sharp and
 # clear in small sizes. However, if you need a lot of unicode glyphs or
@@ -41,10 +41,10 @@ bindsym $mod+Shift+q kill
 #bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
 # change focus
-bindsym $mod+j focus left
-bindsym $mod+k focus down
-bindsym $mod+l focus up
-bindsym $mod+semicolon focus right
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+bindsym $mod+h focus left
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -65,7 +65,7 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
-bindsym $mod+h split h
+bindsym $mod+semicolon split h
 
 # split in vertical orientation
 bindsym $mod+v split v
@@ -219,7 +219,8 @@ exec --no-startup-id tomahawk
 exec i3-msg workspace number $workspace2
 
 # Lock Screen
-bindsym $mod+shift+z exec i3lock -i /home/bradsherman/Pictures/full_wallpaper.png -p default -n
+bindsym $mod+shift+z exec ~/.i3/lock.sh
+#-i /home/bradsherman/Pictures/full_wallpaper.png -p default -n
 
 # Enable transparency
 exec_always --no-startup-id compton -f

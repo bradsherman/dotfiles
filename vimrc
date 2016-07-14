@@ -14,6 +14,8 @@ Plugin 'scrooloose/syntastic'
 Plugin 'Raimondi/delimitMate'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'flazz/vim-colorschemes'
+Plugin 'fatih/vim-go'
+Plugin 'rust-lang/rust.vim'
 
 " All plugins must be added before the following line
 call vundle#end()
@@ -46,7 +48,7 @@ filetype plugin indent on
 set hidden
 
 set nowrap             "don't wrap lines"
-set number     				 "relative line numbers
+set relativenumber     "relative line numbers
 set showmatch          "show matching parenthesis"
 set history=1000       "remember more commands and search history"
 set undolevels=1000    "use many more levels of undo"
