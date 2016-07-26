@@ -1,3 +1,4 @@
+" Plugins {{{
 set nocompatible       "Prevents changing other options as side effects"
 filetype off           "required
 
@@ -19,7 +20,8 @@ Plugin 'rust-lang/rust.vim'
 
 " All plugins must be added before the following line
 call vundle#end()
-filetype plugin indent on
+filetype plugin on
+filetype indent on
 
 
 " The following are examples of different formats supported.
@@ -44,35 +46,83 @@ filetype plugin indent on
 " :PluginInstall       - installs plugins; append '!' to update or just  :PluginUpdate
 " :PluginSearch foo    - searches for foo; append '!' to refresh local cache
 " :PluginClean         - confirms removal of unused plugins; append '!' to auto-approve removal
+" }}}
 
-set hidden
+" General Config {{{
 
-set nowrap             "don't wrap lines"
-set relativenumber     "relative line numbers
-set showmatch          "show matching parenthesis"
+set hidden             "hide buffers
+
 set history=1000       "remember more commands and search history"
 set undolevels=1000    "use many more levels of undo"
-set visualbell         "don't beep"
+set novisualbell       "don't beep"
 set noerrorbells       "don't beep"
-set title
+set t_vb=
+
+" Auto read when a file is changed from the outside
+set autoread
+
+" Make comma the map leader
+let mapleader = ","
+let g:mapleader = ","
+
+" Fast saving
+nmap <leader>w :w!<cr>
+
+" Keep 7 lines for the cursor
+set scrolloff=7
 
 " Configure tab settings
-set tabstop=4
-set softtabstop=4
-set expandtab
+set tabstop=4          "number of visual spaces per TAB
+set softtabstop=4      "number of spaces in tab when editing
+set expandtab          "turn tabs into spaces
+" }}}
+
+" UI Config {{{
+
+set wrap               "don't wrap lines"
+set textwidth=79       "make lines wrap after 79 characters
+set colorcolumn=+1     "vertical ruler one column after textwidth 
+set relativenumber     "relative line numbers
+set showmatch          "show matching parenthesis"
+set title
 
 set pastetoggle=<F2>
-set backspace=2        "allow going back over line breaks
+set backspace=2                 "allow going back over line breaks
+set backspace=eol,start,indent  "make backspace act as it should
+set whichwrap=<,>,h,l
 
-" UI Config
 set showcmd
 set cursorline
 set wildmenu
 set lazyredraw
 
-" Searching
+set shortmess=a
+set cmdheight=2
+
+" Make status bar appear all the time
+set laststatus=2
+" }}}
+
+" Movement {{{
+
+" Disable arrow keys in Normal mode
+map <up> <NOP>
+map <down> <NOP>
+map <right> <NOP>
+map <left> <NOP>
+
+" move vertically by visual line
+nnoremap j gj
+nnoremap k gk
+" }}} 
+
+" Searching {{{
 set incsearch
 set hlsearch
+set ignorecase
+" }}}
+
+" Colors and syntax {{{
 
 " Define colorscheme
 "syntax enable
@@ -84,7 +134,9 @@ colorscheme molokai
 if (&term == "iterm") || (&term == "putty")
 	set background=dark
 endif
+" }}}
 
+" Custom config {{{
 " Quickly select the text that was just pasted. This allows you to, e.g.,
 " indent it after pasting.
 noremap gV `[v`]
@@ -95,9 +147,6 @@ vnoremap > >gv
 " Swap caps and escape when entering vim, undo on exit
 au VimEnter * !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
 au VimLeave * !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Control_L'
-
-set shortmess=a
-set cmdheight=2
 
 " NumberToggle toggles between relative and absolute line numbers
 function! NumberToggle()
@@ -111,15 +160,9 @@ function! NumberToggle()
 endfunc
 
 nnoremap <C-n> :call NumberToggle()<cr>
+" }}}
 
-" Disable arrow keys in Normal mode
-map <up> <NOP>
-map <down> <NOP>
-map <right> <NOP>
-map <left> <NOP>
-
-" Make status bar appear all the time
-set laststatus=2
+" Plugin config {{{
 
 " Syntastic config
 set statusline+=%#warningmsg#
@@ -134,3 +177,16 @@ let g:syntastic_check_on_wq = 0
 " Airline config
 let g:airline_section_b = '%{strftime("%c")}'
 let g:airline#themes#molokai#palette = {}
+
+" }}}
+
+" Make vim fold {{{
+"set foldenable         "enable folding
+"set foldlevelstart=10  "open most folds by default
+"set foldnestmax=10     "10 nested fold max
+"set foldmethod=marker
+"set foldlevel=0
+"set modelines=1
+" }}}
+" Remove 'x' to enable folding
+" xvim:foldmethod=marker:foldlevel=0
