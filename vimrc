@@ -58,15 +58,21 @@ set title
 
 " Configure tab settings
 set tabstop=4
-set shiftwidth=4
 set softtabstop=4
-set noexpandtab
+set expandtab
 
-set autoindent
-set copyindent
-set shiftwidth=4
 set pastetoggle=<F2>
 set backspace=2        "allow going back over line breaks
+
+" UI Config
+set showcmd
+set cursorline
+set wildmenu
+set lazyredraw
+
+" Searching
+set incsearch
+set hlsearch
 
 " Define colorscheme
 "syntax enable
