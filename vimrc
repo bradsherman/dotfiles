@@ -64,9 +64,13 @@ set autoread
 " Make comma the map leader
 let mapleader = ","
 let g:mapleader = ","
+nnoremap ; :
 
-" Fast saving
+" Fast saving and quitting
 nmap <leader>w :w!<cr>
+nmap <leader>wq :wq<cr>
+" Save files with sudo if you forget
+cmap w!! w !sudo tee % >/dev/null
 
 " Keep 7 lines for the cursor
 set scrolloff=7
@@ -135,6 +139,7 @@ nnoremap k gk
 set incsearch
 set hlsearch
 set ignorecase
+nmap <silent> <leader>/ :nohlsearch<CR>
 " }}}
 
 " Colors and syntax {{{
