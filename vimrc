@@ -71,10 +71,25 @@ nmap <leader>w :w!<cr>
 " Keep 7 lines for the cursor
 set scrolloff=7
 
-" Configure tab settings
+" Configure indentation settings
 set tabstop=4          "number of visual spaces per TAB
 set softtabstop=4      "number of spaces in tab when editing
+set shiftwidth=4       "number of spaces to use for autoindenting
+set autoindent         "autoindenting on
+set smartindent        "smart tab on
+set copyindent         "copy previous indentation
 set expandtab          "turn tabs into spaces
+set shiftround         "use multiple of shiftwidth when indenting with < and >
+
+" Configure tab settings
+map <leader>tn :tabnew<cr>
+map <leader>to :tabonly<cr>
+map <leader>tc :tabclose<cr>
+map <leader>tm :tabmove
+map <leader>tb :tabn<cr>
+map <leader>tp :tabp<cr>
+map <leader>tf :tabfirst<cr>
+map <leader>tl :tablast<cr>
 " }}}
 
 " UI Config {{{
@@ -160,6 +175,9 @@ function! NumberToggle()
 endfunc
 
 nnoremap <C-n> :call NumberToggle()<cr>
+
+nmap <silent> <leader>ev :e $MYVIMRC<CR>
+nmap <silent> <leader>sv :so $MYVIMRC<CR>
 " }}}
 
 " Plugin config {{{
