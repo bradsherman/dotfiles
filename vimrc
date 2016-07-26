@@ -189,7 +189,7 @@ nmap <silent> <leader>sv :so $MYVIMRC<CR>
 
 " Syntastic config
 set statusline+=%#warningmsg#
-set statusline+=${SyntasticStatusLineFlag()}
+set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
 let g:syntastic_always_populate_loc_list=1
