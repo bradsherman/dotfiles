@@ -58,19 +58,24 @@ set novisualbell       "don't beep"
 set noerrorbells       "don't beep"
 set t_vb=
 
+" Automatically make something uppercase
+" Remember to use right control since left control is escape in vim
+inoremap <c-u> <esc>viwU 
+
 " Auto read when a file is changed from the outside
 set autoread
 
-" Make comma the map leader
+" Make comma the noremap leader
 let mapleader = ","
 let g:mapleader = ","
 nnoremap ; :
 
 " Fast saving and quitting
-nmap <leader>w :w!<cr>
-nmap <leader>wq :wq<cr>
+nnoremap <leader>w :w!<cr>
+nnoremap <leader>wq :wq<cr>
+
 " Save files with sudo if you forget
-cmap w!! w !sudo tee % >/dev/null
+cnoremap w!! w !sudo tee % >/dev/null
 
 " Keep 7 lines for the cursor
 set scrolloff=7
@@ -86,14 +91,23 @@ set expandtab          "turn tabs into spaces
 set shiftround         "use multiple of shiftwidth when indenting with < and >
 
 " Configure tab settings
-map <leader>tn :tabnew<cr>
-map <leader>to :tabonly<cr>
-map <leader>tc :tabclose<cr>
-map <leader>tm :tabmove
-map <leader>tb :tabn<cr>
-map <leader>tp :tabp<cr>
-map <leader>tf :tabfirst<cr>
-map <leader>tl :tablast<cr>
+noremap <leader>tn :tabnew<cr>
+noremap <leader>to :tabonly<cr>
+noremap <leader>tc :tabclose<cr>
+noremap <leader>tm :tabmove
+noremap <leader>tb :tabn<cr>
+noremap <leader>tp :tabp<cr>
+noremap <leader>tf :tabfirst<cr>
+noremap <leader>tl :tablast<cr>
+
+" Useful abbreviations
+iabbrev adn and
+iabbrev waht what
+iabbrev tehn then
+
+" Useful mappings
+nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
+nnoremap <leader>' viw<esc>a'<esc>hbi'<esc>lel
 " }}}
 
 " UI Config {{{
@@ -125,21 +139,31 @@ set laststatus=2
 " Movement {{{
 
 " Disable arrow keys in Normal mode
-map <up> <NOP>
-map <down> <NOP>
-map <right> <NOP>
-map <left> <NOP>
+noremap <up> <NOP>
+noremap <down> <NOP>
+noremap <right> <NOP>
+noremap <left> <NOP>
+
+" Easy way to get to beginning and end of line
+nnoremap H ^
+nnoremap L $
 
 " move vertically by visual line
 nnoremap j gj
 nnoremap k gk
+
+" Easy way to move between panes
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-h> <C-w>h
+nnoremap <C-l> <C-w>l
 " }}} 
 
 " Searching {{{
 set incsearch
 set hlsearch
 set ignorecase
-nmap <silent> <leader>/ :nohlsearch<CR>
+nnoremap <silent> <leader>/ :nohlsearch<CR>
 " }}}
 
 " Colors and syntax {{{
@@ -181,9 +205,18 @@ endfunc
 
 nnoremap <C-n> :call NumberToggle()<cr>
 
-nmap <silent> <leader>ev :e $MYVIMRC<CR>
-nmap <silent> <leader>sv :so $MYVIMRC<CR>
+nnoremap <silent> <leader>ev :vsplit $MYVIMRC<CR>
+nnoremap <silent> <leader>sv :source $MYVIMRC<CR>
 " }}}
+
+" AutoCommands {{{
+
+" augroup my_autocommands
+"   the line below clears all previous autocommands 
+"   autocmd!
+"   put autocommands in here
+" augroup END
+"}}}
 
 " Plugin config {{{
 
@@ -213,3 +246,4 @@ let g:airline#themes#molokai#palette = {}
 " }}}
 " Remove 'x' to enable folding
 " xvim:foldmethod=marker:foldlevel=0
+
