@@ -59,7 +59,7 @@ set noerrorbells       "don't beep"
 set t_vb=
 
 " Automatically make something uppercase
-" Remember to use right control since left control is escape in vim
+" Remember to use right control since left control is escape in insert mode
 inoremap <c-u> <esc>viwU 
 
 " Auto read when a file is changed from the outside
@@ -113,6 +113,27 @@ iabbrev tehn then
 nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
 " surround word with '
 nnoremap <leader>' viw<esc>a'<esc>hbi'<esc>lel
+" comment and uncomment blocks
+augroup comments
+    autocmd FileType c,cpp,java,scala    let b:comment_leader = '//'
+    autocmd FileType javascript,rust     let b:comment_leader = '//'
+    autocmd FileType sh,ruby,python      let b:comment_leader = '#'
+    autocmd FileType conf,fstab          let b:comment_leader = '#'
+    autocmd FileType tex                 let b:comment_leader = '%'
+    autocmd FileType vim                 let b:comment_leader = '"'
+augroup END
+
+function! CommentLine()
+    echo b:comment_leader
+    execute ':silent! s/^\(.*\)/' . b:comment_leader . ' \1/g'
+endfunction
+
+function! UncommentLine()
+    execute ':silent! s/^' . b:comment_leader . ' //g'
+endfunction
+
+noremap <leader>c :call CommentLine()<cr>
+noremap <leader>C :call UncommentLine()<cr>
 " }}}
 
 " UI Config {{{
