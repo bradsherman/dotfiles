@@ -11,13 +11,14 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-Plugin 'scrooloose/syntastic'
-" Plugin 'neomake/neomake'
+" Plugin 'scrooloose/syntastic'
+Plugin 'neomake/neomake'
 Plugin 'Raimondi/delimitMate'
-Plugin 'Valloric/YouCompleteMe'
+" Plugin 'Valloric/YouCompleteMe'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'fatih/vim-go'
 Plugin 'rust-lang/rust.vim'
+Plugin 'Shougo/deoplete.nvim'
 
 " All plugins must be added before the following line
 call vundle#end()
@@ -252,30 +253,34 @@ nnoremap <silent> <leader>sv :source $MYVIMRC<CR>
 " Plugin config {{{
 
 " Syntastic config
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
 
-let g:syntastic_always_populate_loc_list=1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+" let g:syntastic_always_populate_loc_list=1
+" let g:syntastic_auto_loc_list = 1
+" let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_wq = 0
 
 " Airline config
 let g:airline_section_b = '%{strftime("%c")}'
 let g:airline#themes#molokai#palette = {}
 
+" Deoplete config
+let g:deoplete#enable_at_startup = 1
+
+" Neomake config
+autocmd BufWritePost,BufEnter * Neomake
+let g:neomake_open_list = 2
 " }}}
 
 " Make vim fold {{{
-"set foldenable         "enable folding
-"set foldlevelstart=10  "open most folds by default
-"set foldnestmax=10     "10 nested fold max
-"set foldmethod=marker
-"set foldlevel=0
-"set modelines=1
+set foldenable         "enable folding
+set foldlevelstart=10  "open most folds by default
+set foldnestmax=10     "10 nested fold max
+set foldmethod=marker
+set foldlevel=0
+set modelines=1
 " }}}
 " Remove 'x' to enable folding
-" xvim:foldmethod=marker:foldlevel=0
-
-
+" vim:foldmethod=marker:foldlevel=0

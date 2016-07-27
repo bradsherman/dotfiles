@@ -49,6 +49,21 @@ destination=~/.i3/i3status.conf
 ln -s $source $destination
 
 ##################################
+#####     NVIM
+##################################
+
+echo "Setting up ~/config/nvim/init.vim"
+source=~/dotfiles/nvim/init.vim
+destination=~/.config/nvim/init.vim
+[[ -f $destination ]] && rm -f $destination
+if [[ ! -d ~/.config/nvim/bundle/Vundle.vim ]]
+then
+	echo "Cloning Vundle repository..."
+	git clone https://github.com/VundleVim/Vundle.vim.git ~/.config/nvim/bundle/Vundle.vim
+fi
+ln -s $source $destination
+
+##################################
 #####     VIM   
 ##################################
 
@@ -62,15 +77,15 @@ then
 	git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 fi
 ln -s $source $destination
-echo "Setting up custom plugins in ~/.vim/plugin"
-source=~/dotfiles/vim/plugin/*
-destination=~/.vim/plugin/
-for file in $source
-do
-    echo $file
-    [[ -f $destination ]] && rm -f $destination
-    ln -s $file $destination
-done
+# echo "Setting up custom plugins in ~/.vim/plugin"
+# source=~/dotfiles/vim/plugin/*
+# destination=~/.vim/plugin/
+# for file in $source
+# do
+#     echo $file
+#     [[ -f $destination ]] && rm -f $destination
+#     ln -s $file $destination
+# done
 
 echo "Would you like to install your vim plugins now? (y/n)"
 read response
