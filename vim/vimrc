@@ -109,6 +109,8 @@ iabbrev tehn then
 
 " Useful mappings
 
+" auto brackets
+nnoremap { <esc>a{<cr><cr>}<esc>ki<tab>
 " surround word with "
 nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
 " surround word with '
@@ -272,4 +274,5 @@ let g:airline#themes#molokai#palette = {}
 " }}}
 " Remove 'x' to enable folding
 " xvim:foldmethod=marker:foldlevel=0
+
 

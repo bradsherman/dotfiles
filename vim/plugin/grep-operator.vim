@@ -16,4 +16,5 @@ function! s:GrepOperator(type)
     copen
 
     let @@ = saved_unnamed_register
+    redraw!
 endfunction
