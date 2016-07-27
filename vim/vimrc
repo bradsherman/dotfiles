@@ -115,8 +115,8 @@ nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
 nnoremap <leader>' viw<esc>a'<esc>hbi'<esc>lel
 " comment and uncomment blocks
 augroup comments
-    autocmd FileType c,cpp,java,scala    let b:comment_leader = '//'
-    autocmd FileType javascript,rust     let b:comment_leader = '//'
+    autocmd FileType c,cpp,java,scala    let b:comment_leader = '\/\/'
+    autocmd FileType javascript,rust     let b:comment_leader = '\/\/'
     autocmd FileType sh,ruby,python      let b:comment_leader = '#'
     autocmd FileType conf,fstab          let b:comment_leader = '#'
     autocmd FileType tex                 let b:comment_leader = '%'

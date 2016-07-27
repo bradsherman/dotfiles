@@ -53,7 +53,7 @@ ln -s $source $destination
 ##################################
 
 echo "Setting up ~/.vimrc..."
-source=~/dotfiles/vimrc
+source=~/dotfiles/vim/vimrc
 destination=~/.vimrc
 [[ -f $destination ]] && rm -f $destination
 if [[ ! -d ~/.vim/bundle/Vundle.vim ]]
@@ -62,6 +62,16 @@ then
 	git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 fi
 ln -s $source $destination
+echo "Setting up custom plugins in ~/.vim/plugin"
+source=~/dotfiles/vim/plugin/*
+destination=~/.vim/plugin/
+for file in $source
+do
+    echo $file
+    [[ -f $destination ]] && rm -f $destination
+    ln -s $file $destination
+done
+
 echo "Would you like to install your vim plugins now? (y/n)"
 read response
 [[ $response == "y" ]] && vim -c ":PluginInstall"
