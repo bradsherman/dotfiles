@@ -95,7 +95,9 @@ noremap <leader>tn :tabnew<cr>
 noremap <leader>to :tabonly<cr>
 noremap <leader>tc :tabclose<cr>
 noremap <leader>tm :tabmove
+" next tab
 noremap <leader>tb :tabn<cr>
+" previous tab
 noremap <leader>tp :tabp<cr>
 noremap <leader>tf :tabfirst<cr>
 noremap <leader>tl :tablast<cr>
@@ -106,14 +108,17 @@ iabbrev waht what
 iabbrev tehn then
 
 " Useful mappings
+
+" surround word with "
 nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
+" surround word with '
 nnoremap <leader>' viw<esc>a'<esc>hbi'<esc>lel
 " }}}
 
 " UI Config {{{
 
 set wrap               "don't wrap lines"
-set textwidth=79       "make lines wrap after 79 characters
+set textwidth=80       "make lines wrap after 79 characters
 set colorcolumn=+1     "vertical ruler one column after textwidth 
 set relativenumber     "relative line numbers
 set showmatch          "show matching parenthesis"
@@ -122,11 +127,11 @@ set title
 set pastetoggle=<F2>
 set backspace=2                 "allow going back over line breaks
 set backspace=eol,start,indent  "make backspace act as it should
-set whichwrap=<,>,h,l
+set whichwrap=<,>,h,l           "allow moving up and down lines at the end
 
 set showcmd
-set cursorline
-set wildmenu
+set cursorline                  "highlight current line
+set wildmenu                    "graphical menu for commands
 set lazyredraw
 
 set shortmess=a

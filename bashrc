@@ -88,6 +88,7 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 alias cls='clear;ls'
+alias c='clear'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
