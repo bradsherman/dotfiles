@@ -3,7 +3,7 @@ set nocompatible       "Prevents changing other options as side effects"
 filetype off           "required
 
 " Set runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
+set rtp+=~/.config/nvim/bundle/Vundle.vim
 call vundle#begin()
 
 " Let Vundle manage Vundle, required
@@ -270,8 +270,8 @@ let g:airline#themes#molokai#palette = {}
 let g:deoplete#enable_at_startup = 1
 
 " Neomake config
-autocmd BufWritePost,BufEnter * Neomake
-let g:neomake_open_list = 2
+autocmd! BufWritePost,BufEnter * Neomake
+" let g:neomake_open_list = 2
 " }}}
 
 " Make vim fold {{{
@@ -283,4 +283,4 @@ set foldlevel=0
 set modelines=1
 " }}}
 " Remove 'x' to enable folding
-" vim:foldmethod=marker:foldlevel=0
+" xvim:foldmethod=marker:foldlevel=0
