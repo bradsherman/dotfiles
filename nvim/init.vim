@@ -11,14 +11,13 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-" Plugin 'scrooloose/syntastic'
 Plugin 'neomake/neomake'
 Plugin 'Raimondi/delimitMate'
-" Plugin 'Valloric/YouCompleteMe'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'fatih/vim-go'
 Plugin 'rust-lang/rust.vim'
 Plugin 'Shougo/deoplete.nvim'
+Plugin 'ctrlpvim/ctrlp.vim'
 
 " All plugins must be added before the following line
 call vundle#end()
@@ -138,6 +137,8 @@ endfunction
 
 noremap <leader>c :call CommentLine()<cr>
 noremap <leader>C :call UncommentLine()<cr>
+
+nnoremap <leader>s :CtrlP
 " }}}
 
 " UI Config {{{
@@ -264,7 +265,8 @@ nnoremap <silent> <leader>sv :source $MYVIMRC<CR>
 
 " Airline config
 let g:airline_section_b = '%{strftime("%c")}'
-let g:airline#themes#molokai#palette = {}
+" let g:airline#themes#molokai#palette = {}
+let g:airline_theme='molokai'
 
 " Deoplete config
 let g:deoplete#enable_at_startup = 1

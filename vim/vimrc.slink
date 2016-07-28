@@ -14,10 +14,10 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'scrooloose/syntastic'
 Plugin 'Raimondi/delimitMate'
 Plugin 'ervandew/supertab'
-" Plugin 'Valloric/YouCompleteMe'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'fatih/vim-go'
 Plugin 'rust-lang/rust.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
 
 " All plugins must be added before the following line
 call vundle#end()
@@ -137,6 +137,8 @@ endfunction
 
 noremap <leader>c :call CommentLine()<cr>
 noremap <leader>C :call UncommentLine()<cr>
+
+nnoremap <leader>s :CtrlP
 " }}}
 
 " UI Config {{{
@@ -263,7 +265,8 @@ let g:syntastic_check_on_wq = 0
 
 " Airline config
 let g:airline_section_b = '%{strftime("%c")}'
-let g:airline#themes#molokai#palette = {}
+" let g:airline#themes#molokai#palette = {}
+let g:airline_theme='molokai'
 
 " }}}
 
@@ -277,5 +280,3 @@ let g:airline#themes#molokai#palette = {}
 " }}}
 " Remove 'x' to enable folding
 " xvim:foldmethod=marker:foldlevel=0
-
-
