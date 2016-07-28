@@ -1,26 +1,24 @@
 sudo add-apt-repository ppa:neovim-ppa/unstable
 sudo add-apt-repository ppa:linrunner/tlp
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys
-BBEBDCB318AD50EC6865090613B00F1FD2C19886
-echo deb http://repository.spotify.com stable non-free | sudo tee
-/etc/apt/sources.list.d/spotify.list
-sudo apt-get -y update
-sudo apt-get -y install compton
-sudo apt-get -y install xmodmap
-sudo apt-get -y install i3
-sudo apt-get -y install tlp
-sudo apt-get -y install tp-smapi-dkms acpi-call-dkms
-sudo apt-get -y install libpango1.0-dev
-sudo apt-get -y install vim
-sudo apt-get -y install software-properties-common
-sudo apt-get -y install python-dev
-sudo apt-get -y install python-pip
-sudo apt-get -y install python3-dev
-sudo apt-get -y install python3-pip
-sudo apt-get -y install neovim
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys BBEBDCB318AD50EC6865090613B00F1FD2C19886
+echo 'deb http://repository.spotify.com stable non-free' >> "/etc/apt/sources.list"
+sudo apt-get update
+sudo apt-get install compton
+sudo apt-get install i3
+sudo apt-get install tlp
+sudo apt-get install tp-smapi-dkms acpi-call-dkms
+sudo apt-get install libpango1.0-dev
+sudo apt-get install vim
+sudo apt-get install software-properties-common
+sudo apt-get install python-dev
+sudo apt-get install python-pip
+sudo apt-get install python3-dev
+sudo apt-get install python3-pip
+sudo apt-get install neovim
 sudo pip3 install neovim
-sudo apt-get -y install i3blocks
-sudo apt-get -y install xbacklight
-sudo apt-get -y install feh
-sudo apt-get -y install spotify-client
-sudo apt-get -y install rofi
+sudo apt-get install i3blocks
+sudo apt-get install xbacklight
+sudo apt-get install feh
+sudo apt-get install spotify-client
+sudo apt-get install rofi
+sudo apt-get install arandr

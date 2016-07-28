@@ -5,15 +5,15 @@
 DF_ROOT=$(pwd)
 
 # exit if any pipeline exits with non-zero status
-set -e
+# set -e
 
 # make pretty prompts
 info (){
-     printf " [ \033[00;34m..\033[0m ] $1"   
+     printf " [ \033[00;34m..\033[0m ] $1\n"   
 }
 
 user (){
-    printf "\r [ \033[0;33m?\033[0m ] $1"
+    printf "\r [ \033[0;33m?\033[0m ] $1\n"
 }
 
 success (){
@@ -170,6 +170,38 @@ install_nvimfiles () {
     nnvim -c "plugininstall" -c "q" -c "q"
 }
 
+install_programs () {
+    info "installing programs"
+
+    # only do this on ubuntu since we are using apt-get
+    if [ "$(uname -n)" == "ubuntu" ]
+    then
+        local progfile="ubuntuprograms.txt"
+
+        # read in the file using a file descriptor,
+        # since we want to take standard input as well
+        while read -r line <&9
+        do
+            # if we are installing, find out what it is
+            program=$(echo "$line" | grep "install" | awk '{print $4}')
+            # only prompt user for installing programs
+            if [ ! -z $program ]
+            then
+                user "You are about to install $program, continue? (y/n)"
+                read -s -n 1 choice
+                if [ "$choice" == "y" ]
+                then
+                    $line
+                else
+                    continue
+                fi
+            fi
+        done 9< $progfile
+    fi
+
+}
+
+# make sure we are root, since we need to create symlinks to /usr/bin
 if [[ "$EUID" -ne 0 ]]
 then
     fail "This script must be run as root"
@@ -179,6 +211,7 @@ install_dotfiles
 install_i3files
 install_scripts
 install_vimfiles
+install_programs
 
 echo ""
 success "Installation completed!"
