@@ -131,9 +131,19 @@ install_vimfiles () {
     info "installing vimfiles"
 
     local overwrite_all=false skip_all=false
+    if [[ ! -d ~/.vim/bundle/Vundle.vim ]]
+    then
+        echo "Cloning Vundle repository..."
+        git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+    fi
     
     # install syntax 
-    mkdir -p "$HOME/.vim/syntax"
+    if [ ! -d "$HOME/.vim/syntax" ]
+    then
+        mkdir -p "$HOME/.vim/syntax"
+        chown -R "$SUDO_USER" "$HOME/.vim/syntax"
+        chgrp -R "$SUDO_USER" "$HOME/.vim/syntax"
+    fi
 
     for src in $(find "$DF_ROOT/vim/syntax" -maxdepth 1 -name '*.vim')
     do
@@ -142,7 +152,12 @@ install_vimfiles () {
     done   
 
     # install plugins
-    mkdir -p "$HOME/.vim/plugin"
+    if [ ! -d "$HOME/.vim/plugin" ]
+    then
+        mkdir -p "$HOME/.vim/plugin"
+        chown -R "$SUDO_USER" "$HOME/.vim/plugin"
+        chgrp -R "$SUDO_USER" "$HOME/.vim/plugin"
+    fi
 
     for src in $(find "$DF_ROOT/vim/plugin" -maxdepth 1 -name '*.vim')
     do
@@ -150,41 +165,67 @@ install_vimfiles () {
         link_file "$src" "$dst"
     done   
 
-    info "installing plugins"
+    info "installing vim plugins"
     sleep 2
     vim -c "plugininstall" -c "q" -c "q"
 }
 
 install_nvimfiles () {
 
+    info "installing neovimfiles"
+
     if ! [ -e "/usr/bin/nvim" ] 
     then
         fail "Please install neovim before continuing"
     fi
-
-    info "installing neovimfiles"
+    if [[ ! -d ~/.config/nvim/bundle/Vundle.vim ]]
+    then
+	    echo "Cloning Vundle repository..."
+	    git clone https://github.com/VundleVim/Vundle.vim.git ~/.config/nvim/bundle/Vundle.vim
+    fi
 
     local overwrite_all=false skip_all=false
 
     # install plugins
-    mkdir -p "$HOME/.config/nvim/"
+    if [ ! -d "$HOME/.config/nvim" ]
+    then
+        mkdir -p "$HOME/.config/nvim/" 
+        chown -R "$SUDO_USER" "$HOME/.config/nvim"
+        chgrp -R "$SUDO_USER" "$HOME/.config/nvim"
+    fi
 
-    for src in $(find "$df_root/nvim" -maxdepth 4 -name '*.vim')
+    for src in $(find "$DF_ROOT/nvim" -maxdepth 1 -name '*.vim')
     do
         dst="$HOME/.config/nvim/$(basename "$src")"
         link_file "$src" "$dst"
     done   
 
-    info "installing plugins"
+    for src in $(find "$DF_ROOT/nvim/plugin" -maxdepth 1 -name '*.vim')
+    do
+        dst="$HOME/.config/nvim/plugin/$(basename "$src")"
+        link_file "$src" "$dst"
+    done   
+
+    for src in $(find "$DF_ROOT/nvim/syntax" -maxdepth 1 -name '*.vim')
+    do
+        dst="$HOME/.config/nvim/syntax/$(basename "$src")"
+        link_file "$src" "$dst"
+    done   
+
+    info "installing neovim plugins"
     sleep 2
-    nnvim -c "plugininstall" -c "q" -c "q"
+    nvim -c "plugininstall" -c "q" -c "q"
 }
 
 install_programs () {
     info "installing programs"
+    
+    user "Would you like to install all programs? (y/n)"
+    read -n 1 choice
 
-    # only do this on ubuntu since we are using apt-get
-    if [ "$(uname -n)" == "ubuntu" ]
+    # only do this on ubuntu since we are using apt-get,
+    # and if the user wants to install everything
+    if [[ "$(uname -n)" == "ubuntu" && "$choice" == "y" ]]
     then
         local progfile="ubuntuprograms.txt"
 
@@ -221,6 +262,7 @@ install_dotfiles
 install_i3files
 install_scripts
 install_vimfiles
+install_nvimfiles
 install_programs
 
 echo ""
