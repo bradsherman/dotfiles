@@ -2,6 +2,7 @@
 
 # Install dotfiles on a new system
 
+cd ~/dotfiles
 DF_ROOT=$(pwd)
 
 # exit if any pipeline exits with non-zero status
@@ -130,13 +131,22 @@ install_vimfiles () {
     info "installing vimfiles"
 
     local overwrite_all=false skip_all=false
+    
+    # install syntax 
+    mkdir -p "$HOME/.vim/syntax"
+
+    for src in $(find "$DF_ROOT/vim/syntax" -maxdepth 1 -name '*.vim')
+    do
+        dst="$HOME/.vim/syntax/$(basename "$src")"
+        link_file "$src" "$dst"
+    done   
 
     # install plugins
-    mkdir -p "$home/.vim/plugin"
+    mkdir -p "$HOME/.vim/plugin"
 
-    for src in $(find "$DF_ROOT/vim" -maxdepth 4 -name '*.vim')
+    for src in $(find "$DF_ROOT/vim/plugin" -maxdepth 1 -name '*.vim')
     do
-        dst="$home/.vim/plugin/$(basename "$src")"
+        dst="$HOME/.vim/plugin/$(basename "$src")"
         link_file "$src" "$dst"
     done   
 
@@ -157,11 +167,11 @@ install_nvimfiles () {
     local overwrite_all=false skip_all=false
 
     # install plugins
-    mkdir -p "$home/.config/nvim/"
+    mkdir -p "$HOME/.config/nvim/"
 
     for src in $(find "$df_root/nvim" -maxdepth 4 -name '*.vim')
     do
-        dst="$home/.config/nvim/$(basename "$src")"
+        dst="$HOME/.config/nvim/$(basename "$src")"
         link_file "$src" "$dst"
     done   
 
