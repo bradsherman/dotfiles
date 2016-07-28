@@ -94,9 +94,21 @@ install_dotfiles () {
 
     local overwrite_all=false skip_all=false
 
-    for src in $(find "$DF_ROOT" -maxdepth 2 -name '*.slink')
+    for src in $(find "$DF_ROOT" -maxdepth 1 -name '*.slink')
     do
         dst="$HOME/.$(basename "${src%.*}")"
+        link_file "$src" "$dst"
+    done
+}
+
+install_i3files () {
+    info "installing i3files"
+
+    local overwrite_all=false skip_all=false
+
+    for src in $(find "$DF_ROOT/i3" -maxdepth 1 -name '*.slink')
+    do
+        dst="$HOME/.i3/$(basename "${src%.*}")"
         link_file "$src" "$dst"
     done
 }
@@ -122,7 +134,7 @@ install_vimfiles () {
     # install plugins
     mkdir -p "$home/.vim/plugin"
 
-    for src in $(find "$df_root/vim" -maxdepth 4 -name '*.vim')
+    for src in $(find "$DF_ROOT/vim" -maxdepth 4 -name '*.vim')
     do
         dst="$home/.vim/plugin/$(basename "$src")"
         link_file "$src" "$dst"
@@ -134,6 +146,12 @@ install_vimfiles () {
 }
 
 install_nvimfiles () {
+
+    if ! [ -e "/usr/bin/nvim" ] 
+    then
+        fail "Please install neovim before continuing"
+    fi
+
     info "installing neovimfiles"
 
     local overwrite_all=false skip_all=false
@@ -152,7 +170,13 @@ install_nvimfiles () {
     nnvim -c "plugininstall" -c "q" -c "q"
 }
 
+if [[ "$EUID" -ne 0 ]]
+then
+    fail "This script must be run as root"
+fi
+
 install_dotfiles
+install_i3files
 install_scripts
 install_vimfiles
 
