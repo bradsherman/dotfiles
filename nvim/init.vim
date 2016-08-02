@@ -18,6 +18,7 @@ Plugin 'fatih/vim-go'
 Plugin 'rust-lang/rust.vim'
 Plugin 'Shougo/deoplete.nvim'
 Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'nvie/vim-flake8'
 
 " All plugins must be added before the following line
 call vundle#end()
@@ -336,6 +337,12 @@ let g:deoplete#enable_at_startup = 1
 " Neomake config
 autocmd! BufWritePost,BufEnter * Neomake
 " let g:neomake_open_list = 2
+let g:neomake_python_enabled_makers = ['flake8']
+let g:neomake_c_enabled_makers = ['gcc']
+let g:neomake_cpp_gcc_maker = {
+    \ 'args': ['-std=c++11']
+    \}
+let g:neomake_cpp_enabled_makers = ['gcc']
 " }}}
 
 " Make vim fold {{{

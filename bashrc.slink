@@ -157,7 +157,7 @@ alias envim='nvim ~/.config/nvim/init.vim'
 # Modify variables
 export PATH=/home/bradsherman/bin:$PATH
 export PATH=$PATH:/usr/local/go/bin
-export LD_LIBRARY_PATH=/usr/local/src:/home/bradsherman/Downloads/blpapi_cpp_3.8.18.1/Linux:/home/bradsherman/Downloads/blpapi_cpp_3.8.18.1/lib
+export LD_LIBRARY_PATH=/usr/local/src
 export EDITOR="vim"
 set -o noclobber
 
