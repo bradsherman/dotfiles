@@ -123,7 +123,7 @@ augroup comments
     autocmd FileType c,cpp,java,scala    let b:comment_leader = '\/\/'
     autocmd FileType javascript,rust     let b:comment_leader = '\/\/'
     autocmd FileType sh,ruby,python      let b:comment_leader = '#'
-    autocmd FileType conf,fstab          let b:comment_leader = '#'
+    autocmd FileType conf,fstab,bash     let b:comment_leader = '#'
     autocmd FileType tex                 let b:comment_leader = '%'
     autocmd FileType vim                 let b:comment_leader = '"'
 augroup END
@@ -333,9 +333,11 @@ let g:ctrlp_follow_symlinks = 1
 
 " Deoplete config
 let g:deoplete#enable_at_startup = 1
+autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
 " Neomake config
 autocmd! BufWritePost,BufEnter * Neomake
+autocmd! QuitPre * let g:neomake_verbose = 0
 " let g:neomake_open_list = 2
 let g:neomake_python_enabled_makers = ['flake8']
 let g:neomake_c_enabled_makers = ['gcc']
