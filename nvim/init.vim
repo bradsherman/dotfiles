@@ -337,7 +337,7 @@ autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
 " Neomake config
 autocmd! BufWritePost,BufEnter * Neomake
-autocmd! QuitPre * let g:neomake_verbose = 0
+autocmd! VimEnter * let g:neomake_verbose = 0
 " let g:neomake_open_list = 2
 let g:neomake_python_enabled_makers = ['flake8']
 let g:neomake_c_enabled_makers = ['gcc']
