@@ -21,8 +21,7 @@ Plugin 'ctrlpvim/ctrlp.vim'
 
 " All plugins must be added before the following line
 call vundle#end()
-filetype plugin on
-filetype indent on
+filetype plugin indent on
 
 
 " The following are examples of different formats supported.
@@ -65,6 +64,9 @@ set autoread
 let mapleader = ","
 let g:mapleader = ","
 nnoremap ; :
+
+" Quick access to terminal
+nnoremap <leader>t :terminal<cr>
 
 " Fast saving and quitting
 nnoremap <leader>w :w!<cr>
@@ -270,6 +272,8 @@ let g:airline#extensions#tabline#show_buffers = 1
 let g:airline#extensions#tabline#tab_nr_type = 1 
 " Min number of buffers needed to show tabline
 let g:airline#extensions#tabline#buffer_min_count = 2
+" Only show filename, not full path
+let g:airline#extensions#tabline#fnamemod = ':t'
 " Remove closed buffers from tabline
 autocmd BufLeave,BufAdd,BufUnload * call airline#extensions#tabline#buflist#invalidate()
 
