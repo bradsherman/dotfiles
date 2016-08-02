@@ -22,3 +22,4 @@ sudo apt-get install feh
 sudo apt-get install spotify-client
 sudo apt-get install rofi
 sudo apt-get install arandr
+sudo apt-get install colordiff
