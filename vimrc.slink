@@ -265,8 +265,33 @@ let g:syntastic_check_on_wq = 0
 
 " Airline config
 let g:airline_section_b = '%{strftime("%c")}'
-" let g:airline#themes#molokai#palette = {}
-let g:airline_theme='molokai'
+" let g:airline_theme='molokai'
+let g:airline_theme='behelit'
+" let g:airline#extensions#tabline#left_sep = ''
+" let g:airline#extensions#tabline#left_alt_sep = '|'
+" let g:airline#extensions#tabline#right_sep = ''
+" let g:airline#extensions#tabline#right_alt_sep = '|'
+" let g:airline_left_sep='|'
+" let g:airline_right_sep='|'
+let g:airline_skip_empty_sections = 1
+" let g:airline#extensions#whitespace#enabled = 0
+execute ":AirlineToggleWhitespace"
+
+let g:airline_powerline_fonts = 1
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+
+function! AirlineInit()
+    let g:airline_section_a = airline#section#create(['mode',' ', 'branch'])
+    let g:airline_section_b = airline#section#create(['%f'])
+    let g:airline_section_c = airline#section#create(['filetype'])
+    let g:airline_section_x = airline#section#create(['%P'])
+    let g:airline_section_y = airline#section#create(['%l/%L'])
+    let g:airline_section_z = airline#section#create_right(['%c c'])
+endfunction
+autocmd VimEnter * call AirlineInit()
+
 
 " }}}
 
