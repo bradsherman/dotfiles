@@ -1,6 +1,6 @@
 " Plugins {{{
-set nocompatible       "Prevents changing other options as side effects"
 filetype off           "required
+set encoding=utf-8     "enable unicode
 
 " Set runtime path to include Vundle and initialize
 set rtp+=~/.config/nvim/bundle/Vundle.vim
@@ -57,11 +57,6 @@ set history=1000       "remember more commands and search history"
 set undolevels=1000    "use many more levels of undo"
 set novisualbell       "don't beep"
 set noerrorbells       "don't beep"
-set t_vb=
-
-" Automatically make something uppercase
-" Remember to use right control since left control is escape in insert mode
-inoremap <c-u> <esc>viwU 
 
 " Auto read when a file is changed from the outside
 set autoread
@@ -107,9 +102,13 @@ noremap <leader>tl :tablast<cr>
 iabbrev adn and
 iabbrev waht what
 iabbrev tehn then
+iabbrev icnlude include
 
 " Useful mappings
 
+" Automatically make something uppercase
+" Remember to use right control since left control is escape in insert mode
+inoremap <c-u> <esc>viwU 
 " auto brackets
 nnoremap { <esc>a{<cr><cr>}<esc>ki<tab>
 " surround word with "
@@ -143,10 +142,10 @@ nnoremap <leader>s :CtrlP
 
 " UI Config {{{
 
-set wrap               "don't wrap lines"
+set wrap               "wrap lines"
 set textwidth=80       "make lines wrap after 79 characters
 set colorcolumn=+1     "vertical ruler one column after textwidth 
-set relativenumber     "relative line numbers
+set number             "line numbers
 set showmatch          "show matching parenthesis"
 set title
 
@@ -236,32 +235,17 @@ function! NumberToggle()
   endif
 endfunc
 
+" We started with regular numbers but now switch to relative 
+" so that the current line number is displayed instead of 0
+call NumberToggle()
+
 nnoremap <C-n> :call NumberToggle()<cr>
 
 nnoremap <silent> <leader>ev :vsplit $MYVIMRC<CR>
 nnoremap <silent> <leader>sv :source $MYVIMRC<CR>
 " }}}
 
-" AutoCommands {{{
-
-" augroup my_autocommands
-"   the line below clears all previous autocommands 
-"   autocmd!
-"   put autocommands in here
-" augroup END
-"}}}
-
 " Plugin config {{{
-
-" Syntastic config
-" set statusline+=%#warningmsg#
-" set statusline+=%{SyntasticStatuslineFlag()}
-" set statusline+=%*
-
-" let g:syntastic_always_populate_loc_list=1
-" let g:syntastic_auto_loc_list = 1
-" let g:syntastic_check_on_open = 1
-" let g:syntastic_check_on_wq = 0
 
 " Airline config
 let g:airline_section_b = '%{strftime("%c")}'
@@ -291,12 +275,12 @@ autocmd BufLeave,BufAdd,BufUnload * call airline#extensions#tabline#buflist#inva
 
 " Custom statusline function
 function! AirlineInit()
-    let g:airline_section_a = airline#section#create(['mode',' ', 'branch'])
-    let g:airline_section_b = airline#section#create(['%f'])
+    let g:airline_section_a = airline#section#create_left(['mode', 'branch'])
+    let g:airline_section_b = airline#section#create_left(['%f'])
     let g:airline_section_c = airline#section#create(['filetype'])
     let g:airline_section_x = airline#section#create(['%P'])
-    let g:airline_section_y = airline#section#create(['%l/%L'])
-    let g:airline_section_z = airline#section#create(['%c c'])
+    let g:airline_section_y = airline#section#create_right(['%l/%L'])
+    let g:airline_section_z = airline#section#create_right(['%c c'])
 endfunction
 " Call custom statusline after airline init
 autocmd User AirlineAfterInit call AirlineInit()
@@ -359,4 +343,4 @@ set foldlevel=0
 set modelines=1
 " }}}
 " Remove 'x' to enable folding
-" xvim:foldmethod=marker:foldlevel=0
+" im:foldmethod=marker:foldlevel=0
