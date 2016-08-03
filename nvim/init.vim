@@ -8,16 +8,26 @@ call vundle#begin("~/.config/nvim/bundle")
 
 " Let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
+" Vim-git interface
 Plugin 'tpope/vim-fugitive'
+" Beautiful status line
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
+" Asynchronous syntax checker
 Plugin 'neomake/neomake'
+" Parenthesis/Quote matcher
 Plugin 'Raimondi/delimitMate'
+" More colorschemes
 Plugin 'flazz/vim-colorschemes'
+" Help with go dev
 Plugin 'fatih/vim-go'
+" help with rust dev
 Plugin 'rust-lang/rust.vim'
+" Asynchronous auto-completion
 Plugin 'Shougo/deoplete.nvim'
+" Fuzzy file searcher
 Plugin 'ctrlpvim/ctrlp.vim'
+" Python syntax checker
 Plugin 'nvie/vim-flake8'
 
 " All plugins must be added before the following line
@@ -106,6 +116,14 @@ iabbrev adn and
 iabbrev waht what
 iabbrev tehn then
 iabbrev icnlude include
+iabbrev #i #include
+iabbrev #d #define
+iabbrev teh the
+iabbrev Teh The
+iabbrev Seperate Separate
+iabbrev seperate separate
+iabbrev i I
+iabbrev tdate <c-r>=strftime("%Y-%m-%d")<cr>
 
 " Useful mappings
 
@@ -129,7 +147,6 @@ augroup comments
 augroup END
 
 function! CommentLine()
-    echo b:comment_leader
     execute ':silent! s/^\(.*\)/' . b:comment_leader . ' \1/g'
 endfunction
 
@@ -251,23 +268,23 @@ nnoremap <silent> <leader>sv :source $MYVIMRC<CR>
 " Plugin config {{{
 
 " Airline config
-let g:airline_section_b = '%{strftime("%c")}'
 " let g:airline_theme='molokai'
 let g:airline_theme='behelit'
-
 " Do not create a separator for empty sections
 let g:airline_skip_empty_sections = 1
 " Do not keep track of whitespace
 let g:airline#extensions#whitespace#enabled = 0
 " Enable powerline fonts, and populate dict if it doesn't exist
 let g:airline_powerline_fonts = 1
+" Show tabs instead of buffers
+let g:airline#extensions#tabline#show_buffers = 0
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
 endif
 " Enable enhanced tabline
 " has('tablineat') = 1
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#excludes = []
+" let g:airline#extensions#tabline#excludes = []
 let g:airline#extensions#tabline#show_buffers = 1
 " Configure how tabs are separated
 let g:airline#extensions#tabline#tab_nr_type = 1 
@@ -284,8 +301,8 @@ function! AirlineInit()
     let g:airline_section_b = airline#section#create_left(['%f'])
     let g:airline_section_c = airline#section#create(['filetype'])
     let g:airline_section_x = airline#section#create(['%P'])
-    let g:airline_section_y = airline#section#create_right(['%l/%L'])
-    let g:airline_section_z = airline#section#create_right(['%c c'])
+    let g:airline_section_z = airline#section#create_right(['%l/%L','%c c'])
+"     let g:airline_section_z = airline#section#create_right([''])
 endfunction
 " Call custom statusline after airline init
 autocmd User AirlineAfterInit call AirlineInit()
