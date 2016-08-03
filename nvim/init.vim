@@ -1,6 +1,12 @@
-" Plugins {{{
-filetype off           "required
+filetype off
 set encoding=utf-8     "enable unicode
+
+" Automatically install vim-plug if it doesn't exist
+if empty(glob('~/.config/nvim/autoload/plug.vim'))
+    silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
+                \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    autocmd VimEnter * PlugInstall | source $MYVIMRC
+endif
 
 call plug#begin('~/.config/nvim/plugged')
 " Vim git interface
@@ -31,7 +37,7 @@ Plug 'zchee/deoplete-jedi', { 'for': 'python' }
 " Html completion
 Plug 'mattn/emmet-vim', { 'for': 'html' }
 " C/C++/C# completion
-Plug 'rip-rip/clang_complete', { 'do': 'make install' }
+Plug 'zchee/deoplete-clang', { 'for': ['c', 'cpp'] }
 " Go code completion
 Plug 'zchee/deoplete-go', { 'do': 'make' }
 " Clojure completion
@@ -40,6 +46,8 @@ Plug 'zchee/deoplete-go', { 'do': 'make' }
 Plug 'carlitux/deoplete-ternjs'
 " Vimscript completion
 Plug 'Shougo/neco-vim'
+" Java completion
+Plug 'artur-shaik/vim-javacomplete2', { 'for': 'java' }
 call plug#end()
 
 
@@ -225,6 +233,8 @@ noremap gV `[v`]
 " performing an indentation.
 vnoremap < <gv
 vnoremap > >gv
+" Make the dot work in visual mode as well
+vnoremap . :norm.<cr>
 " Swap caps and escape when entering vim, undo on exit
 augroup swapcaps
     au VimEnter * !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
@@ -257,6 +267,8 @@ nnoremap <silent> <leader>sv :source $MYVIMRC<CR>
 " Airline config
 " let g:airline_theme='molokai'
 let g:airline_theme='behelit'
+" refresh airline after autocomplete
+nnoremap <leader>ar :execute ":AirlineRefresh"<CR>
 " Do not create a separator for empty sections
 let g:airline_skip_empty_sections = 1
 " Do not keep track of whitespace
@@ -342,8 +354,16 @@ autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 let g:deoplete#enable_smart_case = 1
 " Max number of suggestions
 let g:deoplete#max_list = 25
-
-
+" Decide how to complete
+let g:deoplete#disable_auto_complete = 1
+inoremap <silent><expr> <TAB>
+            \ pumvisible() ? "\<C-n>" :
+            \ <SID>check_back_space() ? "\<TAB>" :
+            \ deoplete#mappings#manual_complete()
+function! s:check_back_space() abort 
+    let col = col('.') - 1
+    return !col || getline('.')[col-1] =~ '\s'
+endfunction
 " Neomake config
 " Run neomake after a save
 autocmd! BufWritePost,BufEnter * Neomake
@@ -357,9 +377,22 @@ let g:neomake_cpp_gcc_maker = {
 let g:neomake_cpp_enabled_makers = ['gcc']
 
 " Clojure completion
-" let g:deoplete#keyword_patterns = {}
-" let g:deoplete#keyword_patterns.clojure = '[\w!$%&*+/:<=>?@\^_~\-\.]*'
+let g:deoplete#keyword_patterns = {}
+let g:deoplete#keyword_patterns.clojure = '[\w!$%&*+/:<=>?@\^_~\-\.]*'
+
+" Clang completion
+let g:deoplete#sources#clang#libclang_path = '/usr/lib/x86_64-linux-gnu/libclang.so'
+let g:deoplete#sources#clang#clang_header = '/usr/lib/clang'
+
+" Rust completion
+let g:racer_cmd = "/home/bradsherman/.cargo/registry/src/github.com-1ecc6299db9ec823/racer-1.2.9/src/racer"
+let $RUST_SRC_PATH="/usr/local/lib/rustlib/"
+
+" Java completion
+autocmd FileType java setlocal omnifunc=javacomplete#Complete
+
 " }}}
+
 
 " Make vim fold {{{
 set foldenable         "enable folding
