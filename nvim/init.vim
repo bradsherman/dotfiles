@@ -1,3 +1,4 @@
+" Plugins {{{
 filetype off
 set encoding=utf-8     "enable unicode
 
