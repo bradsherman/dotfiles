@@ -2,65 +2,52 @@
 filetype off           "required
 set encoding=utf-8     "enable unicode
 
-" Set runtime path to include Vundle and initialize
-set rtp+=~/.config/nvim/bundle/Vundle.vim
-call vundle#begin("~/.config/nvim/bundle")
-
-" Let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-" Vim-git interface
-Plugin 'tpope/vim-fugitive'
-" Beautiful status line
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-" Asynchronous syntax checker
-Plugin 'neomake/neomake'
-" Parenthesis/Quote matcher
-Plugin 'Raimondi/delimitMate'
-" More colorschemes
-Plugin 'flazz/vim-colorschemes'
-" Help with go dev
-Plugin 'fatih/vim-go'
+call plug#begin('~/.config/nvim/plugged')
+" Vim git interface
+Plug 'tpope/vim-fugitive'
+" beautiful status line
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+" asynchronous syntax checker
+Plug 'neomake/neomake'
+" parenthesis/quote matcher
+Plug 'raimondi/delimitmate'
+" more colorschemes
+Plug 'flazz/vim-colorschemes'
+" help with go dev
+Plug 'fatih/vim-go', { 'for': 'go', 'do': ':GoInstallBinaries' }
 " help with rust dev
-Plugin 'rust-lang/rust.vim'
-" Asynchronous auto-completion
-Plugin 'Shougo/deoplete.nvim'
-" Fuzzy file searcher
-Plugin 'ctrlpvim/ctrlp.vim'
-" Python syntax checker
-Plugin 'nvie/vim-flake8'
+Plug 'rust-lang/rust.vim', { 'for': 'rust' }
+" asynchronous auto-completion
+Plug 'shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" fuzzy file searcher
+Plug 'ctrlpvim/ctrlp.vim'
+" python syntax checker
+Plug 'nvie/vim-flake8', { 'for': 'python' }
+" rust code completion
+Plug 'racer-rust/vim-racer', { 'for': 'rust' }
+" python code completion
+Plug 'zchee/deoplete-jedi', { 'for': 'python' }
+" Html completion
+Plug 'mattn/emmet-vim', { 'for': 'html' }
+" C/C++/C# completion
+Plug 'rip-rip/clang_complete', { 'do': 'make install' }
+" Go code completion
+Plug 'zchee/deoplete-go', { 'do': 'make' }
+" Clojure completion
+" Plug 'SevereOverfl0w/vim-clj/async', { 'for': 'clojure' }
+" Javascript completion
+Plug 'carlitux/deoplete-ternjs'
+" Vimscript completion
+Plug 'Shougo/neco-vim'
+call plug#end()
 
-" All plugins must be added before the following line
-call vundle#end()
-filetype plugin indent on
 
-
-" The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
-" plugin on GitHub repo
-"Plugin 'tpope/vim-fugitive'
-" plugin from http://vim-scripts.org/vim/scripts.html
-"Plugin 'L9'
-" Git plugin not hosted on GitHub
-"Plugin 'git://git.wincent.com/command-t.git'
-" git repos on your local machine (i.e. when working on your own plugin)
-"Plugin 'file:///home/gmarik/path/to/plugin'
-" The sparkup vim script is in a subdirectory of this repo called vim.
-" Pass the path to set the runtimepath properly.
-"Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-" Install L9 and avoid a Naming conflict if you've already installed a
-" different version somewhere else.
-"Plugin 'ascenator/L9', {'name': 'newL9'}
-
-" Useful commands
-" :PluginList          - lists configured plugins
-" :PluginInstall       - installs plugins; append '!' to update or just  :PluginUpdate
-" :PluginSearch foo    - searches for foo; append '!' to refresh local cache
-" :PluginClean         - confirms removal of unused plugins; append '!' to auto-approve removal
 " }}}
 
 " General Config {{{
 
+filetype plugin indent on
 set hidden             "hide buffers
 
 set history=1000       "remember more commands and search history"
@@ -118,11 +105,11 @@ iabbrev tehn then
 iabbrev icnlude include
 iabbrev #i #include
 iabbrev #d #define
+iabbrev ustd using namespace std;
 iabbrev teh the
 iabbrev Teh The
 iabbrev Seperate Separate
 iabbrev seperate separate
-iabbrev i I
 iabbrev tdate <c-r>=strftime("%Y-%m-%d")<cr>
 
 " Useful mappings
@@ -351,8 +338,14 @@ let g:ctrlp_follow_symlinks = 1
 " Deoplete config
 let g:deoplete#enable_at_startup = 1
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+" Ignore case unless a capital letter is included
+let g:deoplete#enable_smart_case = 1
+" Max number of suggestions
+let g:deoplete#max_list = 25
+
 
 " Neomake config
+" Run neomake after a save
 autocmd! BufWritePost,BufEnter * Neomake
 autocmd! VimEnter * let g:neomake_verbose = 0
 " let g:neomake_open_list = 2
@@ -362,6 +355,10 @@ let g:neomake_cpp_gcc_maker = {
     \ 'args': ['-std=c++11']
     \}
 let g:neomake_cpp_enabled_makers = ['gcc']
+
+" Clojure completion
+" let g:deoplete#keyword_patterns = {}
+" let g:deoplete#keyword_patterns.clojure = '[\w!$%&*+/:<=>?@\^_~\-\.]*'
 " }}}
 
 " Make vim fold {{{

@@ -87,6 +87,7 @@ fi
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+alias sl='ls -F --color=auto'
 alias cls='clear;ls'
 alias c='clear'
 
