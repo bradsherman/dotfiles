@@ -77,15 +77,15 @@ fi
 # \] : end a sequence of non-printing characters
 
 if [ "$color_prompt" = yes ]; then
-#     PS1='${debian_chroot:+($debian_chroot)}\[\033[0;32m\]\[\033[00m\]\[\033[0;32m\]\u@\h \w $\[\033[00m\] '
-    PS1='\[\e[1;32m\]\u@\h \w ->\n\[\e[1;36m\] \@ \d \$\[\e[m\] '
+    if [ $EUID -eq 0 ]; then
+        PS1='\[\e[1;31m\][\d \t \u@\h \w]\#\[\e[m\] '
+    else
+        PS1="\n\[\e[1;36m\]\@ \d ->\n\[\e[1;32m\] \u@\h \w\n \`if [ \$? = 0 ]; then echo \[\e[32m\]^_^\[\e[0m\]; else echo \[\e[31m\]O_O\[\e[0m\]; fi\` \[\e[1;32m\]\$ \[\e[m\] "
+    fi
 else
     PS1='${debian_chroot:+($debian_chroot)}\w $ '
 fi
 
-if [ $EUID -eq 0 ]; then
-    PS1='\[\e[1;31m\][\d \t \u@\h \w]\#\[\e[m\] '
-fi
 unset color_prompt force_color_prompt
 
 # If this is an xterm set the title to user@host:dir
@@ -185,9 +185,9 @@ alias less='less -FSRXc'
 # Easily edit config files
 alias vim='nvim' # try using neovim instead of vim
 alias vi3='vim ~/.i3/config'
-alias vvim='vim ~/.vimrc'
-alias vbash='vim ~/.bashrc'
-alias envim='nvim ~/.config/nvim/init.vim'
+alias vv='vim ~/.vimrc'
+alias vb='vim ~/.bashrc'
+alias nv='nvim ~/.config/nvim/init.vim'
 
 # Modify variables
 export PATH=/home/bradsherman/bin:$PATH

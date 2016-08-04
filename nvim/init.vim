@@ -158,7 +158,11 @@ nnoremap <leader>s :CtrlP
 
 " UI Config {{{
 
-set wrap               "wrap lines"
+set nowrap             "don't wrap lines by default"
+augroup wraps
+    autocmd FileType c,cpp,java,javascript,    set wrap
+    autocmd FileType rust,go,clojure, python   set wrap
+augroup END
 set textwidth=80       "make lines wrap after 79 characters
 set colorcolumn=+1     "vertical ruler one column after textwidth 
 set number             "line numbers
