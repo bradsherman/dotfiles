@@ -57,14 +57,20 @@ fi
 
 # Colors 
 # change 0 to 1 for bold, 4 for underline, and 5 for slow blink
-# 0;30m black
-# 0;31m red
-# 0;32m green
-# 0;33m yellow
-# 0;34m blue
-# 0;35m purple
-# 0;36m cyan
-# 0;37m white
+BLACK="\[\033[0;30m\]"
+RED="\[\033[0;31m\]"
+GREEN="\[\033[0;32m\]"
+YELLOW="\[\033[0;33m\]"
+BLUE="\[\033[0;34m\]"
+PURPLE="\[\033[0;35m\]"
+CYAN="\[\033[0;36m\]"
+WHITE="\[\033[0;37m\]"
+DARK_GRAY="\[\033[1;30m\]"
+LIGHT_BLUE="\[\033[1;34m\]"
+LIGHT_GREEN="\[\033[1;32m\]"
+LIGHT_CYAN="\[\033[1;36m\]"
+LIGHT_RED="\[\033[1;31m\]"
+LIGHT_PURPLE="\[\033[1;35m\]"
 # 
 # Vars
 # \d : date in "Weekday Month Date" format
@@ -78,9 +84,9 @@ fi
 
 if [ "$color_prompt" = yes ]; then
     if [ $EUID -eq 0 ]; then
-        PS1='\[\e[1;31m\][\d \t \u@\h \w]\#\[\e[m\] '
+        PS1="${RED}[\d \t \u@\h \w]\#\[\e[m\] "
     else
-        PS1="\n\[\e[1;36m\]\@ \d ->\n\[\e[1;32m\] \u@\h \w\n \`if [ \$? = 0 ]; then echo \[\e[32m\]^_^\[\e[0m\]; else echo \[\e[31m\]O_O\[\e[0m\]; fi\` \[\e[1;32m\]\$ \[\e[m\] "
+        PS1="\n${LIGHT_CYAN}\@ \d ->\n${LIGHT_GREEN} \u@\h:\w\n \`if [ \$? = 0 ]; then echo \[\e[32m\]^_^; else echo \[\e[31m\]O_O; fi\` ${LIGHT_GREEN}\$\[\e[0m\] "
     fi
 else
     PS1='${debian_chroot:+($debian_chroot)}\w $ '
@@ -160,7 +166,6 @@ alias U='sudo apt-get update && sudo apt-get upgrade && sudo apt-get autoremove'
 alias ping='ping -c 4'
 # More useful shortcuts
 alias k='exit'
-cd() { builtin cd "$@"; ll; }
 alias cd..='cd ../'
 alias ..='cd ../'
 alias ...='cd ../../'
