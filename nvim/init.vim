@@ -49,6 +49,10 @@ Plug 'carlitux/deoplete-ternjs'
 Plug 'Shougo/neco-vim'
 " Java completion
 Plug 'artur-shaik/vim-javacomplete2', { 'for': 'java' }
+" Git-diff in gutter
+Plug 'airblade/vim-gitgutter'
+" Markdown syntax
+Plug 'plasticboy/vim-markdown'
 call plug#end()
 
 
@@ -111,6 +115,7 @@ noremap <leader>tl :tablast<cr>
 iabbrev adn and
 iabbrev waht what
 iabbrev tehn then
+iabbrev taht that
 iabbrev icnlude include
 iabbrev #i #include
 iabbrev #d #define
@@ -173,6 +178,7 @@ set pastetoggle=<F2>
 set backspace=2                 "allow going back over line breaks
 set backspace=eol,start,indent  "make backspace act as it should
 set whichwrap=<,>,h,l           "allow moving up and down lines at the end
+set updatetime=250              "vim update time = 250ms
 
 set showcmd
 set cursorline                  "highlight current line
@@ -395,6 +401,9 @@ let $RUST_SRC_PATH="/usr/local/lib/rustlib/"
 
 " Java completion
 autocmd FileType java setlocal omnifunc=javacomplete#Complete
+
+" Git Gutter config
+let g:gitgutter_highlight_lines = 1
 
 " }}}
 
