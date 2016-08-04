@@ -82,15 +82,36 @@ LIGHT_PURPLE="\[\033[1;35m\]"
 # \[ : begin a sequence of non-printing characters,
 # \] : end a sequence of non-printing characters
 
-if [ "$color_prompt" = yes ]; then
+exit_color() {
+    if [[ $1 = 0 ]];
+    then
+        echo -e "\033[0;32m"
+    else
+        echo -e "\033[0;31m"
+    fi
+}
+exit_face() {
+    if [[ $1 = 0 ]];
+    then
+        echo -e "^_^"
+    else
+        echo -e "O_O"
+    fi
+}
+
+set_bash_prompt() {
+#     if [ "$color_prompt" = yes ]; then
+    local last_exit=$?
     if [ $EUID -eq 0 ]; then
         PS1="${RED}[\d \t \u@\h \w]\#\[\e[m\] "
     else
-        PS1="\n${LIGHT_CYAN}\@ \d ->\n${LIGHT_GREEN} \u@\h:\w\n \`if [ \$? = 0 ]; then echo \[\e[32m\]^_^; else echo \[\e[31m\]O_O; fi\` ${LIGHT_GREEN}\$\[\e[0m\] "
+        PS1="\n${BLUE}[\@ \d] ->\n${GREEN} \u@\h:\w\n \[\$(exit_color $last_exit)\]\$(exit_face $last_exit) ${GREEN}\$\[\e[0m\] "
     fi
-else
-    PS1='${debian_chroot:+($debian_chroot)}\w $ '
-fi
+#     else
+#         PS1='${debian_chroot:+($debian_chroot)}\w $ '
+#     fi
+}
+PROMPT_COMMAND=set_bash_prompt
 
 unset color_prompt force_color_prompt
 
