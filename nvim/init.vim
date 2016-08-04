@@ -53,6 +53,8 @@ Plug 'artur-shaik/vim-javacomplete2', { 'for': 'java' }
 Plug 'airblade/vim-gitgutter'
 " Markdown syntax
 Plug 'plasticboy/vim-markdown'
+" More c++ syntax
+Plug 'octol/vim-cpp-enhanced-highlight'
 call plug#end()
 
 
@@ -407,6 +409,9 @@ let g:gitgutter_highlight_lines = 1
 
 " Markdown config
 let g:vim_markdown_folding_disabled = 1
+
+" Cpp highlight config
+let c_no_curly_error = 1
 " }}}
 
 
