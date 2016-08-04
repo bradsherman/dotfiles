@@ -405,6 +405,8 @@ autocmd FileType java setlocal omnifunc=javacomplete#Complete
 " Git Gutter config
 let g:gitgutter_highlight_lines = 1
 
+" Markdown config
+let g:vim_markdown_folding_disabled = 1
 " }}}
 
 
