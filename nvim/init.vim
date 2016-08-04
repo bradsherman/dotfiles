@@ -54,7 +54,7 @@ Plug 'airblade/vim-gitgutter'
 " Markdown syntax
 Plug 'plasticboy/vim-markdown'
 " More c++ syntax
-Plug 'octol/vim-cpp-enhanced-highlight'
+Plug 'octol/vim-cpp-enhanced-highlight', { 'for': 'cpp' }
 call plug#end()
 
 
