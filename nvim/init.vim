@@ -55,8 +55,8 @@ Plug 'airblade/vim-gitgutter'
 Plug 'plasticboy/vim-markdown'
 " More c++ syntax
 Plug 'octol/vim-cpp-enhanced-highlight', { 'for': 'cpp' }
-call plug#end()
 
+call plug#end()
 
 " }}}
 
@@ -73,24 +73,6 @@ set noerrorbells       "don't beep"
 " Auto read when a file is changed from the outside
 set autoread
 
-" Make comma the noremap leader
-let mapleader = ","
-let g:mapleader = ","
-nnoremap ; :
-
-" Quick access to terminal
-nnoremap <leader>t :terminal<cr>
-
-" Fast saving and quitting
-nnoremap <leader>w :w!<cr>
-nnoremap <leader>wq :wq<cr>
-
-" Save files with sudo if you forget
-cnoremap w!! w !sudo tee % >/dev/null
-
-" Keep 7 lines for the cursor
-set scrolloff=7
-
 " Configure indentation settings
 set tabstop=4          "number of visual spaces per TAB
 set softtabstop=4      "number of spaces in tab when editing
@@ -100,18 +82,6 @@ set smartindent        "smart tab on
 set copyindent         "copy previous indentation
 set expandtab          "turn tabs into spaces
 set shiftround         "use multiple of shiftwidth when indenting with < and >
-
-" Configure tab settings
-noremap <leader>tn :tabnew<cr>
-noremap <leader>to :tabonly<cr>
-noremap <leader>tc :tabclose<cr>
-noremap <leader>tm :tabmove
-" next tab
-noremap <leader>tb :tabn<cr>
-" previous tab
-noremap <leader>tp :tabp<cr>
-noremap <leader>tf :tabfirst<cr>
-noremap <leader>tl :tablast<cr>
 
 " Useful abbreviations
 iabbrev adn and
@@ -129,6 +99,21 @@ iabbrev seperate separate
 iabbrev tdate <c-r>=strftime("%Y-%m-%d")<cr>
 
 " Useful mappings
+
+" Make comma the map leader
+let mapleader = ","
+let g:mapleader = ","
+nnoremap ; :
+
+" Quick access to terminal
+nnoremap <leader>t :terminal<cr>
+
+" Fast saving and quitting
+nnoremap <leader>w :w!<cr>
+nnoremap <leader>wq :wq<cr>
+
+" Save files with sudo if you forget
+cnoremap w!! w !sudo tee % >/dev/null
 
 " Automatically make something uppercase
 " Remember to use right control since left control is escape in insert mode
@@ -160,6 +145,18 @@ endfunction
 noremap <leader>c :call CommentLine()<cr>
 noremap <leader>C :call UncommentLine()<cr>
 
+" Configure tab settings
+noremap <leader>tn :tabnew<cr>
+noremap <leader>to :tabonly<cr>
+noremap <leader>tc :tabclose<cr>
+noremap <leader>tm :tabmove
+" next tab
+noremap <leader>tb :tabn<cr>
+" previous tab
+noremap <leader>tp :tabp<cr>
+noremap <leader>tf :tabfirst<cr>
+noremap <leader>tl :tablast<cr>
+
 nnoremap <leader>s :CtrlP
 " }}}
 
@@ -170,13 +167,15 @@ augroup wraps
     autocmd FileType c,cpp,java,javascript,    set wrap
     autocmd FileType rust,go,clojure, python   set wrap
 augroup END
+
+set scrolloff=7        "Keep 7 lines above/below the cursor
 set textwidth=80       "make lines wrap after 79 characters
 set colorcolumn=+1     "vertical ruler one column after textwidth 
 set number             "line numbers
 set showmatch          "show matching parenthesis"
 set title
 
-set pastetoggle=<F2>
+set pastetoggle=<F2>            "easily switch to paste mode
 set backspace=2                 "allow going back over line breaks
 set backspace=eol,start,indent  "make backspace act as it should
 set whichwrap=<,>,h,l           "allow moving up and down lines at the end
@@ -271,7 +270,9 @@ call NumberToggle()
 
 nnoremap <C-n> :call NumberToggle()<cr>
 
+" Quickly edit vimrc
 nnoremap <silent> <leader>ev :vsplit $MYVIMRC<CR>
+" Quickly source vimrc
 nnoremap <silent> <leader>sv :source $MYVIMRC<CR>
 " }}}
 
@@ -405,7 +406,8 @@ let $RUST_SRC_PATH="/usr/local/lib/rustlib/"
 autocmd FileType java setlocal omnifunc=javacomplete#Complete
 
 " Git Gutter config
-let g:gitgutter_highlight_lines = 1
+" highlight changed lines by default
+" let g:gitgutter_highlight_lines = 1
 
 " Markdown config
 let g:vim_markdown_folding_disabled = 1
@@ -424,4 +426,4 @@ set foldlevel=0
 set modelines=1
 " }}}
 " Remove 'x' to enable folding
-" im:foldmethod=marker:foldlevel=0
+" vim:foldmethod=marker:foldlevel=0

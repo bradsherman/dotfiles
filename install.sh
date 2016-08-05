@@ -167,7 +167,7 @@ install_vimfiles () {
 
     info "installing vim plugins"
     sleep 2
-    vim -c "plugininstall" -c "q" -c "q"
+    /usr/bin/vim -c "plugininstall" -c "q" -c "q"
 }
 
 install_nvimfiles () {
@@ -214,7 +214,7 @@ install_nvimfiles () {
 
     info "installing neovim plugins"
     sleep 2
-    nvim -c "plugininstall" -c "q" -c "q"
+    /usr/bin/nvim -c "plugininstall" -c "q" -c "q"
 }
 
 install_programs () {
