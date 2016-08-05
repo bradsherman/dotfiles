@@ -16,6 +16,5 @@ filename=${cwd}/${newfile}.py
 touch $filename
 chmod +x $filename
 printf "#!/usr/bin/env python2.7\n" > $filename
-vim $filename
 
 exit 0

@@ -16,6 +16,5 @@ filename=${cwd}/${newfile}.java
 touch $filename
 printf "public class $newfile {\n" > $filename
 printf "\n\tpublic static void main(String[] args) {\n\n\t}\n\n}" >> $filename
-# printf "\t%s" "public static void main(String[] args) {" >> $filename
 
 exit 0

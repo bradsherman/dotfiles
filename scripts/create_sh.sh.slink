@@ -16,6 +16,5 @@ filename=${cwd}/${newfile}.sh
 touch $filename
 chmod +x $filename
 printf "%s\n" "#!/bin/bash" > $filename
-vim $filename
 
 exit 0
