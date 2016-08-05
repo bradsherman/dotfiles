@@ -55,6 +55,9 @@ Plug 'airblade/vim-gitgutter'
 Plug 'plasticboy/vim-markdown'
 " More c++ syntax
 Plug 'octol/vim-cpp-enhanced-highlight', { 'for': 'cpp' }
+" Snippets
+Plug 'SirVer/ultisnips' " snippets engine
+Plug 'honza/vim-snippets' " actual snippets
 
 call plug#end()
 
@@ -414,6 +417,13 @@ let g:vim_markdown_folding_disabled = 1
 
 " Cpp highlight config
 let c_no_curly_error = 1
+
+" Snippets config
+" Trigger config
+let g:UltiSnipsExpandTrigger="<c-j>"
+let g:UltiSnipsListSnippets="<c-tab>"
+let g:UltiSnipsJumpForwardTigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 " }}}
 
 
