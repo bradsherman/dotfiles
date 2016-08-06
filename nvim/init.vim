@@ -311,18 +311,6 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 " Remove closed buffers from tabline
 autocmd BufLeave,BufAdd,BufUnload * call airline#extensions#tabline#buflist#invalidate()
 
-" Custom statusline function
-function! AirlineInit()
-    let g:airline_section_a = airline#section#create_left(['mode', 'branch'])
-    let g:airline_section_b = airline#section#create_left(['%f'])
-    let g:airline_section_c = airline#section#create(['filetype'])
-    let g:airline_section_x = airline#section#create(['%t'])
-    let g:airline_section_z = airline#section#create_right(['%l/%L','%c c','%P'])
-"     let g:airline_section_z = airline#section#create_right([''])
-endfunction
-" Call custom statusline after airline init
-autocmd User AirlineAfterInit call AirlineInit()
-
 " unicode symbols
 let g:airline_left_sep = '»'
 let g:airline_left_sep = '▶'
@@ -350,6 +338,19 @@ let g:airline_right_alt_sep = ''
 let g:airline_symbols.branch = ''
 let g:airline_symbols.readonly = ''
 let g:airline_symbols.linenr = ''
+
+" Custom statusline function
+function! AirlineInit()
+    let g:airline_section_a = airline#section#create_left(['mode', 'branch'])
+    let g:airline_section_b = airline#section#create_left(['%f'])
+    let g:airline_section_c = airline#section#create(['filetype'])
+    let g:airline_section_x = airline#section#create(['%t'])
+    let g:airline_section_z = airline#section#create_right(['%l/%L','%c c','%P'])
+"     let g:airline_section_z = airline#section#create_right([''])
+endfunction
+
+" Call custom statusline after airline init
+autocmd User AirlineAfterInit call AirlineInit()
 
 " Ctrlp Config
 
