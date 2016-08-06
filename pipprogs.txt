@@ -1,0 +1,2 @@
+sudo pip3 install neovim
+sudo pip install flake8

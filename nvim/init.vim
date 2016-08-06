@@ -316,8 +316,8 @@ function! AirlineInit()
     let g:airline_section_a = airline#section#create_left(['mode', 'branch'])
     let g:airline_section_b = airline#section#create_left(['%f'])
     let g:airline_section_c = airline#section#create(['filetype'])
-    let g:airline_section_x = airline#section#create(['%P'])
-    let g:airline_section_z = airline#section#create_right(['%l/%L','%c c'])
+    let g:airline_section_x = airline#section#create(['%t'])
+    let g:airline_section_z = airline#section#create_right(['%l/%L','%c c','%P'])
 "     let g:airline_section_z = airline#section#create_right([''])
 endfunction
 " Call custom statusline after airline init
@@ -371,12 +371,13 @@ autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 let g:deoplete#enable_smart_case = 1
 " Max number of suggestions
 let g:deoplete#max_list = 25
-" Decide how to complete
-let g:deoplete#disable_auto_complete = 1
-inoremap <silent><expr> <TAB>
-            \ pumvisible() ? "\<C-n>" :
-            \ <SID>check_back_space() ? "\<TAB>" :
-            \ deoplete#mappings#manual_complete()
+" Decide how to complete, leave autocomplete for now
+" so we can use tab for snippets
+" let g:deoplete#disable_auto_complete = 1
+" inoremap <silent><expr> <TAB>
+"             \ pumvisible() ? "\<C-n>" :
+"             \ <SID>check_back_space() ? "\<TAB>" :
+"             \ deoplete#mappings#manual_complete()
 function! s:check_back_space() abort 
     let col = col('.') - 1
     return !col || getline('.')[col-1] =~ '\s'
@@ -420,12 +421,15 @@ let c_no_curly_error = 1
 
 " Snippets config
 " Trigger config
-let g:UltiSnipsExpandTrigger="<c-j>"
-let g:UltiSnipsListSnippets="<c-tab>"
-let g:UltiSnipsJumpForwardTigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-" }}}
+let g:UltiSnipsExpandTrigger="<tab>"
+" let g:UltiSnipsListSnippets="<c-tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 
+" Fugitive config
+" Don't let fugitive make tons of buffers 
+autocmd BufReadPost fugitive://* set bufhidden=delete
+" }}}
 
 " Make vim fold {{{
 set foldenable         "enable folding
