@@ -344,13 +344,13 @@ function! AirlineInit()
     let g:airline_section_a = airline#section#create_left(['mode', 'branch'])
     let g:airline_section_b = airline#section#create_left(['%f'])
     let g:airline_section_c = airline#section#create(['filetype'])
-    let g:airline_section_x = airline#section#create(['%t'])
-    let g:airline_section_z = airline#section#create_right(['%l/%L','%c c','%P'])
-"     let g:airline_section_z = airline#section#create_right([''])
+    let g:airline_section_x = '%{strftime("%c")}'
+    let g:airline_section_y = airline#section#create(['linenr','/%L'])
+    let g:airline_section_z = airline#section#create_right(['%P','%c'])
 endfunction
 
 " Call custom statusline after airline init
-autocmd User AirlineAfterInit call AirlineInit()
+" autocmd User AirlineAfterInit call AirlineInit()
 
 " Ctrlp Config
 
