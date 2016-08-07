@@ -1,8 +1,10 @@
 " Plugins {{{
 filetype off
-set encoding=utf-8     "enable unicode
+if !has('nvim')
+    set encoding=utf-8     "enable unicode
+endif
 
-" Automatically install vim-plug if it doesn't exist
+" automatically install vim-plug if it doesn't exist
 if empty(glob('~/.config/nvim/autoload/plug.vim'))
     silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
                 \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -11,17 +13,17 @@ endif
 
 call plug#begin('~/.config/nvim/plugged')
 " tpope is the real MVP
-" Vim git interface
+" vim git interface
 Plug 'tpope/vim-fugitive'
-" Make surrounding easy
+" make surrounding easy
 Plug 'tpope/vim-surround'
-" Easy Repeat
+" easy Repeat
 Plug 'tpope/vim-repeat'
-" Substitution will never be the same
+" substitution will never be the same
 Plug 'tpope/vim-abolish'
-" Amazing Mappings
+" amazing Mappings
 Plug 'tpope/vim-unimpaired'
-" Comment all the things
+" comment all the things
 Plug 'tpope/vim-commentary'
 " beautiful status line
 Plug 'vim-airline/vim-airline'
@@ -39,34 +41,34 @@ Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 " asynchronous auto-completion
 Plug 'shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " fuzzy file searcher
-Plug 'ctrlpvim/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim', { 'on': 'CtrlP' }
 " python syntax checker
 Plug 'nvie/vim-flake8', { 'for': 'python' }
 " rust code completion
 Plug 'racer-rust/vim-racer', { 'for': 'rust' }
 " python code completion
 Plug 'zchee/deoplete-jedi', { 'for': 'python' }
-" Html completion
+" html completion
 Plug 'mattn/emmet-vim', { 'for': 'html' }
-" C/C++/C# completion
+" c/c++/C# completion
 Plug 'zchee/deoplete-clang', { 'for': ['c', 'cpp'] }
-" Go code completion
+" go code completion
 Plug 'zchee/deoplete-go', { 'do': 'make' }
-" Clojure completion
-" Plug 'SevereOverfl0w/vim-clj/async', { 'for': 'clojure' }
-" Javascript completion
+" clojure completion
+" plug 'SevereOverfl0w/vim-clj/async', { 'for': 'clojure' }
+" javascript completion
 Plug 'carlitux/deoplete-ternjs'
-" Vimscript completion
+" vimscript completion
 Plug 'Shougo/neco-vim'
-" Java completion
+" java completion
 Plug 'artur-shaik/vim-javacomplete2', { 'for': 'java' }
-" Git-diff in gutter
+" git-diff in gutter
 Plug 'airblade/vim-gitgutter'
-" Markdown syntax
+" markdown syntax
 Plug 'plasticboy/vim-markdown'
-" More c++ syntax
+" more c++ syntax
 Plug 'octol/vim-cpp-enhanced-highlight', { 'for': 'cpp' }
-" Snippets
+" snippets
 Plug 'SirVer/ultisnips'   " snippets engine
 Plug 'honza/vim-snippets' " actual snippets
 
@@ -84,6 +86,7 @@ set undolevels=1000    "use many more levels of undo"
 set novisualbell       "don't beep"
 set noerrorbells       "don't beep"
 set autoread           "Auto read when a file is changed from the outside
+set autowrite          "automatically write buffer when changing files
 
 " Configure indentation settings
 let tabsize = 4        "easily change tabsize
@@ -93,11 +96,12 @@ execute "set tabstop=".tabsize
 execute "set softtabstop=".tabsize
 " Number of spaces to use for autoindenting
 execute "set shiftwidth=".tabsize
-set autoindent           "autoindenting on
-set smartindent          "smart tab on
+set autoindent           "retain indentation from previous line
+set smartindent          "turn on autoindenting of blocks
 set copyindent           "copy previous indentation
 set expandtab            "turn tabs into spaces
 set shiftround           "use multiple of shiftwidth when indenting with < and >
+set matchpairs+=<:>      "match angle brackets
 
 " Useful abbreviations
 iabbrev adn and
@@ -111,6 +115,10 @@ iabbrev ustd using namespace std;
 iabbrev teh the
 iabbrev Teh The
 iabbrev tdate <c-r>=strftime("%Y-%m-%d")<cr>
+iabbrev pritn print
+iabbrev retrun return
+iabbrev reutrn return
+iabbrev liek like
 
 augroup Abolish-Commands
     autocmd!
@@ -135,9 +143,8 @@ nnoremap <leader>t :terminal<cr>
 " Fast saving and quitting
 nnoremap <leader>w :w!<cr>
 nnoremap <leader>wq :wq<cr>
-nnoremap ;wq :wq
-nnoremap ;w :w
-nnoremap ;q :q
+nnoremap ; :
+nnoremap : ;
 
 " Save files with sudo if you forget
 cnoremap w!! w !sudo tee % >/dev/null
@@ -189,6 +196,7 @@ noremap <leader>tl :tablast<cr>
 nnoremap Y y$
 vnoremap Y y$
 
+" Easy access to file searching
 nnoremap <leader>s :CtrlP
 
 augroup General-Autocommands
@@ -222,8 +230,8 @@ augroup wraps
     autocmd FileType rust,go,clojure,python   set wrap
 augroup END
 
-set scrolloff=10                "Keep 10 lines above/below the cursor
-set sidescrolloff=15            "Keep 15 chars to the righ of the cursor
+set scrolloff=7                "Keep 7 lines above/below the cursor
+set sidescrolloff=15            "Keep 15 chars to the right of the cursor
 set textwidth=80                "make lines wrap after 79 characters
 set colorcolumn=+1              "vertical ruler one column after textwidth 
 set number                      "line numbers
@@ -278,6 +286,10 @@ nnoremap L $
 nnoremap j gj
 nnoremap k gk
 
+" make space useful
+nnoremap <space> <PageDown>
+vnoremap <space> <PageDown>
+
 " Easy way to move between panes
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
@@ -296,14 +308,14 @@ set incsearch
 set hlsearch
 set ignorecase
 nnoremap <silent> <leader>/ :nohlsearch<CR>
+
+" Search and replace
+nnoremap S :%s//g<left><left>
+
 " }}}
 
 " Colors and syntax {{{
 
-" Define colorscheme
-"syntax enable
-"set background=dark
-"colorscheme solarized
 syntax on
 " colorscheme molokai
 " colorscheme PaperColor
@@ -439,8 +451,12 @@ let g:ctrlp_switch_buffer = 'Et'
 let g:ctrlp_show_hidden = 1
 " Open new file in a tab
 let g:ctrlp_open_new_file = 't'
+" Tell ctrlp where to put new tab
+let g:ctrlp_tabpage_position = 'ac'
 " Follow symlinks
 let g:ctrlp_follow_symlinks = 1
+" Set working directory
+let g:ctrlp_working_path_mode = 'ra'
 
 " Deoplete config
 let g:deoplete#enable_at_startup = 1
