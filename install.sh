@@ -214,7 +214,7 @@ install_nvimfiles () {
 
     info "installing neovim plugins"
     sleep 2
-    /usr/bin/nvim -c "plugininstall" -c "q" -c "q"
+    /usr/bin/nvim -c ":PlugInstall" -c "q" -c "q"
 }
 
 install_programs () {
