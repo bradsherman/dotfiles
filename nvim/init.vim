@@ -110,9 +110,12 @@ iabbrev #d #define
 iabbrev ustd using namespace std;
 iabbrev teh the
 iabbrev Teh The
-iabbrev Seperate Separate
-iabbrev seperate separate
 iabbrev tdate <c-r>=strftime("%Y-%m-%d")<cr>
+
+augroup Abolish-Commands
+    autocmd!
+    autocmd VimEnter * execute ":Abolish {despa,sepe}rat{e,es,ed,ing,ely,ion,ions,or} {despe,sepa}rat{}"
+augroup END
 
 " Useful mappings
 " Use enter to create newlines in normal mode
@@ -182,6 +185,10 @@ noremap <leader>tp :tabp<cr>
 noremap <leader>tf :tabfirst<cr>
 noremap <leader>tl :tablast<cr>
 
+" Yank to end of line instead of entire line (yy)
+nnoremap Y y$
+vnoremap Y y$
+
 nnoremap <leader>s :CtrlP
 
 augroup General-Autocommands
@@ -194,14 +201,17 @@ augroup General-Autocommands
     autocmd BufReadPost *
         \ if &ft != 'gitcommit' && line("'\"") > 0 && line("'\"") <= line("$") |
         \   exe "normal g`\"" |
+        \ endif
 
     " Enable spellchecking for Markdown
-    autocmd FileType markdown setlocal spell       \ endif" }}}
+    autocmd FileType markdown setlocal spell
 
     " Automatically wrap at 100 characters and spell check git commit messages
     autocmd FileType gitcommit setlocal textwidth=100
     autocmd FileType gitcommit setlocal spell
 augroup END
+
+" }}}
 
 " UI Config {{{
 

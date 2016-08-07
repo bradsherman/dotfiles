@@ -24,3 +24,4 @@ sudo apt-get install rofi
 sudo apt-get install arandr
 sudo apt-get install colordiff
 sudo apt-get install apt-listchanges
+sudo apt-get install tmux
