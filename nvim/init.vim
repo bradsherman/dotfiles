@@ -10,8 +10,19 @@ if empty(glob('~/.config/nvim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.config/nvim/plugged')
+" tpope is the real MVP
 " Vim git interface
 Plug 'tpope/vim-fugitive'
+" Make surrounding easy
+Plug 'tpope/vim-surround'
+" Easy Repeat
+Plug 'tpope/vim-repeat'
+" Substitution will never be the same
+Plug 'tpope/vim-abolish'
+" Amazing Mappings
+Plug 'tpope/vim-unimpaired'
+" Comment all the things
+Plug 'tpope/vim-commentary'
 " beautiful status line
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -56,7 +67,7 @@ Plug 'plasticboy/vim-markdown'
 " More c++ syntax
 Plug 'octol/vim-cpp-enhanced-highlight', { 'for': 'cpp' }
 " Snippets
-Plug 'SirVer/ultisnips' " snippets engine
+Plug 'SirVer/ultisnips'   " snippets engine
 Plug 'honza/vim-snippets' " actual snippets
 
 call plug#end()
@@ -72,19 +83,21 @@ set history=1000       "remember more commands and search history"
 set undolevels=1000    "use many more levels of undo"
 set novisualbell       "don't beep"
 set noerrorbells       "don't beep"
-
-" Auto read when a file is changed from the outside
-set autoread
+set autoread           "Auto read when a file is changed from the outside
 
 " Configure indentation settings
-set tabstop=4          "number of visual spaces per TAB
-set softtabstop=4      "number of spaces in tab when editing
-set shiftwidth=4       "number of spaces to use for autoindenting
-set autoindent         "autoindenting on
-set smartindent        "smart tab on
-set copyindent         "copy previous indentation
-set expandtab          "turn tabs into spaces
-set shiftround         "use multiple of shiftwidth when indenting with < and >
+let tabsize = 4        "easily change tabsize
+" Number of visual spaces per TAB
+execute "set tabstop=".tabsize
+" Number of spaces in tab when editing
+execute "set softtabstop=".tabsize
+" Number of spaces to use for autoindenting
+execute "set shiftwidth=".tabsize
+set autoindent           "autoindenting on
+set smartindent          "smart tab on
+set copyindent           "copy previous indentation
+set expandtab            "turn tabs into spaces
+set shiftround           "use multiple of shiftwidth when indenting with < and >
 
 " Useful abbreviations
 iabbrev adn and
@@ -102,11 +115,16 @@ iabbrev seperate separate
 iabbrev tdate <c-r>=strftime("%Y-%m-%d")<cr>
 
 " Useful mappings
+" Use enter to create newlines in normal mode
+nnoremap <cr> o<esc>
+" These commands fix issues with the above mapping
+" in the quickfix window
+autocmd CmdwinEnter * nnoremap <cr> <cr>
+autocmd BufReadPost quickfix nnoremap <cr> <cr>
 
 " Make comma the map leader
 let mapleader = ","
 let g:mapleader = ","
-nnoremap ; :
 
 " Quick access to terminal
 nnoremap <leader>t :terminal<cr>
@@ -114,6 +132,9 @@ nnoremap <leader>t :terminal<cr>
 " Fast saving and quitting
 nnoremap <leader>w :w!<cr>
 nnoremap <leader>wq :wq<cr>
+nnoremap ;wq :wq
+nnoremap ;w :w
+nnoremap ;q :q
 
 " Save files with sudo if you forget
 cnoremap w!! w !sudo tee % >/dev/null
@@ -129,6 +150,7 @@ nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
 nnoremap <leader>' viw<esc>a'<esc>hbi'<esc>lel
 " comment and uncomment blocks
 augroup comments
+    autocmd!
     autocmd FileType c,cpp,java,scala    let b:comment_leader = '\/\/'
     autocmd FileType javascript,rust     let b:comment_leader = '\/\/'
     autocmd FileType sh,ruby,python      let b:comment_leader = '#'
@@ -161,36 +183,70 @@ noremap <leader>tf :tabfirst<cr>
 noremap <leader>tl :tablast<cr>
 
 nnoremap <leader>s :CtrlP
-" }}}
+
+augroup General-Autocommands
+    autocmd!
+    autocmd FocusLost,WinLeave * :silent! wa
+
+    " When editing a file, always jump to the last known cursor position.
+    " Don't do it for commit messages, when the position is invalid, or when
+    " inside an event handler (happens when dropping a file on gvim).
+    autocmd BufReadPost *
+        \ if &ft != 'gitcommit' && line("'\"") > 0 && line("'\"") <= line("$") |
+        \   exe "normal g`\"" |
+
+    " Enable spellchecking for Markdown
+    autocmd FileType markdown setlocal spell       \ endif" }}}
+
+    " Automatically wrap at 100 characters and spell check git commit messages
+    autocmd FileType gitcommit setlocal textwidth=100
+    autocmd FileType gitcommit setlocal spell
+augroup END
 
 " UI Config {{{
 
-set nowrap             "don't wrap lines by default"
+set nowrap                      "don't wrap lines by default"
 augroup wraps
-    autocmd FileType c,cpp,java,javascript,    set wrap
-    autocmd FileType rust,go,clojure, python   set wrap
+    autocmd!
+    autocmd FileType c,cpp,java               set wrap
+    autocmd FileType rust,go,clojure,python   set wrap
 augroup END
 
-set scrolloff=7        "Keep 7 lines above/below the cursor
-set textwidth=80       "make lines wrap after 79 characters
-set colorcolumn=+1     "vertical ruler one column after textwidth 
-set number             "line numbers
-set showmatch          "show matching parenthesis"
-set title
-
+set scrolloff=10                "Keep 10 lines above/below the cursor
+set sidescrolloff=15            "Keep 15 chars to the righ of the cursor
+set textwidth=80                "make lines wrap after 79 characters
+set colorcolumn=+1              "vertical ruler one column after textwidth 
+set number                      "line numbers
+set showmatch                   "show matching parenthesis"
+set splitright                  "open new splits to the right
+set title                       "set our title
 set pastetoggle=<F2>            "easily switch to paste mode
 set backspace=2                 "allow going back over line breaks
 set backspace=eol,start,indent  "make backspace act as it should
 set whichwrap=<,>,h,l           "allow moving up and down lines at the end
 set updatetime=250              "vim update time = 250ms
-
-set showcmd
+set showcmd                     "display incomplete command
 set cursorline                  "highlight current line
 set wildmenu                    "graphical menu for commands
-set lazyredraw
+set lazyredraw                  "don't redraw for commands we didn't type
+set shortmess=a                 "avoid all the 'hit-enter' prompts
+set cmdheight=2                 "statusline height
+set clipboard=unnamed           "allow copy/paste from anywhere (system register)
 
-set shortmess=a
-set cmdheight=2
+" Auto resize Vim splits to active splits
+set winwidth=104
+set winheight=5
+set winminheight=5
+set winheight=999
+
+" Show extra whitespace
+set list listchars=tab:»·,trail:·,nbsp:·  
+" Do not add comment after newline
+augroup Format-Options
+    autocmd!
+    autocmd BufEnter * setlocal formatoptions-=r
+    autocmd BufEnter * setlocal formatoptions-=o
+augroup END
 
 " Make status bar appear all the time
 set laststatus=2
@@ -217,6 +273,12 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-h> <C-w>h
 nnoremap <C-l> <C-w>l
+
+" Resize panes
+nnoremap <silent> <Right> :vertical resize +5<cr>
+nnoremap <silent> <Left> :vertical resize -5<cr>
+nnoremap <silent> <Up> :horizontal resize +5<cr>
+nnoremap <silent> <Down> :horizontal resize -5<cr>
 " }}} 
 
 " Searching {{{
@@ -233,7 +295,9 @@ nnoremap <silent> <leader>/ :nohlsearch<CR>
 "set background=dark
 "colorscheme solarized
 syntax on
-colorscheme molokai
+" colorscheme molokai
+" colorscheme PaperColor
+colorscheme skittles_berry
 
 if (&term == "iterm") || (&term == "putty")
 	set background=dark
@@ -252,6 +316,7 @@ vnoremap > >gv
 vnoremap . :norm.<cr>
 " Swap caps and escape when entering vim, undo on exit
 augroup swapcaps
+    autocmd!
     au VimEnter * !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
     au VimLeave * !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Control_L'
 augroup END
@@ -283,7 +348,9 @@ nnoremap <silent> <leader>sv :source $MYVIMRC<CR>
 
 " Airline config
 " let g:airline_theme='molokai'
-let g:airline_theme='behelit'
+" let g:airline_theme='behelit'
+" let g:airline_theme='base16_google'
+let g:airline_theme='base16_isotope'
 " refresh airline after autocomplete
 nnoremap <leader>ar :execute ":AirlineRefresh"<CR>
 " Do not create a separator for empty sections
