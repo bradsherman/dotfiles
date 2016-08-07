@@ -61,7 +61,7 @@ Plug 'carlitux/deoplete-ternjs'
 " vimscript completion
 Plug 'Shougo/neco-vim'
 " java completion
-Plug 'artur-shaik/vim-javacomplete2', { 'for': 'java' }
+" Plug 'artur-shaik/vim-javacomplete2', { 'for': 'java' }
 " git-diff in gutter
 Plug 'airblade/vim-gitgutter'
 " markdown syntax
@@ -87,6 +87,7 @@ set novisualbell       "don't beep"
 set noerrorbells       "don't beep"
 set autoread           "Auto read when a file is changed from the outside
 set autowrite          "automatically write buffer when changing files
+set timeoutlen=500     "don't wait so long for mapped sequences to complete
 
 " Configure indentation settings
 let tabsize = 4        "easily change tabsize
@@ -366,6 +367,13 @@ nnoremap <silent> <leader>ev :vsplit $MYVIMRC<CR>
 nnoremap <silent> <leader>sv :source $MYVIMRC<CR>
 " }}}
 
+" Macros {{{
+
+" to specify a macro, use something like below
+" let @a='0fa'
+
+" }}}
+
 " Plugin config {{{
 
 " Airline config
@@ -444,15 +452,11 @@ endfunction
 " Ctrlp Config
 
 " Search by filename instead of full path
-let g:ctrlp_by_filename = 0
+" let g:ctrlp_by_filename = 0
 " Try to jump to open instance if possible
-let g:ctrlp_switch_buffer = 'Et'
+" let g:ctrlp_switch_buffer = 'Et'
 " Scan for dotfiles and dotdirs
 let g:ctrlp_show_hidden = 1
-" Open new file in a tab
-let g:ctrlp_open_new_file = 't'
-" Tell ctrlp where to put new tab
-let g:ctrlp_tabpage_position = 'ac'
 " Follow symlinks
 let g:ctrlp_follow_symlinks = 1
 " Set working directory
@@ -501,7 +505,7 @@ let g:racer_cmd = "/home/bradsherman/.cargo/registry/src/github.com-1ecc6299db9e
 let $RUST_SRC_PATH="/usr/local/lib/rustlib/"
 
 " Java completion
-autocmd FileType java setlocal omnifunc=javacomplete#Complete
+" autocmd FileType java setlocal omnifunc=javacomplete#Complete
 
 " Git Gutter config
 " highlight changed lines by default

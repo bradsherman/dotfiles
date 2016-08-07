@@ -88,6 +88,7 @@ set novisualbell       "don't beep"
 set noerrorbells       "don't beep"
 set autoread           "Auto read when a file is changed from the outside
 set autowrite          "automatically write buffer when changing files 
+set timeoutlen=500     "don't wait so long for mapped sequences to complete
 
 " Configure indentation settings
 let tabsize = 4        "easily change tab size
