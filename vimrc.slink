@@ -12,6 +12,12 @@ if empty(glob('~/.vim/autoload/plug.vim'))
     autocmd VimEnter * PlugInstall | source $MYVIMRC
 endif
 
+" function to load plugins on a condition
+function! Cond(cond,...)
+    let opts = get(a:000,0,{})
+    return a:cond ? opts : extend(opts, { 'on': [], 'for': [] })
+endfunction
+
 call plug#begin('~/.vim/plugged')
 " tpope is the real MVP
 " vim git interface
@@ -30,7 +36,7 @@ Plug 'tpope/vim-commentary'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 " asynchronous syntax checker
-Plug 'neomake/neomake'
+Plug 'neomake/neomake', { 'on': 'Neomake' }
 " parenthesis/quote matcher
 Plug 'raimondi/delimitmate'
 " more colorschemes
@@ -40,11 +46,11 @@ Plug 'fatih/vim-go', { 'for': 'go', 'do': ':GoInstallBinaries' }
 " help with rust dev
 Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 " asynchronous auto-completion
-" Plug 'shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'shougo/deoplete.nvim', Cond(has('nvim'), { 'do': ':UpdateRemotePlugins' })
 " fuzzy file searcher
 Plug 'ctrlpvim/ctrlp.vim', { 'on': 'CtrlP' }
 " python syntax checker
-Plug 'nvie/vim-flake8', { 'for': 'python' }
+Plug 'nvie/vim-flake8', { 'for': 'python', 'on': 'Neomake' }
 " rust code completion
 Plug 'racer-rust/vim-racer', { 'for': 'rust' }
 " python code completion
@@ -58,15 +64,15 @@ Plug 'zchee/deoplete-go', { 'do': 'make' }
 " clojure completion
 " plug 'SevereOverfl0w/vim-clj/async', { 'for': 'clojure' }
 " javascript completion
-Plug 'carlitux/deoplete-ternjs'
+Plug 'carlitux/deoplete-ternjs', { 'for': 'javascript' }
 " vimscript completion
-Plug 'Shougo/neco-vim'
+Plug 'Shougo/neco-vim', { 'for': 'vim' }
 " java completion
-Plug 'artur-shaik/vim-javacomplete2', { 'for': 'java' }
+" Plug 'artur-shaik/vim-javacomplete2', { 'for': 'java' }
 " git-diff in gutter
 Plug 'airblade/vim-gitgutter'
 " markdown syntax
-Plug 'plasticboy/vim-markdown'
+Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
 " more c++ syntax
 Plug 'octol/vim-cpp-enhanced-highlight', { 'for': 'cpp' }
 " snippets
@@ -74,6 +80,8 @@ Plug 'SirVer/ultisnips'   " snippets engine
 Plug 'honza/vim-snippets' " actual snippets
 
 call plug#end()
+
+command! PU PlugUpdate | PlugUpgrade
 
 " }}}
 
@@ -364,21 +372,6 @@ nnoremap <silent> <leader>sv :source $MYVIMRC<CR>
 " }}}
 
 " Plugin config {{{
-
-" Syntastic config
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list=1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_python_checkers = ['flake8']
-let g:syntastic_c_checkers = ['gcc']
-let g:syntastic_cpp_checkers = ['gcc']
-let g:syntastic_cpp_compiler_options = '-std=c++11'
-let g:syntastic_cpp_check_header = 1
 
 " Airline config
 " let g:airline_theme='molokai'

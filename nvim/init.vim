@@ -4,6 +4,11 @@ if !has('nvim')
     set encoding=utf-8     "enable unicode
 endif
 
+function! Cond(cond, ...)
+    let opts = get(a:000, 0, {})
+    return a:cond ? opts : extend(opts, { 'on': [], 'for': [] })
+endfunction
+
 " automatically install vim-plug if it doesn't exist
 if empty(glob('~/.config/nvim/autoload/plug.vim'))
     silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
@@ -29,7 +34,8 @@ Plug 'tpope/vim-commentary'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 " asynchronous syntax checker
-Plug 'neomake/neomake'
+" Plug 'neomake/neomake', { 'on': 'Neomake' }
+Plug 'neomake/neomake', { 'on': 'Neomake' }
 " parenthesis/quote matcher
 Plug 'raimondi/delimitmate'
 " more colorschemes
@@ -39,33 +45,33 @@ Plug 'fatih/vim-go', { 'for': 'go', 'do': ':GoInstallBinaries' }
 " help with rust dev
 Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 " asynchronous auto-completion
-Plug 'shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'shougo/deoplete.nvim', Cond(has('nvim'), { 'do': ':UpdateRemotePlugins' })
 " fuzzy file searcher
 Plug 'ctrlpvim/ctrlp.vim', { 'on': 'CtrlP' }
 " python syntax checker
-Plug 'nvie/vim-flake8', { 'for': 'python' }
+Plug 'nvie/vim-flake8', { 'for': 'python', 'on': 'Neomake' }
 " rust code completion
-Plug 'racer-rust/vim-racer', { 'for': 'rust' }
+Plug 'racer-rust/vim-racer', Cond(has('nvim'), { 'for': 'rust' })
 " python code completion
-Plug 'zchee/deoplete-jedi', { 'for': 'python' }
+Plug 'zchee/deoplete-jedi', Cond(has('nvim'), { 'for': 'python' })
 " html completion
-Plug 'mattn/emmet-vim', { 'for': 'html' }
+Plug 'mattn/emmet-vim', Cond(has('nvim'), { 'for': 'html' })
 " c/c++/C# completion
-Plug 'zchee/deoplete-clang', { 'for': ['c', 'cpp'] }
+Plug 'zchee/deoplete-clang', Cond(has('nvim'), { 'for': ['c', 'cpp'] })
 " go code completion
-Plug 'zchee/deoplete-go', { 'do': 'make' }
+Plug 'zchee/deoplete-go', Cond(has('nvim'), { 'do': 'make' })
 " clojure completion
-" plug 'SevereOverfl0w/vim-clj/async', { 'for': 'clojure' }
+" plug 'SevereOverfl0w/vim-clj/async', Cond(has('nvim'), { 'for': 'clojure' })
 " javascript completion
-Plug 'carlitux/deoplete-ternjs'
+Plug 'carlitux/deoplete-ternjs', Cond(has('nvim'), { 'for': 'javascript' })
 " vimscript completion
-Plug 'Shougo/neco-vim'
+Plug 'Shougo/neco-vim', Cond(has('nvim'), { 'for': 'vim' })
 " java completion
 " Plug 'artur-shaik/vim-javacomplete2', { 'for': 'java' }
 " git-diff in gutter
 Plug 'airblade/vim-gitgutter'
 " markdown syntax
-Plug 'plasticboy/vim-markdown'
+Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
 " more c++ syntax
 Plug 'octol/vim-cpp-enhanced-highlight', { 'for': 'cpp' }
 " snippets
@@ -73,6 +79,8 @@ Plug 'SirVer/ultisnips'   " snippets engine
 Plug 'honza/vim-snippets' " actual snippets
 
 call plug#end()
+
+command! PU PlugUpdate | PlugUpgrade
 
 " }}}
 
@@ -139,7 +147,9 @@ let mapleader = ","
 let g:mapleader = ","
 
 " Quick access to terminal
-nnoremap <leader>t :terminal<cr>
+if has('nvim')
+    nnoremap <leader>t :terminal<cr>
+endif
 
 " Fast saving and quitting
 nnoremap <leader>w :w!<cr>
@@ -463,49 +473,51 @@ let g:ctrlp_follow_symlinks = 1
 let g:ctrlp_working_path_mode = 'ra'
 
 " Deoplete config
-let g:deoplete#enable_at_startup = 1
-autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
-" Ignore case unless a capital letter is included
-let g:deoplete#enable_smart_case = 1
-" Max number of suggestions
-let g:deoplete#max_list = 25
-" Decide how to complete, leave autocomplete for now
-" so we can use tab for snippets
-" let g:deoplete#disable_auto_complete = 1
-" inoremap <silent><expr> <TAB>
-"             \ pumvisible() ? "\<C-n>" :
-"             \ <SID>check_back_space() ? "\<TAB>" :
-"             \ deoplete#mappings#manual_complete()
-function! s:check_back_space() abort 
-    let col = col('.') - 1
-    return !col || getline('.')[col-1] =~ '\s'
-endfunction
-" Neomake config
-" Run neomake after a save
-autocmd! BufWritePost,BufEnter * Neomake
-autocmd! VimEnter * let g:neomake_verbose = 0
-" let g:neomake_open_list = 2
-let g:neomake_python_enabled_makers = ['flake8']
-let g:neomake_c_enabled_makers = ['gcc']
-let g:neomake_cpp_gcc_maker = {
-    \ 'args': ['-std=c++11']
-    \}
-let g:neomake_cpp_enabled_makers = ['gcc']
+if has('nvim')
+    let g:deoplete#enable_at_startup = 1
+    autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+    " Ignore case unless a capital letter is included
+    let g:deoplete#enable_smart_case = 1
+    " Max number of suggestions
+    let g:deoplete#max_list = 25
+    " Decide how to complete, leave autocomplete for now
+    " so we can use tab for snippets
+    " let g:deoplete#disable_auto_complete = 1
+    " inoremap <silent><expr> <TAB>
+    "             \ pumvisible() ? "\<C-n>" :
+    "             \ <SID>check_back_space() ? "\<TAB>" :
+    "             \ deoplete#mappings#manual_complete()
+    function! s:check_back_space() abort 
+        let col = col('.') - 1
+        return !col || getline('.')[col-1] =~ '\s'
+    endfunction
+    " Neomake config
+    " Run neomake after a save
+    autocmd! BufWritePost,BufEnter * Neomake
+    autocmd! VimEnter * let g:neomake_verbose = 0
+    " let g:neomake_open_list = 2
+    let g:neomake_python_enabled_makers = ['flake8']
+    let g:neomake_c_enabled_makers = ['gcc']
+    let g:neomake_cpp_gcc_maker = {
+        \ 'args': ['-std=c++11']
+        \}
+    let g:neomake_cpp_enabled_makers = ['gcc']
 
-" Clojure completion
-let g:deoplete#keyword_patterns = {}
-let g:deoplete#keyword_patterns.clojure = '[\w!$%&*+/:<=>?@\^_~\-\.]*'
+    " Clojure completion
+    let g:deoplete#keyword_patterns = {}
+    let g:deoplete#keyword_patterns.clojure = '[\w!$%&*+/:<=>?@\^_~\-\.]*'
 
-" Clang completion
-let g:deoplete#sources#clang#libclang_path = '/usr/lib/x86_64-linux-gnu/libclang.so'
-let g:deoplete#sources#clang#clang_header = '/usr/lib/clang'
+    " Clang completion
+    let g:deoplete#sources#clang#libclang_path = '/usr/lib/x86_64-linux-gnu/libclang.so'
+    let g:deoplete#sources#clang#clang_header = '/usr/lib/clang'
 
-" Rust completion
-let g:racer_cmd = "/home/bradsherman/.cargo/registry/src/github.com-1ecc6299db9ec823/racer-1.2.9/src/racer"
-let $RUST_SRC_PATH="/usr/local/lib/rustlib/"
+    " Rust completion
+    let g:racer_cmd = "/home/bradsherman/.cargo/registry/src/github.com-1ecc6299db9ec823/racer-1.2.9/src/racer"
+    let $RUST_SRC_PATH="/usr/local/lib/rustlib/"
 
-" Java completion
-" autocmd FileType java setlocal omnifunc=javacomplete#Complete
+    " Java completion
+    " autocmd FileType java setlocal omnifunc=javacomplete#Complete
+endif
 
 " Git Gutter config
 " highlight changed lines by default

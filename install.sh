@@ -136,7 +136,7 @@ install_vimfiles () {
         echo "Cloning Vundle repository..."
         git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
     fi
-    
+
     # install syntax 
     if [ ! -d "$HOME/.vim/syntax" ]
     then
@@ -149,7 +149,7 @@ install_vimfiles () {
     do
         dst="$HOME/.vim/syntax/$(basename "$src")"
         link_file "$src" "$dst"
-    done   
+    done
 
     # install plugins
     if [ ! -d "$HOME/.vim/plugin" ]
@@ -167,7 +167,7 @@ install_vimfiles () {
 
     info "installing vim plugins"
     sleep 2
-    /usr/bin/vim -c "plugininstall" -c "q" -c "q"
+    /usr/bin/vim -c "PlugInstall" -c "q" -c "q"
 }
 
 install_nvimfiles () {
@@ -210,7 +210,7 @@ install_nvimfiles () {
     do
         dst="$HOME/.config/nvim/syntax/$(basename "$src")"
         link_file "$src" "$dst"
-    done   
+    done
 
     info "installing neovim plugins"
     sleep 2
@@ -219,7 +219,7 @@ install_nvimfiles () {
 
 install_programs () {
     info "installing programs"
-    
+
     user "Would you like to install all programs? (y/n)"
     read -n 1 choice
 
@@ -258,12 +258,12 @@ then
     fail "This script must be run as root"
 fi
 
+install_programs
 install_dotfiles
 install_i3files
 install_scripts
 install_vimfiles
 install_nvimfiles
-install_programs
 
 echo ""
 success "Installation completed!"

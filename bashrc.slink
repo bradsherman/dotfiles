@@ -213,7 +213,7 @@ alias less='less -FSRXc'
 alias vim='/usr/bin/nvim' # try using neovim instead of vim
 alias ovim='/usr/bin/vim' #use regular old vim
 alias vi3='vim ~/.i3/config'
-alias vv='vim ~/.vimrc'
+alias vv='/usr/bin/vim ~/.vimrc'
 alias vb='vim ~/.bashrc'
 alias nv='nvim ~/.config/nvim/init.vim'
 
