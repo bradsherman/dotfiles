@@ -131,10 +131,18 @@ install_vimfiles () {
     info "installing vimfiles"
 
     local overwrite_all=false skip_all=false
-    if [[ ! -d ~/.vim/bundle/Vundle.vim ]]
+    if [[ ! -f ~/.vim/autoload/plug.vim ]]
     then
-        echo "Cloning Vundle repository..."
-        git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+        echo "Retrieving Vim-plug file..."
+        curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+            https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    fi
+    if [[ ! -d ~/.vim/plugged ]]
+    then
+        echo "Creating ~/.vim/plugged directory..."
+        mkdir ~/.vim/plugged
+        chown -R "$SUDO_USER" "$HOME/.vim/plugged"
+        chgrp -R "$SUDO_USER" "$HOME/.vim/plugged"
     fi
 
     # install syntax 
@@ -178,10 +186,18 @@ install_nvimfiles () {
     then
         fail "Please install neovim before continuing"
     fi
-    if [[ ! -d ~/.config/nvim/bundle/Vundle.vim ]]
+    if [[ ! -f ~/.config/nvim/autoload/plug.vim ]]
     then
-	    echo "Cloning Vundle repository..."
-	    git clone https://github.com/VundleVim/Vundle.vim.git ~/.config/nvim/bundle/Vundle.vim
+        echo "Retrieving Vim-plug file..."
+        curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs \
+            https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    fi
+    if [[ ! -d ~/.config/nvim/plugged ]]
+    then
+        echo "Creating ~/.config/nvim/plugged directory..."
+        mkdir ~/.config/nvim/plugged
+        chown -R "$SUDO_USER" "$HOME/.config/nvim/plugged"
+        chgrp -R "$SUDO_USER" "$HOME/.config/nvim/plugged"
     fi
 
     local overwrite_all=false skip_all=false

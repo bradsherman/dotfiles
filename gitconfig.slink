@@ -1,0 +1,7 @@
+[user]
+	email = bsherman1096@gmail.com
+	name = Brad Sherman
+[alias]
+    co = checkout
+    br = branch
+    st = status

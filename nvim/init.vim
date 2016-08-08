@@ -268,8 +268,13 @@ set winheight=5
 set winminheight=5
 set winheight=999
 
-" Show extra whitespace
-set list listchars=tab:»·,trail:·,nbsp:·  
+" Show extra whitespace, with exceptions
+set list listchars=tab:»·,trail:·,nbsp:·
+augroup List-Options
+    autocmd!
+    autocmd FileType html,markdown set nolist
+augroup END
+
 " Do not add comment after newline
 augroup Format-Options
     autocmd!
