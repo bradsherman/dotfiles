@@ -95,7 +95,7 @@ install_dotfiles () {
 
     local overwrite_all=false skip_all=false
 
-    for src in $(find "$DF_ROOT" -maxdepth 1 -name '*.slink')
+    for src in $(find "$DF_ROOT/dots" -maxdepth 1 -name '*.slink')
     do
         dst="$HOME/.$(basename "${src%.*}")"
         link_file "$src" "$dst"
