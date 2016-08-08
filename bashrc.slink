@@ -142,6 +142,7 @@ alias la='ls -A'
 alias l='ls -CF'
 alias sl='ls -F --color=auto'
 alias cls='clear;ls'
+alias csl='clear;ls'
 alias c='clear'
 
 # Add an "alert" alias for long running commands.  Use like so:
