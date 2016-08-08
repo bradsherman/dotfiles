@@ -136,6 +136,8 @@ install_vimfiles () {
         echo "Retrieving Vim-plug file..."
         curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
             https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+        chown -R "$SUDO_USER" "$HOME/.vim/autoload"
+        chgrp -R "$SUDO_USER" "$HOME/.vim/autoload"
     fi
     if [[ ! -d ~/.vim/plugged ]]
     then
@@ -191,6 +193,8 @@ install_nvimfiles () {
         echo "Retrieving Vim-plug file..."
         curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs \
             https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+        chown -R "$SUDO_USER" "$HOME/.config/nvim/autoload"
+        chgrp -R "$SUDO_USER" "$HOME/.config/nvim/autoload"
     fi
     if [[ ! -d ~/.config/nvim/plugged ]]
     then
