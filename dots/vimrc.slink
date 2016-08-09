@@ -233,7 +233,7 @@ augroup END
 set nowrap             "don't wrap lines by default"
 augroup wraps
     autocmd!
-    autocmd FileType c,cpp,java, python   set wrap
+    autocmd FileType c,cpp,java,python    set wrap
     autocmd FileType rust,go,clojure      set wrap
 augroup END
 

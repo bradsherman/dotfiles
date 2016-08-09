@@ -4,8 +4,9 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
-$RUST_SRC_PATH	nvim/init.vim	/^let $RUST_SRC_PATH="\/usr\/local\/lib\/rustlib\/"$/;"	v
+$RUST_SRC_PATH	nvim/init.vim	/^    let $RUST_SRC_PATH="\/usr\/local\/lib\/rustlib\/"$/;"	v
 .	nvim/init.vim	/^vnoremap . :norm.<cr>$/;"	m
+:	nvim/init.vim	/^nnoremap : ;$/;"	m
 ;	nvim/init.vim	/^nnoremap ; :$/;"	m
 <	nvim/init.vim	/^vnoremap < <gv$/;"	m
 <C-h>	nvim/init.vim	/^nnoremap <C-h> <C-w>h$/;"	m
@@ -13,8 +14,12 @@ $RUST_SRC_PATH	nvim/init.vim	/^let $RUST_SRC_PATH="\/usr\/local\/lib\/rustlib\/"
 <C-k>	nvim/init.vim	/^nnoremap <C-k> <C-w>k$/;"	m
 <C-l>	nvim/init.vim	/^nnoremap <C-l> <C-w>l$/;"	m
 <C-n>	nvim/init.vim	/^nnoremap <C-n> :call NumberToggle()<cr>$/;"	m
-<TAB>	nvim/init.vim	/^inoremap <silent><expr> <TAB>$/;"	m
+<Down>	nvim/init.vim	/^nnoremap <silent> <Down> :horizontal resize -5<cr>$/;"	m
+<Left>	nvim/init.vim	/^nnoremap <silent> <Left> :vertical resize -5<cr>$/;"	m
+<Right>	nvim/init.vim	/^nnoremap <silent> <Right> :vertical resize +5<cr>$/;"	m
+<Up>	nvim/init.vim	/^nnoremap <silent> <Up> :horizontal resize +5<cr>$/;"	m
 <c-u>	nvim/init.vim	/^inoremap <c-u> <esc>viwU $/;"	m
+<cr>	nvim/init.vim	/^nnoremap <cr> o<esc>$/;"	m
 <down>	nvim/init.vim	/^noremap <down> <NOP>$/;"	m
 <leader>"	nvim/init.vim	/^nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel$/;"	m
 <leader>'	nvim/init.vim	/^nnoremap <leader>' viw<esc>a'<esc>hbi'<esc>lel$/;"	m
@@ -29,7 +34,7 @@ $RUST_SRC_PATH	nvim/init.vim	/^let $RUST_SRC_PATH="\/usr\/local\/lib\/rustlib\/"
 <leader>g	vim/plugin/grep-operator.vim	/^vnoremap <leader>g :<c-u>call <SID>GrepOperator(visualmode())<cr>$/;"	m
 <leader>s	nvim/init.vim	/^nnoremap <leader>s :CtrlP$/;"	m
 <leader>sv	nvim/init.vim	/^nnoremap <silent> <leader>sv :source $MYVIMRC<CR>$/;"	m
-<leader>t	nvim/init.vim	/^nnoremap <leader>t :terminal<cr>$/;"	m
+<leader>t	nvim/init.vim	/^    nnoremap <leader>t :terminal<cr>$/;"	m
 <leader>tb	nvim/init.vim	/^noremap <leader>tb :tabn<cr>$/;"	m
 <leader>tc	nvim/init.vim	/^noremap <leader>tc :tabclose<cr>$/;"	m
 <leader>tf	nvim/init.vim	/^noremap <leader>tf :tabfirst<cr>$/;"	m
@@ -42,20 +47,34 @@ $RUST_SRC_PATH	nvim/init.vim	/^let $RUST_SRC_PATH="\/usr\/local\/lib\/rustlib\/"
 <leader>wq	nvim/init.vim	/^nnoremap <leader>wq :wq<cr>$/;"	m
 <left>	nvim/init.vim	/^noremap <left> <NOP>$/;"	m
 <right>	nvim/init.vim	/^noremap <right> <NOP>$/;"	m
+<space>	nvim/init.vim	/^nnoremap <space> <PageDown>$/;"	m
+<space>	nvim/init.vim	/^vnoremap <space> <PageDown>$/;"	m
 <up>	nvim/init.vim	/^noremap <up> <NOP>$/;"	m
 >	nvim/init.vim	/^vnoremap > >gv$/;"	m
+Abolish	nvim/init.vim	/^augroup Abolish-Commands$/;"	a
 AirlineInit	nvim/init.vim	/^function! AirlineInit()$/;"	f
 CommentLine	nvim/init.vim	/^function! CommentLine()$/;"	f
+Cond	nvim/init.vim	/^function! Cond(cond, ...)$/;"	f
+Format	nvim/init.vim	/^augroup Format-Options$/;"	a
+General	nvim/init.vim	/^augroup General-Autocommands$/;"	a
 GrepOperator	nvim/plugin/grep-operator.vim	/^function! s:GrepOperator(type)$/;"	f
 GrepOperator	vim/plugin/grep-operator.vim	/^function! s:GrepOperator(type)$/;"	f
 H	nvim/init.vim	/^nnoremap H ^$/;"	m
 L	nvim/init.vim	/^nnoremap L \$$/;"	m
+List	nvim/init.vim	/^augroup List-Options$/;"	a
 NumberToggle	nvim/init.vim	/^function! NumberToggle()$/;"	f
+PU	nvim/init.vim	/^command! PU PlugUpdate | PlugUpgrade$/;"	c
+S	nvim/init.vim	/^nnoremap S :%s\/\/g<left><left>$/;"	m
 UncommentLine	nvim/init.vim	/^function! UncommentLine()$/;"	f
+Y	nvim/init.vim	/^nnoremap Y y\$$/;"	m
+Y	nvim/init.vim	/^vnoremap Y y\$$/;"	m
 c_no_curly_error	nvim/init.vim	/^let c_no_curly_error = 1$/;"	v
-check_back_space	nvim/init.vim	/^function! s:check_back_space() abort $/;"	f
+check_back_space	nvim/init.vim	/^    function! s:check_back_space() abort $/;"	f
 comments	nvim/init.vim	/^augroup comments$/;"	a
 fail	install.sh	/^fail (){$/;"	f
+g:UltiSnipsExpandTrigger	nvim/init.vim	/^let g:UltiSnipsExpandTrigger="<tab>"$/;"	v
+g:UltiSnipsJumpBackwardTrigger	nvim/init.vim	/^let g:UltiSnipsJumpBackwardTrigger="<s-tab>"$/;"	v
+g:UltiSnipsJumpForwardTrigger	nvim/init.vim	/^let g:UltiSnipsJumpForwardTrigger="<tab>"$/;"	v
 g:airline#extensions#tabline#buffer_min_count	nvim/init.vim	/^let g:airline#extensions#tabline#buffer_min_count = 2$/;"	v
 g:airline#extensions#tabline#enabled	nvim/init.vim	/^let g:airline#extensions#tabline#enabled = 1$/;"	v
 g:airline#extensions#tabline#fnamemod	nvim/init.vim	/^let g:airline#extensions#tabline#fnamemod = ':t'$/;"	v
@@ -90,27 +109,23 @@ g:airline_symbols	nvim/init.vim	/^let g:airline_symbols.paste = '∥'$/;"	v
 g:airline_symbols	nvim/init.vim	/^let g:airline_symbols.readonly = ''$/;"	v
 g:airline_symbols	nvim/init.vim	/^let g:airline_symbols.spell = 'Ꞩ'$/;"	v
 g:airline_symbols	nvim/init.vim	/^let g:airline_symbols.whitespace = 'Ξ'$/;"	v
-g:airline_theme	nvim/init.vim	/^let g:airline_theme='behelit'$/;"	v
-g:ctrlp_by_filename	nvim/init.vim	/^let g:ctrlp_by_filename = 0$/;"	v
+g:airline_theme	nvim/init.vim	/^let g:airline_theme='base16_isotope'$/;"	v
 g:ctrlp_follow_symlinks	nvim/init.vim	/^let g:ctrlp_follow_symlinks = 1$/;"	v
-g:ctrlp_open_new_file	nvim/init.vim	/^let g:ctrlp_open_new_file = 't'$/;"	v
 g:ctrlp_show_hidden	nvim/init.vim	/^let g:ctrlp_show_hidden = 1$/;"	v
-g:ctrlp_switch_buffer	nvim/init.vim	/^let g:ctrlp_switch_buffer = 'Et'$/;"	v
-g:deoplete#disable_auto_complete	nvim/init.vim	/^let g:deoplete#disable_auto_complete = 1$/;"	v
-g:deoplete#enable_at_startup	nvim/init.vim	/^let g:deoplete#enable_at_startup = 1$/;"	v
-g:deoplete#enable_smart_case	nvim/init.vim	/^let g:deoplete#enable_smart_case = 1$/;"	v
-g:deoplete#keyword_patterns	nvim/init.vim	/^let g:deoplete#keyword_patterns = {}$/;"	v
-g:deoplete#keyword_patterns	nvim/init.vim	/^let g:deoplete#keyword_patterns.clojure = '[\\w!$%&*+\/:<=>?@\\^_~\\-\\.]*'$/;"	v
-g:deoplete#max_list	nvim/init.vim	/^let g:deoplete#max_list = 25$/;"	v
-g:deoplete#sources#clang#clang_header	nvim/init.vim	/^let g:deoplete#sources#clang#clang_header = '\/usr\/lib\/clang'$/;"	v
-g:deoplete#sources#clang#libclang_path	nvim/init.vim	/^let g:deoplete#sources#clang#libclang_path = '\/usr\/lib\/x86_64-linux-gnu\/libclang.so'$/;"	v
-g:gitgutter_highlight_lines	nvim/init.vim	/^let g:gitgutter_highlight_lines = 1$/;"	v
+g:ctrlp_working_path_mode	nvim/init.vim	/^let g:ctrlp_working_path_mode = 'ra'$/;"	v
+g:deoplete#enable_at_startup	nvim/init.vim	/^    let g:deoplete#enable_at_startup = 1$/;"	v
+g:deoplete#enable_smart_case	nvim/init.vim	/^    let g:deoplete#enable_smart_case = 1$/;"	v
+g:deoplete#keyword_patterns	nvim/init.vim	/^    let g:deoplete#keyword_patterns = {}$/;"	v
+g:deoplete#keyword_patterns	nvim/init.vim	/^    let g:deoplete#keyword_patterns.clojure = '[\\w!$%&*+\/:<=>?@\\^_~\\-\\.]*'$/;"	v
+g:deoplete#max_list	nvim/init.vim	/^    let g:deoplete#max_list = 25$/;"	v
+g:deoplete#sources#clang#clang_header	nvim/init.vim	/^    let g:deoplete#sources#clang#clang_header = '\/usr\/lib\/clang'$/;"	v
+g:deoplete#sources#clang#libclang_path	nvim/init.vim	/^    let g:deoplete#sources#clang#libclang_path = '\/usr\/lib\/x86_64-linux-gnu\/libclang.so'$/;"	v
 g:mapleader	nvim/init.vim	/^let g:mapleader = ","$/;"	v
-g:neomake_c_enabled_makers	nvim/init.vim	/^let g:neomake_c_enabled_makers = ['gcc']$/;"	v
-g:neomake_cpp_enabled_makers	nvim/init.vim	/^let g:neomake_cpp_enabled_makers = ['gcc']$/;"	v
-g:neomake_cpp_gcc_maker	nvim/init.vim	/^let g:neomake_cpp_gcc_maker = {$/;"	v
-g:neomake_python_enabled_makers	nvim/init.vim	/^let g:neomake_python_enabled_makers = ['flake8']$/;"	v
-g:racer_cmd	nvim/init.vim	/^let g:racer_cmd = "\/home\/bradsherman\/.cargo\/registry\/src\/github.com-1ecc6299db9ec823\/racer-1.2.9\/src\/racer"$/;"	v
+g:neomake_c_enabled_makers	nvim/init.vim	/^    let g:neomake_c_enabled_makers = ['gcc']$/;"	v
+g:neomake_cpp_enabled_makers	nvim/init.vim	/^    let g:neomake_cpp_enabled_makers = ['gcc']$/;"	v
+g:neomake_cpp_gcc_maker	nvim/init.vim	/^    let g:neomake_cpp_gcc_maker = {$/;"	v
+g:neomake_python_enabled_makers	nvim/init.vim	/^    let g:neomake_python_enabled_makers = ['flake8']$/;"	v
+g:racer_cmd	nvim/init.vim	/^    let g:racer_cmd = "\/home\/bradsherman\/.cargo\/registry\/src\/github.com-1ecc6299db9ec823\/racer-1.2.9\/src\/racer"$/;"	v
 g:vim_markdown_folding_disabled	nvim/init.vim	/^let g:vim_markdown_folding_disabled = 1$/;"	v
 gV	nvim/init.vim	/^noremap gV `[v`]$/;"	m
 info	install.sh	/^info (){$/;"	f
@@ -126,6 +141,7 @@ link_file	install.sh	/^link_file() {$/;"	f
 mapleader	nvim/init.vim	/^let mapleader = ","$/;"	v
 success	install.sh	/^success (){$/;"	f
 swapcaps	nvim/init.vim	/^augroup swapcaps$/;"	a
+tabsize	nvim/init.vim	/^let tabsize = 4        "easily change tabsize$/;"	v
 user	install.sh	/^user (){$/;"	f
 w!!	nvim/init.vim	/^cnoremap w!! w !sudo tee % >\/dev\/null$/;"	m
 wraps	nvim/init.vim	/^augroup wraps$/;"	a

@@ -1,4 +1,5 @@
 " Plugins {{{
+
 filetype off
 if !has('nvim')
     set encoding=utf-8     "enable unicode
@@ -57,7 +58,7 @@ Plug 'zchee/deoplete-jedi', Cond(has('nvim'), { 'for': 'python' })
 " html completion
 Plug 'mattn/emmet-vim', Cond(has('nvim'), { 'for': 'html' })
 " c/c++/C# completion
-Plug 'zchee/deoplete-clang', Cond(has('nvim'), { 'for': ['c', 'cpp'] })
+" Plug 'zchee/deoplete-clang', Cond(has('nvim'), { 'for': ['c', 'cpp'] })
 " go code completion
 Plug 'zchee/deoplete-go', Cond(has('nvim'), { 'do': 'make' })
 " clojure completion
@@ -317,7 +318,7 @@ nnoremap <silent> <Right> :vertical resize +5<cr>
 nnoremap <silent> <Left> :vertical resize -5<cr>
 nnoremap <silent> <Up> :horizontal resize +5<cr>
 nnoremap <silent> <Down> :horizontal resize -5<cr>
-" }}} 
+" }}}
 
 " Searching {{{
 set incsearch
@@ -362,11 +363,11 @@ augroup END
 " NumberToggle toggles between relative and absolute line numbers
 function! NumberToggle()
   if(&relativenumber == 1)
-  	set number
-  	set norelativenumber
+	set number
+	set norelativenumber
   else
-  	set number
-  	set relativenumber
+	set number
+	set relativenumber
   endif
 endfunc
 
@@ -415,7 +416,7 @@ let g:airline#extensions#tabline#enabled = 1
 " let g:airline#extensions#tabline#excludes = []
 let g:airline#extensions#tabline#show_buffers = 1
 " Configure how tabs are separated
-let g:airline#extensions#tabline#tab_nr_type = 1 
+let g:airline#extensions#tabline#tab_nr_type = 1
 " Min number of buffers needed to show tabline
 let g:airline#extensions#tabline#buffer_min_count = 2
 " Only show filename, not full path
@@ -517,7 +518,7 @@ if has('nvim')
     let g:deoplete#sources#clang#clang_header = '/usr/lib/clang'
 
     " Rust completion
-    let g:racer_cmd = "/home/bradsherman/.cargo/registry/src/github.com-1ecc6299db9ec823/racer-1.2.9/src/racer"
+    let g:racer_cmd="/home/bradsherman/.cargo/registry/src/github.com-1ecc6299db9ec823/racer-1.2.9/src/racer"
     let $RUST_SRC_PATH="/usr/local/lib/rustlib/"
 
     " Java completion

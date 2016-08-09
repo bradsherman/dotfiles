@@ -173,11 +173,13 @@ install_vimfiles () {
     do
         dst="$HOME/.vim/plugin/$(basename "$src")"
         link_file "$src" "$dst"
-    done   
+    done
 
     info "installing vim plugins"
     sleep 2
     /usr/bin/vim -c "PlugInstall" -c "q" -c "q"
+    chown -R "$SUDO_USER" "$HOME/.vim"
+    chgrp -R "$SUDO_USER" "$HOME/.vim"
 }
 
 install_nvimfiles () {
@@ -235,6 +237,8 @@ install_nvimfiles () {
     info "installing neovim plugins"
     sleep 2
     /usr/bin/nvim -c ":PlugInstall" -c "q" -c "q"
+    chown -R "$SUDO_USER" "$HOME/.config/nvim"
+    chgrp -R "$SUDO_USER" "$HOME/.config/nvim"
 }
 
 install_programs () {
