@@ -50,7 +50,7 @@ Plug 'shougo/deoplete.nvim', Cond(has('nvim'), { 'do': ':UpdateRemotePlugins' })
 " fuzzy file searcher
 Plug 'ctrlpvim/ctrlp.vim', { 'on': 'CtrlP' }
 " python syntax checker
-Plug 'nvie/vim-flake8', { 'for': 'python', 'on': 'Neomake' }
+Plug 'nvie/vim-flake8', { 'for': 'python', 'on': '<Plug>Neomake' }
 " rust code completion
 Plug 'racer-rust/vim-racer', Cond(has('nvim'), { 'for': 'rust' })
 " python code completion
@@ -79,9 +79,9 @@ Plug 'octol/vim-cpp-enhanced-highlight', { 'for': 'cpp' }
 Plug 'SirVer/ultisnips'   " snippets engine
 Plug 'honza/vim-snippets' " actual snippets
 " Syntax checker for bash
-Plug 'koalaman/shellcheck', { 'for': ['bash','sh'], 'on': 'Neomake' }
+Plug 'koalaman/shellcheck', { 'for': ['bash','sh'], 'on': '<Plug>Neomake' }
 " Golang syntax
-Plug 'golang/lint', { 'for': 'go', 'on': 'Neomake' }
+Plug 'golang/lint', { 'for': 'go', 'on': '<Plug>Neomake' }
 
 call plug#end()
 
