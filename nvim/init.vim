@@ -78,6 +78,10 @@ Plug 'octol/vim-cpp-enhanced-highlight', { 'for': 'cpp' }
 " snippets
 Plug 'SirVer/ultisnips'   " snippets engine
 Plug 'honza/vim-snippets' " actual snippets
+" Syntax checker for bash
+Plug 'koalaman/shellcheck', { 'for': ['bash','sh'], 'on': 'Neomake' }
+" Golang syntax
+Plug 'golang/lint', { 'for': 'go', 'on': 'Neomake' }
 
 call plug#end()
 
