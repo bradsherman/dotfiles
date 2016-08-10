@@ -35,7 +35,6 @@ Plug 'tpope/vim-commentary'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 " asynchronous syntax checker
-" Plug 'neomake/neomake', { 'on': 'Neomake' }
 Plug 'neomake/neomake', { 'on': 'Neomake' }
 " parenthesis/quote matcher
 Plug 'raimondi/delimitmate'
@@ -46,27 +45,28 @@ Plug 'fatih/vim-go', { 'for': 'go', 'do': ':GoInstallBinaries' }
 " help with rust dev
 Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 " asynchronous auto-completion
-Plug 'shougo/deoplete.nvim', Cond(has('nvim'), { 'do': ':UpdateRemotePlugins' })
+Plug 'shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " fuzzy file searcher
 Plug 'ctrlpvim/ctrlp.vim', { 'on': 'CtrlP' }
 " python syntax checker
-Plug 'nvie/vim-flake8', { 'for': 'python', 'on': '<Plug>Neomake' }
+Plug 'nvie/vim-flake8', { 'for': 'python', 'on': 'Neomake' }
 " rust code completion
-Plug 'racer-rust/vim-racer', Cond(has('nvim'), { 'for': 'rust' })
+Plug 'racer-rust/vim-racer', { 'for': 'rust' }
 " python code completion
-Plug 'zchee/deoplete-jedi', Cond(has('nvim'), { 'for': 'python' })
+Plug 'zchee/deoplete-jedi', { 'for': 'python' }
 " html completion
-Plug 'mattn/emmet-vim', Cond(has('nvim'), { 'for': 'html' })
+Plug 'mattn/emmet-vim', { 'for': 'html' }
+" Below plugin does not work for now, maybe come back to it later
 " c/c++/C# completion
-" Plug 'zchee/deoplete-clang', Cond(has('nvim'), { 'for': ['c', 'cpp'] })
+" Plug 'zchee/deoplete-clang', { 'for': ['c', 'cpp'] }
 " go code completion
-Plug 'zchee/deoplete-go', Cond(has('nvim'), { 'do': 'make' })
+Plug 'zchee/deoplete-go', { 'do': 'make' }
 " clojure completion
-" plug 'SevereOverfl0w/vim-clj/async', Cond(has('nvim'), { 'for': 'clojure' })
+" plug 'SevereOverfl0w/vim-clj/async', { 'for': 'clojure' }
 " javascript completion
-Plug 'carlitux/deoplete-ternjs', Cond(has('nvim'), { 'for': 'javascript' })
+Plug 'carlitux/deoplete-ternjs', { 'for': 'javascript' }
 " vimscript completion
-Plug 'Shougo/neco-vim', Cond(has('nvim'), { 'for': 'vim' })
+Plug 'Shougo/neco-vim', { 'for': 'vim' }
 " java completion
 " Plug 'artur-shaik/vim-javacomplete2', { 'for': 'java' }
 " git-diff in gutter
@@ -79,11 +79,12 @@ Plug 'octol/vim-cpp-enhanced-highlight', { 'for': 'cpp' }
 Plug 'SirVer/ultisnips'   " snippets engine
 Plug 'honza/vim-snippets' " actual snippets
 " Syntax checker for bash
-Plug 'koalaman/shellcheck', { 'for': ['bash','sh'], 'on': '<Plug>Neomake' }
+Plug 'koalaman/shellcheck', { 'for': ['bash','sh'], 'on': 'Neomake' }
 " Golang syntax
-Plug 'golang/lint', { 'for': 'go', 'on': '<Plug>Neomake' }
+Plug 'golang/lint', { 'for': 'go', 'on': 'Neomake' }
 
 call plug#end()
+
 
 command! PU PlugUpdate | PlugUpgrade
 
@@ -99,7 +100,7 @@ set undolevels=1000    "use many more levels of undo"
 set novisualbell       "don't beep"
 set noerrorbells       "don't beep"
 set autoread           "Auto read when a file is changed from the outside
-set autowrite          "automatically write buffer when changing files
+" set autowrite          "automatically write buffer when changing files
 set timeoutlen=500     "don't wait so long for mapped sequences to complete
 
 " Configure indentation settings
@@ -115,7 +116,8 @@ set smartindent          "turn on autoindenting of blocks
 set copyindent           "copy previous indentation
 set expandtab            "turn tabs into spaces
 set shiftround           "use multiple of shiftwidth when indenting with < and >
-set matchpairs+=<:>      "match angle brackets
+"match angle brackets
+autocmd FileType html set matchpairs+=<:>
 
 " Useful abbreviations
 iabbrev adn and
@@ -486,9 +488,9 @@ let g:ctrlp_working_path_mode = 'ra'
 if has('nvim')
     let g:deoplete#enable_at_startup = 1
     autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
-    " Ignore case unless a capital letter is included
+"   Ignore case unless a capital letter is included
     let g:deoplete#enable_smart_case = 1
-    " Max number of suggestions
+"   Max number of suggestions
     let g:deoplete#max_list = 25
     " Decide how to complete, leave autocomplete for now
     " so we can use tab for snippets
@@ -497,10 +499,10 @@ if has('nvim')
     "             \ pumvisible() ? "\<C-n>" :
     "             \ <SID>check_back_space() ? "\<TAB>" :
     "             \ deoplete#mappings#manual_complete()
-    function! s:check_back_space() abort 
-        let col = col('.') - 1
-        return !col || getline('.')[col-1] =~ '\s'
-    endfunction
+    " function! s:check_back_space() abort 
+    "     let col = col('.') - 1
+    "     return !col || getline('.')[col-1] =~ '\s'
+    " endfunction
     " Neomake config
     " Run neomake after a save
     autocmd! BufWritePost,BufEnter * Neomake
@@ -514,8 +516,8 @@ if has('nvim')
     let g:neomake_cpp_enabled_makers = ['gcc']
 
     " Clojure completion
-    let g:deoplete#keyword_patterns = {}
-    let g:deoplete#keyword_patterns.clojure = '[\w!$%&*+/:<=>?@\^_~\-\.]*'
+    " let g:deoplete#keyword_patterns = {}
+    " let g:deoplete#keyword_patterns.clojure = '[\w!$%&*+/:<=>?@\^_~\-\.]*'
 
     " Clang completion
     let g:deoplete#sources#clang#libclang_path = '/usr/lib/x86_64-linux-gnu/libclang.so'
@@ -560,4 +562,4 @@ set foldlevel=0
 set modelines=1
 " }}}
 " Remove 'x' to enable folding
-" vim:foldmethod=marker:foldlevel=0
+" xvim:foldmethod=marker:foldlevel=0
