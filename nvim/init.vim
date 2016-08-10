@@ -35,7 +35,7 @@ Plug 'tpope/vim-commentary'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 " asynchronous syntax checker
-Plug 'neomake/neomake', { 'on': 'Neomake' }
+Plug 'neomake/neomake'
 " parenthesis/quote matcher
 Plug 'raimondi/delimitmate'
 " more colorschemes
@@ -49,7 +49,7 @@ Plug 'shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " fuzzy file searcher
 Plug 'ctrlpvim/ctrlp.vim', { 'on': 'CtrlP' }
 " python syntax checker
-Plug 'nvie/vim-flake8', { 'for': 'python', 'on': 'Neomake' }
+Plug 'nvie/vim-flake8', { 'for': 'python', 'on': '<Plug>Neomake' }
 " rust code completion
 Plug 'racer-rust/vim-racer', { 'for': 'rust' }
 " python code completion
@@ -79,9 +79,9 @@ Plug 'octol/vim-cpp-enhanced-highlight', { 'for': 'cpp' }
 Plug 'SirVer/ultisnips'   " snippets engine
 Plug 'honza/vim-snippets' " actual snippets
 " Syntax checker for bash
-Plug 'koalaman/shellcheck', { 'for': ['bash','sh'], 'on': 'Neomake' }
+Plug 'koalaman/shellcheck', { 'for': 'sh', 'on': '<Plug>Neomake' }
 " Golang syntax
-Plug 'golang/lint', { 'for': 'go', 'on': 'Neomake' }
+Plug 'golang/lint', { 'for': 'go', 'on': '<Plug>Neomake' }
 
 call plug#end()
 
@@ -503,12 +503,17 @@ if has('nvim')
     "     let col = col('.') - 1
     "     return !col || getline('.')[col-1] =~ '\s'
     " endfunction
+
     " Neomake config
     " Run neomake after a save
     autocmd! BufWritePost,BufEnter * Neomake
     autocmd! VimEnter * let g:neomake_verbose = 0
     " let g:neomake_open_list = 2
     let g:neomake_python_enabled_makers = ['flake8']
+    let g:neomake_go_enabled_markers = ['golint']
+    let g:neomake_sh_enabled_markers = ['shellcheck']
+    let g:neomake_java_enabled_markers = ['javac']
+    let g:neomake_rust_enabled_markers = ['rustc']
     let g:neomake_c_enabled_makers = ['gcc']
     let g:neomake_cpp_gcc_maker = {
         \ 'args': ['-std=c++11']
@@ -520,12 +525,12 @@ if has('nvim')
     " let g:deoplete#keyword_patterns.clojure = '[\w!$%&*+/:<=>?@\^_~\-\.]*'
 
     " Clang completion
-    let g:deoplete#sources#clang#libclang_path = '/usr/lib/x86_64-linux-gnu/libclang.so'
-    let g:deoplete#sources#clang#clang_header = '/usr/lib/clang'
+    let g:deoplete#sources#clang#libclang_path='/usr/lib/x86_64-linux-gnu/libclang.so'
+    let g:deoplete#sources#clang#clang_header='/usr/lib/clang'
 
     " Rust completion
-    let g:racer_cmd="/home/bradsherman/.cargo/registry/src/github.com-1ecc6299db9ec823/racer-1.2.9/src/racer"
-    let $RUST_SRC_PATH="/usr/local/lib/rustlib/"
+    let g:racer_cmd="/home/bradsherman/.cargo/bin/racer"
+    let $RUST_SRC_PATH="~/.cargo/registry/src/github.com-1ecc6299db9ec823/racer-1.2.10/src/"
 
     " Java completion
     " autocmd FileType java setlocal omnifunc=javacomplete#Complete

@@ -221,6 +221,7 @@ alias nv='nvim ~/.config/nvim/init.vim'
 export PATH=/home/bradsherman/bin:$PATH
 export PATH=$PATH:/usr/local/go/bin
 export PATH=$PATH:/usr/local/android-studio/bin
+export PATH=$PATH:/home/bradsherman/.cargo/bin
 export LD_LIBRARY_PATH=/usr/local/src
 export EDITOR="/usr/bin/nvim"
 set -o noclobber
