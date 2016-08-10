@@ -58,7 +58,7 @@ Plug 'zchee/deoplete-jedi', { 'for': 'python' }
 Plug 'mattn/emmet-vim', { 'for': 'html' }
 " Below plugin does not work for now, maybe come back to it later
 " c/c++/C# completion
-" Plug 'zchee/deoplete-clang', { 'for': ['c', 'cpp'] }
+Plug 'zchee/deoplete-clang', { 'for': ['c', 'cpp'] }
 " go code completion
 Plug 'zchee/deoplete-go', { 'do': 'make' }
 " clojure completion
