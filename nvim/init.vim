@@ -78,7 +78,7 @@ Plug 'carlitux/deoplete-ternjs', { 'for': 'javascript' }
 " vimscript completion
 Plug 'Shougo/neco-vim', { 'for': 'vim' }
 " java completion
-" Plug 'artur-shaik/vim-javacomplete2', { 'for': 'java' }
+Plug 'artur-shaik/vim-javacomplete2', { 'for': 'java' }
 " Syntax checker for bash
 Plug 'koalaman/shellcheck', { 'for': 'sh', 'on': '<Plug>Neomake' }
 
@@ -100,6 +100,8 @@ Plug 'reedes/vim-colors-pencil'
 Plug 'joshdick/onedark.vim'
 " seti
 Plug 'trusktr/seti.vim'
+" show me the colors!!
+Plug 'gko/vim-coloresque'
 
 call plug#end()
 
@@ -188,7 +190,7 @@ cnoremap w!! w !sudo tee % >/dev/null
 
 " Automatically make something uppercase
 " Remember to use right control since left control is escape in insert mode
-inoremap <c-u> <esc>viwU 
+inoremap <c-u> <esc>viwU
 " auto brackets
 nnoremap { <esc>a{<cr><cr>}<esc>ki<tab>
 " surround word with "
@@ -239,6 +241,7 @@ nnoremap <leader>s :CtrlP
 augroup General-Autocommands
     autocmd!
     autocmd FocusLost,WinLeave * :silent! wa
+    autocmd BufWritePre * %s/\s\+$//e
 
     " When editing a file, always jump to the last known cursor position.
     " Don't do it for commit messages, when the position is invalid, or when
@@ -270,7 +273,7 @@ augroup END
 set scrolloff=7                "Keep 7 lines above/below the cursor
 set sidescrolloff=15            "Keep 15 chars to the right of the cursor
 set textwidth=80                "make lines wrap after 79 characters
-set colorcolumn=+1              "vertical ruler one column after textwidth 
+set colorcolumn=+1              "vertical ruler one column after textwidth
 set number                      "line numbers
 set showmatch                   "show matching parenthesis"
 set splitright                  "open new splits to the right
@@ -394,12 +397,13 @@ vnoremap < <gv
 vnoremap > >gv
 " Make the dot work in visual mode as well
 vnoremap . :norm.<cr>
-" Swap caps and escape when entering vim, undo on exit
+" Make caps lock another control
 augroup swapcaps
     autocmd!
-    au VimEnter * !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
-    au VimLeave * !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Control_L'
+    au VimEnter * !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Control_L'
 augroup END
+" Make an easier way to escape
+inoremap jj <esc>
 
 " NumberToggle toggles between relative and absolute line numbers
 function! NumberToggle()
@@ -412,7 +416,7 @@ function! NumberToggle()
     endif
 endfunc
 
-" We started with regular numbers but now switch to relative 
+" We started with regular numbers but now switch to relative
 " so that the current line number is displayed instead of 0
 call NumberToggle()
 
@@ -436,9 +440,9 @@ nnoremap <silent> <leader>sv :source $MYVIMRC<CR>
 " Airline config
 " let g:airline_theme='molokai'
 " let g:airline_theme='behelit'
-" let g:airline_theme='base16_google'
+let g:airline_theme='base16_google'
 " let g:airline_theme='base16_isotope'
-let g:airline_theme='pencil'
+" let g:airline_theme='pencil'
 " refresh airline after autocomplete
 nnoremap <leader>ar :execute ":AirlineRefresh"<CR>
 " Do not create a separator for empty sections
@@ -530,15 +534,16 @@ if has('nvim')
     let g:deoplete#max_list = 25
     " Decide how to complete, leave autocomplete for now
     " so we can use tab for snippets
-    " let g:deoplete#disable_auto_complete = 1
-    " inoremap <silent><expr> <TAB>
-    "             \ pumvisible() ? "\<C-n>" :
-    "             \ <SID>check_back_space() ? "\<TAB>" :
-    "             \ deoplete#mappings#manual_complete()
-    " function! s:check_back_space() abort 
-    "     let col = col('.') - 1
-    "     return !col || getline('.')[col-1] =~ '\s'
-    " endfunction
+    let g:deoplete#disable_auto_complete = 1
+    " inoremap <silent><expr><C-n> deoplete#mappings#manual_complete()
+    inoremap <silent><expr> <C-n>
+                \ pumvisible() ? "\<C-n>" :
+                \ <SID>check_back_space() ? "\<C-n>" :
+                \ deoplete#mappings#manual_complete()
+    function! s:check_back_space() abort
+        let col = col('.') - 1
+        return !col || getline('.')[col-1] =~ '\s'
+    endfunction
 
     " Neomake config
     " Run neomake after a save
@@ -569,7 +574,7 @@ if has('nvim')
     let $RUST_SRC_PATH="~/.cargo/registry/src/github.com-1ecc6299db9ec823/racer-1.2.10/src/"
 
     " Java completion
-    " autocmd FileType java setlocal omnifunc=javacomplete#Complete
+    autocmd FileType java setlocal omnifunc=javacomplete#Complete
 endif
 
 " Git Gutter config
@@ -590,17 +595,23 @@ let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 
 " Fugitive config
-" Don't let fugitive make tons of buffers 
+" Don't let fugitive make tons of buffers
 autocmd BufReadPost fugitive://* set bufhidden=delete
 " }}}
 
 " Make vim fold {{{
-set foldenable         "enable folding
-set foldlevelstart=10  "open most folds by default
-set foldnestmax=10     "10 nested fold max
-set foldmethod=marker
-set foldlevel=0
-set modelines=1
+augroup Vim-Folds
+    autocmd!
+    " enable folding
+    autocmd FileType vim set foldenable
+    " open most folds by default
+    autocmd FileType vim set foldlevelstart=10
+    " 10 nested fold max
+    autocmd FileType vim set foldnestmax=10
+    autocmd FileType vim set foldmethod=marker
+    autocmd FileType vim set foldlevel=0
+    autocmd FileType vim set modelines=1
+augroup END
 " }}}
 " Remove 'x' to enable folding
 " xvim:foldmethod=marker:foldlevel=0
