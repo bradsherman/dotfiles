@@ -18,6 +18,7 @@ if empty(glob('~/.config/nvim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.config/nvim/plugged')
+" GENERAL
 " tpope is the real MVP
 " vim git interface
 Plug 'tpope/vim-fugitive'
@@ -31,32 +32,41 @@ Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-unimpaired'
 " comment all the things
 Plug 'tpope/vim-commentary'
-" beautiful status line
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-" asynchronous syntax checker
-Plug 'neomake/neomake'
 " parenthesis/quote matcher
 Plug 'raimondi/delimitmate'
-" more colorschemes
-Plug 'flazz/vim-colorschemes'
 " help with go dev
 Plug 'fatih/vim-go', { 'for': 'go', 'do': ':GoInstallBinaries' }
 " help with rust dev
 Plug 'rust-lang/rust.vim', { 'for': 'rust' }
-" asynchronous auto-completion
-Plug 'shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " fuzzy file searcher
 Plug 'ctrlpvim/ctrlp.vim', { 'on': 'CtrlP' }
+" git-diff in gutter
+Plug 'airblade/vim-gitgutter'
+" snippets
+Plug 'SirVer/ultisnips'   " snippets engine
+Plug 'honza/vim-snippets' " actual snippets
+
+" SYNTAX
+" asynchronous syntax checker
+Plug 'neomake/neomake'
 " python syntax checker
 Plug 'nvie/vim-flake8', { 'for': 'python', 'on': '<Plug>Neomake' }
+" more c++ syntax
+Plug 'octol/vim-cpp-enhanced-highlight', { 'for': 'cpp' }
+" Golang syntax
+Plug 'golang/lint', { 'for': 'go', 'on': '<Plug>Neomake' }
+" markdown syntax
+Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
+
+" COMPLETION
+" asynchronous auto-completion
+Plug 'shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " rust code completion
 Plug 'racer-rust/vim-racer', { 'for': 'rust' }
 " python code completion
 Plug 'zchee/deoplete-jedi', { 'for': 'python' }
 " html completion
 Plug 'mattn/emmet-vim', { 'for': 'html' }
-" Below plugin does not work for now, maybe come back to it later
 " c/c++/C# completion
 Plug 'zchee/deoplete-clang', { 'for': ['c', 'cpp'] }
 " go code completion
@@ -69,24 +79,33 @@ Plug 'carlitux/deoplete-ternjs', { 'for': 'javascript' }
 Plug 'Shougo/neco-vim', { 'for': 'vim' }
 " java completion
 " Plug 'artur-shaik/vim-javacomplete2', { 'for': 'java' }
-" git-diff in gutter
-Plug 'airblade/vim-gitgutter'
-" markdown syntax
-Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
-" more c++ syntax
-Plug 'octol/vim-cpp-enhanced-highlight', { 'for': 'cpp' }
-" snippets
-Plug 'SirVer/ultisnips'   " snippets engine
-Plug 'honza/vim-snippets' " actual snippets
 " Syntax checker for bash
 Plug 'koalaman/shellcheck', { 'for': 'sh', 'on': '<Plug>Neomake' }
-" Golang syntax
-Plug 'golang/lint', { 'for': 'go', 'on': '<Plug>Neomake' }
+
+" COLORSCHEMES
+" more colorschemes
+Plug 'flazz/vim-colorschemes'
+" beautiful status line
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+" Apprentice colorscheme
+Plug 'romainl/Apprentice'
+" Gruvbox
+Plug 'morhetz/gruvbox'
+" facebook colors
+Plug 'farfanoide/vim-facebook'
+" pencil colors
+Plug 'reedes/vim-colors-pencil'
+" one dark colors
+Plug 'joshdick/onedark.vim'
+" seti
+Plug 'trusktr/seti.vim'
 
 call plug#end()
 
 
 command! PU PlugUpdate | PlugUpgrade
+command! PI PlugInstall
 
 " }}}
 
@@ -225,9 +244,9 @@ augroup General-Autocommands
     " Don't do it for commit messages, when the position is invalid, or when
     " inside an event handler (happens when dropping a file on gvim).
     autocmd BufReadPost *
-        \ if &ft != 'gitcommit' && line("'\"") > 0 && line("'\"") <= line("$") |
-        \   exe "normal g`\"" |
-        \ endif
+                \ if &ft != 'gitcommit' && line("'\"") > 0 && line("'\"") <= line("$") |
+                \   exe "normal g`\"" |
+                \ endif
 
     " Enable spellchecking for Markdown
     autocmd FileType markdown setlocal spell
@@ -339,13 +358,29 @@ nnoremap S :%s//g<left><left>
 
 " Colors and syntax {{{
 
+" Use 24-bit (true color) when in vim/neovim outside tmux
+if (empty($TMUX))
+    if (has("nvim"))
+        let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+    endif
+
+    if (has("termguicolors"))
+        set termguicolors
+    endif
+endif
+
 syntax on
 " colorscheme molokai
 " colorscheme PaperColor
-colorscheme skittles_berry
+" colorscheme skittles_berry
+" colorscheme apprentice
+" colorscheme facebook
+" colorscheme pencil | set background=dark
+" colorscheme seti
+colorscheme onedark
 
 if (&term == "iterm") || (&term == "putty")
-	set background=dark
+    set background=dark
 endif
 " }}}
 
@@ -368,13 +403,13 @@ augroup END
 
 " NumberToggle toggles between relative and absolute line numbers
 function! NumberToggle()
-  if(&relativenumber == 1)
-	set number
-	set norelativenumber
-  else
-	set number
-	set relativenumber
-  endif
+    if(&relativenumber == 1)
+        set number
+        set norelativenumber
+    else
+        set number
+        set relativenumber
+    endif
 endfunc
 
 " We started with regular numbers but now switch to relative 
@@ -402,7 +437,8 @@ nnoremap <silent> <leader>sv :source $MYVIMRC<CR>
 " let g:airline_theme='molokai'
 " let g:airline_theme='behelit'
 " let g:airline_theme='base16_google'
-let g:airline_theme='base16_isotope'
+" let g:airline_theme='base16_isotope'
+let g:airline_theme='pencil'
 " refresh airline after autocomplete
 nnoremap <leader>ar :execute ":AirlineRefresh"<CR>
 " Do not create a separator for empty sections
@@ -488,9 +524,9 @@ let g:ctrlp_working_path_mode = 'ra'
 if has('nvim')
     let g:deoplete#enable_at_startup = 1
     autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
-"   Ignore case unless a capital letter is included
+    "   Ignore case unless a capital letter is included
     let g:deoplete#enable_smart_case = 1
-"   Max number of suggestions
+    "   Max number of suggestions
     let g:deoplete#max_list = 25
     " Decide how to complete, leave autocomplete for now
     " so we can use tab for snippets
@@ -516,8 +552,8 @@ if has('nvim')
     let g:neomake_rust_enabled_markers = ['rustc']
     let g:neomake_c_enabled_makers = ['gcc']
     let g:neomake_cpp_gcc_maker = {
-        \ 'args': ['-std=c++11']
-        \}
+                \ 'args': ['-std=c++11']
+                \}
     let g:neomake_cpp_enabled_makers = ['gcc']
 
     " Clojure completion
