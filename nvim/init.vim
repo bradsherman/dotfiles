@@ -608,8 +608,8 @@ augroup Vim-Folds
     autocmd FileType vim set foldlevelstart=10
     " 10 nested fold max
     autocmd FileType vim set foldnestmax=10
-    autocmd FileType vim set foldmethod=marker
-    autocmd FileType vim set foldlevel=0
+    " autocmd FileType vim set foldmethod=marker
+    " autocmd FileType vim set foldlevel=0
     autocmd FileType vim set modelines=1
 augroup END
 " }}}
