@@ -45,6 +45,8 @@ Plug 'airblade/vim-gitgutter'
 " snippets
 Plug 'SirVer/ultisnips'   " snippets engine
 Plug 'honza/vim-snippets' " actual snippets
+" interactive scratch pad
+Plug 'metakirby5/codi.vim'
 
 " SYNTAX
 " asynchronous syntax checker
@@ -597,6 +599,14 @@ let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 " Fugitive config
 " Don't let fugitive make tons of buffers
 autocmd BufReadPost fugitive://* set bufhidden=delete
+
+" Codi config
+let g:codi#interpreters = {
+    \ 'sh': {
+        \ 'bin': 'bash',
+        \ 'prompt': '^$',
+        \ },
+    \ }
 " }}}
 
 " Make vim fold {{{
