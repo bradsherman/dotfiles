@@ -104,6 +104,8 @@ Plug 'joshdick/onedark.vim'
 Plug 'trusktr/seti.vim'
 " show me the colors!!
 Plug 'gko/vim-coloresque'
+" vice
+Plug 'bcicen/vim-vice'
 
 call plug#end()
 
