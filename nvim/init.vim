@@ -106,6 +106,10 @@ Plug 'trusktr/seti.vim'
 Plug 'gko/vim-coloresque'
 " vice
 Plug 'bcicen/vim-vice'
+" badwolf
+Plug 'sjl/badwolf'
+" two firewatch
+Plug 'rakr/vim-two-firewatch'
 
 call plug#end()
 
@@ -384,6 +388,7 @@ syntax on
 " colorscheme facebook
 " colorscheme pencil | set background=dark
 " colorscheme seti
+" colorscheme badwolf
 colorscheme onedark
 
 if (&term == "iterm") || (&term == "putty")
@@ -407,7 +412,8 @@ augroup swapcaps
     au VimEnter * !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Control_L'
 augroup END
 " Make an easier way to escape
-inoremap jj <esc>
+inoremap jk <esc>
+vnoremap jk <esc>
 
 " NumberToggle toggles between relative and absolute line numbers
 function! NumberToggle()

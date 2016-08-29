@@ -27,7 +27,7 @@ font pango:System San Francisco Display 13
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec gnome-terminal 
+bindsym $mod+Return exec gnome-terminal
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -99,7 +99,7 @@ bindsym $mod+g exec google-chrome
 set $workspace1 "1 Music  "
 set $workspace2 "2 Term  "
 set $workspace3 "3 Chrome  "
-set $workspace4 "4 Files" 
+set $workspace4 "4 Files"
 set $workspace5 "5 Word  "
 
 # switch to workspace
@@ -115,7 +115,7 @@ bindsym $mod+9 workspace number 9
 bindsym $mod+0 workspace number 10
 
 # move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace $workspace1 
+bindsym $mod+Shift+1 move container to workspace $workspace1
 bindsym $mod+Shift+2 move container to workspace $workspace2
 bindsym $mod+Shift+3 move container to workspace $workspace3
 bindsym $mod+Shift+4 move container to workspace $workspace4
@@ -186,11 +186,11 @@ bar {
 #client.focused          #007030 #007030 #ffffff #2b2b2b
 #client.focused_inactive #888888 #2b2b2b #ffffff #2b2b2b
 client.unfocused        #888888 #2b2b2b #ffffff #2b2b2b
-client.urgent           #900000 #900000 #ffffff #2b2b2b	
+client.urgent           #900000 #900000 #ffffff #2b2b2b
 
 
 # Start Network Manager on startup
-exec --no-startup-id nm-applet 
+exec --no-startup-id nm-applet
 
 # Pulse Audio controls
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 1 +3% #increase sound volume
