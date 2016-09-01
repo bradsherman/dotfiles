@@ -3,5 +3,6 @@
 	name = Brad Sherman
 [alias]
     co = checkout
+    ci = commit
     br = branch
     st = status

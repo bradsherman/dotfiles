@@ -202,6 +202,8 @@ alias myip="curl http://ipecho.net/plain; echo"
 alias activate='chmod +x'
 alias reload='source ~/.bashrc'
 alias open='gnome-open'
+alias mkae='make'
+alias maek='make'
 # Simple command aliases
 alias cp='cp -vi'
 alias mv='mv -vi'

@@ -110,6 +110,8 @@ Plug 'bcicen/vim-vice'
 Plug 'sjl/badwolf'
 " two firewatch
 Plug 'rakr/vim-two-firewatch'
+" material
+Plug 'jdkanani/vim-material-theme'
 
 call plug#end()
 
@@ -388,8 +390,8 @@ syntax on
 " colorscheme facebook
 " colorscheme pencil | set background=dark
 " colorscheme seti
-" colorscheme badwolf
-colorscheme onedark
+colorscheme badwolf
+" colorscheme onedark
 
 if (&term == "iterm") || (&term == "putty")
     set background=dark
@@ -413,7 +415,7 @@ augroup swapcaps
 augroup END
 " Make an easier way to escape
 inoremap jk <esc>
-vnoremap jk <esc>
+" vnoremap jk <esc>
 
 " NumberToggle toggles between relative and absolute line numbers
 function! NumberToggle()
@@ -450,9 +452,10 @@ nnoremap <silent> <leader>sv :source $MYVIMRC<CR>
 " Airline config
 " let g:airline_theme='molokai'
 " let g:airline_theme='behelit'
-let g:airline_theme='base16_google'
+" let g:airline_theme='base16_google'
 " let g:airline_theme='base16_isotope'
 " let g:airline_theme='pencil'
+let g:airline_theme='badwolf'
 " refresh airline after autocomplete
 nnoremap <leader>ar :execute ":AirlineRefresh"<CR>
 " Do not create a separator for empty sections
