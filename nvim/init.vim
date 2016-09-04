@@ -133,6 +133,7 @@ set noerrorbells       "don't beep"
 set autoread           "Auto read when a file is changed from the outside
 " set autowrite          "automatically write buffer when changing files
 set timeoutlen=500     "don't wait so long for mapped sequences to complete
+set mouse=""           "turn off mouse
 
 " Configure indentation settings
 let tabsize = 4        "easily change tabsize
