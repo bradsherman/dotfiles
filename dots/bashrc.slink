@@ -178,6 +178,7 @@ alias st00='ssh bsherma1@student00.cse.nd.edu'
 alias st01='ssh bsherma1@student01.cse.nd.edu'
 alias st02='ssh bsherma1@student02.cse.nd.edu'
 alias st03='ssh bsherma1@student03.cse.nd.edu'
+alias dsg1='ssh bsherma1@dsg1.crc.nd.edu'
 # Easy aliases to quickly update
 alias update='sudo apt-get update'
 alias upgrade='sudo apt-get upgrade'
