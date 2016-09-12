@@ -571,7 +571,7 @@ if has('nvim')
     let g:neomake_rust_enabled_markers = ['rustc']
     let g:neomake_c_enabled_makers = ['gcc']
     let g:neomake_cpp_gcc_maker = {
-                \ 'args': ['-std=c++11']
+                \ 'args': ['-std=gnu++11','-Wall']
                 \}
     let g:neomake_cpp_enabled_makers = ['gcc']
 
