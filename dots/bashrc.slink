@@ -191,10 +191,10 @@ alias ping='ping -c 4'
 alias k='exit'
 alias cd..='cd ../'
 alias ..='cd ../'
-alias ...='cd ../../'
-alias .3='cd ../../../'
-alias .4='cd ../../../../'
-alias .5='cd ../../../../../'
+alias '...'='cd ../../'
+alias '.3'='cd ../../../'
+alias '.4'='cd ../../../../'
+alias '.5'='cd ../../../../../'
 alias path='echo $PATH'
 alias back='cd -'
 alias mkdir='mkdir -pv'
@@ -215,7 +215,7 @@ alias ln='ln -v'
 alias less='less -FSRXc'
 # Easily edit config files
 alias vim='/usr/bin/nvim' # try using neovim instead of vim
-alias ovim='/usr/bin/vim' #use regular old vim
+alias ovim='/usr/local/bin/vim' #use regular old vim
 alias vi3='vim ~/.i3/config'
 alias vv='/usr/bin/vim ~/.vimrc'
 alias vb='vim ~/.bashrc'
@@ -231,6 +231,8 @@ export EDITOR="/usr/bin/nvim"
 set -o noclobber
 # Make tab-completion case insensitive
 set completion-ignore-case On
+# Let's use vi mode
+set -o vi
 
 ## Now make some useful functions
 

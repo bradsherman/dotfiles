@@ -82,6 +82,28 @@ Plug 'honza/vim-snippets' " actual snippets
 Plug 'koalaman/shellcheck', { 'for': ['bash','sh'], 'on': 'Neomake' }
 " Golang syntax
 Plug 'golang/lint', { 'for': 'go', 'on': 'Neomake' }
+" Apprentice colorscheme
+Plug 'romainl/Apprentice'
+" Gruvbox
+Plug 'morhetz/gruvbox'
+" facebook colors
+Plug 'farfanoide/vim-facebook'
+" pencil colors
+Plug 'reedes/vim-colors-pencil'
+" one dark colors
+Plug 'joshdick/onedark.vim'
+" seti
+Plug 'trusktr/seti.vim'
+" show me the colors!!
+Plug 'gko/vim-coloresque'
+" vice
+Plug 'bcicen/vim-vice'
+" badwolf
+" Plug 'sjl/badwolf'
+" two firewatch
+Plug 'rakr/vim-two-firewatch'
+" material
+Plug 'jdkanani/vim-material-theme'
 
 call plug#end()
 
@@ -94,12 +116,12 @@ command! PU PlugUpdate | PlugUpgrade
 filetype plugin indent on
 set hidden             "hide buffers
 
-set history=1000       "remember more commands and search history"
-set undolevels=1000    "use many more levels of undo"
-set novisualbell       "don't beep"
-set noerrorbells       "don't beep"
+set history=1000       "remember more commands and search history
+set undolevels=1000    "use many more levels of undo
+set novisualbell       "don't beep
+set noerrorbells       "don't beep
 set autoread           "Auto read when a file is changed from the outside
-set autowrite          "automatically write buffer when changing files 
+"set autowrite         "automatically write buffer when changing files
 set timeoutlen=500     "don't wait so long for mapped sequences to complete
 
 " Configure indentation settings
@@ -351,11 +373,13 @@ noremap gV `[v`]
 vnoremap < <gv
 vnoremap > >gv
 " Swap caps and escape when entering vim, undo on exit
-augroup swapcaps
-    autocmd!
-    au VimEnter * !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
-    au VimLeave * !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Control_L'
-augroup END
+" augroup swapcaps
+"     autocmd!
+"     au VimEnter * !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
+"     au VimLeave * !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Control_L'
+" augroup END
+" easy escape
+inoremap jk <esc>
 
 " NumberToggle toggles between relative and absolute line numbers
 function! NumberToggle()

@@ -131,7 +131,7 @@ set undolevels=1000    "use many more levels of undo"
 set novisualbell       "don't beep"
 set noerrorbells       "don't beep"
 set autoread           "Auto read when a file is changed from the outside
-" set autowrite          "automatically write buffer when changing files
+" set autowrite        "automatically write buffer when changing files
 set timeoutlen=500     "don't wait so long for mapped sequences to complete
 set mouse=""           "turn off mouse
 
@@ -252,6 +252,7 @@ nnoremap <leader>s :CtrlP
 augroup General-Autocommands
     autocmd!
     autocmd FocusLost,WinLeave * :silent! wa
+    " Remove trailing whitespace on save
     autocmd BufWritePre * %s/\s\+$//e
 
     " When editing a file, always jump to the last known cursor position.
@@ -281,8 +282,8 @@ augroup wraps
     autocmd FileType rust,go,clojure,python   set wrap
 augroup END
 
-set scrolloff=7                "Keep 7 lines above/below the cursor
-set sidescrolloff=15            "Keep 15 chars to the right of the cursor
+set scrolloff=7                 "Keep 7 lines above/below the cursor
+set sidescrolloff=10            "Keep 10 chars to the right of the cursor
 set textwidth=80                "make lines wrap after 79 characters
 set colorcolumn=+1              "vertical ruler one column after textwidth
 set number                      "line numbers
@@ -300,7 +301,7 @@ set wildmenu                    "graphical menu for commands
 set lazyredraw                  "don't redraw for commands we didn't type
 set shortmess=a                 "avoid all the 'hit-enter' prompts
 set cmdheight=2                 "statusline height
-set clipboard=unnamed           "allow copy/paste from anywhere (system register)
+set clipboard+=unnamedplus      "allow copy/paste from anywhere (system register)
 
 " Auto resize Vim splits to active splits
 set winwidth=104
