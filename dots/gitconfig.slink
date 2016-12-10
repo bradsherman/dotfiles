@@ -6,3 +6,5 @@
     ci = commit
     br = branch
     st = status
+[push]
+	defualt = simple

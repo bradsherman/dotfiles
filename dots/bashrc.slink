@@ -222,6 +222,7 @@ alias vb='vim ~/.bashrc'
 alias nv='nvim ~/.config/nvim/init.vim'
 
 # Modify variables
+export HISTTIMEFORMAT="%d/%m/%y %T "
 export PATH=/home/bradsherman/bin:$PATH
 export PATH=$PATH:/usr/local/go/bin
 export PATH=$PATH:/usr/local/android-studio/bin

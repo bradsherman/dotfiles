@@ -68,7 +68,7 @@ Plug 'racer-rust/vim-racer', { 'for': 'rust' }
 " python code completion
 Plug 'zchee/deoplete-jedi', { 'for': 'python' }
 " html completion
-Plug 'mattn/emmet-vim', { 'for': 'html' }
+Plug 'mattn/emmet-vim', { 'for': ['html', 'php'] }
 " c/c++/C# completion
 Plug 'zchee/deoplete-clang', { 'for': ['c', 'cpp'] }
 " go code completion
@@ -133,7 +133,7 @@ set noerrorbells       "don't beep"
 set autoread           "Auto read when a file is changed from the outside
 " set autowrite        "automatically write buffer when changing files
 set timeoutlen=500     "don't wait so long for mapped sequences to complete
-set mouse=""           "turn off mouse
+"set mouse=""           "turn off mouse
 
 " Configure indentation settings
 let tabsize = 4        "easily change tabsize

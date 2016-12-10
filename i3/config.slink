@@ -225,7 +225,10 @@ bindsym $mod+shift+z exec ~/.i3/lock.sh
 exec_always --no-startup-id compton -f
 
 # Gap size
-#gap_size 10
+# gap_size 10
+gaps inner 5
+gaps outer 5
+smart_gaps on
 
 # Disable title bars
 #new_window 1pixel
