@@ -95,6 +95,10 @@ bindsym $mod+p exec gnome-screenshot
 
 # start google-chrome
 bindsym $mod+g exec google-chrome
+# start firefox
+bindsym $mod+x exec firefox
+# start firefox dev
+bindsym $mod+z exec firefox-dev
 
 set $workspace1 "1 Music  "
 set $workspace2 "2 Term  "
@@ -211,9 +215,8 @@ bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
 
 # Define startup Apps
-exec --no-startup-id google-chrome
+exec --no-startup-id firefox
 exec --no-startup-id gnome-terminal
-exec --no-startup-id n2autilus
 exec --no-startup-id spotify
 exec i3-msg workspace number $workspace2
 

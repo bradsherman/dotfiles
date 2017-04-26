@@ -8,3 +8,6 @@
     st = status
 [push]
 	defualt = simple
+	default = simple
+[help]
+	autocorrect = 30

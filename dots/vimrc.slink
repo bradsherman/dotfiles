@@ -1,8 +1,8 @@
 " Plugins {{{
 set nocompatible       "Prevents changing other options as side effects"
-filetype off           "required 
+filetype off           "required
 if !has('nvim')
-    set encoding=utf-8     "enable unicode 
+    set encoding=utf-8     "enable unicode
 endif
 
 " automatically install vim-plug if it doesn't exist
@@ -186,7 +186,7 @@ cnoremap w!! w !sudo tee % >/dev/null
 nnoremap { <esc>a{<cr><cr>}<esc>ki<tab>
 " Automatically make something uppercase
 " Remember to use right control since left control is escape in insert mode
-inoremap <c-u> <esc>viwU 
+inoremap <c-u> <esc>viwU
 " surround word with "
 nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
 " surround word with '
@@ -199,6 +199,7 @@ augroup comments
     autocmd FileType conf,fstab          let b:comment_leader = '#'
     autocmd FileType tex                 let b:comment_leader = '%'
     autocmd FileType vim                 let b:comment_leader = '"'
+    au!     FileType python              setl nosmartindent
 augroup END
 
 function! CommentLine()
@@ -291,7 +292,7 @@ set winminheight=5
 set winheight=999
 
 " Show extra whitespace
-set list listchars=tab:»·,trail:·,nbsp:·  
+set list listchars=tab:»·,trail:·,nbsp:·
 augroup List-Options
     autocmd!
     autocmd FileType html,markdown set nolist
@@ -339,7 +340,7 @@ nnoremap <silent> <Right> :vertical resize +5<cr>
 nnoremap <silent> <Left> :vertical resize -5<cr>
 nnoremap <silent> <Up> :horizontal resize +5<cr>
 nnoremap <silent> <Down> :horizontal resize -5<cr>
-" }}} 
+" }}}
 
 " Searching {{{
 set incsearch
@@ -430,7 +431,7 @@ let g:airline#extensions#tabline#enabled = 1
 " let g:airline#extensions#tabline#excludes = []
 let g:airline#extensions#tabline#show_buffers = 1
 " Configure how tabs are separated
-let g:airline#extensions#tabline#tab_nr_type = 1 
+let g:airline#extensions#tabline#tab_nr_type = 1
 " Min number of buffers needed to show tabline
 let g:airline#extensions#tabline#buffer_min_count = 2
 " Only show filename, not full path
@@ -510,7 +511,7 @@ let g:deoplete#max_list = 25
 "             \ pumvisible() ? "\<C-n>" :
 "             \ <SID>check_back_space() ? "\<TAB>" :
 "             \ deoplete#mappings#manual_complete()
-function! s:check_back_space() abort 
+function! s:check_back_space() abort
     let col = col('.') - 1
     return !col || getline('.')[col-1] =~ '\s'
 endfunction
@@ -559,7 +560,7 @@ let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 
 " Fugitive config
-" Don't let fugitive make tons of buffers 
+" Don't let fugitive make tons of buffers
 autocmd BufReadPost fugitive://* set bufhidden=delete
 
 " }}}

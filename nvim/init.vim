@@ -37,7 +37,7 @@ Plug 'raimondi/delimitmate'
 " help with go dev
 Plug 'fatih/vim-go', { 'for': 'go', 'do': ':GoInstallBinaries' }
 " help with rust dev
-Plug 'rust-lang/rust.vim', { 'for': 'rust' }
+" Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 " fuzzy file searcher
 Plug 'ctrlpvim/ctrlp.vim', { 'on': 'CtrlP' }
 " git-diff in gutter
@@ -52,7 +52,7 @@ Plug 'metakirby5/codi.vim'
 " asynchronous syntax checker
 Plug 'neomake/neomake'
 " python syntax checker
-Plug 'nvie/vim-flake8', { 'for': 'python', 'on': '<Plug>Neomake' }
+" Plug 'nvie/vim-flake8', { 'for': 'python', 'on': '<Plug>Neomake' }
 " more c++ syntax
 Plug 'octol/vim-cpp-enhanced-highlight', { 'for': 'cpp' }
 " Golang syntax
@@ -70,7 +70,7 @@ Plug 'zchee/deoplete-jedi', { 'for': 'python' }
 " html completion
 Plug 'mattn/emmet-vim', { 'for': ['html', 'php'] }
 " c/c++/C# completion
-Plug 'zchee/deoplete-clang', { 'for': ['c', 'cpp'] }
+" Plug 'zchee/deoplete-clang', { 'for': ['c', 'cpp'] }
 " go code completion
 Plug 'zchee/deoplete-go', { 'do': 'make' }
 " clojure completion
@@ -133,7 +133,7 @@ set noerrorbells       "don't beep"
 set autoread           "Auto read when a file is changed from the outside
 " set autowrite        "automatically write buffer when changing files
 set timeoutlen=500     "don't wait so long for mapped sequences to complete
-"set mouse=""           "turn off mouse
+set mouse=a            "turn off mouse
 
 " Configure indentation settings
 let tabsize = 4        "easily change tabsize
@@ -199,6 +199,9 @@ nnoremap : ;
 " Save files with sudo if you forget
 cnoremap w!! w !sudo tee % >/dev/null
 
+" Save with ctrl-s
+inoremap <c-s> <esc>:w<cr>li
+
 " Automatically make something uppercase
 " Remember to use right control since left control is escape in insert mode
 inoremap <c-u> <esc>viwU
@@ -217,6 +220,8 @@ augroup comments
     autocmd FileType conf,fstab,bash     let b:comment_leader = '#'
     autocmd FileType tex                 let b:comment_leader = '%'
     autocmd FileType vim                 let b:comment_leader = '"'
+    " don't move comments to beginning in python
+    au!     FileType python              setl nosmartindent
 augroup END
 
 function! CommentLine()
@@ -249,6 +254,8 @@ vnoremap Y y$
 " Easy access to file searching
 nnoremap <leader>s :CtrlP
 
+let $NVIM_TUI_ENABLE_CURSOR_SHAPE=2
+
 augroup General-Autocommands
     autocmd!
     autocmd FocusLost,WinLeave * :silent! wa
@@ -278,7 +285,7 @@ augroup END
 set nowrap                      "don't wrap lines by default"
 augroup wraps
     autocmd!
-    autocmd FileType c,cpp,java               set wrap
+    autocmd FileType c,cpp,java,markdown      set wrap
     autocmd FileType rust,go,clojure,python   set wrap
 augroup END
 
@@ -354,10 +361,10 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-l> <C-w>l
 
 " Resize panes
-nnoremap <silent> <Right> :vertical resize +5<cr>
-nnoremap <silent> <Left> :vertical resize -5<cr>
-nnoremap <silent> <Up> :horizontal resize +5<cr>
-nnoremap <silent> <Down> :horizontal resize -5<cr>
+" nnoremap <silent> <Right> :vertical resize +5<cr>
+" nnoremap <silent> <Left> :vertical resize -5<cr>
+" nnoremap <silent> <Up> :horizontal resize +5<cr>
+" nnoremap <silent> <Down> :horizontal resize -5<cr>
 " }}}
 
 " Searching {{{
@@ -446,7 +453,7 @@ nnoremap <silent> <leader>sv :source $MYVIMRC<CR>
 
 " to specify a macro, use something like below
 " let @a='0fa'
-
+let @g='ireadingxx - Grading===================**Score**: xx/xxDeductions----------Comments--------€ýa€ý`q€kb€ýa€ý`'
 " }}}
 
 " Plugin config {{{
@@ -549,23 +556,23 @@ if has('nvim')
     let g:deoplete#max_list = 25
     " Decide how to complete, leave autocomplete for now
     " so we can use tab for snippets
-    let g:deoplete#disable_auto_complete = 1
+    " let g:deoplete#disable_auto_complete = 1
     " inoremap <silent><expr><C-n> deoplete#mappings#manual_complete()
-    inoremap <silent><expr> <C-n>
-                \ pumvisible() ? "\<C-n>" :
-                \ <SID>check_back_space() ? "\<C-n>" :
-                \ deoplete#mappings#manual_complete()
-    function! s:check_back_space() abort
-        let col = col('.') - 1
-        return !col || getline('.')[col-1] =~ '\s'
-    endfunction
+    " inoremap <silent><expr> <C-n>
+    "             \ pumvisible() ? "\<C-n>" :
+    "             \ <SID>check_back_space() ? "\<C-n>" :
+    "             \ deoplete#mappings#manual_complete()
+    " function! s:check_back_space() abort
+    "     let col = col('.') - 1
+    "     return !col || getline('.')[col-1] =~ '\s'
+    " endfunction
 
     " Neomake config
     " Run neomake after a save
     autocmd! BufWritePost,BufEnter * Neomake
     autocmd! VimEnter * let g:neomake_verbose = 0
     " let g:neomake_open_list = 2
-    let g:neomake_python_enabled_makers = ['flake8']
+    " let g:neomake_python_enabled_makers = ['flake8']
     let g:neomake_go_enabled_markers = ['golint']
     let g:neomake_sh_enabled_markers = ['shellcheck']
     let g:neomake_java_enabled_markers = ['javac']
@@ -581,8 +588,8 @@ if has('nvim')
     " let g:deoplete#keyword_patterns.clojure = '[\w!$%&*+/:<=>?@\^_~\-\.]*'
 
     " Clang completion
-    let g:deoplete#sources#clang#libclang_path='/usr/lib/x86_64-linux-gnu/libclang.so'
-    let g:deoplete#sources#clang#clang_header='/usr/lib/clang'
+    "let g:deoplete#sources#clang#libclang_path='/usr/lib/x86_64-linux-gnu/libclang.so'
+    "let g:deoplete#sources#clang#clang_header='/usr/lib/clang'
 
     " Rust completion
     let g:racer_cmd="/home/bradsherman/.cargo/bin/racer"
