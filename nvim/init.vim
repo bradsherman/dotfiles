@@ -52,7 +52,7 @@ Plug 'metakirby5/codi.vim'
 " asynchronous syntax checker
 Plug 'neomake/neomake'
 " python syntax checker
-" Plug 'nvie/vim-flake8', { 'for': 'python', 'on': '<Plug>Neomake' }
+Plug 'nvie/vim-flake8', { 'for': 'python', 'on': '<Plug>Neomake' }
 " more c++ syntax
 Plug 'octol/vim-cpp-enhanced-highlight', { 'for': 'cpp' }
 " Golang syntax
@@ -270,8 +270,9 @@ augroup General-Autocommands
                 \   exe "normal g`\"" |
                 \ endif
 
-    " Enable spellchecking for Markdown
+    " Enable spellchecking for Markdown and wrap at 80 chars
     autocmd FileType markdown setlocal spell
+    autocmd FileType markdown setlocal textwidth=80
 
     " Automatically wrap at 100 characters and spell check git commit messages
     autocmd FileType gitcommit setlocal textwidth=100
@@ -283,16 +284,17 @@ augroup END
 " UI Config {{{
 
 set nowrap                      "don't wrap lines by default"
-augroup wraps
-    autocmd!
-    autocmd FileType c,cpp,java,markdown      set wrap
-    autocmd FileType rust,go,clojure,python   set wrap
-augroup END
+" augroup wraps
+"     autocmd!
+"     autocmd FileType markdown set wrap
+"     autocmd FileType c,cpp,java,markdown      set wrap
+"     autocmd FileType rust,go,clojure,python   set wrap
+" augroup END
 
 set scrolloff=7                 "Keep 7 lines above/below the cursor
 set sidescrolloff=10            "Keep 10 chars to the right of the cursor
-set textwidth=80                "make lines wrap after 79 characters
-set colorcolumn=+1              "vertical ruler one column after textwidth
+" set textwidth=80                "make lines wrap after 79 characters
+set colorcolumn=81              "vertical ruler one column after textwidth
 set number                      "line numbers
 set showmatch                   "show matching parenthesis"
 set splitright                  "open new splits to the right
@@ -337,10 +339,10 @@ set laststatus=2
 " Movement {{{
 
 " Disable arrow keys in Normal mode
-noremap <up> <NOP>
-noremap <down> <NOP>
-noremap <right> <NOP>
-noremap <left> <NOP>
+" noremap <up> <NOP>
+" noremap <down> <NOP>
+" noremap <right> <NOP>
+" noremap <left> <NOP>
 
 " Easy way to get to beginning and end of line
 nnoremap H ^
@@ -572,7 +574,10 @@ if has('nvim')
     autocmd! BufWritePost,BufEnter * Neomake
     autocmd! VimEnter * let g:neomake_verbose = 0
     " let g:neomake_open_list = 2
-    " let g:neomake_python_enabled_makers = ['flake8']
+    let g:neomake_python_enabled_makers = ['flake8']
+    let g:neomake_python_flake8_maker = {
+                \ 'args': ['--ignore=E501,E302']
+                \}
     let g:neomake_go_enabled_markers = ['golint']
     let g:neomake_sh_enabled_markers = ['shellcheck']
     let g:neomake_java_enabled_markers = ['javac']
