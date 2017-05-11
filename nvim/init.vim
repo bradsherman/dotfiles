@@ -332,6 +332,11 @@ augroup Format-Options
     autocmd BufEnter * setlocal formatoptions-=o
 augroup END
 
+" format entire file
+nnoremap <silent> <leader>ev :vsplit $MYVIMRC<CR>
+nnoremap <silent> <leader>f gggqG
+
+
 " Make status bar appear all the time
 set laststatus=2
 " }}}
