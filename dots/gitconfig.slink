@@ -6,6 +6,12 @@
     ci = commit
     br = branch
     st = status
+    cma = commit --amend --all
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+    su = submodule update --init --recursive
+[core]
+	editor = nvim
+	excludesfile = /home/bsherman/.gitignore
 [push]
 	defualt = simple
 	default = simple

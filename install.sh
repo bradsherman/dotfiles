@@ -10,7 +10,7 @@ DF_ROOT=$(pwd)
 
 # make pretty prompts
 info (){
-     printf " [ \033[00;34m..\033[0m ] $1\n"   
+     printf " [ \033[00;34m..\033[0m ] $1\n"
 }
 
 user (){
@@ -81,7 +81,7 @@ link_file() {
         fi
 
     fi
-    
+
     # if file does not exist then just link it right away
     if [ "$skip" != "true" ]
     then
@@ -100,31 +100,6 @@ install_dotfiles () {
         dst="$HOME/.$(basename "${src%.*}")"
         link_file "$src" "$dst"
     done
-}
-
-install_i3files () {
-    info "installing i3files"
-
-    local overwrite_all=false skip_all=false
-
-    for src in $(find "$DF_ROOT/i3" -maxdepth 1 -name '*.slink')
-    do
-        dst="$HOME/.i3/$(basename "${src%.*}")"
-        link_file "$src" "$dst"
-    done
-}
-
-install_scripts () {
-    info "installing scripts"
-
-    local overwrite_all=false skip_all=false
-
-    for src in $(find "$DF_ROOT/scripts" -maxdepth 1 -name '*.slink')
-    do
-        dst="/usr/local/bin/$(basename "${src%.*}")"
-        link_file "$src" "$dst"
-    done
-
 }
 
 install_vimfiles () {
@@ -147,7 +122,7 @@ install_vimfiles () {
         chgrp -R "$SUDO_USER" "$HOME/.vim/plugged"
     fi
 
-    # install syntax 
+    # install syntax
     if [ ! -d "$HOME/.vim/syntax" ]
     then
         mkdir -p "$HOME/.vim/syntax"
@@ -186,7 +161,7 @@ install_nvimfiles () {
 
     info "installing neovimfiles"
 
-    if ! [ -e "/usr/bin/nvim" ] 
+    if ! [ -e "/usr/bin/nvim" ]
     then
         fail "Please install neovim before continuing"
     fi
@@ -211,7 +186,7 @@ install_nvimfiles () {
     # install plugins
     if [ ! -d "$HOME/.config/nvim" ]
     then
-        mkdir -p "$HOME/.config/nvim/" 
+        mkdir -p "$HOME/.config/nvim/"
         chown -R "$SUDO_USER" "$HOME/.config/nvim"
         chgrp -R "$SUDO_USER" "$HOME/.config/nvim"
     fi
@@ -220,13 +195,13 @@ install_nvimfiles () {
     do
         dst="$HOME/.config/nvim/$(basename "$src")"
         link_file "$src" "$dst"
-    done   
+    done
 
     for src in $(find "$DF_ROOT/nvim/plugin" -maxdepth 1 -name '*.vim')
     do
         dst="$HOME/.config/nvim/plugin/$(basename "$src")"
         link_file "$src" "$dst"
-    done   
+    done
 
     for src in $(find "$DF_ROOT/nvim/syntax" -maxdepth 1 -name '*.vim')
     do
@@ -284,101 +259,8 @@ fi
 
 install_programs
 install_dotfiles
-install_i3files
-install_scripts
 install_vimfiles
 install_nvimfiles
 
 echo ""
 success "Installation completed!"
-
-
-# old_dir=~/old_dotfiles
-# echo "Creating $old_dir for backup files"
-# [[ -d $old_dir ]] && rm -rf $old_dir
-# mkdir $old_dir
-# 
-# ##################################
-# #####     BASH
-# ##################################
-# 
-# echo "Setting up ~/.bashrc..."
-# source=~/dotfiles/bashrc
-# destination=~/.bashrc
-# [[ -f $destination ]] && rm -f $destination
-# ln -sf $source $destination
-# 
-# ##################################
-# #####    XMODMAP
-# ##################################
-# 
-# echo "Setting up ~/.Xmodmap"
-# source=~/dotfiles/Xmodmap
-# destination=~/.Xmodmap
-# [[ -f $destination ]] && rm -f $destination
-# ln -s $source $destination
-# 
-# ##################################
-# #####     i3
-# ##################################
-# 
-# echo "Setting up ~/.i3..."
-# source=~/dotfiles/config
-# destination=~/.i3/config
-# [[ ! -d ~/.i3 ]] && echo "Making ~/.i3 directory..." && mkdir ~/.i3
-# [[ -f $destination ]] && rm -f $destination
-# ln -s $source $destination
-# 
-# source=~/dotfiles/i3blocks.conf
-# destination=~/.i3/i3blocks.conf
-# [[ -f $destination ]] && rm -f $destination
-# ln -s $source $destination
-# 
-# source=~/dotfiles/i3status.conf
-# destination=~/.i3/i3status.conf
-# [[ -f $destination ]] && rm -f $destination
-# ln -s $source $destination
-
-# ##################################
-# #####     NVIM
-# ##################################
-# 
-# echo "Setting up ~/config/nvim/init.vim"
-# source=~/dotfiles/nvim/init.vim
-# destination=~/.config/nvim/init.vim
-# [[ -f $destination ]] && rm -f $destination
-# if [[ ! -d ~/.config/nvim/bundle/Vundle.vim ]]
-# then
-# 	echo "Cloning Vundle repository..."
-# 	git clone https://github.com/VundleVim/Vundle.vim.git ~/.config/nvim/bundle/Vundle.vim
-# fi
-# ln -s $source $destination
-# 
-# ##################################
-# #####     VIM   
-# ##################################
-# 
-# echo "Setting up ~/.vimrc..."
-# source=~/dotfiles/vim/vimrc
-# destination=~/.vimrc
-# [[ -f $destination ]] && rm -f $destination
-# if [[ ! -d ~/.vim/bundle/Vundle.vim ]]
-# then
-# 	echo "Cloning Vundle repository..."
-# 	git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-# fi
-# ln -s $source $destination
-# # echo "Setting up custom plugins in ~/.vim/plugin"
-# # source=~/dotfiles/vim/plugin/*
-# # destination=~/.vim/plugin/
-# # for file in $source
-# # do
-# #     echo $file
-# #     [[ -f $destination ]] && rm -f $destination
-# #     ln -s $file $destination
-# # done
-# 
-# echo "Would you like to install your vim plugins now? (y/n)"
-# read response
-# [[ $response == "y" ]] && vim -c ":PluginInstall" && nvim -c ":PluginInstall"
-# 

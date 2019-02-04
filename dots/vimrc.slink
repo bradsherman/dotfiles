@@ -51,24 +51,10 @@ Plug 'shougo/deoplete.nvim', Cond(has('nvim'), { 'do': ':UpdateRemotePlugins' })
 Plug 'ctrlpvim/ctrlp.vim', { 'on': 'CtrlP' }
 " python syntax checker
 Plug 'nvie/vim-flake8', { 'for': 'python', 'on': 'Neomake' }
-" rust code completion
-Plug 'racer-rust/vim-racer', { 'for': 'rust' }
 " python code completion
 Plug 'zchee/deoplete-jedi', { 'for': 'python' }
 " html completion
 Plug 'mattn/emmet-vim', { 'for': 'html' }
-" c/c++/C# completion
-Plug 'zchee/deoplete-clang', { 'for': ['c', 'cpp'] }
-" go code completion
-Plug 'zchee/deoplete-go', { 'do': 'make' }
-" clojure completion
-" plug 'SevereOverfl0w/vim-clj/async', { 'for': 'clojure' }
-" javascript completion
-Plug 'carlitux/deoplete-ternjs', { 'for': 'javascript' }
-" vimscript completion
-Plug 'Shougo/neco-vim', { 'for': 'vim' }
-" java completion
-" Plug 'artur-shaik/vim-javacomplete2', { 'for': 'java' }
 " git-diff in gutter
 Plug 'airblade/vim-gitgutter'
 " markdown syntax
@@ -181,50 +167,6 @@ nnoremap : ;
 
 " Save files with sudo if you forget
 cnoremap w!! w !sudo tee % >/dev/null
-
-" auto brackets
-nnoremap { <esc>a{<cr><cr>}<esc>ki<tab>
-" Automatically make something uppercase
-" Remember to use right control since left control is escape in insert mode
-inoremap <c-u> <esc>viwU
-" surround word with "
-nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
-" surround word with '
-nnoremap <leader>' viw<esc>a'<esc>hbi'<esc>lel
-" comment and uncomment blocks
-augroup comments
-    autocmd FileType c,cpp,java,scala    let b:comment_leader = '\/\/'
-    autocmd FileType javascript,rust     let b:comment_leader = '\/\/'
-    autocmd FileType sh,ruby,python      let b:comment_leader = '#'
-    autocmd FileType conf,fstab          let b:comment_leader = '#'
-    autocmd FileType tex                 let b:comment_leader = '%'
-    autocmd FileType vim                 let b:comment_leader = '"'
-    au!     FileType python              setl nosmartindent
-augroup END
-
-function! CommentLine()
-    echo b:comment_leader
-    execute ':silent! s/^\(.*\)/' . b:comment_leader . ' \1/g'
-endfunction
-
-function! UncommentLine()
-    execute ':silent! s/^' . b:comment_leader . ' //g'
-endfunction
-
-noremap <leader>c :call CommentLine()<cr>
-noremap <leader>C :call UncommentLine()<cr>
-
-" Configure tab settings
-noremap <leader>tn :tabnew<cr>
-noremap <leader>to :tabonly<cr>
-noremap <leader>tc :tabclose<cr>
-noremap <leader>tm :tabmove
-" next tab
-noremap <leader>tb :tabn<cr>
-" previous tab
-noremap <leader>tp :tabp<cr>
-noremap <leader>tf :tabfirst<cr>
-noremap <leader>tl :tablast<cr>
 
 " Yank to end of line instead of entire line (yy)
 nnoremap Y y$
