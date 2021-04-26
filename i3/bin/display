@@ -1,0 +1,59 @@
+#!/bin/bash
+# This script is intended to make switching between laptop and external displays easier when using i3+dmenu
+# To run this script, map it to some shortcut in your i3 config, e.g:
+# bindsym $mod+p exec --no-startup-id $config/display.sh
+
+# This is your default laptop screen, detect by running `xrandr`
+INTERNAL_OUTPUT="eDP-1"
+# choices will be displayed in dmenu
+choices="laptop\nmulti\nexternal\nmulti-auto"
+
+# Your choice in dmenu will determine what xrandr command to run
+chosen=$(echo -e $choices | rofi -width 600 -dmenu -p monitor-setup)
+
+# this is the default display, which will allow me to switch to laptop
+# setup even if it's not connected
+EXTERNAL_OUTPUT="DP-1"
+
+# This is used to determine which external display you have connected
+# This may vary between OS. e.g VGA1 instead of VGA-1
+# ** for me this will mostly be DP-1 **
+if [ `xrandr | grep VGA-1 | grep -c ' connected '` -eq 1 ]; then
+        EXTERNAL_OUTPUT="VGA-1"
+fi
+if [ `xrandr | grep DVI-1 | grep -c ' connected '` -eq 1 ]; then
+        EXTERNAL_OUTPUT="DVI-1"
+fi
+if [ `xrandr | grep HDMI-1 | grep -c ' connected '` -eq 1 ]; then
+        EXTERNAL_OUTPUT="HDMI-1"
+fi
+if [ `xrandr | grep HDMI-2 | grep -c ' connected '` -eq 1 ]; then
+        EXTERNAL_OUTPUT="HDMI-2"
+fi
+if [ `xrandr | grep HDMI-3 | grep -c ' connected '` -eq 1 ]; then
+        EXTERNAL_OUTPUT="HDMI-3"
+fi
+if [ `xrandr | grep DP-1 | grep -v eDP-1 | grep -c ' connected '` -eq 1 ]; then
+        EXTERNAL_OUTPUT="DP-1"
+fi
+if [ `xrandr | grep DP-2 | grep -v eDP-1 | grep -c ' connected '` -eq 1 ]; then
+        EXTERNAL_OUTPUT="DP-2"
+fi
+if [ `xrandr | grep DP-3 | grep -v eDP-1 | grep -c ' connected '` -eq 1 ]; then
+        EXTERNAL_OUTPUT="DP-3"
+fi
+
+# original script, good for picking different outputs, but I want finer grained control over the outputs I know I have
+# xrandr will run and turn on the display you want, if you have an option for 3 displays, this will need some modifications
+#case "$chosen" in
+#    laptop) xrandr --output $INTERNAL_OUTPUT --auto --primary --output $EXTERNAL_OUTPUT --off ;;
+#    multi) xrandr --output $INTERNAL_OUTPUT --auto --output $EXTERNAL_OUTPUT --auto --right-of $INTERNAL_OUTPUT --primary ;;
+#esac
+
+case "$chosen" in
+    laptop) xrandr --output $INTERNAL_OUTPUT --auto --primary --output $EXTERNAL_OUTPUT --off ;;
+    multi) xrandr --dpi 150 --output eDP-1 --mode 1920x1080 --pos 0x1080 --scale 1x1 --rotate normal --output DP-1 --primary --mode 3840x2160 --pos 1920x0 --rotate normal ;;
+    #multi) xrandr --dpi 276 --fb 7680x4320 --output eDP-1 --scale 2x2 --panning 3840x2160+3200+0 --output DP-1 --primary --right-of eDP-1 --mode 3840x2160 ;;
+    external) xrandr --dpi 192 --output eDP-1 --off --output DP-1 --auto --primary ;;
+    multi-auto) xrandr --dpi 192 --output $INTERNAL_OUTPUT --auto --output DP-1 --primary --auto --pos 1920x0
+esac

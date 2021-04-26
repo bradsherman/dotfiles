@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+rofi -combi-modi window,drun,ssh -show combi -icon-theme "Papirus" -theme "paper-float" -show-icons
