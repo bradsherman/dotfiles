@@ -28,6 +28,7 @@ Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
+Plug 'lewis6991/gitsigns.nvim'
 
 Plug 'lilydjwg/colorizer'
 Plug 'luochen1990/rainbow'
@@ -36,8 +37,10 @@ Plug 'terryma/vim-smooth-scroll'
 Plug 'inside/vim-search-pulse'
 Plug 'preservim/nerdtree'
 Plug 'kyazdani42/nvim-web-devicons'
-Plug 'altercation/vim-colors-solarized'
+" Plug 'altercation/vim-colors-solarized'
+Plug 'ishan9299/nvim-solarized-lua'
 Plug 'arcticicestudio/nord-vim'
+
 
 Plug 'folke/lsp-colors.nvim'
 Plug 'neovim/nvim-lspconfig'
@@ -45,10 +48,16 @@ Plug 'hrsh7th/nvim-compe'
 Plug 'nvim-lua/lsp-status.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 Plug 'nvim-treesitter/playground'
+Plug 'folke/lsp-trouble.nvim'
+Plug 'kosayoda/nvim-lightbulb'
 
 Plug 'lifepillar/pgsql.vim'
 
 Plug 'kassio/neoterm'
+
+Plug 'easymotion/vim-easymotion'
+Plug 'vmchale/dhall-vim'
+Plug 'Yggdroot/indentLine'
 
 call plug#end()
 
@@ -78,7 +87,7 @@ let g:mapleader="\<space>"
 " let maplocalleader=",,"
 " let g:maplocalleader=",,"
 nnoremap <leader>w :w!<cr>
-nnoremap <leader><space> :noh<cr>
+nnoremap <leader>, :noh<cr>
 
 inoremap jk <esc>
 nnoremap : ;
@@ -102,7 +111,7 @@ set noshowcmd
 set noshowmode
 set cursorline
 set wildmenu
-set cmdheight=2
+set cmdheight=1
 set clipboard=unnamed
 set undofile
 
@@ -115,16 +124,16 @@ set hlsearch
 set ignorecase
 
 
-" let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-" let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-
 " let g:solarized_termcolors=256
 set background=light
 " if has('termguicolors')
-"   set termguicolors
+  " let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
+  " let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
+  " set termguicolors
 " endif
 " colorscheme nord
 colorscheme solarized
+highlight Comment cterm=italic gui=italic
 let g:airline_theme='solarized'
 
 hi link illuminatedWord Visual
@@ -139,6 +148,9 @@ let NERDTreeShowHidden=1
 let g:NERDTreeWinPos="right"
 
 nnoremap <silent> <leader>so :so ~/.config/nvim/init.vim<cr>
+nnoremap <silent> <leader>pi :PlugInstall<cr>
+nnoremap <silent> <leader>pu :PlugUpdate<cr>
+
 
 nnoremap <c-j> <c-w><c-j>
 nnoremap <c-k> <c-w><c-k>
@@ -147,6 +159,12 @@ nnoremap <c-h> <c-w><c-h>
 
 set grepprg=rg\ --vimgrep\ --smart-case\ --follow
 nnoremap <leader><tab> :b#<cr>
+
+" Auto resize Vim splits to active splits
+set winwidth=104
+set winheight=5
+set winminheight=5
+set winheight=999
 
 augroup Markdown
   autocmd!
@@ -230,15 +248,21 @@ require('telescope').setup{
 }
 require('telescope').load_extension('fzy_native')
 
+require('trouble').setup {}
+require('gitsigns').setup()
+
 EOF
 luafile ~/.config/nvim/lua/compe-config.lua
+" autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()
 
 " LSP config (the mappings used in the default file don't quite work right)
-nnoremap <silent> gd <cmd>Telescope lsp_defintions<cr>
+nnoremap <silent> gd <cmd>Telescope lsp_definitions<cr>
 nnoremap <silent> gD <cmd>lua vim.lsp.buf.declaration()<cr>
 nnoremap <silent> gr <cmd>Telescope lsp_references<cr>
 nnoremap <silent> gi <cmd>lua vim.lsp.buf.implementation()<cr>
 nnoremap <silent> <leader>dd <cmd>Telescope lsp_document_diagnostics<cr>
+nnoremap <silent> <leader>lt <cmd>:LspTroubleToggle<cr>
+nnoremap <silent> <leader>ltr <cmd>:LspTroubleRefresh<cr>
 nnoremap <silent> K <cmd>lua vim.lsp.buf.hover()<cr>
 nnoremap <silent> <c-x> <cmd>lua vim.lsp.diagnostic.set_loclist()<cr>
 nnoremap <silent> <c-p> <cmd>lua vim.lsp.diagnostic.goto_prev()<cr>
@@ -287,11 +311,9 @@ nnoremap <silent> <c-f> <cmd>Telescope find_files<cr>
 nnoremap <silent> <c-g> <cmd>Telescope live_grep<cr>
 nnoremap <silent> <c-t> <cmd>Telescope tags<cr>
 nnoremap <silent> <c-b> <cmd>Telescope buffers<cr>
+nnoremap <silent> <c-m> <cmd>Telescope current_buffer_tags<cr>
 " nnoremap <silent> <c-h> <cmd>Telescope help_tags<cr>
 nnoremap <silent> <leader>fe <cmd>Telescope file_browser<cr>
-
-
-
 
 " fugitive
 " helpful commands to remember
@@ -302,11 +324,13 @@ nnoremap <silent> <leader>fe <cmd>Telescope file_browser<cr>
 " in the diff editor <leader>gj will grab from the right side, <leader>gf will
 " grab from the left
 " ctrl+w,ctrl+o to close diff editor
-nnoremap <leader>gj :diffget //3<cr>
-nnoremap <leader>gf :diffget //2<cr>
-nnoremap <leader>gc :GBranches<cr>
-nnoremap <leader>gb :Git blame<cr>
-nnoremap <leader>gs :G<cr>
+nnoremap <silent> <leader>gj :diffget //3<cr>
+nnoremap <silent> <leader>gf :diffget //2<cr>
+nnoremap <silent> <leader>gc :GBranches<cr>
+nnoremap <silent> <leader>gb :Git blame<cr>
+nnoremap <silent> <leader>gs :G<cr>
+nnoremap <leader>gp :Git push origin
+nnoremap <leader>gpu :Git pull origin
 
 " jump to matching pairs
 nnoremap <tab> %

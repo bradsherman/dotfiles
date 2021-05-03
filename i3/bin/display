@@ -6,7 +6,7 @@
 # This is your default laptop screen, detect by running `xrandr`
 INTERNAL_OUTPUT="eDP-1"
 # choices will be displayed in dmenu
-choices="laptop\nmulti\nexternal\nmulti-auto"
+choices="laptop\nmulti\nexternal"
 
 # Your choice in dmenu will determine what xrandr command to run
 chosen=$(echo -e $choices | rofi -width 600 -dmenu -p monitor-setup)
@@ -55,5 +55,5 @@ case "$chosen" in
     multi) xrandr --dpi 150 --output eDP-1 --mode 1920x1080 --pos 0x1080 --scale 1x1 --rotate normal --output DP-1 --primary --mode 3840x2160 --pos 1920x0 --rotate normal ;;
     #multi) xrandr --dpi 276 --fb 7680x4320 --output eDP-1 --scale 2x2 --panning 3840x2160+3200+0 --output DP-1 --primary --right-of eDP-1 --mode 3840x2160 ;;
     external) xrandr --dpi 192 --output eDP-1 --off --output DP-1 --auto --primary ;;
-    multi-auto) xrandr --dpi 192 --output $INTERNAL_OUTPUT --auto --output DP-1 --primary --auto --pos 1920x0
+    # multi-auto) xrandr --dpi 192 --output $INTERNAL_OUTPUT --auto --output DP-1 --primary --auto --pos 1920x0
 esac

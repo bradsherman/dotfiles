@@ -328,16 +328,17 @@
 [urgency_low]
     # IMPORTANT: colors have to be defined in quotation marks.
     # Otherwise the "#" and following would be interpreted as a comment.
-    background = "#222222"
-    foreground = "#888888"
+    background = "#586e75"
+    foreground = "#fdf6e3"
+    frame_color = "#002b36"
     timeout = 10
     # Icon for notifications with low urgency, uncomment to enable
     icon = /usr/share/icons/Papirus-Light/16x16/panel/state-information.svg
 
 [urgency_normal]
-    #background = "#285577"
-    background = "#0089c4"
-    foreground = "#ffffff"
+    background = "#268bd2"
+    foreground = "#fdf6e3"
+    frame_color = "#eee8d5"
     timeout = 10
     # Icon for notifications with normal urgency, uncomment to enable
     icon = /usr/share/icons/Papirus-Light/16x16/panel/state-information.svg
