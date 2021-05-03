@@ -58,7 +58,7 @@
     # The transparency of the window.  Range: [0; 100].
     # This option will only work if a compositing window manager is
     # present (e.g. xcompmgr, compiz, etc.).
-    transparency = 20
+    transparency = 5
 
     # The height of the entire notification.  If the height is smaller
     # than the font height and padding combined, it will be raised
@@ -336,7 +336,7 @@
     icon = /usr/share/icons/Papirus-Light/16x16/panel/state-information.svg
 
 [urgency_normal]
-    background = "#268bd2"
+    background = "#2aa198"
     foreground = "#fdf6e3"
     frame_color = "#eee8d5"
     timeout = 10

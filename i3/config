@@ -180,20 +180,11 @@ client.unfocused        $unfocused-bg  $unfocused-bg  $window-text $indicator-co
 client.urgent           $unfocused-bg  $urgent-bg     $window-text $indicator-color
 
 exec_always --no-startup-id ~/.config/polybar/launch.sh
-#bar {
-#}
-
 
 bindsym $mod+p exec ~/.config/i3/bin/logout
 bindsym $mod+shift+p exec --no-startup-id ~/.config/i3/bin/display
 
 # Workspace Variables
-# set $ws1 "1: "
-# set $ws2 "2: "
-# set $ws3 "3: "
-# set $ws4 "4: "
-# set $ws5 "5: "
-# set $ws6 "6: "
 set $ws1 "1:term"
 set $ws2 "2:web"
 set $ws3 "3:slack"
@@ -250,4 +241,4 @@ assign [class="Spotify"] $ws4
 exec blueman-manager
 assign [class="Blueman-manager"] $ws4
 
-exec srandrd .local/bin/display_handler > ~/.display_handler_out 2>&1
+exec srandrd .local/bin/display_handler
