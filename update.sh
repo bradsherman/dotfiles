@@ -8,3 +8,5 @@ cp -r ~/.config/i3 .
 cp -r ~/.config/nvim .
 cp -r ~/.config/polybar .
 cp ~/.local/bin/display_handler .
+
+cp ~/.local/share/rofi/themes/solarized-light.rasi .
