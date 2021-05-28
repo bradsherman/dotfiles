@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [ $(dunstctl is-paused) == "true" ]
+then
+  dunstctl set-paused false
+  notify-send "Dunst" "Resuming notifications!"
+else
+  notify-send "Dunst" "Pausing notifications!"
+  sleep 1
+  dunstctl set-paused true
+fi

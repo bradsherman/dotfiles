@@ -108,21 +108,24 @@ font:
     # family: Fira Code Nerd Font
     # family: Hasklug Nerd Font
     # family: Hack Nerd Font
-    family: CaskaydiaCove Nerd Font
+    # family: CaskaydiaCove Nerd Font
+    family: monospace
     style: Regular
 
   bold:
     # family: Fira Code Nerd Font
     # family: Hasklug Nerd Font
     # family: Hack Nerd Font
-    family: CaskaydiaCove Nerd Font
+    # family: CaskaydiaCove Nerd Font
+    family: monospace
     style: Bold
 
   italic:
     # family: Fira Code Nerd Font
     # family: Hasklug Nerd Font
     # family: Hack Nerd Font
-    family: CaskaydiaCove Nerd Font
+    # family: CaskaydiaCove Nerd Font
+    family: monospace
     # style: Italic
     style: SemiLight # use with cascadia
 
@@ -130,7 +133,8 @@ font:
     # family: Fira Code Nerd Font
     # family: Hasklug Nerd Font
     # family: Hack Nerd Font
-    family: CaskaydiaCove Nerd Font
+    # family: CaskaydiaCove Nerd Font
+    family: monospace
     # style: Bold Italic
     style: SemiBold # cascadia
 

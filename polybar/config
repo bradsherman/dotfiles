@@ -21,7 +21,6 @@ module-margin-right = 3
 
 separator = |
 
-;font-0 = NotoSans-Regular:size=19;-1
 
 ;font-0 = Misc\ Termsynu:size=19:antialias=false;3
 ;font-0 = NotoSans-Regular:size=10;2
@@ -31,10 +30,11 @@ separator = |
 
 ;font-0 = FiraCode Nerd Font:size=6;0
 font-0 = SFNS Display:size=6;0
-font-1 = FontAwesome:size=11;0
-font-2 = xos4\ Terminus:size=14;0
+font-1 = Noto Color Emoji:scale=10;0
+font-2 = FontAwesome:scale=10;0
 font-3 = Siji:pixelsize=11;1
 font-4 = Material\ Icons:size=11;2
+font-5 = xos4\ Terminus:size=6;0
 
 fixed-center = true
 
@@ -78,21 +78,29 @@ foreground = ${bar/top.foreground}
 line-color = ${bar/top.background}
 line-size = 2
 
-spacing = 3
-padding-right = 4
+spacing = 0
+padding-right = 0
 module-margin-left = 0
-module-margin-right = 6
+module-margin-right = 0
 
 ;font-0 = FiraCode Nerd Font:size=8;0
-font-0 = SFNS Display:size=8;0
-font-1 = FontAwesome:size=11;0
-font-2 = xos4\ Terminus:size=14;0
-font-3 = Siji:pixelsize=11;1
-font-4 = Material\ Icons:size=11;2
+;font-0 = SFNS\ Display:size=8;0
+;font-1 = FontAwesome:size=11;0
+;font-2 = xos4\ Terminus:size=14;0
+;font-3 = Siji:pixelsize=11;1
+;font-4 = Material\ Icons:size=11;2
+;font-5 = Noto\ Color\ Emoji:size=6;0
 
-modules-left = spotify pulseaudio i3
-; modules-center = i3
-modules-right = cpu memory wireless-network battery date
+font-0 = SFNS Display:size=8;0
+font-1 = Noto Color Emoji:scale=10;0
+font-2 = FontAwesome:size=8;0
+font-3 = Siji:pixelsize=8;0
+font-4 = Material\ Icons:size=8;0
+font-5 = xos4\ Terminus:size=8;0
+
+modules-left = previous playpause next padding spotify padding pulseaudio
+modules-center = i3
+modules-right = wireless-network padding battery padding date
 
 tray-position = right
 tray-scale = 1.0
@@ -137,6 +145,7 @@ full-at = 98
 format-charging = <animation-charging> <label-charging>
 format-discharging = <ramp-capacity> <label-discharging>
 format-full = <ramp-capacity> <label-full>
+label-padding = 5
 
 label-charging = %percentage%%
 ;%time%h
@@ -268,7 +277,8 @@ ramp-coreload-7-foreground = #dc322f
 
 [module/date]
 type = internal/date
-date =  %%{F#839496}%Y-%m-%d%%{F-}  %%{F#93a1a1}%H:%M:%S%%{F-}
+;    🗓️
+date =   %%{F#839496}%Y-%m-%d%%{F-}  %%{F#93a1a1}%H:%M:%S%%{F-}
 date-alt =  %%{F#839496}%A, %d %B %Y  %%{F#93a1a1}%H:%M%%{F#839496}:%%{F#002b36}%S%%{F-}
 
 [module/memory]
@@ -377,7 +387,7 @@ format-volume = <ramp-volume> <label-volume>
 ; Available tokens:
 ;   %percentage% (default)
 ;   %decibels%
-label-muted =  muted
+label-muted =  muted
 ;🔇 muted
 label-muted-foreground = #666
 
@@ -385,6 +395,9 @@ label-muted-foreground = #666
 ramp-volume-0 = 
 ramp-volume-1 = 
 ramp-volume-2 = 
+;ramp-volume-0 = 🔈
+;ramp-volume-1 = 🔉
+;ramp-volume-2 = 🔊
 
 ; Right and Middle click
 click-right = pavucontrol
@@ -403,7 +416,7 @@ headphone-mixer = Headphone
 headphone-id = 9
 
 format-volume = <ramp-volume> <label-volume>
-label-muted =   muted
+label-muted =  muted
 label-muted-foreground = #66
 
 ramp-volume-0 = 
@@ -503,9 +516,14 @@ fuzzy-match = true
 
 ws-icon-0 = "1:term; "
 ws-icon-1 = "2:web; "
-ws-icon-3 = "3:slack; "
-ws-icon-2 = "4:music; "
+ws-icon-2 = "3:slack; "
+ws-icon-3 = "4:music; "
 ws-icon-4 = "5:books; "
+;ws-icon-0 = "1:term;⌨️ "
+;ws-icon-1 = "2:web;🖥 "
+;ws-icon-2 = "3:slack;💬"
+;ws-icon-3 = "4:music;🎵"
+;ws-icon-4 = "5:books;📖"
 ws-icon-default = 
 
 label-dimmed-underline = ${root.background}
@@ -578,4 +596,45 @@ exec = /home/bsherman/.local/venv/bin/python  /home/bsherman/.config/polybar/spo
 
 format-underline = #2aa198
 
+[module/previous]
+	type = custom/text
 
+	content = " "
+	content-background = #2aa198
+	content-foreground = #657b83
+	content-padding = 0
+
+	click-left = playerctl --player=spotify previous
+
+[module/playpause]
+	type = custom/script
+
+	exec = ~/.config/polybar/playpause.sh
+	interval = .5
+
+	label = %output%
+	label-background = #2aa198
+	label-foreground = #657b83
+	label-padding = 2
+
+	click-left = playerctl --player=spotify play-pause
+
+[module/next]
+	type = custom/text
+
+	content = " "
+	content-background = #2aa198
+	content-foreground = #657b83
+	content-padding = 0
+
+	click-left = playerctl --player=spotify next
+
+[module/paddinglite]
+	type               = custom/text
+	content            = " "
+	content-padding    = .5
+
+[module/padding]
+	type               = custom/text
+	content            = " "
+	content-padding    = 1

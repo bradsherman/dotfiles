@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Manage logout with rofi
-option=`echo -e "suspend\nlock screen\nlogout\nreboot\npoweroff\nKill user $USER" | rofi -width 600 -dmenu -p system`
+option=`echo -e "suspend\nlock screen\nlogout\nreboot\npoweroff\nKill user $USER" | rofi -width 600 -dmenu -p \> `
 case $option in
     suspend)
         /usr/bin/systemctl suspend #-then-hibernate

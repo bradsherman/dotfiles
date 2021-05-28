@@ -15,10 +15,10 @@ Plug 'tpope/vim-surround'
 Plug 'flazz/vim-colorschemes'
 
 Plug 'jiangmiao/auto-pairs'
-" Plug 'terryma/vim-multiple-cursors'
 
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+Plug 'APZelos/blamer.nvim'
+
+Plug 'hoob3rt/lualine.nvim'
 
 Plug '~/.fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -28,16 +28,17 @@ Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 Plug 'lewis6991/gitsigns.nvim'
 
 Plug 'lilydjwg/colorizer'
 Plug 'luochen1990/rainbow'
 Plug 'RRethy/vim-illuminate'
-Plug 'terryma/vim-smooth-scroll'
+Plug 'karb94/neoscroll.nvim'
 Plug 'inside/vim-search-pulse'
 Plug 'preservim/nerdtree'
 Plug 'kyazdani42/nvim-web-devicons'
-" Plug 'altercation/vim-colors-solarized'
+Plug 'ryanoasis/vim-devicons'
 Plug 'ishan9299/nvim-solarized-lua'
 Plug 'arcticicestudio/nord-vim'
 
@@ -45,19 +46,27 @@ Plug 'arcticicestudio/nord-vim'
 Plug 'folke/lsp-colors.nvim'
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-compe'
+Plug 'rafamadriz/friendly-snippets'
+Plug 'hrsh7th/vim-vsnip'
+Plug 'hrsh7th/vim-vsnip-integ'
 Plug 'nvim-lua/lsp-status.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 Plug 'nvim-treesitter/playground'
-Plug 'folke/lsp-trouble.nvim'
-Plug 'kosayoda/nvim-lightbulb'
+Plug 'folke/trouble.nvim'
 
 Plug 'lifepillar/pgsql.vim'
+Plug 'dhruvasagar/vim-table-mode'
 
 Plug 'kassio/neoterm'
 
 Plug 'easymotion/vim-easymotion'
 Plug 'vmchale/dhall-vim'
 Plug 'Yggdroot/indentLine'
+Plug 'christoomey/vim-tmux-navigator'
+
+Plug 'folke/todo-comments.nvim'
+Plug 'sindrets/diffview.nvim'
+Plug 'folke/zen-mode.nvim'
 
 call plug#end()
 
@@ -84,8 +93,6 @@ set updatetime=300
 
 let mapleader="\<space>"
 let g:mapleader="\<space>"
-" let maplocalleader=",,"
-" let g:maplocalleader=",,"
 nnoremap <leader>w :w!<cr>
 nnoremap <leader>, :noh<cr>
 
@@ -113,33 +120,34 @@ set cursorline
 set wildmenu
 set cmdheight=1
 set clipboard=unnamed
-set undofile
+set colorcolumn=80
+set signcolumn=yes
 
 set laststatus=2
 nnoremap j gj
 nnoremap k gk
 
 set incsearch
-set hlsearch
+set nohlsearch
 set ignorecase
+set smartcase
+
+set noswapfile
+set nobackup
+set undodir=~/.vim/undodir
+set undofile
 
 
-" let g:solarized_termcolors=256
 set background=light
 " if has('termguicolors')
-  " let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
-  " let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
-  " set termguicolors
+"   set termguicolors
 " endif
 " colorscheme nord
 colorscheme solarized
 highlight Comment cterm=italic gui=italic
-let g:airline_theme='solarized'
+highlight Normal guibg=none
 
 hi link illuminatedWord Visual
-
-nnoremap <silent> <c-u> :call smooth_scroll#up(&scroll, 5, 2)<cr>
-nnoremap <silent> <c-d> :call smooth_scroll#down(&scroll, 5, 2)<cr>
 
 nnoremap <c-e> :NERDTreeToggle<cr>
 nnoremap <leader>e :NERDTreeFind<cr>
@@ -161,10 +169,10 @@ set grepprg=rg\ --vimgrep\ --smart-case\ --follow
 nnoremap <leader><tab> :b#<cr>
 
 " Auto resize Vim splits to active splits
-set winwidth=104
-set winheight=5
-set winminheight=5
-set winheight=999
+" set winwidth=104
+" set winheight=5
+" set winminheight=5
+" set winheight=999
 
 augroup Markdown
   autocmd!
@@ -207,9 +215,34 @@ local on_attach = function(client, bufnr)
   lsp_status.on_attach(client, bufnr)
 end
 
-nvim_lsp.rust_analyzer.setup({
-  capabilities = lsp_status.capabilities
-})
+-- loop over default servers
+local servers_default = {
+  "rust_analyzer",
+  "tsserver",
+  "bashls",
+  "dockerls",
+  "graphql",
+  "dhall_lsp_server",
+  "jsonls",
+  "julials",
+  -- need to do special setup
+  --"sqlls",
+  "terraformls",
+  "vimls"
+}
+lsp_status.capabilities.textDocument.completion.completionItem.snippetSupport = true
+lsp_status.capabilities.textDocument.completion.completionItem.resolveSupport = {
+  properties = {
+    'documentation',
+    'detail',
+    'additionalTextEdits',
+  }
+}
+for _, lsp in ipairs(servers_default) do
+  nvim_lsp[lsp].setup { on_attach = on_attach, capabilities = lsp_status.capabilities }
+end
+
+-- special setup for haskell & lua
 nvim_lsp.hls.setup{
     settings = {
       languageServerHaskell = {
@@ -220,13 +253,44 @@ nvim_lsp.hls.setup{
     capabilities = lsp_status.capabilities
 }
 
-require'nvim-treesitter.configs'.setup {
-  -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-  ensure_installed = { haskell,json,javascript,yaml,bash,typescript,html,clojure,rust,lua,python },
-  highlight = { enable = true }
+nvim_lsp.sumneko_lua.setup {
+  cmd = {"/home/bsherman/code/lua-language-server/bin/Linux/lua-language-server", "-E", "/home/bsherman/code/lua-language-server/main.lua"},
+  settings = {
+    Lua = {
+      runtime = {
+        version = "LuaJIT",
+        path = vim.split(package.path, ';')
+      },
+      diagnostics = {
+        globals = {'vim'}
+      }
+    }
+  },
+  on_attach = on_attach,
+  capabilities = lsp_status.capabilities
 }
 
-require'nvim-web-devicons'.setup {}
+require'nvim-treesitter.configs'.setup {
+  -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  ensure_installed = { haskell,graphql,json,javascript,yaml,bash,typescript,html,clojure,rust,lua,python },
+  highlight = { enable = true },
+  indent = { enable = true }
+}
+
+require'nvim-web-devicons'.setup { default = true }
+
+require('trouble').setup {
+  auto_close = true,
+  signs = {
+    error = "❌",
+    warning = "⚠️ ",
+    hint = "💡",
+    information = "ℹ️ ",
+    other = "✔️ "
+  }
+}
+require('gitsigns').setup()
+
 local actions = require('telescope.actions')
 require('telescope').setup{
   defaults = {
@@ -241,67 +305,165 @@ require('telescope').setup{
   },
   extensions = {
       fzy_native = {
-          override_generic_sorter = false,
-          override_file_sorter = true,
+        override_generic_sorter = false,
+        override_file_sorter = true,
+      },
+      fzf = {
+        override_generic_sorter = false,
+        override_file_sorter = true,
+        case_mode = 'smart_case'
       }
   }
 }
-require('telescope').load_extension('fzy_native')
+require('telescope').load_extension('fzf')
 
-require('trouble').setup {}
-require('gitsigns').setup()
+require('lualine').setup {
+ options = {
+   theme = 'solarized_light',
+ },
+ extensions = {'fzf', 'fugitive', 'nerdtree'},
+ sections = {
+   lualine_a = {'mode'},
+   lualine_b = {'branch'},
+   lualine_c = {'filename'},
+   lualine_x = {'filetype'},
+   lualine_y = {'progress', 'location'},
+   lualine_z = {'LspError', 'LspWarning', 'LspHints', 'LspStatus'}
+ }
+}
+
+
+require('todo-comments').setup {
+  signs = true,
+  keywords = {
+    FIX = {
+      icon = " ", -- icon used for the sign, and in search results
+      color = "#DC2626", -- can be a hex color, or a named color (see below)
+      alt = { "FIXME", "BUG", "FIXIT", "FIX", "ISSUE" }, -- a set of other keywords that all map to this FIX keywords
+      -- signs = false, -- configure signs for some keywords individually
+    },
+    TODO = { icon = " ", color = "#2563EB" },
+    HACK = { icon = " ", color = "#FBBF24" },
+    WARN = { icon = " ", color = "#FBBF24", alt = { "WARNING", "XXX" } },
+    PERF = { icon = " ", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
+    NOTE = { icon = " ", color = "#10B981", alt = { "INFO" } },
+  },
+  highlight = {
+    before = "", -- "fg" or "bg" or empty
+    keyword = "wide", -- "fg", "bg", "wide" or empty. (wide is the same as bg, but will also highlight surrounding characters)
+    after = "", -- "fg" or "bg" or empty
+    pattern = [[.*<(KEYWORDS)\s*:]], -- pattern used for highlightng (vim regex)
+    comments_only = false, -- uses treesitter to match keywords in comments only
+  },
+  colors = {
+    --error = { "LspDiagnosticsDefaultError", "ErrorMsg", "#DC2626" },
+    error = { "#DC2626" },
+    --warning = { "LspDiagnosticsDefaultWarning", "WarningMsg", "#FBBF24" },
+    warning = { "#FBBF24" },
+    --info = { "LspDiagnosticsDefaultInformation", "#2563EB" },
+    info = { "#2563EB" },
+    --hint = { "LspDiagnosticsDefaultHint", "#10B981" },
+    hint = { "#10B981" },
+    -- default = { "Identifier", "#7C3AED" },
+    default = { "#7C3AED" },
+  },
+  }
+
+require('neoscroll').setup({
+  mappings = {'<C-u>', '<C-d>'}
+    -- Set any other options as needed
+})
+local easing2 = [[function(x) return math.pow(x, 4) end]]
+local t = {}
+t['<C-u>'] = {'scroll', {'-vim.wo.scroll', 'true', '5', '20', easing2}}
+t['<C-d>'] = {'scroll', { 'vim.wo.scroll', 'true', '5', '20', easing2}}
+require('neoscroll.config').set_mappings(t)
+
+require("zen-mode").setup {}
 
 EOF
 luafile ~/.config/nvim/lua/compe-config.lua
-" autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()
+inoremap <silent><expr> <C-Space> compe#confirm('<CR>')
+inoremap <silent><expr> <C-e>     compe#close('<C-e>')
+
+" Expand
+imap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
+smap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
+
+" Expand or jump
+imap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
+smap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
+
+nnoremap <silent> <leader>zm <cmd>execute luaeval("require('zen-mode').toggle({ window = { width = .85 }})")<cr>
+
+function! LspStatus() abort
+  if luaeval('#vim.lsp.buf_get_clients() > 0')
+    return luaeval("require('lsp-status').status()")
+  endif
+
+  return ''
+endfunction
+function! LspHints() abort
+  let sl = ''
+  if luaeval ('not vim.tbl_isempty(vim.lsp.buf_get_clients(0))')
+    let sl.= '💡 '
+    let sl.= luaeval('vim.lsp.diagnostic.get_count(0, [[Hint]])')
+  else
+    let sl.=''
+  endif
+  return sl
+endfunction
+function! LspWarning() abort
+  let sl = ''
+  if luaeval ('not vim.tbl_isempty(vim.lsp.buf_get_clients(0))')
+    let sl.= '⚠️  '
+    let sl.= luaeval('vim.lsp.diagnostic.get_count(0, [[Warning]])')
+  else
+    let sl.=''
+  endif
+  return sl
+endfunction
+function! LspError() abort
+  let sl = ''
+  if luaeval ('not vim.tbl_isempty(vim.lsp.buf_get_clients(0))')
+    let sl.= '❌ '
+    let sl.= luaeval('vim.lsp.diagnostic.get_count(0, [[Error]])')
+  else
+    let sl.=''
+  endif
+  return sl
+endfunction
+
 
 " LSP config (the mappings used in the default file don't quite work right)
-nnoremap <silent> gd <cmd>Telescope lsp_definitions<cr>
-nnoremap <silent> gD <cmd>lua vim.lsp.buf.declaration()<cr>
+" nnoremap <silent> <leader>dd <cmd>Telescope lsp_document_diagnostics<cr>
 nnoremap <silent> gr <cmd>Telescope lsp_references<cr>
+nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<cr>
+" nnoremap <silent> gd <cmd>Telescope lsp_definitions<cr>
+nnoremap <silent> gD <cmd>lua vim.lsp.buf.declaration()<cr>
 nnoremap <silent> gi <cmd>lua vim.lsp.buf.implementation()<cr>
-nnoremap <silent> <leader>dd <cmd>Telescope lsp_document_diagnostics<cr>
+nnoremap <silent> <c-m> <cmd>Telescope lsp_document_symbols<cr>
 nnoremap <silent> <leader>lt <cmd>:LspTroubleToggle<cr>
 nnoremap <silent> <leader>ltr <cmd>:LspTroubleRefresh<cr>
 nnoremap <silent> K <cmd>lua vim.lsp.buf.hover()<cr>
-nnoremap <silent> <c-x> <cmd>lua vim.lsp.diagnostic.set_loclist()<cr>
+nnoremap <silent> <c-x> <cmd>lua vim.lsp.diagnostic.set_loclist({open_loclist = true})<cr>
 nnoremap <silent> <c-p> <cmd>lua vim.lsp.diagnostic.goto_prev()<cr>
 nnoremap <silent> <c-n> <cmd>lua vim.lsp.diagnostic.goto_next()<cr>
 autocmd BufWritePre * lua vim.lsp.buf.formatting_sync(nil, 100)
-" autocmd BufWritePre * lua vim.lsp.diagnostic.set_loclist()
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-
-function RestartLSP()
-    lua vim.lsp.stop_client(vim.lsp.get_active_clients())
-    edit
-endfunction
-nnoremap <leader>rl :call RestartLSP()<cr>
-
-function! LspStatus() abort
-  let status = luaeval('require("lsp-status").status()')
-  return trim(status)
-endfunction
-call airline#parts#define_function('lsp_status', 'LspStatus')
-call airline#parts#define_condition('lsp_status', 'luaeval("#vim.lsp.buf_get_clients() > 0")')
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#nvimlsp#enabled = 0
-let g:airline_section_warning = airline#section#create_right(['lsp_status'])
 
 
 " let $FZF_DEFAULT_OPTS="--reverse"
 " nnoremap <silent> <c-f> :Files<cr>
-" " nnoremap <silent> <c-p> :Files<cr>
 " nnoremap <silent> <c-g> :Rg<cr>
 " nnoremap <silent> <c-t> :Tags<cr>
-" nnoremap <silent> <leader>b :Buffers<cr>
-" nnoremap <silent> <leader>g :Commits<cr>
-" nnoremap <silent> <Leader>/ :BLines<CR>
-" nnoremap <silent> <Leader>' :Marks<CR>
-" nnoremap <silent> <Leader>H :Helptags<CR>
-" nnoremap <silent> <Leader>hh :History<CR>
-" nnoremap <silent> <Leader>h: :History:<CR>
-" nnoremap <silent> <Leader>h/ :History/<CR>
+" nnoremap <silent> <c-b> :Buffers<cr>
+nnoremap <silent> <leader>g :Commits<cr>
+nnoremap <silent> <Leader>/ :BLines<CR>
+nnoremap <silent> <Leader>' :Marks<CR>
+nnoremap <silent> <Leader>H :Helptags<CR>
+nnoremap <silent> <Leader>hh :History<CR>
+nnoremap <silent> <Leader>h: :History:<CR>
+nnoremap <silent> <Leader>h/ :History/<CR>
 function! _refreshTags()
     execute "!fast-tags -R " . finddir('.git/..', expand('%:p:h').';')
 endfunction
@@ -311,9 +473,15 @@ nnoremap <silent> <c-f> <cmd>Telescope find_files<cr>
 nnoremap <silent> <c-g> <cmd>Telescope live_grep<cr>
 nnoremap <silent> <c-t> <cmd>Telescope tags<cr>
 nnoremap <silent> <c-b> <cmd>Telescope buffers<cr>
-nnoremap <silent> <c-m> <cmd>Telescope current_buffer_tags<cr>
-" nnoremap <silent> <c-h> <cmd>Telescope help_tags<cr>
+" nnoremap <silent> <c-m> <cmd>Telescope current_buffer_tags<cr>
 nnoremap <silent> <leader>fe <cmd>Telescope file_browser<cr>
+
+function RestartLSP()
+    lua vim.lsp.stop_client(vim.lsp.get_active_clients())
+    edit
+endfunction
+nnoremap <leader>rl :call RestartLSP()<cr>
+
 
 " fugitive
 " helpful commands to remember
@@ -326,7 +494,7 @@ nnoremap <silent> <leader>fe <cmd>Telescope file_browser<cr>
 " ctrl+w,ctrl+o to close diff editor
 nnoremap <silent> <leader>gj :diffget //3<cr>
 nnoremap <silent> <leader>gf :diffget //2<cr>
-nnoremap <silent> <leader>gc :GBranches<cr>
+nnoremap <silent> <leader>gc :Telescope git_branches<cr>
 nnoremap <silent> <leader>gb :Git blame<cr>
 nnoremap <silent> <leader>gs :G<cr>
 nnoremap <leader>gp :Git push origin
@@ -363,7 +531,10 @@ augroup accurate_syn_highlight
 augroup END
 
 " auto trim whitespace
-autocmd BufWritePre * %s/\s\+$//e
+augroup TripWhitespace
+  autocmd!
+  autocmd BufWritePre * %s/\s\+$//e
+augroup END
 
 
 let g:neoterm_default_mod='botright'
@@ -374,3 +545,22 @@ nnoremap <silent> <leader>trf :TREPLSendFile<cr>
 " nnoremap <silent> <leader>tc :Tclose<cr>
 nnoremap <silent> <leader>tca :TcloseAll<cr>
 
+let g:blamer_enabled = 1
+let g:blamer_date_format = '%m/%d/%y'
+let g:blamer_relative_time = 1
+
+let NERDTreeIgnore = ['\.hie$']
+
+nnoremap <silent> <leader>tm :TableModeToggle<cr>
+nnoremap <silent> <leader>dfo :DiffviewOpen<cr>
+nnoremap <silent> <leader>dfc :DiffviewClose<cr>
+
+
+function! LspLocationList()
+  lua vim.lsp.diagnostic.set_loclist({open_loclist = false})
+endfunction
+
+augroup LSP
+  autocmd!
+  autocmd! BufWrite,BufEnter,InsertLeave * :call LspLocationList()
+augroup END

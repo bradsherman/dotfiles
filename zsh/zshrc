@@ -104,6 +104,7 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 export PATH="$HOME/nvim/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
+export PATH="/opt/julia/bin:$PATH"
 export EDITOR="nvim"
 alias vim="nvim"
 [ -f "/home/bsherman/.ghcup/env" ] && source "/home/bsherman/.ghcup/env" # ghcup-env
@@ -149,3 +150,35 @@ bindkey '^H' backward-kill-word
 
 export ANSIBLE_STDOUT_CALLBACK=yaml
 bindkey -M viins 'jk' vi-cmd-mode
+
+function ghcidb {
+    ghcid --target "bitnomial-$1" ${@:2}
+}
+
+function ghcidb-lenient {
+    cmd="stack ghci bitnomial-%1"
+    cmd="${cmd} --test --bench"
+    cmd="${cmd} --ghci-options=-fno-code --ghci-options=-fno-break-on-exception --ghci-options=-fno-break-on-error"
+    cmd="${cmd} --ghci-options=-v1 --ghci-options=-ferror-spans"
+    cmd="${cmd} --ghci-options=-fdefer-typed-holes --ghci-options=-Wno-typed-holes"
+    ghcid --command "${cmd}"
+}
+
+function target_sources {
+    case $1 in
+        (bitnomial-depository-web) echo -n src/web/depository/src ;;
+        (bitnomial-exchange-web) echo -n src/web/exchange/src ;;
+        (bitnomial-auth-web) echo -n src/web/auth/src ;;
+    esac
+}
+
+function ghcid_run {
+    target=$1
+    src=$(target_sources $target)
+    executable=$2
+    ghcid --setup ":set args ${@:3}" \
+      --restart "$src" \
+      --command "stack ghci --main-is ${target}:exe:${executable} $target" \
+      --run
+}
+
