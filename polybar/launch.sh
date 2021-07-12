@@ -7,7 +7,7 @@ killall -q polybar
 
 # Launch top and bottom bars
 echo "---" | tee -a /tmp/polybartop.log /tmp/polybarbottom.log
-polybar top 2>&1 | tee -a /tmp/polybartop.log & disown
-polybar bottom 2>&1 | tee -a /tmp/polybarbottom.log & disown
+polybar laptop 2>&1 | tee -a /tmp/polybarlaptop.log & disown
+polybar external 2>&1 | tee -a /tmp/polybarexternal.log & disown
 
 echo "Bars launched..."

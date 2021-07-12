@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-rofi -combi-modi window,drun,ssh -show combi -icon-theme "Numix-Circle" -show-icons
+rofi -show combi

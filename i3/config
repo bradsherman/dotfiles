@@ -235,8 +235,8 @@ bindsym --release Shift+Print exec scrot -s 'screenshot_%Y%m%d_%H%M%S.png' -e 'm
 
 exec alacritty
 assign [class="Alacritty"] $ws1
-exec brave-browser
-assign [class="Brave-browser"] $ws2
+exec firefox
+assign [class="Firefox"] $ws2
 exec slack
 assign [class="Slack"] $ws3
 exec spotify

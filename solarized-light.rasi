@@ -1,18 +1,8 @@
 /*******************************************************************************
- * ROFI SQUARED THEME USING THE MATERIAL DARKER PALETTE
- * User                 : LR-Tech
- * Theme Repo           : https://github.com/lr-tech/rofi-themes-collection
+ * ROFI SOLARIZED LIGHT THEME
+ * User                 : bradsherman
  *******************************************************************************/
 
-configuration {
-    font            : "CaskaydiaCove Nerd Font 18";
-    display-ssh     : "";
-    display-run     : "";
-    display-drun    : "";
-    display-window  : "";
-    display-combi   : "";
-
-}
 * {
     bg-color            : #fdf6e3;
     bg-light-color      : #eee8d5;

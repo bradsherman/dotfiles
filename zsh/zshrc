@@ -182,3 +182,14 @@ function ghcid_run {
       --run
 }
 
+alias sqlite="rlwrap -a -c -i sqlite3"
+alias sqlite3="rlwrap -a -c -i sqlite3"
+alias ls='exa'
+alias htop='btm'
+alias man='tldr'
+
+source /home/bsherman/.config/broot/launcher/bash/br
+
+export PATH="/home/bsherman/.bitcoin/bin:$PATH"
+export PATH=$PATH:/usr/local/go/bin
+export PATH=$PATH:/home/bsherman/go/bin
