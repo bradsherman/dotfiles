@@ -12,15 +12,15 @@ o.timeoutlen=500
 o.encoding='UTF-8'
 
 local tabsize=2
-bo.tabstop = tabsize
-bo.softtabstop = tabsize
-bo.shiftwidth = tabsize
+o.tabstop = tabsize
+o.softtabstop = tabsize
+o.shiftwidth = tabsize
 
 bo.autoindent = true
 bo.autoread = true
 bo.smartindent = true
 bo.copyindent = true
-bo.expandtab = true
+o.expandtab = true
 o.shiftround = true
 o.updatetime=300
 
