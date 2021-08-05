@@ -20,8 +20,10 @@ local on_attach = function(client, bufnr)
   local opts = { noremap=true, silent=true }
 
   buf_set_keymap('n', '<leader>h', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  buf_set_keymap('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-  buf_set_keymap('n', '<space>ce', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+  buf_set_keymap('n', '<leader>ca', '<cmd>:Lspsaga code_action<CR>', opts)
+  -- buf_set_keymap('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  buf_set_keymap('n', '<space>ce', '<cmd>:Lspsaga show_line_diagnostics<CR>', opts)
+  -- buf_set_keymap('n', '<space>ce', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
   -- Set some keybinds conditional on server capabilities
   if client.resolved_capabilities.document_formatting then
     buf_set_keymap("n", "<leader>cf", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
@@ -39,6 +41,8 @@ local on_attach = function(client, bufnr)
           augroup END
           ]], true)
       end
+
+  require 'illuminate'.on_attach(client)
 end
 
 -- loop over default servers
@@ -70,7 +74,7 @@ end
 -- special setup for haskell & lua
 nvim_lsp.hls.setup{
     settings = {
-      languageServerHaskell = {
+      haskell = {
         formattingProvider = "fourmolu"
       }
     },
@@ -171,15 +175,28 @@ function PeekDefinition()
   return vim.lsp.buf_request(0, 'textDocument/definition', params, preview_location_callback)
 end
 
+-- vim.api.nvim_command [[ hi def link LspReferenceText CursorLine ]]
+-- vim.api.nvim_command [[ hi def link LspReferenceWrite CursorLine ]]
+-- vim.api.nvim_command [[ hi def link LspReferenceRead CursorLine ]]
+
 
 map('n', 'gd', '<cmd>Telescope lsp_definitions<cr>', {silent = true, noremap = true})
 map('n', 'gr', '<cmd>Telescope lsp_references<cr>', {silent = true, noremap = true})
 map('n', '<c-m>', '<cmd>Telescope lsp_document_symbols<cr>', {silent = true, noremap = true})
 map('n', 'gi', '<cmd>Telescope vim.lsp.buf.implementation()<cr>', {silent = true, noremap = true})
-map('n', 'gD', '<cmd>lua PeekDefinition()<cr>', {silent = true, noremap = true})
+map('n', 'gD', '<cmd>:Lspsaga preview_definition<cr>', {silent = true, noremap = true})
 map('n', '<leader>lt', '<cmd>:LspTroubleToggle<cr>', {silent = true, noremap = true})
 map('n', '<leader>ltr', '<cmd>:LspTroubleRefresh<cr>', {silent = true, noremap = true})
+-- map('n', 'K', '<cmd>:Lspsaga hover_doc<cr>', {silent = true, noremap = true})
 map('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>', {silent = true, noremap = true})
-map('n', '<c-x>', '<cmd>lua vim.lsp.diagnostic.set_loclist({open_loclist = true})<cr>', {silent = true, noremap = true})
-map('n', '<c-p>', '<cmd>lua vim.lsp.diagnostic.goto_prev()<cr>', {silent = true, noremap = true})
-map('n', '<c-n>', '<cmd>lua vim.lsp.diagnostic.goto_next()<cr>', {silent = true, noremap = true})
+-- map('n', '<c-x>', '<cmd>lua vim.lsp.diagnostic.set_loclist({open_loclist = true})<cr>', {silent = true, noremap = true})
+map('n', '<c-p>', '<cmd>:Lspsaga diagnostic_jump_prev<cr>', {silent = true, noremap = true})
+map('n', '<c-n>', '<cmd>:Lspsaga diagnostic_jump_next<cr>', {silent = true, noremap = true})
+-- map('n', '<c-p>', '<cmd>lua vim.lsp.diagnostic.goto_prev()<cr>', {silent = true, noremap = true})
+-- map('n', '<c-n>', '<cmd>lua vim.lsp.diagnostic.goto_next()<cr>', {silent = true, noremap = true})
+
+-- Illuminate
+map('n', '<a-n>', '<cmd>lua require"illuminate".next_reference{wrap=true}<cr>')
+map('n', '<a-p>', '<cmd>lua require"illuminate".next_reference{reverse=true,wrap=true}<cr>')
+vim.g.Illuminate_delay = 100
+

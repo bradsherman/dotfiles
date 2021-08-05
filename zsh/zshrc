@@ -122,7 +122,7 @@ if type rg &> /dev/null; then
   export FZF_DEFAULT_OPTS='-m --height 50% --border'
 fi
 
-alias vv="vim ~/.config/nvim/init.vim"
+alias vv="pushd ~/.config/nvim; vim .; popd;"
 alias vz="vim ~/.zshrc"
 alias sz="source ~/.zshrc"
 alias v3="vim ~/.config/i3/config"
@@ -193,3 +193,11 @@ source /home/bsherman/.config/broot/launcher/bash/br
 export PATH="/home/bsherman/.bitcoin/bin:$PATH"
 export PATH=$PATH:/usr/local/go/bin
 export PATH=$PATH:/home/bsherman/go/bin
+
+function vpnup {
+  sudo wg-quick up wg0
+}
+
+function vpndown {
+  sudo wg-quick down wg0
+}

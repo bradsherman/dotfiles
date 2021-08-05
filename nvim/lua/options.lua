@@ -16,10 +16,10 @@ o.tabstop = tabsize
 o.softtabstop = tabsize
 o.shiftwidth = tabsize
 
-bo.autoindent = true
-bo.autoread = true
-bo.smartindent = true
-bo.copyindent = true
+o.autoindent = true
+o.autoread = true
+o.smartindent = true
+o.copyindent = true
 o.expandtab = true
 o.shiftround = true
 o.updatetime=300

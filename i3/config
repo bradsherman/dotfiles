@@ -245,3 +245,7 @@ exec blueman-manager
 assign [class="Blueman-manager"] $ws4
 
 exec srandrd .local/bin/display_handler
+
+
+bindsym $mod+b exec --no-startup-id rofi-bluetooth
+

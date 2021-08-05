@@ -13,4 +13,6 @@ cp -r ./fontconfig ~/.config/
 cp -r ./display_handler ~/.local/bin/
 cp ./solarized-light.rasi ~/.local/share/rofi/themes/
 
-cp /fonts.conf ~/.fonts.conf
+cp ./fonts.conf ~/.fonts.conf
+
+cp ./tmux.conf ~/.tmux.conf

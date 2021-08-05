@@ -36,9 +36,9 @@ return require('packer').startup(function(use)
   use 'nvim-telescope/telescope.nvim'
   use 'nvim-telescope/telescope-fzy-native.nvim'
   use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
-  use 'lewis6991/gitsigns.nvim'
+  use {'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' } }
 
-  use 'lilydjwg/colorizer'
+  use 'norcalli/nvim-colorizer.lua'
   use 'luochen1990/rainbow'
   use 'RRethy/vim-illuminate'
   use 'karb94/neoscroll.nvim'
@@ -53,6 +53,7 @@ return require('packer').startup(function(use)
 
   use 'folke/lsp-colors.nvim'
   use 'neovim/nvim-lspconfig'
+  use 'glepnir/lspsaga.nvim'
   use 'hrsh7th/nvim-compe'
   use 'rafamadriz/friendly-snippets'
   use 'hrsh7th/vim-vsnip'
@@ -71,9 +72,17 @@ return require('packer').startup(function(use)
 
   use 'mattn/emmet-vim'
 
-  use 'easymotion/vim-easymotion'
+  use {
+    'phaazon/hop.nvim',
+    as = 'hop',
+    config = function()
+      -- you can configure Hop the way you like here; see :h hop-config
+      require'hop'.setup { keys = 'etovxqpdygfblzhckisuran' }
+    end
+  }
   use 'vmchale/dhall-vim'
   use 'Yggdroot/indentLine'
+  -- use 'lukas-reineke/indent-blankline.nvim'
   use 'christoomey/vim-tmux-navigator'
 
   use 'folke/todo-comments.nvim'
@@ -84,4 +93,3 @@ return require('packer').startup(function(use)
     cmd = "StartupTime",
   }
 end)
-

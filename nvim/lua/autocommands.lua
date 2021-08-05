@@ -4,7 +4,8 @@ create_augroup({
   { 'BufNewFile,BufRead', '*.md', 'set', 'ft=markdown' },
   { 'BufNewFile,BufRead', '*.md', 'set', 'wrap' },
   { 'FileType', 'markdown', 'set', 'conceallevel=2' },
-  { 'FileType', 'markdown', 'setlocal', 'spell', 'spelllang=en' }
+  { 'FileType', 'markdown', 'setlocal', 'spell', 'spelllang=en' },
+  { 'FileType', 'markdown', 'setlocal', 'spell', 'textwidth=90' }
 }, 'Markdown')
 
 -- Trim whitespace on save
@@ -18,16 +19,22 @@ create_augroup({
 }, 'ResumeEditPosition')
 
 
--- Send Diagnostics to loc list
-create_augroup({
-  { 'BufWrite,BufEnter,InsertLeave', '*', 'lua vim.lsp.diagnostic.set_loclist({open_loclist = false})' }
-}, 'LSP')
-
 create_augroup({
   { 'Filetype', 'gitcommit', 'setlocal', 'spell', 'textwidth=72' }
 }, 'CommitMsg')
 
 -- auto format on save
 create_augroup({
-  { 'BufWritePre', '*', 'lua vim.lsp.buf.formatting_sync(nil, 100)' }
+  { 'BufWritePre', '*', 'lua vim.lsp.buf.formatting_sync(nil, 1000)' }
 }, 'FormatOnSave')
+
+-- illuminate
+create_augroup({
+  {'VimEnter', '*', 'highlight Comment cterm=italic gui=italic'},
+  {'VimEnter', '*', 'highlight Normal guibg=none'},
+  {'VimEnter', '*', 'highlight link illuminatedWord CursorLine'},
+  {'VimEnter', '*', 'highlight illuminatedCurWord cterm=italic gui=italic'},
+  {'VimEnter', '*', 'highlight def link LspReferenceText CursorLine'},
+  {'VimEnter', '*', 'highlight def link LspReferenceWrite CursorLine'},
+  {'VimEnter', '*', 'highlight def link LspReferenceRead CursorLine'}
+}, 'Illuminate')
