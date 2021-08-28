@@ -193,6 +193,7 @@ source /home/bsherman/.config/broot/launcher/bash/br
 export PATH="/home/bsherman/.bitcoin/bin:$PATH"
 export PATH=$PATH:/usr/local/go/bin
 export PATH=$PATH:/home/bsherman/go/bin
+export PATH=$PATH:/home/bsherman/emacs/bin
 
 function vpnup {
   sudo wg-quick up wg0
@@ -201,3 +202,5 @@ function vpnup {
 function vpndown {
   sudo wg-quick down wg0
 }
+
+

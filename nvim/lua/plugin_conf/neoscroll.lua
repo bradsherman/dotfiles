@@ -1,6 +1,7 @@
 require('neoscroll').setup({
   mappings = {'<C-u>', '<C-d>'},
   stop_eof = false,
+  hide_cursor = false
     -- Set any other options as needed
 })
 local t = {}

@@ -18,4 +18,19 @@ M.create_augroup = function(autocmds, name)
     cmd('augroup END')
 end
 
+M.print = function(v)
+  print(vim.inspect(v))
+  return v
+end
+
+if pcall(require, "plenary") then
+  RELOAD = require("plenary.reload").reload_module
+
+  M.reload = function(name)
+    RELOAD(name)
+    return require(name)
+  end
+end
+
+
 return M

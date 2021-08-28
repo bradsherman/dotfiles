@@ -340,7 +340,8 @@ interface = wlp0s20f3
 interval = 1.0
 ping-interval = 10
 
-format-connected = <ramp-signal> <label-connected>
+; format-connected = <ramp-signal> <label-connected>
+format-connected = <label-connected>
 label-connected =   %essid%
 ; %downspeed%    %upspeed%
 label-disconnected = not connected

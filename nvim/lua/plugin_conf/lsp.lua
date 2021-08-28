@@ -15,6 +15,53 @@ lsp_status.config({
 })
 require'lsp_signature'.on_attach()
 
+
+require('lspkind').init({
+    -- enables text annotations
+    --
+    -- default: true
+    with_text = true,
+
+    -- default symbol map
+    -- can be either 'default' (requires nerd-fonts font) or
+    -- 'codicons' for codicon preset (requires vscode-codicons font)
+    --
+    -- default: 'default'
+    preset = 'codicons',
+
+    -- override preset symbols
+    --
+    -- default: {}
+    symbol_map = {
+      Text = "",
+      Method = "",
+      Function = "",
+      Constructor = "",
+      Field = "ﰠ",
+      Variable = "",
+      Class = "ﴯ",
+      Interface = "",
+      Module = "",
+      Property = "ﰠ",
+      Unit = "塞",
+      Value = "",
+      Enum = "",
+      Keyword = "",
+      Snippet = "",
+      Color = "",
+      File = "",
+      Reference = "",
+      Folder = "",
+      EnumMember = "",
+      Constant = "",
+      Struct = "פּ",
+      Event = "",
+      Operator = "",
+      TypeParameter = ""
+    },
+})
+
+
 local on_attach = function(client, bufnr)
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
   local opts = { noremap=true, silent=true }
@@ -33,14 +80,14 @@ local on_attach = function(client, bufnr)
   end
   lsp_status.on_attach(client, bufnr)
 
-  if client.resolved_capabilities.document_formatting then
-          vim.api.nvim_exec([[
-          augroup LspAutocommands
-              autocmd! * <buffer>
-              autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 5000)
-          augroup END
-          ]], true)
-      end
+  -- if client.resolved_capabilities.document_formatting then
+  --         vim.api.nvim_exec([[
+  --         augroup LspAutocommands
+  --             autocmd! * <buffer>
+  --             autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 5000)
+  --         augroup END
+  --         ]], true)
+  --     end
 
   require 'illuminate'.on_attach(client)
 end
@@ -59,14 +106,10 @@ local servers_default = {
   "terraformls",
   "vimls"
 }
-lsp_status.capabilities.textDocument.completion.completionItem.snippetSupport = true
-lsp_status.capabilities.textDocument.completion.completionItem.resolveSupport = {
-  properties = {
-    'documentation',
-    'detail',
-    'additionalTextEdits',
-  }
-}
+
+-- The nvim-cmp almost supports LSP's capabilities so You should advertise it to LSP servers..
+lsp_status.capabilities = require('cmp_nvim_lsp').update_capabilities(lsp_status.capabilities)
+
 for _, lsp in ipairs(servers_default) do
   nvim_lsp[lsp].setup { on_attach = on_attach, capabilities = lsp_status.capabilities }
 end
@@ -78,7 +121,10 @@ nvim_lsp.hls.setup{
         formattingProvider = "fourmolu"
       }
     },
-    on_attach = on_attach,
+    on_attach = function(client)
+      client.resolved_capabilities.document_formatting = true
+      on_attach(client)
+    end,
     capabilities = lsp_status.capabilities
 }
 

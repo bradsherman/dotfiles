@@ -38,3 +38,9 @@ create_augroup({
   {'VimEnter', '*', 'highlight def link LspReferenceWrite CursorLine'},
   {'VimEnter', '*', 'highlight def link LspReferenceRead CursorLine'}
 }, 'Illuminate')
+
+create_augroup({
+  {'FileType', 'haskell', 'setlocal tabstop=4'},
+  {'FileType', 'haskell', 'setlocal softtabstop=4'},
+  {'FileType', 'haskell', 'setlocal shiftwidth=4'}
+}, 'HaskellTabs')

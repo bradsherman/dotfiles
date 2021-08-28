@@ -54,6 +54,19 @@ return require('packer').startup(function(use)
   use 'folke/lsp-colors.nvim'
   use 'neovim/nvim-lspconfig'
   use 'glepnir/lspsaga.nvim'
+  use 'onsails/lspkind-nvim'
+  -- Install nvim-cmp, and buffer source as a dependency
+  use {
+    'hrsh7th/nvim-cmp',
+    requires = {
+      'hrsh7th/cmp-buffer',
+      'hrsh7th/cmp-nvim-lsp',
+      'quangnguyen30192/cmp-nvim-tags',
+      'saadparwaiz1/cmp_luasnip' -- Snippets source for nvim-cmp
+    }
+  }
+  use 'L3MON4D3/LuaSnip'
+
   use 'hrsh7th/nvim-compe'
   use 'rafamadriz/friendly-snippets'
   use 'hrsh7th/vim-vsnip'
