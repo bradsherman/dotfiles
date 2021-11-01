@@ -94,6 +94,7 @@ end
 
 -- loop over default servers
 local servers_default = {
+  "ansiblels",
   "rust_analyzer",
   "bashls",
   "dockerls",
@@ -154,77 +155,40 @@ nvim_lsp.tsserver.setup {
   capabilities = lsp_status.capabilities
 }
 
-local filetypes = {
-    typescript = "eslint",
-    typescriptreact = "eslint",
-}
-local linters = {
-    eslint = {
-        sourceName = "eslint",
-        command = "eslint_d",
-        rootPatterns = {".eslintrc.js", "package.json"},
-        debounce = 100,
-        args = {"--stdin", "--stdin-filename", "%filepath", "--format", "json"},
-        parseJson = {
-            errorsRoot = "[0].messages",
-            line = "line",
-            column = "column",
-            endLine = "endLine",
-            endColumn = "endColumn",
-            message = "${message} [${ruleId}]",
-            security = "severity"
-        },
-        securities = {[2] = "error", [1] = "warning"}
-    }
-}
+nvim_lsp.tsserver.setup({
+    on_attach = function(client, bufnr)
+        client.resolved_capabilities.document_formatting = false
+        client.resolved_capabilities.document_range_formatting = false
 
-local formatters = {
-    prettier = {command = "prettier", args = {"--stdin-filepath", "%filepath"}}
-}
-local formatFiletypes = {
-    typescript = "prettier",
-    typescriptreact = "prettier"
-}
+        local ts_utils = require("nvim-lsp-ts-utils")
+        ts_utils.setup({
+            eslint_bin = "eslint_d",
+            eslint_enable_diagnostics = true,
+            eslint_enable_code_actions = true,
+            enable_formatting = true,
+            formatter = "prettier",
+        })
+        ts_utils.setup_client(client)
 
-nvim_lsp.diagnosticls.setup {
-    on_attach = on_attach,
-    filetypes = vim.tbl_keys(filetypes),
-    init_options = {
-        filetypes = filetypes,
-        linters = linters,
-        formatters = formatters,
-        formatFiletypes = formatFiletypes
-    }
-}
+        on_attach(client, bufnr)
+    end,
+    capabilities = lsp_status.capabilities
+})
+
+require("null-ls").config({})
+nvim_lsp["null-ls"].setup({
+  on_attach = on_attach,
+  capabilities = lsp_status.capabilities
+})
 
 nvim_lsp.cssls.setup {
   on_attach = on_attach,
   capabilities = lsp_status.capabilities
 }
 
-
-
-local function preview_location_callback(_, method, result)
-  if result == nil or vim.tbl_isempty(result) then
-    vim.lsp.log.info(method, 'No location found')
-    return nil
-  end
-  if vim.tbl_islist(result) then
-    vim.lsp.util.preview_location(result[1])
-  else
-    vim.lsp.util.preview_location(result)
-  end
-end
-
-function PeekDefinition()
-  local params = vim.lsp.util.make_position_params()
-  return vim.lsp.buf_request(0, 'textDocument/definition', params, preview_location_callback)
-end
-
--- vim.api.nvim_command [[ hi def link LspReferenceText CursorLine ]]
--- vim.api.nvim_command [[ hi def link LspReferenceWrite CursorLine ]]
--- vim.api.nvim_command [[ hi def link LspReferenceRead CursorLine ]]
-
+vim.api.nvim_command [[ hi def link LspReferenceText CursorLine ]]
+vim.api.nvim_command [[ hi def link LspReferenceWrite CursorLine ]]
+vim.api.nvim_command [[ hi def link LspReferenceRead CursorLine ]]
 
 map('n', 'gd', '<cmd>Telescope lsp_definitions<cr>', {silent = true, noremap = true})
 map('n', 'gr', '<cmd>Telescope lsp_references<cr>', {silent = true, noremap = true})
@@ -233,8 +197,8 @@ map('n', 'gi', '<cmd>Telescope vim.lsp.buf.implementation()<cr>', {silent = true
 map('n', 'gD', '<cmd>:Lspsaga preview_definition<cr>', {silent = true, noremap = true})
 map('n', '<leader>lt', '<cmd>:LspTroubleToggle<cr>', {silent = true, noremap = true})
 map('n', '<leader>ltr', '<cmd>:LspTroubleRefresh<cr>', {silent = true, noremap = true})
--- map('n', 'K', '<cmd>:Lspsaga hover_doc<cr>', {silent = true, noremap = true})
-map('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>', {silent = true, noremap = true})
+map('n', 'K', '<cmd>:Lspsaga hover_doc<cr>', {silent = true, noremap = true})
+-- map('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>', {silent = true, noremap = true})
 -- map('n', '<c-x>', '<cmd>lua vim.lsp.diagnostic.set_loclist({open_loclist = true})<cr>', {silent = true, noremap = true})
 map('n', '<c-p>', '<cmd>:Lspsaga diagnostic_jump_prev<cr>', {silent = true, noremap = true})
 map('n', '<c-n>', '<cmd>:Lspsaga diagnostic_jump_next<cr>', {silent = true, noremap = true})

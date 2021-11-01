@@ -119,8 +119,17 @@ fpath+=${ZDOTDIR:-~}/.zsh_functions
 
 if type rg &> /dev/null; then
   export FZF_DEFAULT_COMMAND='rg --files'
-  export FZF_DEFAULT_OPTS='-m --height 50% --border'
 fi
+export FZF_DEFAULT_OPTS="
+-m --height 50% --border --layout=reverse
+--info=inline --color=light
+--prompt='~ ' --pointer='▶' --marker='✗'
+--preview-window=:hidden
+--preview '([[ -f {} ]] && (bat --style=numbers --color=always {} ||
+  cat {})) || ([[ -d {} ]] && (tree -C {} | less)) ||
+  echo {} 2> /dev/null | head -200'
+--bind 'ctrl-e:execute(echo {+} | xargs -o nvim)'
+--bind '?:toggle-preview'"
 
 alias vv="pushd ~/.config/nvim; vim .; popd;"
 alias vz="vim ~/.zshrc"
@@ -187,13 +196,16 @@ alias sqlite3="rlwrap -a -c -i sqlite3"
 alias ls='exa'
 alias htop='btm'
 alias man='tldr'
+alias shake='stack exec shake --'
 
 source /home/bsherman/.config/broot/launcher/bash/br
 
 export PATH="/home/bsherman/.bitcoin/bin:$PATH"
-export PATH=$PATH:/usr/local/go/bin
-export PATH=$PATH:/home/bsherman/go/bin
-export PATH=$PATH:/home/bsherman/emacs/bin
+export PATH="$PATH:/usr/local/go/bin"
+export PATH="$PATH:/home/bsherman/go/bin"
+export PATH="$PATH:/home/bsherman/emacs/bin"
+export PATH="$PATH:/opt/Beekeeper Studio"
+export PATH="$PATH:/home/bsherman/.yarn/bin"
 
 function vpnup {
   sudo wg-quick up wg0

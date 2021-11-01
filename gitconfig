@@ -1,0 +1,18 @@
+[user]
+  email = brad.sherman@bitnomial.com
+  name = Brad Sherman
+
+[alias]
+  fixup = !REV=$(git log --oneline origin/master..HEAD | fzf --prompt 'fixup> ' | awk '{print $1}') && git commit --fixup $REV && EDITOR=true git rebase -i --autosquash --autostash $REV^
+  st = status
+  co = checkout
+  ci = commit
+  rb = rebase
+  br = branch
+  pom = pull origin master
+
+[help]
+  autocorrect = 25
+
+[commit]
+  template = ~/.gitmessage

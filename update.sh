@@ -15,3 +15,5 @@ cp ~/.local/share/rofi/themes/solarized-light.rasi .
 cp ~/.fonts.conf fonts.conf
 
 cp ~/.tmux.conf tmux.conf
+
+cp ~/.gitconfig gitconfig

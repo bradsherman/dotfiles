@@ -40,12 +40,12 @@ map('n', '<leader>pi', ':PackerInstall<cr>', {silent=true, noremap=true})
 map('n', '<leader>pu', ':PackerSync<cr>', {silent=true, noremap=true})
 
 -- Expand
-map('i', '<c-j>', 'vsnip#expandable()  ? \'<Plug>(vsnip-expand)\' : \'<C-j>\'', {expr=true, noremap=true})
-map('s', '<c-j>', 'vsnip#expandable()  ? \'<Plug>(vsnip-expand)\' : \'<C-j>\'', {expr=true, noremap=true})
+-- map('i', '<c-j>', 'vsnip#expandable()  ? \'<Plug>(vsnip-expand)\' : \'<C-j>\'', {expr=true, noremap=true})
+-- map('s', '<c-j>', 'vsnip#expandable()  ? \'<Plug>(vsnip-expand)\' : \'<C-j>\'', {expr=true, noremap=true})
 
 -- Expand or jump
-map('i', '<c-l>', 'vsnip#available(1)  ? \'<Plug>(vsnip-expand-or-jump)\' : \'<C-l>\'', {expr=true, noremap=true})
-map('s', '<c-l>', 'vsnip#available(1)  ? \'<Plug>(vsnip-expand-or-jump)\' : \'<C-l>\'', {expr=true, noremap=true})
+-- map('i', '<c-l>', 'vsnip#available(1)  ? \'<Plug>(vsnip-expand-or-jump)\' : \'<C-l>\'', {expr=true, noremap=true})
+-- map('s', '<c-l>', 'vsnip#available(1)  ? \'<Plug>(vsnip-expand-or-jump)\' : \'<C-l>\'', {expr=true, noremap=true})
 
 -- zen mode
 map('n', '<leader>zm', '<cmd>execute luaeval("require(\'zen-mode\').toggle({ window = { width = .85 } })")<cr>', {silent=true, noremap=true})
