@@ -8,7 +8,7 @@ vim.cmd('syntax enable')
 o.hidden = true
 o.visualbell = false
 o.errorbells = false
-o.timeoutlen=500
+o.timeoutlen=100
 o.encoding='UTF-8'
 
 local tabsize=2
@@ -51,6 +51,8 @@ o.incsearch = true
 o.hlsearch = false
 o.ignorecase = true
 o.smartcase = true
+
+o.termguicolors = true
 
 bo.swapfile = false
 o.backup = false

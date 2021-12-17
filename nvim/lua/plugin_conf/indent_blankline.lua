@@ -10,9 +10,30 @@ vim.g.indent_blankline_show_first_indent_level = false
 -- vim.cmd [[highlight IndentBlanklineIndent5 guifg=#cb4b16 gui=nocombine]]
 -- vim.cmd [[highlight IndentBlanklineIndent6 guifg=#dc322f gui=nocombine]]
 
+vim.g.indent_blankline_buftype_exclude = { "alpha", "terminal", "nofile" }
+vim.g.indent_blankline_filetype_exclude = {
+	"help",
+	"startify",
+	"dashboard",
+	"packer",
+	"neogitstatus",
+	"NvimTree",
+	"Trouble",
+}
+
 require("indent_blankline").setup {
     char = "┆",
-    buftype_exclude = {"terminal"},
+    buftype_exclude = {
+      "alpha",
+      "terminal",
+      "help",
+      "startify",
+      "dashboard",
+      "packer",
+      "neogitstatus",
+      "NvimTree",
+      "Trouble",
+    },
     space_char_blankline = " ",
     use_treesitter = true,
     show_current_context = true,

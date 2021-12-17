@@ -1,35 +1,66 @@
-require('lualine').setup {
-  options = {
-    theme = 'solarized_light',
-    section_separators = {'', ''},
-    component_separators = {'', ''}
-  },
-  extensions = {'fzf', 'fugitive', 'nvim-tree'},
-  sections = {
-    lualine_a = {'mode'},
-    lualine_b = {
-      'branch',
-      {
-        'diff',
-        colored = true, -- displays diff status in color if set to true
-        symbols = {added = '+', modified = '~', removed = '-'} -- changes diff symbols
-      }
-    },
-    lualine_c = {{'filename', file_status = true, path = 1}},
-    lualine_x = {{'filetype', colored = true}},
-    lualine_y = {'progress', 'location'},
-    lualine_z = {
-      {
-        "diagnostics",
-        sources = {"nvim_lsp"},
-        sections = {'error', 'warn', 'info', 'hint'},
-        -- all colors are in format #rrggbb
-        color_error = '#fdf6e3', -- changes diagnostic's error foreground color
-        color_warn = '#fdf6e3', -- changes diagnostic's warn foreground color
-        color_info = '#fdf6e3', -- Changes diagnostic's info foreground color
-        color_hint = '#fdf6e3', -- Changes diagnostic's hint foreground color
-        symbols = {error = '❌ ', warn = '⚠️  ', info = 'ℹ️  ', hint = '💡 '}
-      }, require 'lsp-status'.status
-    }
- }
-}
+local hide_in_width = function()
+	return vim.fn.winwidth(0) > 80
+end
+
+local progress = function()
+	local current_line = vim.fn.line(".")
+	local total_lines = vim.fn.line("$")
+	local chars = { "__", "▁▁", "▂▂", "▃▃", "▄▄", "▅▅", "▆▆", "▇▇", "██" }
+	local line_ratio = current_line / total_lines
+	local index = math.ceil(line_ratio * #chars)
+	return chars[index]
+end
+
+require("lualine").setup({
+	options = {
+		-- theme = "zenbones",
+		-- theme = "nightfox",
+		theme = "solarized_light",
+		section_separators = { left = "", right = "" },
+		component_separators = { left = "", right = "" },
+		-- component_separators = { left = "", right = "" },
+		disabled_filetypes = { "packer", "alpha", "dashboard", "NvimTree", "Outline" },
+		always_divide_middle = true,
+	},
+	extensions = { "fzf", "fugitive", "nvim-tree", "quickfix" },
+	sections = {
+		lualine_a = {},
+		lualine_b = {
+			{ "branch", cond = hide_in_width },
+			{
+				"diff",
+				colored = true, -- displays diff status in color if set to true
+				symbols = { added = "+", modified = "~", removed = "-" }, -- changes diff symbols
+				cond = hide_in_width,
+			},
+		},
+		lualine_c = {
+			{
+				"diagnostics",
+				-- color = {bg='#eee8d5'},
+				sources = { "nvim_diagnostic" },
+				sections = { "error", "warn", "info", "hint" },
+				always_visible = true,
+				colored = true,
+				symbols = { error = "❌ ", warn = "⚠️  ", info = "ℹ️  ", hint = "💡 " },
+			},
+			{ "lsp_progress", always_visible = true },
+			function()
+				return "%="
+			end,
+			{ "filename", file_status = true, path = 0 },
+		},
+		lualine_x = { { "filetype", colored = true } },
+		lualine_y = { "location" },
+		lualine_z = { "mode", progress },
+	},
+	inactive_sections = {
+		lualine_a = {},
+		lualine_b = {},
+		lualine_c = {},
+		lualine_x = {},
+		lualine_y = {},
+		lualine_z = {},
+	},
+	tabline = {},
+})

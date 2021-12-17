@@ -110,33 +110,33 @@ font:
     # family: Hack Nerd Font
     # family: CaskaydiaCove Nerd Font
     family: monospace
-    style: Regular
+    style: Bold Italic
 
-  bold:
-    # family: Fira Code Nerd Font
-    # family: Hasklug Nerd Font
-    # family: Hack Nerd Font
-    # family: CaskaydiaCove Nerd Font
-    family: monospace
-    style: Bold
-
-  italic:
-    # family: Fira Code Nerd Font
-    # family: Hasklug Nerd Font
-    # family: Hack Nerd Font
-    # family: CaskaydiaCove Nerd Font
-    family: monospace
-    # style: Italic
-    style: SemiLight # use with cascadia
-
-  bold_italic:
-    # family: Fira Code Nerd Font
-    # family: Hasklug Nerd Font
-    # family: Hack Nerd Font
-    # family: CaskaydiaCove Nerd Font
-    family: monospace
-    # style: Bold Italic
-    style: SemiBold # cascadia
+  # bold:
+  #   # family: Fira Code Nerd Font
+  #   # family: Hasklug Nerd Font
+  #   # family: Hack Nerd Font
+  #   # family: CaskaydiaCove Nerd Font
+  #   family: monospace
+  #   style: Bold
+  #
+  # italic:
+  #   # family: Fira Code Nerd Font
+  #   # family: Hasklug Nerd Font
+  #   # family: Hack Nerd Font
+  #   # family: CaskaydiaCove Nerd Font
+  #   family: monospace
+  #   style: Italic
+  #   # style: SemiLight # use with cascadia
+  #
+  # bold_italic:
+  #   # family: Fira Code Nerd Font
+  #   # family: Hasklug Nerd Font
+  #   # family: Hack Nerd Font
+  #   # family: CaskaydiaCove Nerd Font
+  #   family: monospace
+  #   # style: Bold Italic
+  #   style: SemiBold # cascadia
 
   size: 11
   # Offset is the extra space around each character. `offset.y` can be thought
@@ -196,7 +196,66 @@ colors:
     cyan:    '#93a1a1' # base1
     white:   '#fdf6e3' # base3
 
-# Colors (Tomorrow Night)
+# Nightfox Alacritty Colors
+# Style: dawnfox
+# Upstream: https://github.com/edeneast/nightfox.nvim/raw/main/extra/dawnfox/nightfox_alacritty.yml
+# colors:
+#   # Default colors
+#   primary:
+#     background: '0xfaf4ed'
+#     foreground: '0x575279'
+#   # Normal colors
+#   normal:
+#     black:   '0x575279'
+#     red:     '0xb4637a'
+#     green:   '0x618774'
+#     yellow:  '0xea9d34'
+#     blue:    '0x286983'
+#     magenta: '0x907aa9'
+#     cyan:    '0x56949f'
+#     white:   '0xe5e9f0'
+#   # Bright colors
+#   bright:
+#     black:   '0x5F5695'
+#     red:     '0xC26D85'
+#     green:   '0x629F81'
+#     yellow:  '0xEEA846'
+#     blue:    '0x2D81A3'
+#     magenta: '0x9A80B9'
+#     cyan:    '0x5CA7B4'
+#     white:   '0xE6EBF3'
+#   indexed_colors:
+#     - { index: 16, color: '0xd7827e' }
+#     - { index: 17, color: '0xD685AF' }
+
+# Colors: Zenbones
+# colors:
+#   primary:
+#     foreground: '#2C363C'
+#     background: '#F0EDEC'
+#   cursor:
+#     cursor: '#F0EDEC'
+#     text: '#2C363C'
+#   normal:
+#     black:   '#F0EDEC'
+#     red:     '#A8334C'
+#     green:   '#4F6C31'
+#     yellow:  '#944927'
+#     blue:    '#286486'
+#     magenta: '#88507D'
+#     cyan:    '#3B8992'
+#     white:   '#2C363C'
+#   bright:
+#     black:   '#CFC1BA'
+#     red:     '#94253E'
+#     green:   '#3F5A22'
+#     yellow:  '#803D1C'
+#     blue:    '#1D5573'
+#     magenta: '#7B3B70'
+#     cyan:    '#2B747C'
+#     white:   '#4F5E68'
+
+# Colors Tomorrow Night
 #colors:
   # Default colors
   #primary:

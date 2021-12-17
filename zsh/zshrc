@@ -110,6 +110,7 @@ alias vim="nvim"
 [ -f "/home/bsherman/.ghcup/env" ] && source "/home/bsherman/.ghcup/env" # ghcup-env
 source /home/bsherman/.local/venv/bin/activate
 export PATH="/usr/lib/postgresql/12/bin:${PATH}"
+export PATH="$HOME/.tfenv/bin:${PATH}"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
