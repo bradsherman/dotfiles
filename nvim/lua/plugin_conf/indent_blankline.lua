@@ -21,24 +21,23 @@ vim.g.indent_blankline_filetype_exclude = {
 	"Trouble",
 }
 
-require("indent_blankline").setup {
-    char = "┆",
-    buftype_exclude = {
-      "alpha",
-      "terminal",
-      "help",
-      "startify",
-      "dashboard",
-      "packer",
-      "neogitstatus",
-      "NvimTree",
-      "Trouble",
-    },
-    space_char_blankline = " ",
-    use_treesitter = true,
-    show_current_context = true,
-}
-
+require("indent_blankline").setup({
+	char = "┆",
+	buftype_exclude = {
+		"alpha",
+		"terminal",
+		"help",
+		"startify",
+		"dashboard",
+		"packer",
+		"neogitstatus",
+		"NvimTree",
+		"Trouble",
+	},
+	space_char_blankline = " ",
+	use_treesitter = true,
+	show_current_context = true,
+})
 
 -- alternating bg shade
 -- vim.cmd [[highlight IndentBlanklineIndent1 guibg=#fdf6e3 gui=nocombine]]
@@ -58,4 +57,3 @@ require("indent_blankline").setup {
 --     },
 --     show_trailing_blankline_indent = false,
 -- }
-
