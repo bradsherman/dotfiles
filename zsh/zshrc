@@ -111,6 +111,7 @@ alias vim="nvim"
 source /home/bsherman/.local/venv/bin/activate
 export PATH="/usr/lib/postgresql/12/bin:${PATH}"
 export PATH="$HOME/.tfenv/bin:${PATH}"
+export PATH="$HOME/code/lua-language-server/bin/Linux:${PATH}"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -217,3 +218,5 @@ function vpndown {
 }
 
 
+
+alias luamake=/home/bsherman/code/lua-language-server/3rd/luamake/luamake

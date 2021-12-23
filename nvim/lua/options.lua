@@ -25,7 +25,7 @@ o.shiftround = true
 o.updatetime = 300
 
 o.mouse = "a"
--- o.shortmess = o.shortmess + { "c" }
+o.shortmess:append("c")
 o.ruler = false
 wo.wrap = false
 o.scrolloff = 12
@@ -36,7 +36,7 @@ o.showmatch = true
 o.splitright = true
 o.splitbelow = true
 o.backspace = "eol,indent,start"
-o.whichwrap = "<,>,h,l"
+vim.cmd("set whichwrap+=<,>,[,],h,l")
 o.showcmd = false
 o.showmode = false
 wo.cursorline = true
@@ -44,7 +44,7 @@ o.wildmenu = true
 o.cmdheight = 1
 o.clipboard = "unnamedplus"
 wo.colorcolumn = "120"
-wo.signcolumn = "yes"
+wo.signcolumn = "yes:2"
 o.laststatus = 2
 
 o.incsearch = true
