@@ -9,8 +9,13 @@ require("telescope").setup({
 		file_previewer = require("telescope.previewers").vim_buffer_cat.new,
 		grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
 		qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
+		path_display = { "smart" },
+		prompt_prefix = " ",
+		selection_caret = " ",
 		mappings = {
 			i = {
+				["<c-n>"] = actions.cycle_history_next,
+				["<c-p>"] = actions.cycle_history_prev,
 				["<c-j>"] = actions.move_selection_next,
 				["<c-k>"] = actions.move_selection_previous,
 				["<c-q>"] = actions.send_to_qflist,

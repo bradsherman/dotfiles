@@ -1,21 +1,47 @@
--- auto install packer
-local execute = vim.api.nvim_command
 local fn = vim.fn
 
+-- Automatically install packer
 local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
-
--- make sure impatient is loaded before any other plugin
---require('impatient')
-
 if fn.empty(fn.glob(install_path)) > 0 then
-	fn.system({ "git", "clone", "https://github.com/wbthomason/packer.nvim", install_path })
-	execute("packadd packer.nvim")
+	PACKER_BOOTSTRAP = fn.system({
+		"git",
+		"clone",
+		"--depth",
+		"1",
+		"https://github.com/wbthomason/packer.nvim",
+		install_path,
+	})
+	print("Installing packer close and reopen Neovim...")
+	vim.cmd([[ packadd packer.nvim ]])
 end
 
-vim.cmd([[autocmd BufWritePost plugins.lua source <afile> | PackerCompile]])
+-- Autocommand that reloads neovim whenever you save the plugins.lua file
+vim.cmd([[
+  augroup packer_user_config
+    autocmd!
+    autocmd BufWritePost plugins.lua source <afile> | PackerSync
+  augroup end
+]])
 
-return require("packer").startup(function(use)
+-- Use a protected call so we don't error out on first use
+local status_ok, packer = pcall(require, "packer")
+if not status_ok then
+	return
+end
+
+-- Have packer use a popup window
+packer.init({
+	display = {
+		open_fn = function()
+			return require("packer.util").float({ border = "rounded" })
+		end,
+	},
+})
+
+return packer.startup(function(use)
 	use("wbthomason/packer.nvim")
+	use("nvim-lua/popup.nvim")
+	use("nvim-lua/plenary.nvim")
 	use("TimUntersberger/neogit")
 
 	-- use 'ntpeters/vim-better-whitespace'
@@ -33,6 +59,7 @@ return require("packer").startup(function(use)
 		requires = "rktjmp/lush.nvim",
 	})
 	use("EdenEast/nightfox.nvim")
+	use("folke/tokyonight.nvim")
 	use("nvim-lualine/lualine.nvim")
 	use("arkav/lualine-lsp-progress")
 	use("APZelos/blamer.nvim")
@@ -42,8 +69,6 @@ return require("packer").startup(function(use)
 	use("~/.fzf")
 	use("junegunn/fzf")
 	use("junegunn/fzf.vim")
-	use("nvim-lua/popup.nvim")
-	use("nvim-lua/plenary.nvim")
 	use("nvim-telescope/telescope.nvim")
 	use("nvim-telescope/telescope-fzy-native.nvim")
 	use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
@@ -56,21 +81,20 @@ return require("packer").startup(function(use)
 	use("inside/vim-search-pulse")
 	use("kyazdani42/nvim-web-devicons")
 	use("kyazdani42/nvim-tree.lua")
-	-- use 'overcache/NeoSolarized'
-	-- use 'lifepillar/vim-solarized8'
 	use("ishan9299/nvim-solarized-lua")
 
 	use("folke/lsp-colors.nvim")
 	use("neovim/nvim-lspconfig")
 	use("jose-elias-alvarez/null-ls.nvim")
 	use("jose-elias-alvarez/nvim-lsp-ts-utils")
-	use("onsails/lspkind-nvim")
 	-- Install nvim-cmp, and buffer source as a dependency
 	use({
 		"hrsh7th/nvim-cmp",
 		requires = {
 			"hrsh7th/cmp-buffer",
 			"hrsh7th/cmp-nvim-lsp",
+			"hrsh7th/cmp-path",
+			"hrsh7th/cmp-nvim-lua",
 			"quangnguyen30192/cmp-nvim-tags",
 			"saadparwaiz1/cmp_luasnip", -- Snippets source for nvim-cmp
 		},
@@ -94,9 +118,10 @@ return require("packer").startup(function(use)
 	use("luukvbaal/stabilize.nvim")
 
 	use("rafamadriz/friendly-snippets")
-	use("nvim-lua/lsp-status.nvim")
 	use({ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" }) -- We recommend updating the parsers on update
+	use("romgrk/nvim-treesitter-context")
 	use("nvim-treesitter/playground")
+	use("p00f/nvim-ts-rainbow")
 	use("folke/trouble.nvim")
 	use("ray-x/lsp_signature.nvim")
 	use("tami5/lspsaga.nvim")
@@ -140,4 +165,10 @@ return require("packer").startup(function(use)
 	use("lewis6991/impatient.nvim")
 	use({ "goolord/alpha-nvim", requires = "kyazdani42/nvim-web-devicons" })
 	use("antoinemadec/FixCursorHold.nvim") -- This is needed to fix lsp doc highlight
+
+	-- Automatically set up your configuration after cloning packer.nvim
+	-- Put this at the end after all plugins
+	if PACKER_BOOTSTRAP then
+		require("packer").sync()
+	end
 end)

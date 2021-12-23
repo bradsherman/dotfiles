@@ -11,10 +11,11 @@ else
 	vim.g.solarized_termtrans = 1
 end
 vim.g.solarized_italics = 1
-vim.g.solarized_visbility = "low"
-vim.cmd("colorscheme solarized-high")
+vim.g.solarized_visbility = "normal"
+vim.cmd("colorscheme solarized-flat")
 
 -- vim.cmd("colorscheme zenbones")
+-- vim.cmd("colorscheme tokyonight")
 
 -- local nightfox = require("nightfox")
 

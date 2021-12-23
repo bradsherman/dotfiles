@@ -1,6 +1,5 @@
 local map = require("utils").map
 local nvim_lsp = require("lspconfig")
-local lsp_status = require("lsp-status")
 
 -- local signs = {
 --   { name = "DiagnosticSignError", text = "" },
@@ -21,7 +20,7 @@ for _, sign in ipairs(signs) do
 end
 
 local config = {
-	virtual_text = true,
+	virtual_text = false,
 	-- show signs
 	signs = {
 		active = signs,
@@ -41,68 +40,15 @@ local config = {
 
 vim.diagnostic.config(config)
 
-lsp_status.register_progress()
-local kind_labels_mt = {
-	__index = function(_, k)
-		return k
-	end,
-}
-local kind_labels = {}
-setmetatable(kind_labels, kind_labels_mt)
-lsp_status.config({
-	kind_labels = kind_labels,
-	indicator_errors = "❌",
-	indicator_warnings = "⚠️ ",
-	indicator_info = "ℹ️ ",
-	indicator_hint = "💡",
-	component_separator = "|",
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+	border = "rounded",
 })
+
+vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+	border = "rounded",
+})
+
 require("lsp_signature").on_attach()
-
-require("lspkind").init({
-	-- enables text annotations
-	--
-	-- default: true
-	with_text = true,
-
-	-- default symbol map
-	-- can be either 'default' (requires nerd-fonts font) or
-	-- 'codicons' for codicon preset (requires vscode-codicons font)
-	--
-	-- default: 'default'
-	preset = "default",
-
-	-- override preset symbols
-	--
-	-- default: {}
-	symbol_map = {
-		Text = "",
-		Method = "",
-		Function = "",
-		Constructor = "",
-		Field = "ﰠ",
-		Variable = "",
-		Class = "ﴯ",
-		Interface = "",
-		Module = "",
-		Property = "ﰠ",
-		Unit = "塞",
-		Value = "",
-		Enum = "",
-		Keyword = "",
-		Snippet = "",
-		Color = "",
-		File = "",
-		Reference = "",
-		Folder = "",
-		EnumMember = "",
-		Constant = "",
-		Struct = "פּ",
-		Event = "",
-		Operator = "",
-		TypeParameter = "",
-	},
-})
 
 local opts = { noremap = true, silent = true }
 
@@ -125,7 +71,6 @@ local on_attach = function(client, bufnr)
 	if client.resolved_capabilities.document_range_formatting then
 		buf_set_keymap("v", "<leader>cf", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
 	end
-	lsp_status.on_attach(client, bufnr)
 
 	require("illuminate").on_attach(client)
 end
@@ -147,8 +92,10 @@ local servers_default = {
 	"pyright",
 }
 
+local bare_capabilities = vim.lsp.protocol.make_client_capabilities()
+
 -- The nvim-cmp almost supports LSP's capabilities so You should advertise it to LSP servers..
-local capabilities = require("cmp_nvim_lsp").update_capabilities(lsp_status.capabilities)
+local capabilities = require("cmp_nvim_lsp").update_capabilities(bare_capabilities)
 
 for _, lsp in ipairs(servers_default) do
 	nvim_lsp[lsp].setup({ on_attach = on_attach, capabilities = capabilities })
@@ -168,33 +115,24 @@ nvim_lsp.hls.setup({
 	capabilities = capabilities,
 })
 
+local runtime_path = vim.split(package.path, ";")
+table.insert(runtime_path, "lua/?.lua")
+table.insert(runtime_path, "lua/?/init.lua")
+
 nvim_lsp.sumneko_lua.setup({
-	cmd = {
-		"/home/bsherman/code/lua-language-server/bin/Linux/lua-language-server",
-		"-E",
-		"/home/bsherman/code/lua-language-server/main.lua",
-	},
 	settings = {
 		Lua = {
 			runtime = {
 				version = "LuaJIT",
-				path = vim.split(package.path, ";"),
+				path = runtime_path,
 			},
 			diagnostics = {
+				enable = true,
 				globals = { "vim" },
 			},
 		},
 	},
 	on_attach = on_attach,
-	capabilities = capabilities,
-})
-
-nvim_lsp.tsserver.setup({
-	on_attach = function(client)
-		-- disable formatting to prevent issues with prettier
-		client.resolved_capabilities.document_formatting = false
-		on_attach(client)
-	end,
 	capabilities = capabilities,
 })
 

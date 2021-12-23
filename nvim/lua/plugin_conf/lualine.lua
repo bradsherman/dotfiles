@@ -16,6 +16,7 @@ require("lualine").setup({
 		-- theme = "zenbones",
 		-- theme = "nightfox",
 		theme = "solarized_light",
+		-- theme = "tokyonight",
 		section_separators = { left = "", right = "" },
 		component_separators = { left = "", right = "" },
 		-- component_separators = { left = "", right = "" },
