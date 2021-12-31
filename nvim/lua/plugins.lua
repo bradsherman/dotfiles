@@ -76,7 +76,6 @@ return packer.startup(function(use)
 
 	use("norcalli/nvim-colorizer.lua")
 	use("luochen1990/rainbow")
-	use("RRethy/vim-illuminate")
 	use("karb94/neoscroll.nvim")
 	use("inside/vim-search-pulse")
 	use("kyazdani42/nvim-web-devicons")
@@ -85,6 +84,7 @@ return packer.startup(function(use)
 
 	use("folke/lsp-colors.nvim")
 	use("neovim/nvim-lspconfig")
+	use("williamboman/nvim-lsp-installer")
 	use("jose-elias-alvarez/null-ls.nvim")
 	use("jose-elias-alvarez/nvim-lsp-ts-utils")
 	-- Install nvim-cmp, and buffer source as a dependency
@@ -133,12 +133,6 @@ return packer.startup(function(use)
 	-- -- use 'unisonweb/unison', { 'branch': 'trunk', 'rtp': 'editor-support/vim' }
 
 	use("akinsho/toggleterm.nvim")
-	use({
-		"VonHeikemen/fine-cmdline.nvim",
-		requires = {
-			{ "MunifTanjim/nui.nvim" },
-		},
-	})
 
 	use("mattn/emmet-vim")
 
@@ -149,6 +143,7 @@ return packer.startup(function(use)
 
 	use("folke/todo-comments.nvim")
 	use("sindrets/diffview.nvim")
+	use("Pocco81/TrueZen.nvim")
 	use("folke/zen-mode.nvim")
 	use({
 		"dstein64/vim-startuptime",

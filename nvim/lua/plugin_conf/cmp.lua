@@ -93,7 +93,7 @@ cmp.setup({
 			end
 		end, { "i", "s" }),
 	},
-	sources = {
+	sources = cmp.config.sources({
 		{ name = "nvim_lsp" },
 		{ name = "luasnip" },
 		{ name = "nvim_lua" },
@@ -101,9 +101,9 @@ cmp.setup({
 		{ name = "buffer" },
 		{ name = "neorg" },
 		{ name = "tags" },
-	},
+	}),
 	experimental = {
-		ghost_text = true,
+		ghost_text = false,
 		native_menu = false,
 	},
 })
@@ -114,12 +114,11 @@ cmp.setup.cmdline("/", {
 	},
 })
 
+-- TODO: when adding 'path' source this doesn't work
 cmp.setup.cmdline(":", {
-	sources = cmp.config.sources({
-		{ name = "path" },
-	}, {
+	sources = {
 		{ name = "cmdline" },
-	}),
+	},
 })
 
 require("luasnip/loaders/from_vscode").lazy_load({

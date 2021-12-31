@@ -31,17 +31,6 @@ create_augroup({
 	{ "BufWritePre", "*", "lua vim.lsp.buf.formatting_sync(nil, 1000)" },
 }, "FormatOnSave")
 
--- illuminate
-create_augroup({
-	{ "VimEnter", "*", "highlight Comment cterm=italic gui=italic" },
-	{ "VimEnter", "*", "highlight Normal guibg=none" },
-	{ "VimEnter", "*", "highlight link illuminatedWord CursorLine" },
-	{ "VimEnter", "*", "highlight illuminatedCurWord cterm=italic gui=italic" },
-	{ "VimEnter", "*", "highlight def link LspReferenceText CursorLine" },
-	{ "VimEnter", "*", "highlight def link LspReferenceWrite CursorLine" },
-	{ "VimEnter", "*", "highlight def link LspReferenceRead CursorLine" },
-}, "Illuminate")
-
 create_augroup({
 	{ "FileType", "haskell", "setlocal tabstop=4" },
 	{ "FileType", "haskell", "setlocal softtabstop=4" },
