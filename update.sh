@@ -1,19 +1,49 @@
 #!/bin/bash
 
+function usage () {
+    echo "usage: $0 [-h] [-a (application)]"
+    echo ""
+    echo "-h help"
+    echo "-a application to update"
+}
 
-cp ~/.zshrc zsh/zshrc
-cp -r ~/.config/alacritty .
-cp -r ~/.config/dunst .
-cp -r ~/.config/i3 .
-cp -r ~/.config/nvim .
-cp -r ~/.config/polybar .
-cp ~/.local/bin/display_handler .
-cp -r ~/.config/fontconfig .
+app="all"
 
-cp ~/.local/share/rofi/themes/solarized-light.rasi .
+while getopts ":ha:" option; do
+    case ${option} in
+        h ) usage; exit;;
+        a ) app=$OPTARG;;
+        ? ) echo "error: option -$OPTARG is not implemented"; usage; exit;;
+    esac
+done
+shift $((OPTIND -1))
 
-cp ~/.fonts.conf fonts.conf
+# first arg is app
+# second arg is src
+# third arg is dst
+# any other args are passed to 'cp'
+function copy_config () {
+  if [[ $app == "all" || $app == $1 ]]; then
+    echo "Updating application: $1"
+    params=()
+    for var in "${@:4}"; do
+        params+=("$var")
+    done
+    cp "${params[@]}" $2 $3
+  else
+    echo "Skipping application: $1"
+  fi
+}
 
-cp ~/.tmux.conf tmux.conf
-
-cp ~/.gitconfig gitconfig
+copy_config "alacritty" ~/.config/alacritty . "-r"
+copy_config "display_handler" ~/.local/bin/display_handler .
+copy_config "dunst" ~/.config/dunst . "-r"
+copy_config "fontconfig" ~/.config/fontconfig . "-r"
+copy_config "fonts" ~/.fonts.conf fonts.conf
+copy_config "gitconfig" ~/.gitconfig gitconfig
+copy_config "i3" ~/.config/i3 . "-r"
+copy_config "nvim" ~/.config/nvim . "-r"
+copy_config "polybar" ~/.config/polybar . "-r"
+copy_config "rofi" ~/.local/share/rofi/themes/solarized-light.rasi .
+copy_config "tmux" ~/.tmux.conf tmux.conf
+copy_config "zsh" ~/.zshrc zsh/zshrc
