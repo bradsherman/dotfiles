@@ -1,9 +1,14 @@
-require("bufferline").setup({
+local status_ok, bufferline = pcall(require, "bufferline")
+if not status_ok then
+	return
+end
+
+bufferline.setup({
 	options = {
 		numbers = "none", --  | "ordinal" | "buffer_id" | "both" | function({ ordinal, id, lower, raise }): string,
 		--- @deprecated, please specify numbers as a function to customize the styling
-		close_command = "bdelete! %d", -- can be a string | function, see "Mouse actions"
-		right_mouse_command = "bdelete! %d", -- can be a string | function, see "Mouse actions"
+		close_command = "Bdelete! %d", -- can be a string | function, see "Mouse actions"
+		right_mouse_command = "Bdelete! %d", -- can be a string | function, see "Mouse actions"
 		left_mouse_command = "buffer %d", -- can be a string | function, see "Mouse actions"
 		middle_mouse_command = nil, -- can be a string | function, see "Mouse actions"
 		-- NOTE: this plugin is designed with this icon in mind,
@@ -49,7 +54,7 @@ require("bufferline").setup({
 		--     return true
 		--   end
 		-- end,
-		offsets = { { filetype = "NvimTree", text = "File Explorer" } }, -- | function , text_align = "left" | "center" | "right"}},
+		offsets = { { filetype = "NvimTree", text = "File Explorer", padding = 1 } }, -- | function , text_align = "left" | "center" | "right"}},
 		show_buffer_icons = true, -- disable filetype icons for buffers
 		show_buffer_close_icons = true,
 		show_close_icon = true,
@@ -57,7 +62,7 @@ require("bufferline").setup({
 		persist_buffer_sort = true, -- whether or not custom sorted buffers should persist
 		-- can also be a table containing 2 custom separators
 		-- [focused and unfocused]. eg: { '|', '|' }
-		separator_style = "thin",
+		separator_style = "padded_slant",
 		enforce_regular_tabs = true,
 		always_show_bufferline = true,
 		-- sort_by = 'id' | 'extension' | 'relative_directory' | 'directory' | 'tabs' | function(buffer_a, buffer_b)

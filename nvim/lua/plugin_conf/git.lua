@@ -1,6 +1,6 @@
 local map = require("utils").map
 
-require("octo").setup()
+-- require("octo").setup()
 
 -- Fugitive
 map("n", "<leader>gs", ":G<cr>", { silent = true, noremap = true })

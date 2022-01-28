@@ -1,8 +1,13 @@
-local toggleterm = require("toggleterm")
+local map = require("utils").map
+
+local status_ok, toggleterm = pcall(require, "toggleterm")
+if not status_ok then
+	return
+end
 
 toggleterm.setup({
-	size = 20,
-	open_mapping = [[<c-\>]],
+	size = 80,
+	open_mapping = [[<c-o>]],
 	hide_numbers = true,
 	shade_filetypes = {},
 	shade_terminals = true,
@@ -25,12 +30,12 @@ toggleterm.setup({
 
 function _G.set_terminal_keymaps()
 	local opts = { noremap = true }
-	vim.api.nvim_buf_set_keymap(0, "t", "<esc>", [[<C-\><C-n>]], opts)
-	vim.api.nvim_buf_set_keymap(0, "t", "jk", [[<C-\><C-n>]], opts)
-	vim.api.nvim_buf_set_keymap(0, "t", "<C-h>", [[<C-\><C-n><C-W>h]], opts)
-	vim.api.nvim_buf_set_keymap(0, "t", "<C-j>", [[<C-\><C-n><C-W>j]], opts)
-	vim.api.nvim_buf_set_keymap(0, "t", "<C-k>", [[<C-\><C-n><C-W>k]], opts)
-	vim.api.nvim_buf_set_keymap(0, "t", "<C-l>", [[<C-\><C-n><C-W>l]], opts)
+	map("t", "<esc>", [[<C-\><C-n>]], opts)
+	map("t", "jk", [[<C-\><C-n>]], opts)
+	map("t", "<C-h>", [[<C-\><C-n><C-W>h]], opts)
+	map("t", "<C-j>", [[<C-\><C-n><C-W>j]], opts)
+	map("t", "<C-k>", [[<C-\><C-n><C-W>k]], opts)
+	map("t", "<C-l>", [[<C-\><C-n><C-W>l]], opts)
 end
 
 vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
@@ -65,3 +70,11 @@ local python = Terminal:new({ cmd = "python", hidden = true })
 function _PYTHON_TOGGLE()
 	python:toggle()
 end
+
+local ghci = Terminal:new({ cmd = "stack ghci", hidden = true })
+
+function _GHCI_TOGGLE()
+	ghci:toggle()
+end
+map("n", "<leader>ghc", "lua _GHCI_TOGGLE()", { noremap = true, silent = true })
+-- vim.keymap.set("n", "<leader>ghc", _GHCI_TOGGLE)

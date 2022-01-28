@@ -3,13 +3,18 @@ local actions = require("telescope.actions")
 local uReload = require("utils").reload
 local print = require("utils").print
 
-require("telescope").setup({
+local telescope_status_ok, telescope = pcall(require, "telescope")
+if not telescope_status_ok then
+	return
+end
+
+telescope.setup({
 	defaults = {
 		layout = { prompt_position = "bottom" },
 		file_previewer = require("telescope.previewers").vim_buffer_cat.new,
 		grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
 		qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
-		path_display = { "smart" },
+		path_display = { shorten = 4 },
 		prompt_prefix = " ",
 		selection_caret = " ",
 		mappings = {
@@ -36,6 +41,9 @@ require("telescope").setup({
 		},
 	},
 	extensions = {
+		file_browser = {
+			theme = "ivy",
+		},
 		fzf = {
 			fuzzy = true,
 			override_generic_sorter = true,
@@ -44,8 +52,9 @@ require("telescope").setup({
 		},
 	},
 })
-require("telescope").load_extension("fzf")
-require("telescope").load_extension("hoogle")
+telescope.load_extension("file_browser")
+telescope.load_extension("fzf")
+telescope.load_extension("hoogle")
 
 local M = {}
 
@@ -93,11 +102,13 @@ function M.reload()
 	require("telescope.builtin").find_files(opts)
 end
 
-map("n", "<c-f>", "<cmd>Telescope find_files<cr>", { silent = true, noremap = true })
-map("n", "<c-g>", "<cmd>Telescope live_grep<cr>", { silent = true, noremap = true })
-map("n", "<c-t>", "<cmd>Telescope tags<cr>", { silent = true, noremap = true })
-map("n", "<c-b>", "<cmd>Telescope buffers<cr>", { silent = true, noremap = true })
-map("n", "<leader>fe", "<cmd>Telescope file_browser<cr>", { silent = true, noremap = true })
-map("n", "<leader>qr", '<cmd>:lua require("plugin_conf/telescope").reload()<cr>', { noremap = true, silent = true })
+local opts = { silent = true, noremap = true }
+
+map("n", "<c-f>", "<cmd>Telescope find_files<cr>", opts)
+map("n", "<c-g>", "<cmd>Telescope live_grep<cr>", opts)
+map("n", "<c-t>", "<cmd>Telescope tags<cr>", opts)
+map("n", "<c-b>", "<cmd>Telescope buffers<cr>", opts)
+map("n", "<leader>fe", "<cmd>lua require 'telescope'.extensions.file_browser.file_browser()<cr>", opts)
+map("n", "<leader>qr", '<cmd>:lua require("plugin_conf/telescope").reload()<cr>', opts)
 
 return M

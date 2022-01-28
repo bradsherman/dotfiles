@@ -53,6 +53,7 @@ local function lsp_highlight_document(client)
       augroup lsp_document_highlight
         autocmd! * <buffer>
         autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+        autocmd CursorHold <buffer> Lspsaga show_line_diagnostics
         autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
     ]],
 			false
@@ -100,10 +101,13 @@ M.on_attach = function(client, bufnr)
 		client.resolved_capabilities.document_formatting = false
 		client.resolved_capabilities.document_range_formatting = false
 	end
+	-- if client.name == "jsonls" then
+	-- 	client.resolved_capabilities.document_formatting = false
+	-- 	client.resolved_capabilities.document_range_formatting = false
+	-- end
 	require("lsp_signature").on_attach()
 	lsp_keymaps(client, bufnr)
-	-- TODO: this throws errors when lsp hasn't finished starting
-	--lsp_highlight_document(client)
+	lsp_highlight_document(client)
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()

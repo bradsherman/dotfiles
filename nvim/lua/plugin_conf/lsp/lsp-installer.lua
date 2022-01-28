@@ -3,6 +3,23 @@ if not status_ok then
 	return
 end
 
+local lspconf_status, nvim_lsp = pcall(require, "lspconfig")
+if not lspconf_status then
+	return
+end
+
+-- special setup for haskell, for some reason it crashes on certain files when used
+-- with nvim lsp installer - could be due to outdated version
+nvim_lsp.hls.setup({
+	settings = {
+		haskell = {
+			formattingProvider = "fourmolu",
+		},
+	},
+	on_attach = require("plugin_conf.lsp.handlers").on_attach,
+	capabilities = require("plugin_conf.lsp.handlers").capabilities,
+})
+
 -- Register a handler that will be called for all installed servers.
 -- Alternatively, you may also register handlers on specific server instances instead (see example below).
 lsp_installer.on_server_ready(function(server)

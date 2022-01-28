@@ -1,5 +1,11 @@
-local cmp = require("cmp")
-local luasnip = require("luasnip")
+local cmp_status_ok, cmp = pcall(require, "cmp")
+if not cmp_status_ok then
+	return
+end
+local snip_status_ok, luasnip = pcall(require, "luasnip")
+if not snip_status_ok then
+	return
+end
 
 local has_words_before = function()
 	local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -124,6 +130,3 @@ cmp.setup.cmdline(":", {
 require("luasnip/loaders/from_vscode").lazy_load({
 	paths = { "~/.local/share/nvim/site/pack/packer/start/friendly-snippets" },
 })
-
-local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done({ map_char = { tex = "" } }))

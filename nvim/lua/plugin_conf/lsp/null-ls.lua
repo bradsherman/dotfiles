@@ -18,6 +18,8 @@ null_ls.setup({
 		code_actions.shellcheck,
 		diagnostics.eslint_d,
 		formatting.stylua,
-		formatting.prettier,
+		formatting.prettier.with({
+			disabled_filetypes = { "json" },
+		}),
 	},
 })
