@@ -1,5 +1,3 @@
-local map = require("utils").map
-
 local impatient = require("impatient")
 impatient.enable_profile()
 
@@ -11,7 +9,9 @@ require("plugin_conf.lualine")
 require("plugin_conf.telescope")
 require("plugin_conf.trouble")
 require("plugin_conf.treesitter")
+require("plugin_conf.lspsaga")
 require("plugin_conf.lsp")
+require("plugin_conf.dbg")
 require("plugin_conf.cmp")
 require("plugin_conf.git")
 require("plugin_conf.gitsigns")
@@ -23,6 +23,8 @@ require("plugin_conf.comment")
 require("plugin_conf.toggleterm")
 require("plugin_conf.zen")
 require("plugin_conf.autopairs")
+-- comment out until https://github.com/neovim/neovim/issues/11440 is resolved
+-- require("plugin_conf.shade")
 -- require("plugin_conf.alpha")
 
 -- easy installs
@@ -32,16 +34,11 @@ require("stabilize").setup()
 require("renamer").setup({})
 require("nvim-ts-autotag").setup()
 require("treesitter-context").setup({})
-
--- vim.g.sql_type_default = 'pgsql'
-
-vim.ui.select = require("popui.ui-overrider")
-vim.g.popui_border_style = "double"
+require("fidget").setup({})
 
 vim.g.do_filetype_lua = 1
 
-local opts = { silent = true, noremap = true }
-map("n", "<leader>tm", ":TableModeToggle<cr>", opts)
-map("n", "<leader>dfo", ":DiffviewOpen<cr>", opts)
-map("n", "<leader>dfc", ":DiffviewClose<cr>", opts)
-map("n", "<leader>hw", ":HopWord<cr>", opts)
+vim.keymap.set("n", "<leader>tm", ":TableModeToggle<cr>")
+vim.keymap.set("n", "<leader>dfo", ":DiffviewOpen<cr>")
+vim.keymap.set("n", "<leader>dfc", ":DiffviewClose<cr>")
+vim.keymap.set("n", "<leader>hw", ":HopWord<cr>")

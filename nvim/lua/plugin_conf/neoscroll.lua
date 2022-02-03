@@ -1,13 +1,13 @@
 local status_ok, neoscroll = pcall(require, "neoscroll")
 if not status_ok then
-	return
+    return
 end
 
 neoscroll.setup({
-	mappings = { "<C-u>", "<C-d>" },
-	stop_eof = false,
-	hide_cursor = false,
-	-- Set any other options as needed
+    mappings = { "<C-u>", "<C-d>" },
+    stop_eof = false,
+    hide_cursor = false,
+    -- Set any other options as needed
 })
 local t = {}
 t["<C-u>"] = { "scroll", { "-vim.wo.scroll", "true", "250", "sine" } }

@@ -171,10 +171,10 @@ bindsym $mod+r mode "resize"
 # $cyan:      #2aa198;
 # $green:     #859900;
 
-# Widow Colors
-set $window-text     #fdf6e3
-set $focused-bg      #6c71c4
-set $unfocused-bg    #657b83
+# Window Colors
+set $window-text     #232831
+set $focused-bg      #81a1c1
+set $unfocused-bg    #9DA2AC
 set $urgent-bg       #d33682
 set $indicator-color #2aa198
 #                       border         background     text         indicator

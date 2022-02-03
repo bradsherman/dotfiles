@@ -6,8 +6,12 @@ width = 100%
 height = 50
 dpi = 192
 
-background = #fdf6e3
-foreground = #657b83
+;background = #fdf6e3
+;foreground = #657b83
+;background: 0x2e3440
+;foreground: 0xb9bfca
+background=#4b5668
+foreground=#81a1c1
 
 line-color = ${bar/external.background}
 line-size = 3
@@ -346,8 +350,8 @@ label-connected =   %essid%
 label-disconnected = not connected
 label-disconnected-foreground = #dc322f
 label-disconnected-padding = 1
-label-connected-background = #fdf6e3
-label-connected-foreground = #2aa198
+label-connected-background = ${root.background}
+label-connected-foreground = ${root.foreground}
 
 ramp-signal-0 = 
 ramp-signal-1 = 
@@ -556,9 +560,9 @@ label-mode-background = #d33682
 ;   %output%
 ; Default: %icon%  %name%
 label-focused =  %icon%
-label-focused-foreground = #fdf6e3
-label-focused-background = #6c71c4
-label-focused-underline = #2aa198
+label-focused-foreground = ${root.background}
+label-focused-background = ${root.foreground}
+label-focused-underline = ${root.background}
 label-focused-padding = 4
 
 ; Available tokens:
@@ -594,7 +598,7 @@ label-urgent-padding = 4
 ; Separator in between workspaces
 label-separator = |
 label-separator-padding = 0
-label-separator-foreground = #657b83
+label-separator-foreground = #9DA2AC
 
 [module/spotify]
 type = custom/script
@@ -603,47 +607,56 @@ format-prefix = " "
 format = <label>
 exec = /home/bsherman/.local/venv/bin/python  /home/bsherman/.config/polybar/spotify.py -f '{play_pause} {song} - {artist} - {album}'
 
-format-underline = #2aa198
+format-underline = ${root.foreground}
 
 [module/previous]
-	type = custom/text
+type = custom/text
 
-	content = " "
-	content-background = #2aa198
-	content-foreground = #657b83
-	content-padding = 0
+content = " "
+content-background = ${root.foreground}
+content-foreground = ${root.background}
+content-padding = 0
 
-	click-left = playerctl --player=spotify previous
+click-left = playerctl --player=spotify previous
 
 [module/playpause]
-	type = custom/script
+type = custom/script
 
-	exec = ~/.config/polybar/playpause.sh
-	interval = .5
+exec = ~/.config/polybar/playpause.sh
+interval = .5
 
-	label = %output%
-	label-background = #2aa198
-	label-foreground = #657b83
-	label-padding = 2
+label = %output%
+label-background = ${root.foreground}
+label-foreground = ${root.background}
+label-padding = 2
 
-	click-left = playerctl --player=spotify play-pause
+click-left = playerctl --player=spotify play-pause
 
 [module/next]
-	type = custom/text
+type = custom/text
 
-	content = " "
-	content-background = #2aa198
-	content-foreground = #657b83
-	content-padding = 0
+content = " "
+content-background = ${root.foreground}
+content-foreground = ${root.background}
+content-padding = 0
 
-	click-left = playerctl --player=spotify next
+click-left = playerctl --player=spotify next
 
 [module/paddinglite]
-	type               = custom/text
-	content            = " "
-	content-padding    = .5
+type               = custom/text
+content            = " "
+content-padding    = .5
 
 [module/padding]
-	type               = custom/text
-	content            = " "
-	content-padding    = 1
+type               = custom/text
+content            = " "
+content-padding    = 1
+
+[module/calendar]
+type = custom/script
+label = " "
+exec = echo Calendar
+click-left = ~/.config/polybar/calendar curr
+scroll-up = ~/.config/polybar/calendar next
+scroll-down = ~/.config/polybar/calendar prev
+

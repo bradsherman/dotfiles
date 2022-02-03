@@ -1,8 +1,8 @@
 return {
-	settings = {
-		haskell = {
-			checkProject = false,
-			formattingProvider = "fourmolu",
-		},
-	},
+    settings = {
+        haskell = {
+            checkProject = false,
+            formattingProvider = "fourmolu",
+        },
+    },
 }

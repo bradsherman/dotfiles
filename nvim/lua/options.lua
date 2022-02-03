@@ -21,6 +21,7 @@ o.autoread = true
 o.smartindent = true
 o.copyindent = true
 o.expandtab = true
+bo.expandtab = true
 o.shiftround = true
 o.updatetime = 300
 
@@ -36,7 +37,6 @@ o.showmatch = true
 o.splitright = true
 o.splitbelow = true
 o.backspace = "eol,indent,start"
-vim.cmd("set whichwrap+=<,>,[,],h,l")
 o.showcmd = false
 o.showmode = false
 wo.cursorline = true
@@ -44,7 +44,7 @@ o.wildmenu = true
 o.cmdheight = 1
 o.clipboard = "unnamedplus"
 wo.colorcolumn = "120"
-wo.signcolumn = "yes:2"
+wo.signcolumn = "yes"
 o.laststatus = 2
 
 o.incsearch = true
@@ -62,3 +62,10 @@ o.undodir = undo_dir
 bo.undofile = true
 
 o.grepprg = "rg --vimgrep --smart-case --follow"
+-- other useful chars: eol:↲,nbsp:␣
+o.showbreak = "↪ "
+-- o.listchars="eol:$,tab:→,nbsp:␣,trail:~,extends:⟩,precedes:⟨,space:·"
+o.listchars = "eol:$,tab:▶·,nbsp:␣,trail:~,extends:⟩,precedes:⟨,space:·"
+
+vim.cmd("set whichwrap+=<,>,[,],h,l")
+vim.cmd([[au BufEnter * set fo-=c fo-=r fo-=o]])

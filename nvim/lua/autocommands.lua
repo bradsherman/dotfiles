@@ -1,40 +1,40 @@
 local create_augroup = require("utils").create_augroup
 
 create_augroup({
-	{ "BufNewFile,BufRead", "*.md", "set", "ft=markdown" },
-	{ "BufNewFile,BufRead", "*.md", "set", "wrap" },
-	{ "FileType", "markdown", "set", "conceallevel=2" },
-	{ "FileType", "markdown", "setlocal", "spell", "spelllang=en" },
-	{ "FileType", "markdown", "setlocal", "spell", "textwidth=90" },
+    { "BufNewFile,BufRead", "*.md", "set", "ft=markdown" },
+    { "BufNewFile,BufRead", "*.md", "set", "wrap" },
+    { "FileType", "markdown", "set", "conceallevel=2" },
+    { "FileType", "markdown", "setlocal", "spell", "spelllang=en" },
+    { "FileType", "markdown", "setlocal", "spell", "textwidth=90" },
 }, "Markdown")
 
 -- Trim whitespace on save
 create_augroup({
-	{ "BufWritePre", "*", "%s/\\s\\+$//e" },
+    { "BufWritePre", "*", "%s/\\s\\+$//e" },
 }, "TrimWhitespace")
 
 -- Return to last edit position when opening a file
 create_augroup({
-	{
-		"BufReadPost",
-		"*",
-		'if line("\'\\"") > 1 && line("\'\\"") <= line("$") && &ft !~# \'gitcommit\' | execute "normal! g`\\"" | endif',
-	},
+    {
+        "BufReadPost",
+        "*",
+        'if line("\'\\"") > 1 && line("\'\\"") <= line("$") && &ft !~# \'gitcommit\' | execute "normal! g`\\"" | endif',
+    },
 }, "ResumeEditPosition")
 
 create_augroup({
-	{ "Filetype", "gitcommit", "setlocal", "spell", "textwidth=72" },
+    { "Filetype", "gitcommit", "setlocal", "spell", "textwidth=72" },
 }, "CommitMsg")
 
 -- auto format on save
 create_augroup({
-	{ "BufWritePre", "*", "lua vim.lsp.buf.formatting_sync(nil, 1000)" },
+    { "BufWritePre", "*", "lua vim.lsp.buf.formatting_sync(nil, 1000)" },
 }, "FormatOnSave")
 
 create_augroup({
-	{ "FileType", "haskell", "setlocal tabstop=4" },
-	{ "FileType", "haskell", "setlocal softtabstop=4" },
-	{ "FileType", "haskell", "setlocal shiftwidth=4" },
+    { "FileType", "haskell", "setlocal tabstop=4" },
+    { "FileType", "haskell", "setlocal softtabstop=4" },
+    { "FileType", "haskell", "setlocal shiftwidth=4" },
 }, "HaskellTabs")
 
 -- create_augroup({

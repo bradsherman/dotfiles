@@ -124,7 +124,7 @@ if type rg &> /dev/null; then
 fi
 export FZF_DEFAULT_OPTS="
 -m --height 50% --border --layout=reverse
---info=inline --color=light
+--info=inline --color=dark
 --prompt='~ ' --pointer='▶' --marker='✗'
 --preview-window=:hidden
 --preview '([[ -f {} ]] && (bat --style=numbers --color=always {} ||
@@ -220,3 +220,4 @@ function vpndown {
 
 
 alias luamake=/home/bsherman/code/lua-language-server/3rd/luamake/luamake
+export VAULT_ADDR=http://127.0.0.1:8200
