@@ -62,7 +62,8 @@ bufferline.setup({
         persist_buffer_sort = true, -- whether or not custom sorted buffers should persist
         -- can also be a table containing 2 custom separators
         -- [focused and unfocused]. eg: { '|', '|' }
-        separator_style = "padded_slant",
+        -- can go back to 'padded_slant' or 'slant' once colors are fixed
+        separator_style = "thin",
         enforce_regular_tabs = true,
         always_show_bufferline = true,
         -- sort_by = 'id' | 'extension' | 'relative_directory' | 'directory' | 'tabs' | function(buffer_a, buffer_b)

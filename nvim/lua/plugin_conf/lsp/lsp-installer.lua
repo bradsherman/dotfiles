@@ -20,6 +20,14 @@ nvim_lsp.hls.setup({
     capabilities = require("plugin_conf.lsp.handlers").capabilities,
 })
 
+nvim_lsp.sqls.setup({
+    on_attach = function(client, bufnr)
+        client.resolved_capabilities.document_formatting = false
+        client.resolved_capabilities.document_range_formatting = false
+        require("sqls").on_attach(client, bufnr)
+    end,
+})
+
 nvim_lsp.terraform_lsp.setup({})
 
 -- Register a handler that will be called for all installed servers.

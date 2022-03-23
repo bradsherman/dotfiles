@@ -31,6 +31,13 @@ wk.register({
     ["<leader>e"] = { ":NvimTreeFindFile<cr>", "NvimTree Find File" },
 }, {})
 
+wk.register({
+    ["<leader>fe"] = {
+        "<cmd>lua require('telescope').extensions.file_browser.file_browser()<cr>",
+        "Telescope File Browser",
+    },
+})
+
 -- Lsp
 wk.register({
     ["<leader>l"] = {
@@ -42,7 +49,8 @@ wk.register({
         h = { "<cmd>Lspsaga signature_help<cr>", "Signature Help" },
         i = { "<cmd>LspInfo<cr>", "LSP Info" },
         r = { "<cmd>lua require('renamer').rename()<cr>", "Rename" },
-        s = { "<cmd>Telescope lsp_workspace_symbols theme=ivy<cr>", "LSP Workspace Symbols" },
+        s = { "<cmd>Telescope lsp_workspace_symbols<cr>", "LSP Workspace Symbols" },
+        t = { "<cmd>Telescope tags<cr>", "Tags" },
     },
     g = {
         name = "+LSP Types",
@@ -61,8 +69,13 @@ wk.register({
     g = {
         name = "+Git",
         s = { ":G<cr>", "Git Status" },
-        c = { ":Telescope git_branches", "Git Branches" },
+        b = { ":Telescope git_branches<cr>", "Git Branches" },
         g = { ":Neogit<cr>", "Neogit" },
+        h = {
+            name = "+Github",
+            i = { "<cmd>Octo issue list<cr>", "List Issues" },
+            ["pr"] = { "<cmd>Octo pr list<cr>", "List PRs" },
+        },
     },
 }, { prefix = "<leader>" })
 

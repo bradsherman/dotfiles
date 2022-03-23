@@ -109,9 +109,15 @@ cmp.setup({
         { name = "tags" },
     }),
     experimental = {
-        ghost_text = false,
+        ghost_text = true,
         native_menu = false,
     },
+})
+
+cmp.setup.filetype("gitcommit", {
+    sources = cmp.config.sources({
+        { name = "buffer" },
+    }),
 })
 
 cmp.setup.cmdline("/", {
@@ -122,11 +128,9 @@ cmp.setup.cmdline("/", {
 
 -- TODO: when adding 'path' source this doesn't work
 cmp.setup.cmdline(":", {
-    sources = {
+    sources = cmp.config.sources({
         { name = "cmdline" },
-    },
+    }),
 })
 
-require("luasnip/loaders/from_vscode").lazy_load({
-    paths = { "~/.local/share/nvim/site/pack/packer/start/friendly-snippets" },
-})
+require("luasnip.loaders.from_vscode").lazy_load()

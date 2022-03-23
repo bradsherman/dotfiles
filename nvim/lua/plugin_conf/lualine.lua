@@ -1,17 +1,13 @@
+local status_ok, lualine = pcall(require, "lualine")
+if not status_ok then
+    return
+end
+
 local hide_in_width = function()
     return vim.fn.winwidth(0) > 80
 end
 
-local progress = function()
-    local current_line = vim.fn.line(".")
-    local total_lines = vim.fn.line("$")
-    local chars = { "__", "▁▁", "▂▂", "▃▃", "▄▄", "▅▅", "▆▆", "▇▇", "██" }
-    local line_ratio = current_line / total_lines
-    local index = math.ceil(line_ratio * #chars)
-    return chars[index]
-end
-
-require("lualine").setup({
+lualine.setup({
     options = {
         -- theme = "zenbones",
         theme = "nightfox",
@@ -54,7 +50,7 @@ require("lualine").setup({
         },
         lualine_x = { { "filetype", colored = true } },
         lualine_y = { "location" },
-        lualine_z = { "mode", progress },
+        lualine_z = { "mode", "progress" },
     },
     inactive_sections = {
         lualine_a = {},

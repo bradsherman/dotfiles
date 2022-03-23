@@ -1,14 +1,14 @@
-local actions = require("telescope.actions")
-local uReload = require("utils").reload
-local print = require("utils").print
-
 local telescope_status_ok, telescope = pcall(require, "telescope")
 if not telescope_status_ok then
     return
 end
 
+local actions = require("telescope.actions")
+local uReload = require("utils").reload
+local print = require("utils").print
+
 telescope.setup({
-    defaults = {
+    defaults = require("telescope.themes").get_ivy({
         layout = { prompt_position = "bottom" },
         file_previewer = require("telescope.previewers").vim_buffer_cat.new,
         grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
@@ -25,10 +25,9 @@ telescope.setup({
                 ["<c-q>"] = actions.send_to_qflist,
             },
         },
-    },
+    }),
     pickers = {
         lsp_code_actions = { theme = "cursor" },
-        lsp_workspace_symbols = { theme = "ivy" },
         buffers = {
             show_all_buffers = true,
             sort_lastused = true,
@@ -40,9 +39,6 @@ telescope.setup({
         },
     },
     extensions = {
-        file_browser = {
-            theme = "ivy",
-        },
         fzf = {
             fuzzy = true,
             override_generic_sorter = true,
@@ -102,7 +98,7 @@ end
 
 vim.keymap.set("n", "<c-f>", "<cmd>Telescope find_files<cr>")
 vim.keymap.set("n", "<c-g>", "<cmd>Telescope live_grep<cr>")
-vim.keymap.set("n", "<leader>tg", "<cmd>Telescope tags<cr>")
+vim.keymap.set("n", "<leader>lt", "<cmd>Telescope tags<cr>")
 vim.keymap.set("n", "<c-b>", "<cmd>Telescope buffers<cr>")
 vim.keymap.set("n", "<leader>fe", function()
     require("telescope").extensions.file_browser.file_browser()

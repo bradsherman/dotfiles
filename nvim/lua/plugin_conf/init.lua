@@ -23,6 +23,8 @@ require("plugin_conf.comment")
 require("plugin_conf.toggleterm")
 require("plugin_conf.zen")
 require("plugin_conf.autopairs")
+require("plugin_conf.fidget")
+require("plugin_conf.symbols")
 -- comment out until https://github.com/neovim/neovim/issues/11440 is resolved
 -- require("plugin_conf.shade")
 -- require("plugin_conf.alpha")
@@ -30,11 +32,11 @@ require("plugin_conf.autopairs")
 -- easy installs
 require("nvim-web-devicons").setup({ default = true })
 require("colorizer").setup()
+require("dim").setup()
 require("stabilize").setup()
 require("renamer").setup({})
 require("nvim-ts-autotag").setup()
 require("treesitter-context").setup({})
-require("fidget").setup({})
 
 vim.g.do_filetype_lua = 1
 

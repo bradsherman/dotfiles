@@ -45,7 +45,7 @@ o.cmdheight = 1
 o.clipboard = "unnamedplus"
 wo.colorcolumn = "120"
 wo.signcolumn = "yes"
-o.laststatus = 2
+o.laststatus = 3
 
 o.incsearch = true
 o.hlsearch = false
@@ -68,4 +68,6 @@ o.showbreak = "↪ "
 o.listchars = "eol:$,tab:▶·,nbsp:␣,trail:~,extends:⟩,precedes:⟨,space:·"
 
 vim.cmd("set whichwrap+=<,>,[,],h,l")
-vim.cmd([[au BufEnter * set fo-=c fo-=r fo-=o]])
+-- This removes some auto-formatting for comments
+-- see `:help fo-table` for more info
+-- vim.cmd([[au BufEnter * set fo-=c fo-=r fo-=o]])

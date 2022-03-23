@@ -4,7 +4,7 @@ vim.keymap.set("n", "<leader>gpp", "<cmd>Git push origin ")
 vim.keymap.set("n", "<leader>gpu", "<cmd>Git pull origin ")
 
 -- Telescope
-vim.keymap.set("n", "<leader>gc", "<cmd>Telescope git_branches<cr>")
+vim.keymap.set("n", "<leader>gb", "<cmd>Telescope git_branches<cr>")
 
 -- Neogit
 vim.keymap.set("n", "<leader>gg", "<cmd>Neogit<cr>")
@@ -31,6 +31,10 @@ local status_ok, octo = pcall(require, "octo")
 if not status_ok or not octo_exists then
     return
 end
+
+vim.keymap.set("n", "<leader>ghpr", "<cmd>Octo pr list<cr>")
+vim.keymap.set("n", "<leader>ghi", "<cmd>Octo issue list<cr>")
+
 octo.setup({
     default_remote = { "upstream", "origin" }, -- order to try remotes
     reaction_viewer_hint_icon = "", -- marker for user reactions
@@ -43,7 +47,7 @@ octo.setup({
     snippet_context_lines = 4, -- number or lines around commented lines
     file_panel = {
         size = 10, -- changed files panel rows
-        use_icons = true,                       -- use web-devicons in file panel
+        use_icons = true, -- use web-devicons in file panel
     },
     mappings = {
         issue = {

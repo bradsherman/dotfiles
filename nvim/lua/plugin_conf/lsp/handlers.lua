@@ -20,9 +20,9 @@ M.setup = function()
         virtual_text = false,
         -- show signs
         signs = {
-            active = signs,
+            active = false,
         },
-        update_in_insert = true,
+        update_in_insert = false,
         underline = true,
         severity_sort = true,
         float = {
@@ -72,8 +72,8 @@ local function lsp_keymaps(client, bufnr)
     vim.keymap.set("n", "gm", "<cmd>Telescope lsp_document_symbols<cr>", { buffer = bufnr })
     vim.keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<cr>", { buffer = bufnr })
     vim.keymap.set("n", "gD", "<cmd>Lspsaga preview_definition<cr>", { buffer = bufnr })
-    vim.keymap.set("n", "<leader>lt", "<cmd>LspTroubleToggle<cr>", { buffer = bufnr })
-    vim.keymap.set("n", "<leader>ltr", "<cmd>LspTroubleRefresh<cr>", { buffer = bufnr })
+    -- vim.keymap.set("n", "<leader>lt", "<cmd>LspTroubleToggle<cr>", { buffer = bufnr })
+    -- vim.keymap.set("n", "<leader>ltr", "<cmd>LspTroubleRefresh<cr>", { buffer = bufnr })
     vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<cr>", { buffer = bufnr })
     vim.keymap.set("n", "<c-p>", "<cmd>lua vim.diagnostic.goto_prev()<cr>", { buffer = bufnr })
     vim.keymap.set("n", "<c-n>", "<cmd>lua vim.diagnostic.goto_next()<cr>", { buffer = bufnr })
@@ -96,17 +96,16 @@ local function lsp_keymaps(client, bufnr)
     end
 end
 
+local no_format_servers = { "tsserver", "sumneko_lua", "hls", "sqls" }
+
 M.on_attach = function(client, bufnr)
-    if client.name == "tsserver" then
-        client.resolved_capabilities.document_formatting = false
-        client.resolved_capabilities.document_range_formatting = false
+    for _, v in ipairs(no_format_servers) do
+        if v == client.name then
+            client.resolved_capabilities.document_formatting = false
+            client.resolved_capabilities.document_range_formatting = false
+        end
     end
-    -- Need to do this for now and use null-ls, until there's a way to ensure hls
-    -- fourmolu version agrees with external version
-    if client.name == "hls" then
-        client.resolved_capabilities.document_formatting = false
-        client.resolved_capabilities.document_range_formatting = false
-    end
+
     require("lsp_signature").on_attach()
     lsp_keymaps(client, bufnr)
     lsp_highlight_document(client)
