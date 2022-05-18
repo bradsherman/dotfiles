@@ -29,7 +29,7 @@ o.mouse = "a"
 o.shortmess:append("c")
 o.ruler = false
 wo.wrap = false
-o.scrolloff = 12
+o.scrolloff = 5
 o.sidescrolloff = 20
 wo.number = true
 wo.relativenumber = true
@@ -45,7 +45,7 @@ o.cmdheight = 1
 o.clipboard = "unnamedplus"
 wo.colorcolumn = "120"
 wo.signcolumn = "yes"
-o.laststatus = 3
+vim.go.laststatus = 3
 
 o.incsearch = true
 o.hlsearch = false
@@ -63,7 +63,8 @@ bo.undofile = true
 
 o.grepprg = "rg --vimgrep --smart-case --follow"
 -- other useful chars: eol:↲,nbsp:␣
-o.showbreak = "↪ "
+-- o.showbreak = "↪ "
+o.showbreak = "↲"
 -- o.listchars="eol:$,tab:→,nbsp:␣,trail:~,extends:⟩,precedes:⟨,space:·"
 o.listchars = "eol:$,tab:▶·,nbsp:␣,trail:~,extends:⟩,precedes:⟨,space:·"
 

@@ -4,18 +4,63 @@ if not telescope_status_ok then
 end
 
 local actions = require("telescope.actions")
+local previewers = require("telescope.previewers")
+local sorters = require("telescope.sorters")
 local uReload = require("utils").reload
 local print = require("utils").print
 
 telescope.setup({
-    defaults = require("telescope.themes").get_ivy({
-        layout = { prompt_position = "bottom" },
-        file_previewer = require("telescope.previewers").vim_buffer_cat.new,
-        grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
-        qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
-        path_display = { shorten = 4 },
-        prompt_prefix = " ",
-        selection_caret = " ",
+    picker = {
+        hidden = false,
+    },
+    defaults = {
+        vimgrep_arguments = {
+            "rg",
+            "--color=never",
+            "--no-heading",
+            "--with-filename",
+            "--line-number",
+            "--column",
+            "--smart-case",
+            "--trim",
+            -- one of these two causes a major slowdown, probably hidden
+            -- "--no-ignore",
+            -- "--hidden",
+        },
+        prompt_prefix = "     ",
+        selection_caret = "  ",
+        entry_prefix = "  ",
+        initial_mode = "insert",
+        selection_strategy = "reset",
+        sorting_strategy = "ascending",
+        layout_strategy = "horizontal",
+        layout_config = {
+            horizontal = {
+                prompt_position = "top",
+                preview_width = 0.55,
+                results_width = 0.8,
+            },
+            vertical = {
+                mirror = false,
+            },
+            width = 0.80,
+            height = 0.85,
+            preview_cutoff = 120,
+        },
+        file_sorter = sorters.get_fuzzy_file,
+        file_ignore_patterns = { "node_modules", ".git/", "dist/" },
+        generic_sorter = sorters.get_generic_fuzzy_sorter,
+        path_display = { "absolute" },
+        winblend = 0,
+        border = {},
+        borderchars = { "" },
+        color_devicons = true,
+        use_less = true,
+        set_env = { ["COLORTERM"] = "truecolor" },
+        file_previewer = previewers.vim_buffer_cat.new,
+        grep_previewer = previewers.vim_buffer_vimgrep.new,
+        qflist_previewer = previewers.vim_buffer_qflist.new,
+        buffer_previewer_maker = previewers.buffer_previewer_maker,
         mappings = {
             i = {
                 ["<c-n>"] = actions.cycle_history_next,
@@ -25,9 +70,8 @@ telescope.setup({
                 ["<c-q>"] = actions.send_to_qflist,
             },
         },
-    }),
+    },
     pickers = {
-        lsp_code_actions = { theme = "cursor" },
         buffers = {
             show_all_buffers = true,
             sort_lastused = true,
@@ -49,6 +93,7 @@ telescope.setup({
 })
 telescope.load_extension("file_browser")
 telescope.load_extension("fzf")
+telescope.load_extension("notify")
 
 local M = {}
 

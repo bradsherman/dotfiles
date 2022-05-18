@@ -35,13 +35,6 @@ vim.api.nvim_create_autocmd("FileType", {
     group = cm,
 })
 
--- auto format on save
-local fs = vim.api.nvim_create_augroup("FormatOnSave", { clear = true })
-vim.api.nvim_create_autocmd("BufWritePre", {
-    command = "lua vim.lsp.buf.formatting_sync(nil,1000)",
-    group = fs,
-})
-
 local ht = vim.api.nvim_create_augroup("HaskellTabs", { clear = true })
 vim.api.nvim_create_autocmd("FileType", {
     pattern = "haskell",
@@ -51,4 +44,14 @@ vim.api.nvim_create_autocmd("FileType", {
         vim.cmd("setlocal shiftwidth=4")
     end,
     group = ht,
+})
+
+-- Highlight on yank
+local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
+vim.api.nvim_create_autocmd("TextYankPost", {
+    pattern = "*",
+    callback = function()
+        vim.highlight.on_yank()
+    end,
+    group = highlight_group,
 })

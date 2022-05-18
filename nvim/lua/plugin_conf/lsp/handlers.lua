@@ -19,9 +19,10 @@ M.setup = function()
     local config = {
         virtual_text = false,
         -- show signs
-        signs = {
-            active = false,
-        },
+        sign = true,
+        -- signs = {
+        --     active = false,
+        -- },
         update_in_insert = false,
         underline = true,
         severity_sort = true,
@@ -51,18 +52,18 @@ M.setup = function()
 end
 
 local function lsp_highlight_document(client)
-    if client.resolved_capabilities.document_highlight then
+    if client.server_capabilities.documentHighlightProvider then
         vim.api.nvim_exec(
             [[
       augroup lsp_document_highlight
         autocmd! * <buffer>
         autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-        autocmd CursorHold <buffer> lua vim.diagnostic.open_float(0, {scope="line"})
         autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
     ]],
             false
         )
     end
+    -- autocmd CursorHold <buffer> lua vim.diagnostic.open_float(0, {scope="line"})
 end
 
 local function lsp_keymaps(client, bufnr)
@@ -78,37 +79,69 @@ local function lsp_keymaps(client, bufnr)
     vim.keymap.set("n", "<c-p>", "<cmd>lua vim.diagnostic.goto_prev()<cr>", { buffer = bufnr })
     vim.keymap.set("n", "<c-n>", "<cmd>lua vim.diagnostic.goto_next()<cr>", { buffer = bufnr })
     vim.keymap.set("n", "<leader>lh", "<cmd>Lspsaga signature_help<CR>", { buffer = bufnr })
-    vim.keymap.set("n", "<leader>la", "<cmd>Telescope lsp_code_actions<cr>", { buffer = bufnr })
+    vim.keymap.set("n", "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<cr>", { buffer = bufnr })
     vim.keymap.set("n", "<leader>ld", "<cmd>Telescope diagnostics<cr>", { buffer = bufnr })
     vim.keymap.set("n", "<leader>ls", "<cmd>Telescope lsp_workspace_symbols<cr>", { buffer = bufnr })
     vim.keymap.set("n", "<space>le", "<cmd>Lspsaga show_line_diagnostics<CR>", { buffer = bufnr })
     vim.keymap.set("n", "<space>lr", function()
         require("renamer").rename()
     end, { buffer = bufnr })
-    vim.cmd([[ command! Format execute 'lua vim.lsp.buf.formatting()' ]])
+    vim.cmd([[ command! Format execute 'lua vim.lsp.buf.format({ async = true })' ]])
 
     -- Set some keybinds conditional on server capabilities
-    if client.resolved_capabilities.document_formatting then
-        vim.keymap.set("n", "<leader>lf", vim.lsp.buf.formatting, { buffer = bufnr })
+    if client.server_capabilities.document_formatting then
+        vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format, { buffer = bufnr, async = true })
     end
-    if client.resolved_capabilities.document_range_formatting then
-        vim.keymap.set("v", "<leader>cf", vim.lsp.buf.range_formatting, { buffer = bufnr })
+    if client.server_capabilities.document_range_formatting then
+        vim.keymap.set("v", "<leader>cf", vim.lsp.buf.range_format, { buffer = bufnr, async = true })
     end
 end
 
-local no_format_servers = { "tsserver", "sumneko_lua", "hls", "sqls" }
+local no_format_servers = { "tsserver", "sumneko_lua", "sqls", "dockerls" }
+
+local lsp_formatting = function(bufnr)
+    vim.lsp.buf.format({
+        filter = function(clients)
+            -- filter out clients that you don't want to use
+            return vim.tbl_filter(function(client)
+                for _, v in ipairs(no_format_servers) do
+                    if v == client.name then
+                        return false
+                    end
+                end
+                return true
+            end, clients)
+        end,
+        bufnr = bufnr,
+    })
+end
+
+local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+
+-- add to your shared on_attach callback
+local lsp_format = function(client, bufnr)
+    if client.supports_method("textDocument/formatting") then
+        vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+        vim.api.nvim_create_autocmd("BufWritePre", {
+            group = augroup,
+            buffer = bufnr,
+            callback = function()
+                lsp_formatting(bufnr)
+            end,
+        })
+    end
+end
+
+local lsp_sig_ok, lsp_sig = pcall(require, "lsp_signature")
 
 M.on_attach = function(client, bufnr)
-    for _, v in ipairs(no_format_servers) do
-        if v == client.name then
-            client.resolved_capabilities.document_formatting = false
-            client.resolved_capabilities.document_range_formatting = false
-        end
+    if lsp_sig_ok then
+        lsp_sig.on_attach()
     end
 
-    require("lsp_signature").on_attach()
     lsp_keymaps(client, bufnr)
     lsp_highlight_document(client)
+    lsp_format(client, bufnr)
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()

@@ -49,6 +49,8 @@ return packer.startup(function(use)
     use("tpope/vim-repeat")
     use("tpope/vim-surround")
 
+    use("rcarriga/nvim-notify")
+
     use("flazz/vim-colorschemes")
     use({
         "mcchrish/zenbones.nvim",
@@ -58,7 +60,6 @@ return packer.startup(function(use)
     use("folke/tokyonight.nvim")
     use("nvim-lualine/lualine.nvim")
     use("j-hui/fidget.nvim")
-    use("APZelos/blamer.nvim")
     use("windwp/nvim-autopairs")
     use("windwp/nvim-ts-autotag")
 
@@ -74,7 +75,6 @@ return packer.startup(function(use)
     use("norcalli/nvim-colorizer.lua")
     use("luochen1990/rainbow")
     use("karb94/neoscroll.nvim")
-    use("inside/vim-search-pulse")
     use("kyazdani42/nvim-web-devicons")
     use("kyazdani42/nvim-tree.lua")
     use("ishan9299/nvim-solarized-lua")
@@ -83,8 +83,9 @@ return packer.startup(function(use)
     use("neovim/nvim-lspconfig")
     use("williamboman/nvim-lsp-installer")
     use("jose-elias-alvarez/null-ls.nvim")
-    use("jose-elias-alvarez/nvim-lsp-ts-utils")
+    use("jose-elias-alvarez/typescript.nvim")
     use("rafamadriz/friendly-snippets")
+    use("JASONews/glow-hover")
     -- Install nvim-cmp, and buffer source as a dependency
     use({
         "hrsh7th/nvim-cmp",
@@ -93,8 +94,12 @@ return packer.startup(function(use)
             "hrsh7th/cmp-nvim-lsp",
             "hrsh7th/cmp-path",
             "hrsh7th/cmp-nvim-lua",
+            "hrsh7th/cmp-cmdline",
+            "ray-x/cmp-treesitter",
             "quangnguyen30192/cmp-nvim-tags",
             "saadparwaiz1/cmp_luasnip", -- Snippets source for nvim-cmp
+            "hrsh7th/cmp-nvim-lsp-document-symbol",
+            "hrsh7th/cmp-nvim-lsp-signature-help",
         },
     })
     use("L3MON4D3/LuaSnip")
@@ -102,19 +107,22 @@ return packer.startup(function(use)
     use({
         "filipdutescu/renamer.nvim",
         branch = "master",
-        requires = { { "nvim-lua/plenary.nvim" } },
+        requires = { "nvim-lua/plenary.nvim" },
     })
 
     use("pwntester/octo.nvim")
+    use("ldelossa/litee.nvim")
+    use("ldelossa/gh.nvim")
     use("luukvbaal/stabilize.nvim")
 
     use("mfussenegger/nvim-dap")
     use({ "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap" } })
     use({ "nvim-telescope/telescope-dap.nvim" })
     use({ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" }) -- We recommend updating the parsers on update
+    use("mfussenegger/nvim-ts-hint-textobject")
     use("Pocco81/DAPInstall.nvim")
     use("theHamsta/nvim-dap-virtual-text")
-    use("romgrk/nvim-treesitter-context")
+    -- use("lewis6991/nvim-treesitter-context")
     use("nvim-treesitter/playground")
     use("p00f/nvim-ts-rainbow")
     use("folke/trouble.nvim")
@@ -122,6 +130,7 @@ return packer.startup(function(use)
     use("tami5/lspsaga.nvim")
     use("hashivim/vim-terraform")
     use("stevearc/dressing.nvim")
+    use("rainbowhxch/beacon.nvim")
 
     use("nanotee/sqls.nvim")
     -- -- use 'lifepillar/pgsql.vim'
@@ -132,15 +141,15 @@ return packer.startup(function(use)
 
     use("mattn/emmet-vim")
 
-    use("ggandor/lightspeed.nvim")
+    -- use("ggandor/lightspeed.nvim")
     use("vmchale/dhall-vim")
     use("lukas-reineke/indent-blankline.nvim")
     use("christoomey/vim-tmux-navigator")
 
     use("folke/todo-comments.nvim")
     use("sindrets/diffview.nvim")
-    use("Pocco81/TrueZen.nvim")
     use("folke/zen-mode.nvim")
+    use("folke/twilight.nvim")
     use({
         "dstein64/vim-startuptime",
         cmd = "StartupTime",
@@ -148,7 +157,10 @@ return packer.startup(function(use)
 
     use({
         "nvim-neorg/neorg",
-        requires = "nvim-lua/plenary.nvim",
+        requires = {
+            "nvim-lua/plenary.nvim",
+            "nvim-neorg/neorg-telescope",
+        },
     })
 
     use("folke/which-key.nvim")
@@ -156,9 +168,15 @@ return packer.startup(function(use)
     use("moll/vim-bbye")
     use("lewis6991/impatient.nvim")
 
-    use("sunjon/shade.nvim")
     use("narutoxy/dim.lua")
+    -- this may be better since it's at lsp level, but doesn't
+    -- work for haskell
+    -- use("zbirenbaum/neodim")
     use("simrat39/symbols-outline.nvim")
+
+    use("napmn/react-extract.nvim")
+    use("ziontee113/syntax-tree-surfer")
+    use("LnL7/vim-nix")
     -- use({ "goolord/alpha-nvim", requires = "kyazdani42/nvim-web-devicons" })
     -- use("antoinemadec/FixCursorHold.nvim") -- This is needed to fix lsp doc highlight
 

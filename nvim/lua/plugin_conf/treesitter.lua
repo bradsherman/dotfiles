@@ -1,5 +1,10 @@
-local parser_configs = require("nvim-treesitter.parsers").get_parser_configs()
+local parser_status_ok, parsers = pcall(require, "nvim-treesitter.parsers")
+local configs_status_ok, configs = pcall(require, "nvim-treesitter.configs")
+if not parser_status_ok or not configs_status_ok then
+    return
+end
 
+local parser_configs = parsers.get_parser_configs()
 parser_configs.norg = {
     install_info = {
         url = "https://github.com/nvim-neorg/tree-sitter-norg",
@@ -8,7 +13,7 @@ parser_configs.norg = {
     },
 }
 
-require("nvim-treesitter.configs").setup({
+configs.setup({
     -- one of "all", "maintained" (parsers with maintainers), or a list of languages
     ensure_installed = {
         "norg",
@@ -31,6 +36,7 @@ require("nvim-treesitter.configs").setup({
     highlight = { enable = true, additional_vim_regex_highlighting = true },
     indent = { enable = true },
     autopairs = { enable = true },
+    autotag = { enable = true },
     context_commentstring = { enable = true, enable_autocmd = false },
     rainbow = {
         enable = true,

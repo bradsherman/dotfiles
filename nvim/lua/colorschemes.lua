@@ -19,7 +19,7 @@ if not nfox_status_ok then
     return
 end
 
-local pallets = {
+local palletes = {
     -- nordfox = {
     --     fg1 = "#000000",
     -- },
@@ -51,6 +51,7 @@ nightfox.setup({
             lsp_trouble = true,
             native_lsp = true,
             neogit = true,
+            notify = true,
             nvimtree = true,
             telescope = true,
             treesitter = true,
@@ -58,7 +59,7 @@ nightfox.setup({
             whichkey = true,
         },
     },
-    pallets = pallets,
+    pallete = palletes,
 })
 
 -- Load the configuration set above and apply the colorscheme

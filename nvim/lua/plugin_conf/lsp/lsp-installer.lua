@@ -8,6 +8,13 @@ if not lspconf_status then
     return
 end
 
+local handlers_ok, my_handlers = pcall(require, "plugin_conf.lsp.handlers")
+if not handlers_ok then
+    return
+end
+
+lsp_installer.setup()
+
 -- special setup for haskell, for some reason it crashes on certain files when used
 -- with nvim lsp installer - could be due to outdated version
 nvim_lsp.hls.setup({
@@ -16,39 +23,70 @@ nvim_lsp.hls.setup({
             formattingProvider = "fourmolu",
         },
     },
-    on_attach = require("plugin_conf.lsp.handlers").on_attach,
-    capabilities = require("plugin_conf.lsp.handlers").capabilities,
+    on_attach = my_handlers.on_attach,
+    capabilities = my_handlers.capabilities,
+})
+
+nvim_lsp.sumneko_lua.setup({
+    on_attach = my_handlers.on_attach,
+    capabilities = my_handlers.capabilities,
+    settings = {
+        Lua = {
+            diagnostics = {
+                globals = { "vim" },
+            },
+            workspace = {
+                library = {
+                    [vim.fn.expand("$VIMRUNTIME/lua")] = true,
+                    [vim.fn.stdpath("config") .. "lua"] = true,
+                },
+            },
+        },
+    },
 })
 
 nvim_lsp.sqls.setup({
     on_attach = function(client, bufnr)
-        client.resolved_capabilities.document_formatting = false
-        client.resolved_capabilities.document_range_formatting = false
+        client.server_capabilities.document_formatting = false
+        client.server_capabilities.document_range_formatting = false
         require("sqls").on_attach(client, bufnr)
+        my_handlers.on_attach(client, bufnr)
     end,
 })
 
-nvim_lsp.terraform_lsp.setup({})
+local default_setup = {
+    on_attach = my_handlers.on_attach,
+    capabilities = my_handlers.capabilities,
+}
 
--- Register a handler that will be called for all installed servers.
--- Alternatively, you may also register handlers on specific server instances instead (see example below).
-lsp_installer.on_server_ready(function(server)
-    local opts = {
-        on_attach = require("plugin_conf.lsp.handlers").on_attach,
-        capabilities = require("plugin_conf.lsp.handlers").capabilities,
-    }
-
-    if server.name == "hls" then
-        local hls_opts = require("plugin_conf.lsp.settings.hls")
-        opts = vim.tbl_deep_extend("force", hls_opts, opts)
-    end
-
-    if server.name == "sumneko_lua" then
-        local sumneko_opts = require("plugin_conf.lsp.settings.sumneko_lua")
-        opts = vim.tbl_deep_extend("force", sumneko_opts, opts)
-    end
-
-    -- This setup() function is exactly the same as lspconfig's setup function.
-    -- Refer to https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
-    server:setup(opts)
-end)
+nvim_lsp.terraform_lsp.setup(default_setup)
+nvim_lsp.bashls.setup(default_setup)
+nvim_lsp.cssls.setup(default_setup)
+nvim_lsp.dhall_lsp_server.setup(default_setup)
+nvim_lsp.dockerls.setup({
+    on_attach = my_handlers.on_attach,
+    capabilities = my_handlers.capabilities,
+    settings = {
+        docker = {
+            languageserver = {
+                formatter = {
+                    ignoreMultilineInstructions = true,
+                },
+            },
+        },
+    },
+})
+nvim_lsp.html.setup(default_setup)
+nvim_lsp.jsonls.setup(default_setup)
+nvim_lsp.pyright.setup(default_setup)
+nvim_lsp.graphql.setup(default_setup)
+nvim_lsp.rust_analyzer.setup(default_setup)
+local ts_ok, ts = pcall(require, "typescript")
+if ts_ok then
+    ts.setup({
+        disable_commands = false, -- prevent the plugin from creating Vim commands
+        disable_formatting = false, -- disable tsserver's formatting capabilities
+        debug = false, -- enable debug logging for commands
+        server = default_setup, -- pass options to lspconfig's setup method
+    })
+end

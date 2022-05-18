@@ -137,8 +137,8 @@ alias vv="pushd ~/.config/nvim; vim .; popd;"
 alias vz="vim ~/.zshrc"
 alias sz="source ~/.zshrc"
 alias v3="vim ~/.config/i3/config"
-alias cat="batcat"
-export BAT_THEME="GitHub"
+export BAT_THEME="OneHalfDark"
+alias cat="batcat --theme=$BAT_THEME"
 alias c='clear'
 
 
@@ -217,7 +217,11 @@ function vpndown {
   sudo wg-quick down wg0
 }
 
-
-
 alias luamake=/home/bsherman/code/lua-language-server/3rd/luamake/luamake
 export VAULT_ADDR=http://127.0.0.1:8200
+
+if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then
+    . $HOME/.nix-profile/etc/profile.d/nix.sh
+    export LOCALE_ARCHIVE="/usr/lib/locale/locale-archive"
+    export TERMINFO=$HOME/.nix-profile/share/terminfo
+fi

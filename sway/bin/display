@@ -1,0 +1,23 @@
+#!/bin/bash
+# This script is intended to make switching between laptop and external displays easier when using i3+dmenu
+# To run this script, map it to some shortcut in your i3 config, e.g:
+# bindsym $mod+p exec --no-startup-id $config/display.sh
+
+# This is your default laptop screen, detect by running `xrandr`
+INTERNAL_OUTPUT="eDP-1"
+# choices will be displayed in dmenu
+choices="laptop\nmulti\nexternal\nmulti-auto"
+
+# Your choice in dmenu will determine what xrandr command to run
+chosen=$(echo -e $choices | rofi -width 600 -dmenu -p \>)
+
+# this is the default display, which will allow me to switch to laptop
+# setup even if it's not connected
+EXTERNAL_OUTPUT="DP-1"
+
+case "$chosen" in
+    laptop) xrandr --output $INTERNAL_OUTPUT --auto --primary --output $EXTERNAL_OUTPUT --off ;;
+    multi) xrandr --dpi 150 --output $INTERNAL_OUTPUT --mode 1920x1080 --pos 0x1080 --scale 1x1 --rotate normal --output $EXTERNAL_OUTPUT --primary --scale 1x1 --mode 3840x2160 --pos 1920x0 --rotate normal ;;
+    external) xrandr --dpi 192 --output $INTERNAL_OUTPUT --off --output $EXTERNAL_OUTPUT --auto --primary ;;
+    multi-auto) xrandr --dpi 150 --output $INTERNAL_OUTPUT --auto --output $EXTERNAL_OUTPUT --primary --auto --pos 1920x0
+esac

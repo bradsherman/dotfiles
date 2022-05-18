@@ -7,7 +7,8 @@ neorg.setup({
     load = {
         ["core.defaults"] = {}, -- Load all the default modules
         ["core.norg.concealer"] = {}, -- Allows for use of icons
-        ["core.norg.completion"] = {
+        ["core.gtd.base"] = {},
+        ["core.integrations.completion"] = {
             config = {
                 engine = "nvim-cmp",
             },
@@ -15,9 +16,12 @@ neorg.setup({
         ["core.norg.dirman"] = { -- Manage your directories with Neorg
             config = {
                 workspaces = {
-                    my_workspace = "~/neorg",
+                    home = "~/neorg/home",
+                    work = "~/neorg/work",
                 },
             },
         },
+        ["core.norg.journal"] = {},
+        ["core.integrations.telescope"] = {},
     },
 })

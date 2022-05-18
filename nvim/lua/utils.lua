@@ -1,13 +1,5 @@
 local M = {}
 
-M.map = function(mode, combo, mapping, opts)
-    local options = { noremap = true }
-    if opts then
-        options = vim.tbl_extend("force", options, opts)
-    end
-    vim.api.nvim_set_keymap(mode, combo, mapping, options)
-end
-
 M.print = function(v)
     print(vim.inspect(v))
     return v
@@ -20,6 +12,31 @@ if pcall(require, "plenary") then
         RELOAD(name)
         return require(name)
     end
+end
+
+M.file_exists = function(name)
+    local handle = io.popen("which " .. name)
+    if not handle then
+        return
+    end
+    local full_path = handle:read("l")
+    handle:close()
+
+    local f = io.open(full_path, "r")
+    if f ~= nil then
+        io.close(f)
+        return true
+    else
+        return false
+    end
+end
+
+M.update_haskell_tags = function()
+    local succ, exitcode, code = os.execute("ghc-tags -c")
+    if not succ then
+        vim.notify("Failed to update tags - exitcode = (" .. exitcode .. "), code (" .. code .. ")")
+    end
+    vim.notify("Tags updated successfully")
 end
 
 return M

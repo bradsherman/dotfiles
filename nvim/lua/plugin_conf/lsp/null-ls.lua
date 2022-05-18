@@ -16,7 +16,6 @@ null_ls.setup({
         code_actions.eslint_d,
         code_actions.shellcheck,
         diagnostics.eslint_d,
-        formatting.fourmolu,
         formatting.stylua,
         formatting.prettier.with({
             disabled_filetypes = { "html", "json", "yaml", "markdown" },

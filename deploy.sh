@@ -44,6 +44,9 @@ copy_config "gitconfig" ./gitconfig ~/.gitconfig
 copy_config "i3" ./i3 ~/.config "-r"
 copy_config "nvim" ./nvim ~/.config "-r"
 copy_config "polybar" ./polybar ~/.config "-r"
-copy_config "rofi" ./solarized-light.rasi ~/.local/share/rofi/themes/
+copy_config "sway" ./sway ~/.config "-r"
+copy_config "waybar" ./waybar ~/.config "-r"
+copy_config "rofi-solarized-light" ./solarized-light.rasi ~/.local/share/rofi/themes/
+copy_config "rofi-nord" ./nord.rasi ~/.local/share/rofi/themes/
 copy_config "tmux" ./tmux.conf ~/.tmux.conf
 copy_config "zsh" ./zsh/zshrc ~/.zshrc

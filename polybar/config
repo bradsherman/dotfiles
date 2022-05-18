@@ -107,7 +107,7 @@ font-3 = Siji:pixelsize=8;0
 font-4 = Material\ Icons:size=8;0
 font-5 = xos4\ Terminus:size=8;0
 
-modules-left = previous playpause next padding spotify padding pulseaudio padding bluetooth
+modules-left = previous playpause next padding spotify padding pulseaudio padding bluetooth padding timer
 modules-center = i3
 modules-right = wireless-network padding battery padding date padding
 
@@ -660,3 +660,15 @@ click-left = ~/.config/polybar/calendar curr
 scroll-up = ~/.config/polybar/calendar next
 scroll-down = ~/.config/polybar/calendar prev
 
+
+[module/timer]
+type = custom/script
+
+exec = ~/.local/bin/polybar-timer.sh tail 'TIMER' 5
+tail = true
+
+click-left = ~/.local/bin/polybar-timer.sh new 25 'Pomo session' 'Paused' 'notify-send "Session finished"' ; ~/.local/bin/polybar-timer.sh update %pid%
+click-middle = ~/.local/bin/polybar-timer.sh cancel ; ~/.local/bin/polybar-timer.sh update %pid%
+click-right = ~/.local/bin/polybar-timer.sh togglepause ; ~/.local/bin/polybar-timer.sh update %pid%
+scroll-up = ~/.local/bin/polybar-timer.sh increase 60 || ~/.local/bin/polybar-timer.sh new 1 'TIMER' 'PAUSED' 'notify-send -u critical "Timer expired."' ; ~/.local/bin/polybar-timer.sh update %pid%
+scroll-down = ~/.local/bin/polybar-timer.sh increase -60 ; ~/.local/bin/polybar-timer.sh update %pid%
