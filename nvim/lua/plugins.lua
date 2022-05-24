@@ -122,7 +122,7 @@ return packer.startup(function(use)
     use("mfussenegger/nvim-ts-hint-textobject")
     use("Pocco81/DAPInstall.nvim")
     use("theHamsta/nvim-dap-virtual-text")
-    -- use("lewis6991/nvim-treesitter-context")
+    use("nvim-treesitter/nvim-treesitter-context")
     use("nvim-treesitter/playground")
     use("p00f/nvim-ts-rainbow")
     use("folke/trouble.nvim")
@@ -179,6 +179,13 @@ return packer.startup(function(use)
     use("LnL7/vim-nix")
     -- use({ "goolord/alpha-nvim", requires = "kyazdani42/nvim-web-devicons" })
     -- use("antoinemadec/FixCursorHold.nvim") -- This is needed to fix lsp doc highlight
+
+    use({
+        "iamcco/markdown-preview.nvim",
+        run = function()
+            vim.fn["mkdp#util#install"]()
+        end,
+    })
 
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins

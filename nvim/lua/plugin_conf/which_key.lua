@@ -16,6 +16,16 @@ wk.register({
     },
 }, { prefix = "<leader>" })
 
+-- Markdown Preview
+wk.register({
+    ["m"] = {
+        name = "+Markdown",
+        p = { "<cmd>MarkdownPreview<cr>", "Markdown Preview" },
+        s = { "<cmd>MarkdownPreviewStop<cr>", "Markdown Preview Stop" },
+        t = { "<cmd>MarkdownPreviewToggle<cr>", "Markdown Preview Toggle" },
+    },
+}, { prefix = "<leader>" })
+
 -- Packer
 wk.register({
     p = {

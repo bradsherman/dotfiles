@@ -58,11 +58,17 @@ exec --no-startup-id nm-applet
 # exec --no-startup-id ~/.fehbg
 output * bg /home/bsherman/Pictures/ocean-night.jpg fill
 
+set $laptop "Chimei Innolux Corporation 0x14D5 0x00000000"
+bindswitch --reload --locked lid:on output $laptop disable
+bindswitch --reload --locked lid:off output $laptop enable
+exec_always ~/.config/sway/bin/reset_displays.sh
 
-output eDP-1 position 0,0
+# exec_always "pkill kanshi; kanshi"
+# output eDP-1 position 0,0
 #size 1920 1080
 # ouptut DP-1 position 1920,0
 #size 1920 1080
+exec swaymsg focus output "Dell Inc. DELL U2720Q B9BVW13"
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -224,6 +230,7 @@ bindsym $mod+p exec ~/.config/sway/bin/logout
 # bindsym $mod+shift+p exec --no-startup-id ~/.config/i3/bin/display
 bindsym $mod+shift+n exec --no-startup-id ~/.config/i3/bin/pause_dunst
 
+# exec_always setxkbmap -layout us -option ctrl:nocaps
 input "type:keyboard" {
     xkb_options caps:ctrl_modifier
 }
@@ -263,10 +270,7 @@ bindsym $mod+Shift+8 move container to workspace $ws8
 bindsym $mod+Shift+9 move container to workspace $ws9
 bindsym $mod+Shift+0 move container to workspace $ws10
 
-exec_always setxkbmap -layout us -option ctrl:nocaps
 bindsym $mod+equal move workspace to output right
-# bindsym $mod+shift+equal move workspace to output left
-# exec compton -f --config ~/.config/compton.conf
 
 # Multi-screen screenshots with scrot
 bindsym --release Print exec scrot 'screenshot_%Y%m%d_%H%M%S.png' -e 'mkdir -p ~/Pictures/screenshots && mv $f ~/Pictures/screenshots && xclip -selection clipboard -t image/png -i ~/Pictures/screenshots/`ls -1 -t ~/Pictures/screenshots | head -1`' # All screens
@@ -279,13 +283,16 @@ assign [class="Alacritty"] $ws1
 exec firefox
 assign [class="Firefox"] $ws2
 exec slack
+# for_window [class="Slack"] move scratchpad
 assign [class="Slack"] $ws3
 exec spotify
 assign [class="Spotify"] $ws4
-exec blueman-manager
-assign [class="Blueman-manager"] $ws4
-
-# exec srandrd .local/bin/display_handler
-
+# exec blueman-manager
+# assign [class="Blueman-manager"] $ws4
 
 bindsym $mod+b exec --no-startup-id ~/.local/bin/rofi-bluetooth
+
+exec ~/.nix-profile/bin/mako
+bindsym $mod+Escape exec ~/.nix-profile/bin/makoctl dismiss -a
+
+exec 1password

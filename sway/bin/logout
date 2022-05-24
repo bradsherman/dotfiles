@@ -8,6 +8,11 @@ case $option in
     'lock screen')
         # /home/bsherman/.local/bin/betterlockscreen -l dimblur -t "Brad's Workbook"
         swaylock
+        # exec swayidle -w \
+        #         timeout 300 'swaylock -f -c 000000' \
+        #         timeout 600 'swaymsg "output * dpms off"' \
+        #               resume 'swaymsg "output * dpms on"' \
+        #         before-sleep 'swaylock -f -c 000000'
         ;;
     logout)
         swaynag -t warning -m 'Are you sure you  want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'swaymsg exit'
