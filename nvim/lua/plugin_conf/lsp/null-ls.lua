@@ -13,10 +13,11 @@ local code_actions = null_ls.builtins.code_actions
 null_ls.setup({
     debug = false,
     sources = {
-        code_actions.eslint_d,
+        -- code_actions.eslint_d,
         code_actions.shellcheck,
         diagnostics.eslint_d,
         formatting.stylua,
+        formatting.fourmolu,
         formatting.prettier.with({
             disabled_filetypes = { "html", "json", "yaml", "markdown" },
         }),

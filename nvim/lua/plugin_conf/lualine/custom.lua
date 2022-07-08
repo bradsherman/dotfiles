@@ -17,7 +17,7 @@ lualine.setup({
         section_separators = { left = "", right = "" },
         component_separators = { left = "", right = "" },
         -- component_separators = { left = "", right = "" },
-        disabled_filetypes = { "packer", "alpha", "dashboard", "NVimTree", "Outline" },
+        disabled_filetypes = { "packer", "alpha", "dashboard", "NVimTree", "NeoTree", "Outline" },
         always_divide_middle = true,
         globalstatus = true,
     },

@@ -50,6 +50,11 @@ window {
     min-width:  140px;
 }
 
+#time {
+    margin:     0px 16px 0px 10px;
+    min-width:  140px;
+}
+
 #battery.warning {
    color:       rgba(255, 210, 4, 1);
 }

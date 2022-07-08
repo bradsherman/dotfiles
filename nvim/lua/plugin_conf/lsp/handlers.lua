@@ -84,8 +84,8 @@ local function lsp_keymaps(client, bufnr)
     vim.keymap.set("n", "<leader>ls", "<cmd>Telescope lsp_workspace_symbols<cr>", { buffer = bufnr })
     vim.keymap.set("n", "<space>le", "<cmd>Lspsaga show_line_diagnostics<CR>", { buffer = bufnr })
     vim.keymap.set("n", "<space>lr", function()
-        require("renamer").rename()
-    end, { buffer = bufnr })
+        return ":IncRename " .. vim.fn.expand("<cword>")
+    end, { buffer = bufnr, expr = true })
     vim.cmd([[ command! Format execute 'lua vim.lsp.buf.format({ async = true })' ]])
 
     -- Set some keybinds conditional on server capabilities
@@ -97,20 +97,18 @@ local function lsp_keymaps(client, bufnr)
     end
 end
 
-local no_format_servers = { "tsserver", "sumneko_lua", "sqls", "dockerls" }
+local no_format_servers = { "tsserver", "hls", "sumneko_lua", "sqls", "dockerls" }
 
 local lsp_formatting = function(bufnr)
     vim.lsp.buf.format({
-        filter = function(clients)
-            -- filter out clients that you don't want to use
-            return vim.tbl_filter(function(client)
-                for _, v in ipairs(no_format_servers) do
-                    if v == client.name then
-                        return false
-                    end
+        filter = function(client)
+            -- filter out client that you don't want to use
+            for _, name in pairs(no_format_servers) do
+                if name == client.name then
+                    return false
                 end
-                return true
-            end, clients)
+            end
+            return true
         end,
         bufnr = bufnr,
     })

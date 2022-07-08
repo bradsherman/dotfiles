@@ -42,7 +42,7 @@ o.showmode = false
 wo.cursorline = true
 o.wildmenu = true
 o.cmdheight = 1
-o.clipboard = "unnamedplus"
+o.clipboard:append("unnamedplus")
 wo.colorcolumn = "120"
 wo.signcolumn = "yes"
 vim.go.laststatus = 3

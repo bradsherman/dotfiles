@@ -42,6 +42,9 @@ return packer.startup(function(use)
     use("nvim-lua/popup.nvim")
     use("nvim-lua/plenary.nvim")
     use("TimUntersberger/neogit")
+    use("akinsho/git-conflict.nvim")
+    use("https://gitlab.com/yorickpeterse/nvim-pqf.git")
+    use("ThePrimeagen/git-worktree.nvim")
 
     use("numToStr/Comment.nvim")
     use("JoosepAlviste/nvim-ts-context-commentstring")
@@ -69,6 +72,7 @@ return packer.startup(function(use)
     use("nvim-telescope/telescope.nvim")
     use("nvim-telescope/telescope-fzy-native.nvim")
     use("nvim-telescope/telescope-file-browser.nvim")
+    use("luc-tielen/telescope_hoogle")
     use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
     use({ "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" } })
 
@@ -77,6 +81,7 @@ return packer.startup(function(use)
     use("karb94/neoscroll.nvim")
     use("kyazdani42/nvim-web-devicons")
     use("kyazdani42/nvim-tree.lua")
+    use({ "nvim-neo-tree/neo-tree.nvim", requires = { "MunifTanjim/nui.nvim", "s1n7ax/nvim-window-picker" } })
     use("ishan9299/nvim-solarized-lua")
 
     use("folke/lsp-colors.nvim")
@@ -85,7 +90,9 @@ return packer.startup(function(use)
     use("jose-elias-alvarez/null-ls.nvim")
     use("jose-elias-alvarez/typescript.nvim")
     use("rafamadriz/friendly-snippets")
+    use("molleweide/LuaSnip-snippets.nvim")
     use("JASONews/glow-hover")
+    use("onsails/lspkind.nvim")
     -- Install nvim-cmp, and buffer source as a dependency
     use({
         "hrsh7th/nvim-cmp",
@@ -109,6 +116,7 @@ return packer.startup(function(use)
         branch = "master",
         requires = { "nvim-lua/plenary.nvim" },
     })
+    use("smjonas/inc-rename.nvim")
 
     use("pwntester/octo.nvim")
     use("ldelossa/litee.nvim")
@@ -171,14 +179,14 @@ return packer.startup(function(use)
     use("narutoxy/dim.lua")
     -- this may be better since it's at lsp level, but doesn't
     -- work for haskell
-    -- use("zbirenbaum/neodim")
+    use("zbirenbaum/neodim")
     use("simrat39/symbols-outline.nvim")
 
     use("napmn/react-extract.nvim")
     use("ziontee113/syntax-tree-surfer")
     use("LnL7/vim-nix")
     -- use({ "goolord/alpha-nvim", requires = "kyazdani42/nvim-web-devicons" })
-    -- use("antoinemadec/FixCursorHold.nvim") -- This is needed to fix lsp doc highlight
+    use("antoinemadec/FixCursorHold.nvim") -- This is needed to fix lsp doc highlight
 
     use({
         "iamcco/markdown-preview.nvim",
@@ -186,6 +194,8 @@ return packer.startup(function(use)
             vim.fn["mkdp#util#install"]()
         end,
     })
+
+    use("ThePrimeagen/harpoon")
 
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins

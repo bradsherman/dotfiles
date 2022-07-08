@@ -63,7 +63,7 @@ bindswitch --reload --locked lid:on output $laptop disable
 bindswitch --reload --locked lid:off output $laptop enable
 exec_always ~/.config/sway/bin/reset_displays.sh
 
-# exec_always "pkill kanshi; kanshi"
+exec_always "pkill kanshi; kanshi"
 # output eDP-1 position 0,0
 #size 1920 1080
 # ouptut DP-1 position 1920,0
@@ -276,7 +276,8 @@ bindsym $mod+equal move workspace to output right
 bindsym --release Print exec scrot 'screenshot_%Y%m%d_%H%M%S.png' -e 'mkdir -p ~/Pictures/screenshots && mv $f ~/Pictures/screenshots && xclip -selection clipboard -t image/png -i ~/Pictures/screenshots/`ls -1 -t ~/Pictures/screenshots | head -1`' # All screens
 
 # OSX-like area selection screenshots
-bindsym --release Shift+Print exec scrot -s 'screenshot_%Y%m%d_%H%M%S.png' -e 'mkdir -p ~/Pictures/screenshots && mv $f ~/Pictures/screenshots && xclip -selection clipboard -t image/png -i ~/Pictures/screenshots/`ls -1 -t ~/Pictures/screenshots | head -1`' # Area selection
+# bindsym --release Shift+Print exec scrot -s 'screenshot_%Y%m%d_%H%M%S.png' -e 'mkdir -p ~/Pictures/screenshots && mv $f ~/Pictures/screenshots && xclip -selection clipboard -t image/png -i ~/Pictures/screenshots/`ls -1 -t ~/Pictures/screenshots | head -1`' # Area selection
+bindsym --release Shift+Print exec ~/.config/sway/bin/screenshot.sh
 
 exec alacritty
 assign [class="Alacritty"] $ws1
@@ -292,7 +293,7 @@ assign [class="Spotify"] $ws4
 
 bindsym $mod+b exec --no-startup-id ~/.local/bin/rofi-bluetooth
 
-exec ~/.nix-profile/bin/mako
+exec_always "pkill mako; ~/.nix-profile/bin/mako"
 bindsym $mod+Escape exec ~/.nix-profile/bin/makoctl dismiss -a
 
-exec 1password
+exec sway-audio-idle-inhibit

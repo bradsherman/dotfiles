@@ -94,6 +94,9 @@ telescope.setup({
 telescope.load_extension("file_browser")
 telescope.load_extension("fzf")
 telescope.load_extension("notify")
+telescope.load_extension("hoogle")
+telescope.load_extension("harpoon")
+telescope.load_extension("git_worktree")
 
 local M = {}
 
@@ -140,16 +143,5 @@ function M.reload()
     -- call the builtin method to list files
     require("telescope.builtin").find_files(opts)
 end
-
-vim.keymap.set("n", "<c-f>", "<cmd>Telescope find_files<cr>")
-vim.keymap.set("n", "<c-g>", "<cmd>Telescope live_grep<cr>")
-vim.keymap.set("n", "<leader>lt", "<cmd>Telescope tags<cr>")
-vim.keymap.set("n", "<c-b>", "<cmd>Telescope buffers<cr>")
-vim.keymap.set("n", "<leader>fe", function()
-    require("telescope").extensions.file_browser.file_browser()
-end)
-vim.keymap.set("n", "<leader>qr", function()
-    require("plugin_conf/telescope").reload()
-end)
 
 return M

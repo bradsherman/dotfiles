@@ -18,6 +18,7 @@ lsp_installer.setup()
 -- special setup for haskell, for some reason it crashes on certain files when used
 -- with nvim lsp installer - could be due to outdated version
 nvim_lsp.hls.setup({
+    -- cmd = { "haskell-language-server-wrapper", "--lsp", "--debug" },
     settings = {
         haskell = {
             formattingProvider = "fourmolu",
@@ -81,6 +82,7 @@ nvim_lsp.jsonls.setup(default_setup)
 nvim_lsp.pyright.setup(default_setup)
 nvim_lsp.graphql.setup(default_setup)
 nvim_lsp.rust_analyzer.setup(default_setup)
+nvim_lsp.ocamllsp.setup(default_setup)
 local ts_ok, ts = pcall(require, "typescript")
 if ts_ok then
     ts.setup({

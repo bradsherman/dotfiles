@@ -5,14 +5,33 @@ end
 
 local update_haskell_tags = require("utils").update_haskell_tags
 
+vim.keymap.set("n", "<c-f>", "<cmd>Telescope find_files<cr>")
+vim.keymap.set("n", "<c-g>", "<cmd>Telescope live_grep<cr>")
+vim.keymap.set("n", "<c-b>", "<cmd>Telescope buffers<cr>")
+vim.keymap.set("n", "<leader>lt", "<cmd>Telescope tags<cr>")
+vim.keymap.set("n", "<leader>fe", function()
+    require("telescope").extensions.file_browser.file_browser()
+end)
+vim.keymap.set("n", "<leader>qr", function()
+    require("plugin_conf/telescope").reload()
+end)
+
 -- Quickfix
 wk.register({
-    c = {
+    q = {
         name = "+Quickfix",
-        j = { ":cnext<cr>", "Quickfix next" },
-        k = { ":cprev<cr>", "Quickfix prev" },
-        c = { ":copen<cr>", "Quickfix open" },
-        q = { ":cclose<cr>", "Quickfix close" },
+        j = { "<cmd>cnext<cr>", "Quickfix next" },
+        k = { "<cmd>cprev<cr>", "Quickfix prev" },
+        c = { "<cmd>copen<cr>", "Quickfix open" },
+        q = { "<cmd>cclose<cr>", "Quickfix close" },
+    },
+}, { prefix = "<leader>" })
+
+-- Colorizer
+wk.register({
+    c = {
+        name = "+Colorizer",
+        t = { "<cmd>ColorizerToggle<cr>", "Toggle Colorizer" },
     },
 }, { prefix = "<leader>" })
 
@@ -30,8 +49,8 @@ wk.register({
 wk.register({
     p = {
         name = "+Packer",
-        i = { ":PackerInstall<cr>", "Packer Install" },
-        u = { ":PackerSync<cr>", "Packer Sync" },
+        i = { "<cmd>PackerInstall<cr>", "Packer Install" },
+        u = { "<cmd>PackerSync<cr>", "Packer Sync" },
     },
 }, { prefix = "<leader>" })
 
@@ -51,7 +70,7 @@ wk.register({
 }, { prefix = "<leader>" })
 
 wk.register({
-    ["<leader><tab>"] = { ":b#<cr>", "Previous Buffer" },
+    ["<leader><tab>"] = { "<cmd>b#<cr>", "Previous Buffer" },
 }, {})
 
 wk.register({
@@ -59,12 +78,18 @@ wk.register({
 }, {})
 
 wk.register({
-    ["<leader>tl"] = { ":set list!<cr>", "Show Whitespace Chars" },
+    ["<leader>tl"] = { "<cmd>set list!<cr>", "Show Whitespace Chars" },
 })
 
 wk.register({
-    ["<leader>e"] = { ":NvimTreeFindFile<cr>", "NvimTree Find File" },
+    ["<leader>e"] = { "<cmd>Neotree toggle reveal<cr>", "Neotree Find File" },
+    ["<C-e>"] = { "<cmd>Neotree toggle<cr>", "Neotree Toggle" },
 }, {})
+
+-- wk.register({
+--     ["<leader>e"] = { "<cmd>NvimTreeFindFile<cr>", "NvimTree Find File" },
+--     ["<C-e>"] = { "<cmd>NvimTreeToggle<cr>", "NvimTree Toggle" },
+-- }, {})
 
 wk.register({
     ["<leader>fe"] = {
@@ -87,7 +112,7 @@ wk.register({
         f = { "<cmd>lua vim.lsp.buf.format({ async = true })<cr>", "Format" },
         h = { "<cmd>Lspsaga signature_help<cr>", "Signature Help" },
         i = { "<cmd>LspInfo<cr>", "LSP Info" },
-        r = { "<cmd>lua require('renamer').rename()<cr>", "Rename" },
+        r = { "<cmd>IncRename " .. vim.fn.expand("<cword>") .. "<cr>", "Rename" },
         s = { "<cmd>Telescope lsp_workspace_symbols<cr>", "LSP Workspace Symbols" },
         t = { "<cmd>Telescope tags<cr>", "Tags" },
         u = { update_haskell_tags, "Update tags" },
@@ -109,11 +134,21 @@ wk.register({
     g = {
         name = "+Git",
         -- Fugitive
-        s = { ":G<cr>", "Git Status" },
+        s = { "<cmd>G<cr>", "Git Status" },
         -- Telescope
-        b = { ":Telescope git_branches<cr>", "Git Branches" },
+        b = { "<cmd>Telescope git_branches<cr>", "Git Branches" },
         -- Neogit
-        g = { ":Neogit<cr>", "Neogit" },
+        g = { "<cmd>Neogit<cr>", "Neogit" },
+        c = {
+            name = "+Conflict",
+            b = { "<cmd>GitConflictChooseBoth<cr>", "Choose Both" },
+            j = { "<cmd>GitConflictNextConflict<cr>", "Next Conflict" },
+            k = { "<cmd>GitConflictPrevConflict<cr>", "Previous Conflict" },
+            l = { "<cmd>GitConflictListQf<cr>", "To Quickfix" },
+            n = { "<cmd>GitConflictChooseNone<cr>", "Choose None" },
+            o = { "<cmd>GitConflictChooseOurs<cr>", "Choose Ours" },
+            t = { "<cmd>GitConflictChooseTheirs<cr>", "Choose Theirs" },
+        },
         h = {
             name = "+Github",
             c = {
@@ -130,7 +165,9 @@ wk.register({
                 p = { "<cmd>GHPreviewIssue<cr>", "Preview" },
             },
             l = {
-                name = "+Litee",
+                name = "+Litee/Labels",
+                a = { "<cmd>GHAddLabel<cr>", "Add Label to PR" },
+                r = { "<cmd>GHRemoveLabel<cr>", "Remove Label to PR" },
                 t = { "<cmd>LTPanel<cr>", "Toggle Panel" },
             },
             r = {
@@ -148,9 +185,11 @@ wk.register({
                 d = { "<cmd>GHPRDetails<cr>", "Details" },
                 e = { "<cmd>GHExpandPR<cr>", "Expand" },
                 l = { "<cmd>Octo pr list<cr>", "List (Octo)" },
+                m = { "<cmd>GHRequestedReview<cr>", "My PRs To Review" },
                 o = { "<cmd>GHOpenPR<cr>", "Open" },
                 p = { "<cmd>GHPopOutPR<cr>", "PopOut" },
                 r = { "<cmd>GHRefreshPR<cr>", "Refresh" },
+                s = { "<cmd>GHSearchPRs<cr>", "Search All PRs" },
                 t = { "<cmd>GHOpenToPR<cr>", "Open To" },
                 z = { "<cmd>GHCollapsePR<cr>", "Collapse" },
             },
@@ -158,12 +197,17 @@ wk.register({
                 name = "+Threads",
                 c = { "<cmd>GHCreateThread<cr>", "Create" },
                 n = { "<cmd>GHNextThread<cr>", "Next" },
-                t = { "<cmd>GHToggleThread<cr>", "Toggle" },
+                t = { "<cmd>GHToggleThreads<cr>", "Toggle" },
             },
         },
         n = { "<cmd>Gitsigns next_hunk<cr>", "Next Hunk" },
         p = { "<cmd>Gitsigns prev_hunk<cr>", "Previous Hunk" },
         d = { "<cmd>Gitsigns preview_hunk<cr>", "Preview Hunk" },
+        w = {
+            name = "+Worktree",
+            c = { "<cmd>lua require('telescope').extensions.git_worktree.create_git_worktree()<cr>", "Create" },
+            s = { "<cmd>lua require('telescope').extensions.git_worktree.git_worktrees()<cr>", "Switch" },
+        },
     },
 }, { prefix = "<leader>" })
 
@@ -234,3 +278,14 @@ if surfer_ok then
         ["<A-k>"] = { "<cmd>lua require('syntax-tree-surfer').surf('prev', 'visual', true)<cr>", "Surf Swap Prev" },
     }, { mode = "x" })
 end
+
+-- Harpoon
+wk.register({
+    h = {
+        name = "Harpoon",
+        a = { "<cmd>lua require('harpoon.mark').add_file()<cr>", "Add File" },
+        m = { "<cmd>lua require('harpoon.ui').toggle_quick_menu()<cr>", "Toggle Menu" },
+        j = { "<cmd>lua require('harpoon.ui').nav_next()<cr>", "Next" },
+        k = { "<cmd>lua require('harpoon.ui').nav_prev()<cr>", "Previous" },
+    },
+}, { prefix = "<leader>" })

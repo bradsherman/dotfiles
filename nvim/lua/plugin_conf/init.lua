@@ -3,8 +3,24 @@ if status_ok then
     impatient.enable_profile()
 end
 
+local function safe_load(plugin)
+    local ok, p = pcall(require, plugin)
+    if ok then
+        p.setup()
+    end
+end
+
+-- easy installs
+safe_load("pqf")
+safe_load("nvim-web-devicons")
+safe_load("stabilize")
+safe_load("renamer")
+safe_load("inc_rename")
+safe_load("nvim-ts-autotag")
+safe_load("window_picker")
+
 require("plugin_conf.litee")
-require("plugin_conf.nvim_tree")
+require("plugin_conf.tree")
 require("plugin_conf.neogit")
 require("plugin_conf.neoscroll")
 require("plugin_conf.todo")
@@ -30,24 +46,12 @@ require("plugin_conf.symbols")
 require("plugin_conf.beacon")
 require("plugin_conf.react_extract")
 require("plugin_conf.dressing")
-require("plugin_conf.notify")
--- require("plugin_conf.fidget")
+require("plugin_conf.colorizer")
+require("plugin_conf.harpoon")
+-- require("plugin_conf.notify")
+require("plugin_conf.fidget")
+require("plugin_conf.dim")
 -- require("plugin_conf.alpha")
-
-local function safe_load(plugin)
-    local ok, p = pcall(require, plugin)
-    if ok then
-        p.setup()
-    end
-end
-
--- easy installs
-safe_load("nvim-web-devicons")
-safe_load("colorizer")
-safe_load("dim")
-safe_load("stabilize")
-safe_load("renamer")
-safe_load("nvim-ts-autotag")
 
 vim.g.do_filetype_lua = 1
 

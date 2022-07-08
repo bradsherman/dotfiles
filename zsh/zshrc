@@ -111,6 +111,7 @@ alias vim="nvim"
 source /home/bsherman/.local/venv/bin/activate
 export PATH="/usr/lib/postgresql/12/bin:${PATH}"
 export PATH="$HOME/.tfenv/bin:${PATH}"
+export PATH="$HOME/.pkenv/bin:${PATH}"
 export PATH="$HOME/code/lua-language-server/bin/Linux:${PATH}"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -200,6 +201,8 @@ alias htop='btm'
 alias man='tldr'
 alias shake='stack exec shake --'
 
+export LOCAL_CONN_STRING="postgresql://app:password123@localhost:5432/main"
+
 source /home/bsherman/.config/broot/launcher/bash/br
 
 export PATH="/home/bsherman/.bitcoin/bin:$PATH"
@@ -217,6 +220,18 @@ function vpndown {
   sudo wg-quick down wg0
 }
 
+function build_deploy_vagrant {
+  # Build code for currently checked out commit
+  shake dev-pack
+
+  # Start vagrant
+  cd ops/deploy/vagrant/all
+  vagrant up --no-provision
+
+  # Provision vagrant with the tarball you just built
+  ansible-playbook vagrant.yaml -e btnl_rev=$(git rev-parse HEAD) -e prompt_confirm=false
+}
+
 alias luamake=/home/bsherman/code/lua-language-server/3rd/luamake/luamake
 export VAULT_ADDR=http://127.0.0.1:8200
 
@@ -225,3 +240,6 @@ if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then
     export LOCALE_ARCHIVE="/usr/lib/locale/locale-archive"
     export TERMINFO=$HOME/.nix-profile/share/terminfo
 fi
+
+# opam configuration
+[[ ! -r /home/bsherman/.opam/opam-init/init.zsh ]] || source /home/bsherman/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null

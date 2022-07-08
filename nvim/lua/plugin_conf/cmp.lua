@@ -7,6 +7,10 @@ if not snip_status_ok then
     return
 end
 
+local luasnip_status_ok, luasnip_snippets = pcall(require, "luasnip-snippets")
+if luasnip_status_ok then
+    luasnip.snippets = luasnip_snippets.load_snippets()
+end
 luasnip.config.setup({ history = false })
 
 local has_words_before = function()
@@ -45,25 +49,75 @@ local symbol_map = {
 local window_ops = cmp.config.window.bordered()
 window_ops.border = "rounded" -- default
 
+local nfox_ok, palettes = pcall(require, "nightfox.palette")
+local palette = palettes.load("nordfox")
+
+if true and nfox_ok then
+    local cmp_highlights = {
+        PmenuSel = { bg = palette.bg1, fg = "NONE" },
+        Pmenu = { fg = palette.fg0, bg = palette.bg1 },
+
+        CmpItemKindField = { fg = palette.fg1, bg = palette.red.base },
+        CmpItemKindProperty = { fg = palette.fg1, bg = palette.red.base },
+        CmpItemKindEvent = { fg = palette.fg1, bg = palette.red.base },
+
+        CmpItemKindText = { fg = palette.fg1, bg = palette.green.dim },
+        CmpItemKindEnum = { fg = palette.fg1, bg = palette.green.dim },
+        CmpItemKindKeyword = { fg = palette.fg1, bg = palette.green.dim },
+
+        CmpItemKindConstant = { fg = palette.fg1, bg = palette.yellow.base },
+        CmpItemKindConstructor = { fg = palette.fg1, bg = palette.yellow.base },
+        CmpItemKindReference = { fg = palette.fg1, bg = palette.yellow.base },
+
+        CmpItemKindFunction = { fg = palette.fg1, bg = palette.magenta.base },
+        CmpItemKindStruct = { fg = palette.fg1, bg = palette.magenta.base },
+        CmpItemKindClass = { fg = palette.fg1, bg = palette.magenta.base },
+        CmpItemKindModule = { fg = palette.fg1, bg = palette.magenta.base },
+        CmpItemKindOperator = { fg = palette.fg1, bg = palette.magenta.base },
+
+        CmpItemKindVariable = { fg = palette.white.bright, bg = palette.black.base },
+        CmpItemKindFile = { fg = palette.white.bright, bg = palette.black.base },
+
+        CmpItemKindUnit = { fg = palette.fg1, bg = palette.orange.base },
+        CmpItemKindSnippet = { fg = palette.fg1, bg = palette.orange.base },
+        CmpItemKindFolder = { fg = palette.fg1, bg = palette.orange.base },
+
+        CmpItemKindMethod = { fg = palette.fg1, bg = palette.blue.base },
+        CmpItemKindValue = { fg = palette.fg1, bg = palette.blue.base },
+        CmpItemKindEnumMember = { fg = palette.fg1, bg = palette.blue.base },
+
+        CmpItemKindInterface = { fg = palette.fg1, bg = palette.cyan.base },
+        CmpItemKindColor = { fg = palette.fg1, bg = palette.cyan.base },
+        CmpItemKindTypeParameter = { fg = palette.fg1, bg = palette.cyan.base },
+    }
+
+    local cmp_with_fmt = {
+        CmpItemAbbrDeprecated = { fg = palette.fg2, bg = "NONE", fmt = "strikethrough" },
+        CmpItemAbbrMatch = { fg = palette.blue.bright, bg = "NONE", fmt = "bold" },
+        CmpItemAbbrMatchFuzzy = { fg = palette.blue.bright, bg = "NONE", fmt = "bold" },
+        CmpItemMenu = { fg = palette.pink.dim, bg = "NONE", fmt = "italic" },
+    }
+
+    for name, hl in pairs(cmp_highlights) do
+        vim.cmd("highlight " .. name .. " guifg=" .. hl.fg .. " guibg=" .. hl.bg)
+    end
+
+    for name, hl in pairs(cmp_with_fmt) do
+        vim.cmd("highlight " .. name .. " guifg=" .. hl.fg .. " guibg=" .. hl.bg .. " gui=" .. hl.fmt)
+    end
+end
+
 cmp.setup({
     formatting = {
         fields = { "kind", "abbr", "menu" },
-        format = function(_, vim_item)
-            vim_item.menu = vim_item.kind
-            vim_item.kind = symbol_map[vim_item.kind]
-            -- vim_item.kind = string.format("%s", symbol_map[vim_item.kind])
-            -- vim_item.kind = string.format("%s %s", symbol_map[vim_item.kind], vim_item.kind) -- This concatonates the icons with the name of the item kind
-            -- vim_item.menu = ({
-            --     nvim_lsp = "[LSP]",
-            --     nvim_lua = "[NVIM]",
-            --     luasnip = "[SNIP]",
-            --     buffer = "[BUF]",
-            --     path = "[PATH]",
-            --     tags = "[TAG]",
-            --     treesitter = "[TREE]",
-            --     nvim_lsp_signature_help = "[SIG]",
-            -- })[entry.source.name]
-            return vim_item
+
+        format = function(entry, vim_item)
+            local kind = require("lspkind").cmp_format({ mode = "symbol_text", maxwidth = 40 })(entry, vim_item)
+            local strings = vim.split(kind.kind, "%s", { trimempty = true })
+            kind.kind = " " .. strings[1] .. " "
+            kind.menu = "    (" .. strings[2] .. ")"
+
+            return kind
         end,
     },
 
@@ -73,7 +127,12 @@ cmp.setup({
         end,
     },
     window = {
-        completion = window_ops,
+        -- completion = window_ops,
+        completion = {
+            winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
+            col_offset = -3,
+            side_padding = 0,
+        },
         documentation = window_ops,
     },
     mapping = {
@@ -156,4 +215,5 @@ cmp.setup.cmdline(":", {
     }),
 })
 
+-- this loads friendly snippets
 require("luasnip.loaders.from_vscode").lazy_load()

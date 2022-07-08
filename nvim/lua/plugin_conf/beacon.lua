@@ -13,5 +13,5 @@ beacon.setup({
     shrink = true,
     timeout = 200,
     ignore_buffers = {},
-    ignore_filetypes = { "NeogitStatus", "NvimTree" },
+    ignore_filetypes = { "NeogitStatus", "NvimTree", "neo-tree" },
 })

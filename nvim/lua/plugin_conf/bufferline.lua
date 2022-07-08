@@ -24,11 +24,11 @@ bufferline.setup({
         --- Please note some names can/will break the
         --- bufferline so use this at your discretion knowing that it has
         --- some limitations that will *NOT* be fixed.
-        name_formatter = function(buf) -- buf contains a "name", "path" and "bufnr"
+        name_formatter = function() -- buf contains a "name", "path" and "bufnr"
             -- remove extension from markdown files for example
-            if buf.name:match("%.md") then
-                return vim.fn.fnamemodify(buf.name, ":t:r")
-            end
+            -- if buf.name:match("%.md") then
+            --     return vim.fn.fnamemodify(buf.name, ":t:r")
+            -- end
         end,
         max_name_length = 18,
         max_prefix_length = 15, -- prefix used when a buffer is de-duplicated
@@ -54,7 +54,27 @@ bufferline.setup({
         --     return true
         --   end
         -- end,
-        offsets = { { filetype = "NvimTree", text = "File Explorer", padding = 1 } }, -- | function , text_align = "left" | "center" | "right"}},
+        offsets = {
+            {
+                filetype = "NvimTree",
+                text = function()
+                    return vim.fn.getcwd()
+                end,
+                highlight = "Directory",
+                text_align = "left",
+                padding = 1,
+            },
+            {
+                filetype = "neo-tree",
+                text = function()
+                    return vim.fn.getcwd()
+                end,
+                highlight = "Directory",
+                text_align = "left",
+                padding = 1,
+            },
+        }, -- | function , text_align = "left" | "center" | "right"}},
+        color_icons = true,
         show_buffer_icons = true, -- disable filetype icons for buffers
         show_buffer_close_icons = true,
         show_close_icon = true,
@@ -63,7 +83,7 @@ bufferline.setup({
         -- can also be a table containing 2 custom separators
         -- [focused and unfocused]. eg: { '|', '|' }
         -- can go back to 'padded_slant' or 'slant' once colors are fixed
-        separator_style = "thin",
+        separator_style = "padded_slant",
         enforce_regular_tabs = true,
         always_show_bufferline = true,
         -- sort_by = 'id' | 'extension' | 'relative_directory' | 'directory' | 'tabs' | function(buffer_a, buffer_b)

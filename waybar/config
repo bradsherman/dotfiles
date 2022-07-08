@@ -13,8 +13,6 @@
     "tray",
     "custom/spotify",
     "custom/weather",
-    "custom/storage",
-    "backlight",
     "pulseaudio",
     "network",
     "idle_inhibitor",
@@ -46,11 +44,11 @@
     "format": "{capacity}% {icon}",
     "format-alt": "{time} {icon}",
     "format-icons": [
-      "",
-      "",
-      "",
-      "",
-      ""
+      "  ",
+      "  ",
+      "  ",
+      "  ",
+      "  "
     ],
     "format-charging": "{capacity}% ",
     "interval": 30,
@@ -84,7 +82,7 @@
     "format": "{icon}",
     "format-alt": "{volume} {icon}",
     "format-alt-click": "click-right",
-    "format-muted": "",
+    "format-muted": "🔇",
     "format-icons": {
       "phone": [
         " ",

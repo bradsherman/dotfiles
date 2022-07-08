@@ -51,6 +51,7 @@ nightfox.setup({
             lsp_trouble = true,
             native_lsp = true,
             neogit = true,
+            neotree = true,
             notify = true,
             nvimtree = true,
             telescope = true,
