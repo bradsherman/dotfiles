@@ -51,14 +51,11 @@ require("plugin_conf.harpoon")
 -- require("plugin_conf.notify")
 require("plugin_conf.fidget")
 require("plugin_conf.dim")
+require("plugin_conf.surround")
+require("plugin_conf.folds")
 -- require("plugin_conf.alpha")
 
 vim.g.do_filetype_lua = 1
-
-vim.keymap.set("n", "<leader>tm", ":TableModeToggle<cr>")
-vim.keymap.set("n", "<leader>dfo", ":DiffviewOpen<cr>")
-vim.keymap.set("n", "<leader>dfc", ":DiffviewClose<cr>")
-vim.keymap.set("n", "<leader>hw", ":HopWord<cr>")
 
 local file_exists = require("utils").file_exists
 

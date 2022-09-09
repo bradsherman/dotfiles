@@ -16,11 +16,24 @@ parser_configs.norg = {
 configs.setup({
     -- one of "all", "maintained" (parsers with maintainers), or a list of languages
     ensure_installed = {
+        "cpp",
+        "css",
+        "go",
+        "hcl",
+        "make",
+        "ninja",
+        "nix",
+        "ocaml",
+        "scss",
+        "sql",
+        "toml",
         "norg",
         "haskell",
         "graphql",
         "json",
         "javascript",
+        "typescript",
+        "tsx",
         "yaml",
         "bash",
         "typescript",
@@ -33,8 +46,17 @@ configs.setup({
         "query",
     },
     -- setting this to true looks nice but drastically reduces UI responsiveness
-    highlight = { enable = true, additional_vim_regex_highlighting = true },
+    highlight = { enable = true, additional_vim_regex_highlighting = false },
     indent = { enable = true },
+    incremental_selection = {
+        enable = true,
+        keymaps = {
+            init_selection = "gnn",
+            node_incremental = "grn",
+            scope_incremental = "grc",
+            node_decremental = "grm",
+        },
+    },
     autopairs = { enable = true },
     autotag = { enable = true },
     context_commentstring = { enable = true, enable_autocmd = false },

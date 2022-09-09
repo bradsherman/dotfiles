@@ -3,18 +3,31 @@ if not status_ok then
     return
 end
 
+local show = wk.show
+wk.show = function(keys, opts)
+    if vim.bo.filetype == "TelescopePrompt" then
+        local map = "<c-r>"
+        local key = vim.api.nvim_replace_termcodes(map, true, false, true)
+        vim.api.nvim_feedkeys(key, "i", true)
+    end
+    show(keys, opts)
+end
+
 local update_haskell_tags = require("utils").update_haskell_tags
 
-vim.keymap.set("n", "<c-f>", "<cmd>Telescope find_files<cr>")
-vim.keymap.set("n", "<c-g>", "<cmd>Telescope live_grep<cr>")
-vim.keymap.set("n", "<c-b>", "<cmd>Telescope buffers<cr>")
-vim.keymap.set("n", "<leader>lt", "<cmd>Telescope tags<cr>")
-vim.keymap.set("n", "<leader>fe", function()
-    require("telescope").extensions.file_browser.file_browser()
-end)
-vim.keymap.set("n", "<leader>qr", function()
-    require("plugin_conf/telescope").reload()
-end)
+-- Miscellaneous Telescope mappings
+wk.register({
+    ["<c-f>"] = { "<cmd>Telescope find_files<cr>", "Telescope Files" },
+    ["<c-g>"] = { "<cmd>Telescope live_grep<cr>", "Telescope Grep" },
+    ["<c-b>"] = { "<cmd>Telescope buffers<cr>", "Telescope Buffers" },
+    ["<leader>lt"] = { "<cmd>Telescope tags<cr>", "Telescope Tags" },
+    ["<leader>fe"] = {
+        "<cmd>require('telescope').extensions.file_browser.file_browser()<cr>",
+        "Telescope File Browser",
+    },
+    ["<leader>qr"] = { "<cmd>require('plugin_conf/telescope').reload()<cr>", "Reload Modules" },
+    ["<leader>bd"] = { "<cmd>%bd|e#<cr>", "Clear Buffers" },
+}, {})
 
 -- Quickfix
 wk.register({
@@ -49,6 +62,7 @@ wk.register({
 wk.register({
     p = {
         name = "+Packer",
+        c = { "<cmd>PackerCompile<cr>", "Packer Compile" },
         i = { "<cmd>PackerInstall<cr>", "Packer Install" },
         u = { "<cmd>PackerSync<cr>", "Packer Sync" },
     },
@@ -69,44 +83,49 @@ wk.register({
     },
 }, { prefix = "<leader>" })
 
+-- Misc
 wk.register({
-    ["<leader><tab>"] = { "<cmd>b#<cr>", "Previous Buffer" },
-}, {})
+    ["<tab>"] = { "<cmd>b#<cr>", "Previous Buffer" },
+    ["tm"] = { "<cmd>TableModeToggle<cr>", "Toggle TableMode" },
+    ["sw"] = { "<cmd>set list!<cr>", "Show Whitespace Chars" },
+    ["se"] = { "<cmd>Eswpoch<cr>", "Epoch Switcher" },
+    ["fe"] = {
+        "<cmd>lua require('telescope').extensions.file_browser.file_browser()<cr>",
+        "Telescope File Browser",
+    },
+    ["nc"] = { "<cmd>lua require('notify').dismiss({pending = true})<cr>", "Clear Notifications" },
+}, { prefix = "<leader>" })
 
 wk.register({
-    ["<leader>to"] = { "<cmd>ToggleTerm<cr>", "Toggle Term" },
-}, {})
-
-wk.register({
-    ["<leader>tl"] = { "<cmd>set list!<cr>", "Show Whitespace Chars" },
-})
+    f = {
+        name = "+DiffView",
+        o = { "<cmd>DiffviewOpen<cr>", "Diffview Open" },
+        h = { "<cmd>DiffviewOpen HEAD~1<cr>", "Diffview Open Last Commit" },
+        c = { "<cmd>DiffviewClose<cr>", "Diffview Close" },
+        f = { "<cmd>DiffviewFileHistory %<cr>", "Diffview File History" },
+    },
+}, { prefix = "<leader>d" })
 
 wk.register({
     ["<leader>e"] = { "<cmd>Neotree toggle reveal<cr>", "Neotree Find File" },
     ["<C-e>"] = { "<cmd>Neotree toggle<cr>", "Neotree Toggle" },
 }, {})
 
+wk.register({
+    e = { "<cmd>Neotree toggle<cr>", "Neotree Toggle" },
+    d = { "<cmd>Neotree diagnostics toggle bottom<cr>", "Neotree Diagnostics" },
+}, { prefix = "<leader>n" })
+
 -- wk.register({
 --     ["<leader>e"] = { "<cmd>NvimTreeFindFile<cr>", "NvimTree Find File" },
 --     ["<C-e>"] = { "<cmd>NvimTreeToggle<cr>", "NvimTree Toggle" },
 -- }, {})
 
-wk.register({
-    ["<leader>fe"] = {
-        "<cmd>lua require('telescope').extensions.file_browser.file_browser()<cr>",
-        "Telescope File Browser",
-    },
-})
-
-wk.register({
-    ["<leader>nc"] = { "<cmd>lua require('notify').dismiss({pending = true})<cr>", "Clear Notifications" },
-}, {})
-
 -- Lsp
 wk.register({
     ["<leader>l"] = {
         name = "+LSP Actions",
-        a = { "<cmd>lua vim.lsp.buf.code_action()<cr>", "Code Actions" },
+        a = { "<cmd>Lspsaga code_action<cr>", "Code Actions" },
         d = { "<cmd>Telescope diagnostics<cr>", "LSP Diagnostics" },
         e = { "<cmd>Lspsaga show_line_diagnostics<cr>", "Line Diagnostics" },
         f = { "<cmd>lua vim.lsp.buf.format({ async = true })<cr>", "Format" },
@@ -115,7 +134,7 @@ wk.register({
         r = { "<cmd>IncRename " .. vim.fn.expand("<cword>") .. "<cr>", "Rename" },
         s = { "<cmd>Telescope lsp_workspace_symbols<cr>", "LSP Workspace Symbols" },
         t = { "<cmd>Telescope tags<cr>", "Tags" },
-        u = { update_haskell_tags, "Update tags" },
+        u = { update_haskell_tags, "Update Haskell tags" },
     },
     g = {
         name = "+LSP Types",
@@ -159,6 +178,7 @@ wk.register({
                 p = { "<cmd>GHPopOutCommit<cr>", "Pop Out" },
                 z = { "<cmd>GHCollapseCommit<cr>", "Collapse" },
             },
+            d = { "<cmd>GHOpenDebugBuffer<cr>", "Open Debug Buffer" },
             i = {
                 name = "+Issues",
                 l = { "<cmd>Octo issue list<cr>", "List Issues (Octo)" },
@@ -256,26 +276,54 @@ wk.register({
 -- Syntax Tree Surfer
 local surfer_ok, _ = pcall(require, "syntax-tree-surfer")
 if surfer_ok then
+    local swapper = function(cmd)
+        vim.opt.opfunc = cmd
+        return "g@l"
+    end
     wk.register({
         v = {
             name = "Syntax Tree Surfer Swapping",
-            d = { "<cmd>lua require('syntax-tree-surfer').move('n', false)<cr>", "Continue" },
-            u = { "<cmd>lua require('syntax-tree-surfer').move('n', true)<cr>", "Previous" },
+            -- d = { "<cmd>lua require('syntax-tree-surfer').move('n', false)<cr>", "Continue" },
+            d = {
+                function()
+                    swapper("v:lua.STSSwapCurrentNodeNextNormal_Dot")
+                end,
+                "Swap Current Next",
+            },
+            D = {
+                function()
+                    swapper("v:lua.STSSwapDownNormal_Dot")
+                end,
+                "Swap Master Next",
+            },
+            u = {
+                function()
+                    swapper("v:lua.STSSwapCurrentNodePrevNormal_Dot")
+                end,
+                "Swap Current Prev",
+            },
+            U = {
+                function()
+                    swapper("v:lua.STSSwapUpNormal_Dot")
+                end,
+                "Swap Master Prev",
+            },
+            -- u = { "<cmd>lua require('syntax-tree-surfer').move('n', true)<cr>", "Previous" },
             -- .select() will show you what you will be swapping with .move(), you'll get used to .select() and .move() behavior quite soon!
-            x = { "<cmd>lua require('syntax-tree-surfer').select()<cr>", "Select" },
+            x = { "<cmd>STSSelectMasterNode<cr>", "Select" },
             -- .select_current_node() will select the current node at your cursor
-            n = { "<cmd>lua require('syntax-tree-surfer').select_current_node()<cr>", "Select Current" },
-            o = { "<cmd>lua require('dap').step_out()<CR>", "Step Out" },
+            n = { "<cmd>STSSelectCurrentNode<cr>", "Select Current" },
+            -- o = { "<cmd>lua require('dap').step_out()<CR>", "Step Out" },
         },
     }, { mode = "n" })
 
     wk.register({
-        J = { "<cmd>lua require('syntax-tree-surfer').surf('next', 'visual')<cr>", "Surf Next" },
-        K = { "<cmd>lua require('syntax-tree-surfer').surf('prev', 'visual')<cr>", "Surf Prev" },
-        H = { "<cmd>lua require('syntax-tree-surfer').surf('parent', 'visual')<cr>", "Surf Parent" },
-        L = { "<cmd>lua require('syntax-tree-surfer').surf('child', 'visual')<cr>", "Surf Child" },
-        ["<A-j>"] = { "<cmd>lua require('syntax-tree-surfer').surf('next', 'visual', true)<cr>", "Surf Swap Next" },
-        ["<A-k>"] = { "<cmd>lua require('syntax-tree-surfer').surf('prev', 'visual', true)<cr>", "Surf Swap Prev" },
+        J = { "<cmd>STSSelectNextSiblingNode<cr>", "Surf Next" },
+        K = { "<cmd>STSSelectPrevSiblingNode<cr>", "Surf Prev" },
+        H = { "<cmd>STSSelectParentNode<cr>", "Surf Parent" },
+        L = { "<cmd>STSSelectChildNode<cr>", "Surf Child" },
+        ["<A-j>"] = { "<cmd>STSSwapNextVisual<cr>", "Surf Swap Next" },
+        ["<A-k>"] = { "<cmd>STSSwapPrevVisual<cr>", "Surf Swap Prev" },
     }, { mode = "x" })
 end
 
@@ -289,3 +337,52 @@ wk.register({
         k = { "<cmd>lua require('harpoon.ui').nav_prev()<cr>", "Previous" },
     },
 }, { prefix = "<leader>" })
+
+local terminal_ok, toggleterm = pcall(require, "toggleterm.terminal")
+if terminal_ok then
+    local Terminal = toggleterm.Terminal
+    local lazygit = Terminal:new({ cmd = "lazygit", hidden = true })
+
+    function _LAZYGIT_TOGGLE()
+        lazygit:toggle()
+    end
+
+    local node = Terminal:new({ cmd = "node", hidden = true })
+
+    function _NODE_TOGGLE()
+        node:toggle()
+    end
+
+    local htop = Terminal:new({ cmd = "htop", hidden = true })
+
+    function _HTOP_TOGGLE()
+        htop:toggle()
+    end
+
+    local python = Terminal:new({ cmd = "python", hidden = true })
+
+    function _PYTHON_TOGGLE()
+        python:toggle()
+    end
+
+    local ghci = Terminal:new({ cmd = "ghcid", hidden = true })
+
+    function _GHCI_TOGGLE()
+        ghci:toggle()
+    end
+
+    -- ToggleTerm
+    wk.register({
+        t = {
+            name = "+ToggleTerm",
+            g = { _GHCI_TOGGLE, "GHCi" },
+            h = { _HTOP_TOGGLE, "HTOP" },
+            l = { _LAZYGIT_TOGGLE, "LazyGit" },
+            n = { _NODE_TOGGLE, "Node" },
+            p = { _PYTHON_TOGGLE, "Python" },
+            t = { "<cmd>ToggleTerm<cr>", "Toggle Term" },
+        },
+    }, { prefix = "<leader>" })
+end
+
+wk.setup()

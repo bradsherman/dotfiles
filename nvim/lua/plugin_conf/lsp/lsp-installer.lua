@@ -60,7 +60,7 @@ local default_setup = {
     capabilities = my_handlers.capabilities,
 }
 
-nvim_lsp.terraform_lsp.setup(default_setup)
+nvim_lsp.terraformls.setup(default_setup)
 nvim_lsp.bashls.setup(default_setup)
 nvim_lsp.cssls.setup(default_setup)
 nvim_lsp.dhall_lsp_server.setup(default_setup)

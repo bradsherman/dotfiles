@@ -4,12 +4,17 @@ local wo = vim.wo
 
 o.compatible = false
 vim.cmd("filetype plugin indent on")
-vim.cmd("syntax enable")
+-- vim.cmd("syntax enable")
 o.hidden = true
 o.visualbell = false
 o.errorbells = false
 o.timeoutlen = 100
 o.encoding = "UTF-8"
+o.fillchars:append("fold:•")
+o.foldenable = true
+wo.foldlevel = 99
+wo.foldmethod = "expr"
+wo.foldexpr = "nvim_treesitter#foldexpr()"
 
 local tabsize = 2
 o.tabstop = tabsize

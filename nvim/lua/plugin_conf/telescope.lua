@@ -50,7 +50,12 @@ telescope.setup({
         file_sorter = sorters.get_fuzzy_file,
         file_ignore_patterns = { "node_modules", ".git/", "dist/" },
         generic_sorter = sorters.get_generic_fuzzy_sorter,
-        path_display = { "absolute" },
+        path_display = {
+            shorten = {
+                len = 3,
+                exclude = { -1 },
+            },
+        },
         winblend = 0,
         border = {},
         borderchars = { "" },
@@ -96,7 +101,8 @@ telescope.load_extension("fzf")
 telescope.load_extension("notify")
 telescope.load_extension("hoogle")
 telescope.load_extension("harpoon")
-telescope.load_extension("git_worktree")
+-- telescope.load_extension("git_worktree")
+telescope.load_extension("worktrees")
 
 local M = {}
 

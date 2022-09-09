@@ -12,7 +12,7 @@ vim.api.nvim_create_autocmd("FileType", {
     callback = function()
         vim.cmd("set conceallevel=2")
         vim.cmd("setlocal spell spelllang=en")
-        vim.cmd("setlocal spell textwidth=90")
+        vim.cmd("setlocal spell textwidth=120")
     end,
     group = md,
 })
@@ -55,3 +55,19 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     end,
     group = highlight_group,
 })
+
+-- Fix folding on telescope find files
+-- Info here: https://github.com/nvim-telescope/telescope.nvim/issues/699
+-- Just do popular filetypes until this is fixed
+local fold_fix_group = vim.api.nvim_create_augroup("FixFolding", { clear = true })
+vim.api.nvim_create_autocmd({ "BufEnter" }, {
+    pattern = { "*.hs", "*.lua", "*.ts", "*.js", "*.tsx", "*.jsx", "*.json" },
+    command = "normal zx",
+    group = fold_fix_group,
+})
+
+-- vim.api.nvim_create_autocmd({ "BufReadPost,FileReadPost" }, {
+--     pattern = { "*" },
+--     command = "normal zR",
+--     -- group = fold_fix_group,
+-- })

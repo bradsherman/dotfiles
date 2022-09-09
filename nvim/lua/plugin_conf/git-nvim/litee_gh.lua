@@ -18,6 +18,21 @@ gh.setup({
     -- whether to register the @username and #issue_number omnifunc completion
     -- in buffers which start with .git/
     git_buffer_completion = true,
+    -- background refresh timer interval in milliseconds. defaults to five
+    -- minutes.
+    refresh_interval = 300000,
+    -- log all git and gh cli actions to a buffer.
+    -- the buffer can be opened with "GHOpenDebugBuffer" when this is set to true.
+    debug_logging = false,
+    -- list of highlights to be used within the UI.
+    highlights = {
+        -- the following highlights will highlight threaded messages in conversation
+        -- buffers.
+        -- you can alternate between two highlights if desired by setting these
+        -- to different highlights.
+        thread_separator = "GHThreadSep",
+        thread_separator_alt = "GHThreadSepAlt",
+    },
     -- defines keymaps in gh.nvim buffers.
     keymaps = {
         -- when inside a gh.nvim panel, this key will open a node if it has
@@ -45,5 +60,11 @@ gh.setup({
         -- browser. useful particularily for digging into external failed CI
         -- checks.
         goto_web = "gx",
+        -- if selectable, select the object under the cursor for additional operations.
+        select = "<leader>",
+        -- if selectable, clear all selected items.
+        clear_selection = "<leader><leader>",
+        -- toggle unread items
+        toggle_unread = "u",
     },
 })

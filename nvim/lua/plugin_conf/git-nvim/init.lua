@@ -1,7 +1,8 @@
 local file_exists = require("utils").file_exists
 
-require("plugin_conf.git-nvim.gitsigns")
 require("plugin_conf.git-nvim.conflict")
+require("plugin_conf.git-nvim.diffview")
+require("plugin_conf.git-nvim.gitsigns")
 require("plugin_conf.git-nvim.worktree")
 
 local gh_exists = file_exists("gh")

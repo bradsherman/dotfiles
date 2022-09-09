@@ -55,17 +55,18 @@ local function lsp_highlight_document(client)
     if client.server_capabilities.documentHighlightProvider then
         vim.api.nvim_exec(
             [[
-      augroup lsp_document_highlight
-        autocmd! * <buffer>
-        autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-    ]],
+              augroup lsp_document_highlight
+                autocmd! * <buffer>
+                autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+                autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+            ]],
             false
         )
     end
     -- autocmd CursorHold <buffer> lua vim.diagnostic.open_float(0, {scope="line"})
 end
 
+-- TODO: register these with which key instead
 local function lsp_keymaps(client, bufnr)
     vim.keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<cr>", { buffer = bufnr })
     vim.keymap.set("n", "gr", "<cmd>Telescope lsp_references<cr>", { buffer = bufnr })
@@ -79,7 +80,7 @@ local function lsp_keymaps(client, bufnr)
     vim.keymap.set("n", "<c-p>", "<cmd>lua vim.diagnostic.goto_prev()<cr>", { buffer = bufnr })
     vim.keymap.set("n", "<c-n>", "<cmd>lua vim.diagnostic.goto_next()<cr>", { buffer = bufnr })
     vim.keymap.set("n", "<leader>lh", "<cmd>Lspsaga signature_help<CR>", { buffer = bufnr })
-    vim.keymap.set("n", "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<cr>", { buffer = bufnr })
+    vim.keymap.set("n", "<leader>la", "<cmd>Lspsaga code_action<cr>", { buffer = bufnr })
     vim.keymap.set("n", "<leader>ld", "<cmd>Telescope diagnostics<cr>", { buffer = bufnr })
     vim.keymap.set("n", "<leader>ls", "<cmd>Telescope lsp_workspace_symbols<cr>", { buffer = bufnr })
     vim.keymap.set("n", "<space>le", "<cmd>Lspsaga show_line_diagnostics<CR>", { buffer = bufnr })

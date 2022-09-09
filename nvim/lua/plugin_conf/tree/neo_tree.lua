@@ -235,7 +235,7 @@ local config = {
                 "add",
                 -- some commands may take optional config options, see `:h neo-tree-mappings` for details
                 config = {
-                    show_path = "none", -- "none", "relative", "absolute"
+                    show_path = "relative", -- "none", "relative", "absolute"
                 },
             },
             ["A"] = "add_directory", -- also accepts the config.show_path option.
@@ -245,10 +245,21 @@ local config = {
             ["x"] = "cut_to_clipboard",
             ["p"] = "paste_from_clipboard",
             ["c"] = "copy", -- takes text input for destination, also accepts the config.show_path option
-            ["m"] = "move", -- takes text input for destination, also accepts the config.show_path option
+            ["m"] = {
+                "move", -- takes text input for destination, also accepts the config.show_path option
+                config = {
+                    show_path = "relative", -- "none", "relative", "absolute"
+                },
+            },
             ["q"] = "close_window",
             ["?"] = "show_help",
         },
+    },
+    sources = {
+        "filesystem",
+        "buffers",
+        "git_status",
+        "diagnostics",
     },
     filesystem = {
         window = {
@@ -364,6 +375,21 @@ local config = {
                 ["gg"] = "git_commit_and_push",
             },
         },
+    },
+    diagnostics = {
+        bind_to_cwd = true,
+        diag_sort_function = "severity", -- "severity" means diagnostic items are sorted by severity in addition to their positions.
+        -- "position" means diagnostic items are sorted strictly by their positions.
+        -- May also be a function.
+        follow_behavior = { -- Behavior when `follow_current_file` is true
+            always_focus_file = false, -- Focus the followed file, even when focus is currently on a diagnostic item belonging to that file.
+            expand_followed = true, -- Ensure the node of the followed file is expanded
+            collapse_others = true, -- Ensure other nodes are collapsed
+        },
+        follow_current_file = true,
+        group_dirs_and_files = true, -- when true, empty folders and files will be grouped together
+        group_empty_dirs = true, -- when true, empty directories will be grouped together
+        show_unloaded = true, -- show diagnostics from unloaded buffers
     },
 }
 

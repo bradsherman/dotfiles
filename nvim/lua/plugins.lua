@@ -42,26 +42,39 @@ return packer.startup(function(use)
     use("nvim-lua/popup.nvim")
     use("nvim-lua/plenary.nvim")
     use("TimUntersberger/neogit")
-    use("akinsho/git-conflict.nvim")
+    use({ "akinsho/git-conflict.nvim", tag = "v1.0.0" })
     use("https://gitlab.com/yorickpeterse/nvim-pqf.git")
     use("ThePrimeagen/git-worktree.nvim")
+    use("Juksuu/worktrees.nvim")
 
     use("numToStr/Comment.nvim")
     use("JoosepAlviste/nvim-ts-context-commentstring")
     use("tpope/vim-fugitive")
     use("tpope/vim-repeat")
-    use("tpope/vim-surround")
+    -- use("tpope/vim-surround")
+    use("kylechui/nvim-surround")
 
     use("rcarriga/nvim-notify")
 
-    use("flazz/vim-colorschemes")
     use({
         "mcchrish/zenbones.nvim",
         requires = "rktjmp/lush.nvim",
     })
     use("EdenEast/nightfox.nvim")
     use("folke/tokyonight.nvim")
+    use("marko-cerovac/material.nvim")
+    use("sainnhe/everforest")
+    use("tanvirtin/monokai.nvim")
+    use("shaunsingh/nord.nvim")
+    use("shaunsingh/moonlight.nvim")
+    use("navarasu/onedark.nvim")
+    use("NTBBloodbath/doom-one.nvim")
+    use({ "catppuccin/nvim", as = "catppuccin" })
+    use("rmehri01/onenord.nvim")
+    use("daschw/leaf.nvim")
+
     use("nvim-lualine/lualine.nvim")
+
     use("j-hui/fidget.nvim")
     use("windwp/nvim-autopairs")
     use("windwp/nvim-ts-autotag")
@@ -76,15 +89,21 @@ return packer.startup(function(use)
     use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
     use({ "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" } })
 
-    use("norcalli/nvim-colorizer.lua")
+    use("NvChad/nvim-colorizer.lua")
     use("luochen1990/rainbow")
     use("karb94/neoscroll.nvim")
     use("kyazdani42/nvim-web-devicons")
     use("kyazdani42/nvim-tree.lua")
     use({ "nvim-neo-tree/neo-tree.nvim", requires = { "MunifTanjim/nui.nvim", "s1n7ax/nvim-window-picker" } })
+    use({
+        "mrbjarksen/neo-tree-diagnostics.nvim",
+        requires = "nvim-neo-tree/neo-tree.nvim",
+    })
     use("ishan9299/nvim-solarized-lua")
 
     use("folke/lsp-colors.nvim")
+    use("williamboman/mason.nvim")
+    use("williamboman/mason-lspconfig.nvim")
     use("neovim/nvim-lspconfig")
     use("williamboman/nvim-lsp-installer")
     use("jose-elias-alvarez/null-ls.nvim")
@@ -135,7 +154,7 @@ return packer.startup(function(use)
     use("p00f/nvim-ts-rainbow")
     use("folke/trouble.nvim")
     use("ray-x/lsp_signature.nvim")
-    use("tami5/lspsaga.nvim")
+    use("glepnir/lspsaga.nvim")
     use("hashivim/vim-terraform")
     use("stevearc/dressing.nvim")
     use("rainbowhxch/beacon.nvim")
@@ -149,7 +168,6 @@ return packer.startup(function(use)
 
     use("mattn/emmet-vim")
 
-    -- use("ggandor/lightspeed.nvim")
     use("vmchale/dhall-vim")
     use("lukas-reineke/indent-blankline.nvim")
     use("christoomey/vim-tmux-navigator")
@@ -196,6 +214,12 @@ return packer.startup(function(use)
     })
 
     use("ThePrimeagen/harpoon")
+    use("hlucco/nvim-eswpoch")
+    use({
+        "anuvyklack/fold-preview.nvim",
+        requires = "anuvyklack/keymap-amend.nvim",
+    })
+    use("anuvyklack/pretty-fold.nvim")
 
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins
