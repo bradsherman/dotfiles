@@ -9,8 +9,6 @@ end
 
 -- use custom config
 saga.init_lsp_saga({
-    -- put modified options in there
-
     -- Options with default value
     -- "single" | "double" | "rounded" | "bold" | "plus"
     border_style = "bold",
@@ -30,10 +28,6 @@ saga.init_lsp_saga({
     -- entry is a table type has these filed
     -- { bufnr, code, col, end_col, end_lnum, lnum, message, severity, source }
     diagnostic_header = { " ", " ", " ", "ﴞ " },
-    -- show diagnostic source
-    show_diagnostic_source = true,
-    -- add bracket or something with diagnostic source, just have 2 elements
-    diagnostic_source_bracket = {},
     -- preview lines of lsp_finder and definition preview
     max_preview_lines = 10,
     -- use emoji lightbulb in default
@@ -43,8 +37,10 @@ saga.init_lsp_saga({
     -- same as nvim-lightbulb but async
     code_action_lightbulb = {
         enable = true,
-        sign = true,
         enable_in_insert = true,
+        cache_code_action = true,
+        sign = true,
+        update_time = 150,
         sign_priority = 20,
         virtual_text = true,
     },
@@ -54,22 +50,26 @@ saga.init_lsp_saga({
         ref = "諭 ",
         link = "  ",
     },
+    -- finder do lsp request timeout
+    -- if your project big enough or your server very slow
+    -- you may need to increase this value
+    finder_request_timeout = 1500,
     finder_action_keys = {
         open = "o",
         vsplit = "s",
         split = "i",
         tabe = "t",
         quit = "q",
-        scroll_down = "<C-f>",
-        scroll_up = "<C-b>", -- quit can be a table
     },
     code_action_keys = {
         quit = "q",
         exec = "<CR>",
     },
+    definition_action_keys = {
+        quit = "q",
+    },
     rename_action_quit = "<C-c>",
     rename_in_select = true,
-    definition_preview_icon = "  ",
     -- show symbols in winbar must nightly
     symbol_in_winbar = {
         in_custom = true,
@@ -92,51 +92,11 @@ saga.init_lsp_saga({
         -- auto refresh when change buffer
         auto_refresh = true,
     },
+    -- custom lsp kind
+    -- usage { Field = 'color code'} or {Field = {your icon, your color code}}
+    custom_kind = {},
     -- if you don't use nvim-lspconfig you must pass your server name and
     -- the related filetypes into this table
     -- like server_filetype_map = { metals = { "sbt", "scala" } }
     server_filetype_map = {},
 })
-
--- lspsaga.setup({ -- defaults ...
---     debug = false,
---     use_saga_diagnostic_sign = true,
---     -- diagnostic sign
---     error_sign = "",
---     warn_sign = "",
---     hint_sign = "",
---     infor_sign = "",
---     diagnostic_header_icon = "   ",
---     -- code action title icon
---     code_action_icon = " ",
---     code_action_prompt = {
---         enable = true,
---         sign = true,
---         sign_priority = 40,
---         virtual_text = true,
---     },
---     finder_definition_icon = "  ",
---     finder_reference_icon = "  ",
---     max_preview_lines = 10,
---     finder_action_keys = {
---         open = "o",
---         vsplit = "s",
---         split = "i",
---         quit = "q",
---         scroll_down = "<C-f>",
---         scroll_up = "<C-b>",
---     },
---     code_action_keys = {
---         quit = "q",
---         exec = "<CR>",
---     },
---     rename_action_keys = {
---         quit = "<C-c>",
---         exec = "<CR>",
---     },
---     definition_preview_icon = "  ",
---     border_style = "single",
---     rename_prompt_prefix = "➤",
---     server_filetype_map = {},
---     diagnostic_prefix_format = "%d. ",
--- })
