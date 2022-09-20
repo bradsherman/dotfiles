@@ -20,7 +20,6 @@ wk.register({
     ["<c-f>"] = { "<cmd>Telescope find_files<cr>", "Telescope Files" },
     ["<c-g>"] = { "<cmd>Telescope live_grep<cr>", "Telescope Grep" },
     ["<c-b>"] = { "<cmd>Telescope buffers<cr>", "Telescope Buffers" },
-    ["<leader>lt"] = { "<cmd>Telescope tags<cr>", "Telescope Tags" },
     ["<leader>fe"] = {
         "<cmd>require('telescope').extensions.file_browser.file_browser()<cr>",
         "Telescope File Browser",
@@ -131,6 +130,7 @@ wk.register({
         f = { "<cmd>lua vim.lsp.buf.format({ async = true })<cr>", "Format" },
         h = { "<cmd>Lspsaga signature_help<cr>", "Signature Help" },
         i = { "<cmd>LspInfo<cr>", "LSP Info" },
+        p = { "<cmd>TroubleToggle<cr>", "LSP Trouble" },
         r = { "<cmd>IncRename " .. vim.fn.expand("<cword>") .. "<cr>", "Rename" },
         s = { "<cmd>Telescope lsp_workspace_symbols<cr>", "LSP Workspace Symbols" },
         t = { "<cmd>Telescope tags<cr>", "Tags" },

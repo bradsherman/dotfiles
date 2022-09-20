@@ -11,7 +11,6 @@ local function safe_load(plugin)
 end
 
 -- easy installs
-safe_load("pqf")
 safe_load("nvim-web-devicons")
 safe_load("stabilize")
 safe_load("renamer")
@@ -19,10 +18,13 @@ safe_load("inc_rename")
 safe_load("nvim-ts-autotag")
 safe_load("window_picker")
 
+require("plugin_conf.bqf")
 require("plugin_conf.litee")
+require("plugin_conf.window_picker")
 require("plugin_conf.tree")
 require("plugin_conf.neogit")
 require("plugin_conf.neoscroll")
+require("plugin_conf.scrollbar")
 require("plugin_conf.todo")
 require("plugin_conf.lualine")
 require("plugin_conf.telescope")
