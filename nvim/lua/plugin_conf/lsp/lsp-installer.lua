@@ -1,5 +1,10 @@
-local status_ok, lsp_installer = pcall(require, "nvim-lsp-installer")
+local status_ok, mason = pcall(require, "mason")
 if not status_ok then
+    return
+end
+
+local mason_lsp_status_ok, mason_lsp = pcall(require, "mason-lspconfig")
+if not mason_lsp_status_ok then
     return
 end
 
@@ -13,46 +18,72 @@ if not handlers_ok then
     return
 end
 
-lsp_installer.setup()
+mason.setup({
+    ui = {
+        -- Whether to automatically check for new versions when opening the :Mason window.
+        check_outdated_packages_on_open = true,
 
--- special setup for haskell, for some reason it crashes on certain files when used
--- with nvim lsp installer - could be due to outdated version
-nvim_lsp.hls.setup({
-    -- cmd = { "haskell-language-server-wrapper", "--lsp", "--debug" },
-    settings = {
-        haskell = {
-            formattingProvider = "fourmolu",
+        -- The border to use for the UI window. Accepts same border values as |nvim_open_win()|.
+        border = "none",
+
+        icons = {
+            -- The list icon to use for installed packages.
+            package_installed = "◍",
+            -- The list icon to use for packages that are installing, or queued for installation.
+            package_pending = "◍",
+            -- The list icon to use for packages that are not installed.
+            package_uninstalled = "◍",
+        },
+
+        keymaps = {
+            -- Keymap to expand a package
+            toggle_package_expand = "<CR>",
+            -- Keymap to install the package under the current cursor position
+            install_package = "i",
+            -- Keymap to reinstall/update the package under the current cursor position
+            update_package = "u",
+            -- Keymap to check for new version for the package under the current cursor position
+            check_package_version = "c",
+            -- Keymap to update all installed packages
+            update_all_packages = "U",
+            -- Keymap to check which installed packages are outdated
+            check_outdated_packages = "C",
+            -- Keymap to uninstall a package
+            uninstall_package = "X",
+            -- Keymap to cancel a package installation
+            cancel_installation = "<C-c>",
+            -- Keymap to apply language filter
+            apply_language_filter = "<C-f>",
         },
     },
-    on_attach = my_handlers.on_attach,
-    capabilities = my_handlers.capabilities,
-})
 
-nvim_lsp.sumneko_lua.setup({
-    on_attach = my_handlers.on_attach,
-    capabilities = my_handlers.capabilities,
-    settings = {
-        Lua = {
-            diagnostics = {
-                globals = { "vim" },
-            },
-            workspace = {
-                library = {
-                    [vim.fn.expand("$VIMRUNTIME/lua")] = true,
-                    [vim.fn.stdpath("config") .. "lua"] = true,
-                },
-            },
-        },
+    -- The directory in which to install packages.
+    --[[ install_root_dir = path.concat({ vim.fn.stdpath("data"), "mason" }), ]]
+
+    pip = {
+        -- These args will be added to `pip install` calls. Note that setting extra args might impact intended behavior
+        -- and is not recommended.
+        --
+        -- Example: { "--proxy", "https://proxyserver" }
+        install_args = {},
     },
-})
 
-nvim_lsp.sqls.setup({
-    on_attach = function(client, bufnr)
-        client.server_capabilities.document_formatting = false
-        client.server_capabilities.document_range_formatting = false
-        require("sqls").on_attach(client, bufnr)
-        my_handlers.on_attach(client, bufnr)
-    end,
+    -- Controls to which degree logs are written to the log file. It's useful to set this to vim.log.levels.DEBUG when
+    -- debugging issues with package installations.
+    log_level = vim.log.levels.INFO,
+
+    -- Limit for the maximum amount of packages to be installed at the same time. Once this limit is reached, any further
+    -- packages that are requested to be installed will be put in a queue.
+    max_concurrent_installers = 4,
+
+    github = {
+        -- The template URL to use when downloading assets from GitHub.
+        -- The placeholders are the following (in order):
+        -- 1. The repository (e.g. "rust-lang/rust-analyzer")
+        -- 2. The release version (e.g. "v0.3.0")
+        -- 3. The asset name (e.g. "rust-analyzer-v0.3.0-x86_64-unknown-linux-gnu.tar.gz")
+        download_url_template = "https://github.com/%s/releases/download/%s/%s",
+    },
 })
 
 local default_setup = {
@@ -60,35 +91,85 @@ local default_setup = {
     capabilities = my_handlers.capabilities,
 }
 
-nvim_lsp.terraformls.setup(default_setup)
-nvim_lsp.bashls.setup(default_setup)
-nvim_lsp.cssls.setup(default_setup)
-nvim_lsp.dhall_lsp_server.setup(default_setup)
-nvim_lsp.dockerls.setup({
-    on_attach = my_handlers.on_attach,
-    capabilities = my_handlers.capabilities,
-    settings = {
-        docker = {
-            languageserver = {
-                formatter = {
-                    ignoreMultilineInstructions = true,
+mason_lsp.setup_handlers({
+    -- The first entry (without a key) will be the default handler
+    -- and will be called for each installed server that doesn't have
+    -- a dedicated handler.
+    function(server_name) -- default handler (optional)
+        nvim_lsp[server_name].setup(default_setup)
+    end,
+    -- special setup for haskell, for some reason it crashes on certain files when used
+    -- with nvim lsp installer - could be due to outdated version
+    ["hls"] = function()
+        nvim_lsp.hls.setup({
+            settings = {
+                haskell = {
+                    formattingProvider = "fourmolu",
                 },
             },
-        },
-    },
+            on_attach = my_handlers.on_attach,
+            capabilities = my_handlers.capabilities,
+        })
+    end,
+    ["sumneko_lua"] = function()
+        nvim_lsp.sumneko_lua.setup({
+            settings = {
+                Lua = {
+                    diagnostics = {
+                        globals = { "vim" },
+                    },
+                    workspace = {
+                        library = {
+                            [vim.fn.expand("$VIMRUNTIME/lua")] = true,
+                            [vim.fn.stdpath("config") .. "lua"] = true,
+                            ["/usr/share/nvim/runtime/lua"] = true,
+                            ["/usr/share/nvim/runtime/lua/vim"] = true,
+                            ["/usr/share/nvim/runtime/lua/vim/lsp"] = true,
+                        },
+                    },
+                },
+            },
+            on_attach = my_handlers.on_attach,
+            capabilities = my_handlers.capabilities,
+        })
+    end,
+    ["sqls"] = function()
+        nvim_lsp.sqls.setup({
+            on_attach = function(client, bufnr)
+                client.server_capabilities.document_formatting = false
+                client.server_capabilities.document_range_formatting = false
+                require("sqls").on_attach(client, bufnr)
+                my_handlers.on_attach(client, bufnr)
+            end,
+            capabilities = my_handlers.capabilities,
+        })
+    end,
+    ["dockerls"] = function()
+        nvim_lsp.dockerls.setup({
+            on_attach = my_handlers.on_attach,
+            capabilities = my_handlers.capabilities,
+            settings = {
+                docker = {
+                    languageserver = {
+                        formatter = {
+                            ignoreMultilineInstructions = true,
+                        },
+                    },
+                },
+            },
+        })
+    end,
 })
-nvim_lsp.html.setup(default_setup)
-nvim_lsp.jsonls.setup(default_setup)
-nvim_lsp.pyright.setup(default_setup)
-nvim_lsp.graphql.setup(default_setup)
-nvim_lsp.rust_analyzer.setup(default_setup)
-nvim_lsp.ocamllsp.setup(default_setup)
+
 local ts_ok, ts = pcall(require, "typescript")
 if ts_ok then
     ts.setup({
         disable_commands = false, -- prevent the plugin from creating Vim commands
         disable_formatting = false, -- disable tsserver's formatting capabilities
         debug = false, -- enable debug logging for commands
-        server = default_setup, -- pass options to lspconfig's setup method
+        server = { -- pass options to lspconfig's setup method
+            on_attach = my_handlers.on_attach,
+            capabilities = my_handlers.capabilities,
+        },
     })
 end

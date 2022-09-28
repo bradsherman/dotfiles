@@ -1,10 +1,15 @@
 -- make sure dap is installed before doing any keybindings
-local status_ok, _ = pcall(require, "dap")
+local status_ok, dap = pcall(require, "dap")
 if not status_ok then
     return
 end
 
-require("plugin_conf.dbg.dap_install")
+local dapui_status_ok, dapui = pcall(require, "dapui")
+if not dapui_status_ok then
+    return
+end
+
+require("plugin_conf.dbg.adapters")
 require("plugin_conf.dbg.dap_ui")
 require("plugin_conf.dbg.virtual_text")
 
@@ -44,3 +49,13 @@ vim.keymap.set("n", "<Leader>dbt", ":lua require('dap').toggle_breakpoint()<CR>"
 
 vim.keymap.set("n", "<Leader>dc", ":lua require('dap.ui.variables').scopes()<CR>")
 vim.keymap.set("n", "<Leader>di", ":lua require('dapui').toggle()<CR>")
+
+dap.listeners.after.event_initialized["dapui_config"] = function()
+    dapui.open()
+end
+dap.listeners.before.event_terminated["dapui_config"] = function()
+    dapui.close()
+end
+dap.listeners.before.event_exited["dapui_config"] = function()
+    dapui.close()
+end

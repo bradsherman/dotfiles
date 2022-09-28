@@ -2,10 +2,6 @@ local M = {}
 
 M.setup = function()
     local signs = {
-        --[[ { name = "DiagnosticSignError", text = "❌" }, ]]
-        --[[ { name = "DiagnosticSignWarn", text = "⚠️ " }, ]]
-        --[[ { name = "DiagnosticSignHint", text = "💡" }, ]]
-        --[[ { name = "DiagnosticSignInfo", text = "ℹ️ " }, ]]
         { name = "DiagnosticSignError", text = "" },
         { name = "DiagnosticSignWarn", text = "" },
         { name = "DiagnosticSignHint", text = "" },
@@ -27,7 +23,7 @@ M.setup = function()
         underline = true,
         severity_sort = true,
         float = {
-            focusable = false,
+            focusable = true,
             style = "minimal",
             border = "rounded",
             source = "always",
@@ -74,8 +70,6 @@ local function lsp_keymaps(client, bufnr)
     vim.keymap.set("n", "gm", "<cmd>Telescope lsp_document_symbols<cr>", { buffer = bufnr })
     vim.keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<cr>", { buffer = bufnr })
     vim.keymap.set("n", "gD", "<cmd>Lspsaga preview_definition<cr>", { buffer = bufnr })
-    --[[ vim.keymap.set("n", "<leader>tt", "<cmd>LspTroubleToggle<cr>", { buffer = bufnr }) ]]
-    --[[ vim.keymap.set("n", "<leader>ttr", "<cmd>LspTroubleRefresh<cr>", { buffer = bufnr }) ]]
     vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<cr>", { buffer = bufnr })
     vim.keymap.set("n", "<c-p>", "<cmd>lua vim.diagnostic.goto_prev()<cr>", { buffer = bufnr })
     vim.keymap.set("n", "<c-n>", "<cmd>lua vim.diagnostic.goto_next()<cr>", { buffer = bufnr })
