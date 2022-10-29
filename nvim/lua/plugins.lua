@@ -3,6 +3,7 @@ local fn = vim.fn
 -- Automatically install packer
 local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
 if fn.empty(fn.glob(install_path)) > 0 then
+    -- selene: allow(unscoped_variables,unused_variable)
     PACKER_BOOTSTRAP = fn.system({
         "git",
         "clone",
@@ -42,7 +43,11 @@ return packer.startup(function(use)
     use("nvim-lua/popup.nvim")
     use("nvim-lua/plenary.nvim")
     use("TimUntersberger/neogit")
-    use({ "akinsho/git-conflict.nvim", tag = "v1.0.0" })
+    use({ "akinsho/git-conflict.nvim", tag = "*" })
+    use({
+        "ruifm/gitlinker.nvim",
+        requires = "nvim-lua/plenary.nvim",
+    })
     use({ "kevinhwang91/nvim-bqf", ft = "qf" })
     use("ThePrimeagen/git-worktree.nvim")
     use("Juksuu/worktrees.nvim")
@@ -87,12 +92,18 @@ return packer.startup(function(use)
     use("nvim-telescope/telescope-file-browser.nvim")
     use("luc-tielen/telescope_hoogle")
     use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
+    use({
+        "princejoogie/dir-telescope.nvim",
+        -- telescope.nvim is a required dependency
+        requires = { "nvim-telescope/telescope.nvim" },
+    })
+
     use({ "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" } })
 
     use("NvChad/nvim-colorizer.lua")
     use("luochen1990/rainbow")
     use("karb94/neoscroll.nvim")
-    use("kevinhwang91/nvim-hlslens")
+    --[[ use("kevinhwang91/nvim-hlslens") ]]
     use("petertriho/nvim-scrollbar")
     use("kyazdani42/nvim-web-devicons")
     use("kyazdani42/nvim-tree.lua")
@@ -221,9 +232,25 @@ return packer.startup(function(use)
         requires = "anuvyklack/keymap-amend.nvim",
     })
     use("anuvyklack/pretty-fold.nvim")
+    use({
+        "anuvyklack/windows.nvim",
+        requires = {
+            "anuvyklack/middleclass",
+            "anuvyklack/animation.nvim",
+        },
+    })
+    use("gbprod/yanky.nvim")
+    use({ "mvllow/modes.nvim", tag = "v0.2.0" })
+
+    use("sindrets/winshift.nvim")
+    use("mrjones2014/smart-splits.nvim")
+
+    use("folke/noice.nvim")
+    use("lukas-reineke/headlines.nvim")
 
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins
+    -- selene: allow(undefined_variable)
     if PACKER_BOOTSTRAP then
         require("packer").sync()
     end

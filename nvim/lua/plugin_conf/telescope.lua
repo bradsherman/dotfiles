@@ -32,6 +32,7 @@ telescope.setup({
         entry_prefix = "  ",
         initial_mode = "insert",
         selection_strategy = "reset",
+        dynamic_preview_title = true,
         sorting_strategy = "ascending",
         layout_strategy = "horizontal",
         layout_config = {
@@ -60,7 +61,7 @@ telescope.setup({
         border = {},
         borderchars = { "" },
         color_devicons = true,
-        use_less = true,
+        use_less = false,
         set_env = { ["COLORTERM"] = "truecolor" },
         file_previewer = previewers.vim_buffer_cat.new,
         grep_previewer = previewers.vim_buffer_vimgrep.new,
@@ -103,6 +104,8 @@ telescope.load_extension("hoogle")
 telescope.load_extension("harpoon")
 -- telescope.load_extension("git_worktree")
 telescope.load_extension("worktrees")
+telescope.load_extension("yank_history")
+telescope.load_extension("noice")
 
 local M = {}
 
@@ -149,5 +152,14 @@ function M.reload()
     -- call the builtin method to list files
     require("telescope.builtin").find_files(opts)
 end
+
+local dir_tele_ok, dir_tele = pcall(require, "dir-telescope")
+if not dir_tele_ok then
+    return
+end
+dir_tele.setup({
+    hidden = true,
+    respect_gitignore = true,
+})
 
 return M

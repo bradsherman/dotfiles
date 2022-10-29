@@ -17,10 +17,13 @@ null_ls.setup({
         code_actions.shellcheck,
         diagnostics.eslint_d,
         diagnostics.selene,
+        diagnostics.teal,
+        formatting.nixfmt,
         formatting.stylua,
         formatting.fourmolu,
         formatting.prettier.with({
             disabled_filetypes = { "html", "json", "yaml", "markdown" },
         }),
     },
+    on_attach = require("plugin_conf.lsp.handlers").on_attach,
 })

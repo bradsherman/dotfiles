@@ -44,6 +44,7 @@ configs.setup({
         "lua",
         "python",
         "query",
+        "org",
     },
     -- setting this to true looks nice but drastically reduces UI responsiveness
     highlight = { enable = true, additional_vim_regex_highlighting = false },

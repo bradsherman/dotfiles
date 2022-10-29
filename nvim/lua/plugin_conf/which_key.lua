@@ -20,6 +20,9 @@ wk.register({
     ["<c-f>"] = { "<cmd>Telescope find_files<cr>", "Telescope Files" },
     ["<c-g>"] = { "<cmd>Telescope live_grep<cr>", "Telescope Grep" },
     ["<c-b>"] = { "<cmd>Telescope buffers<cr>", "Telescope Buffers" },
+    ["<leader>ss"] = { "<cmd>Telescope live_grep search_dirs=src<cr>", "Reload Modules" },
+    ["<leader>sd"] = { "<cmd>GrepInDirectory<cr>", "Search In Directory" },
+    ["<leader>sf"] = { "<cmd>GrepInDirectory<cr>", "File In Directory" },
     ["<leader>fe"] = {
         "<cmd>require('telescope').extensions.file_browser.file_browser()<cr>",
         "Telescope File Browser",
@@ -139,7 +142,7 @@ wk.register({
     g = {
         name = "+LSP Types",
         d = { "<cmd>Telescope lsp_definitions<cr>", "Definitions" },
-        D = { "<cmd>Lspsaga preview_definition<cr>", "Preview Definitions" },
+        D = { "<cmd>Lspsaga peek_definition<cr>", "Preview Definitions" },
         i = { "<cmd>Telescope lsp_implementations<cr>", "Implementations" },
         K = { "<cmd>Lspsaga hover_doc<cr>", "Hover Doc" },
         m = { "<cmd>Telescope lsp_document_symbols<cr>", "Document Symbols" },
@@ -220,6 +223,7 @@ wk.register({
                 t = { "<cmd>GHToggleThreads<cr>", "Toggle" },
             },
         },
+        l = { "<cmd>Gitsigns blame_line<cr>", "Blame Line" },
         n = { "<cmd>Gitsigns next_hunk<cr>", "Next Hunk" },
         p = { "<cmd>Gitsigns prev_hunk<cr>", "Previous Hunk" },
         d = { "<cmd>Gitsigns preview_hunk<cr>", "Preview Hunk" },
@@ -231,6 +235,7 @@ wk.register({
     },
 }, { prefix = "<leader>" })
 
+-- Debug
 wk.register({
     d = {
         name = "Debug",
@@ -249,7 +254,10 @@ wk.register({
         u = {
             name = "UI",
             h = { "<cmd>lua require('dap.ui.widgets').hover()<CR>", "Hover" },
-            f = { "local widgets=require('dap.ui.widgets');widgets.centered_float(widgets.scopes)<CR>", "Float" },
+            f = {
+                "<cmd>lua local widgets=require('dap.ui.widgets');widgets.centered_float(widgets.scopes)<CR>",
+                "Float",
+            },
         },
         r = {
             name = "Repl",
@@ -272,6 +280,20 @@ wk.register({
         i = { "<cmd>lua require('dap').toggle()<CR>", "Toggle" },
     },
 }, { prefix = "<leader>" })
+
+-- Yanky
+wk.register({
+    y = {
+        name = "Yanky",
+        h = { "<cmd>Telescope yank_history<cr>", "History" },
+        p = { "<Plug>(YankyPutAfter)", "Paste" },
+        P = { "<Plug>(YankyPutBefore)", "Paste Before" },
+        ["gp"] = { "<Plug>(YankyGPutAfter)", "Paste & Move Cursor" },
+        ["gP"] = { "<Plug>(YankyGPutBefore)", "Paste Before & Move Cursor" },
+        ["<c-n>"] = { "<Plug>(YankyCycleForward)", "Cycle Forward" },
+        ["<c-p>"] = { "<Plug>(YankyCycleBackward)", "Cycle Backward" },
+    },
+}, { prefix = "<leader>", mode = "n" })
 
 -- Syntax Tree Surfer
 local surfer_ok, _ = pcall(require, "syntax-tree-surfer")
@@ -385,4 +407,95 @@ if terminal_ok then
     }, { prefix = "<leader>" })
 end
 
-wk.setup()
+local hlslens_ok, _ = pcall(require, "hlslens")
+if hlslens_ok then
+    local kopts = { noremap = true, silent = true }
+    vim.api.nvim_set_keymap(
+        "n",
+        "n",
+        [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]],
+        kopts
+    )
+    vim.api.nvim_set_keymap(
+        "n",
+        "N",
+        [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]],
+        kopts
+    )
+    vim.api.nvim_set_keymap("n", "*", [[*<Cmd>lua require('hlslens').start()<CR>]], kopts)
+    vim.api.nvim_set_keymap("n", "#", [[#<Cmd>lua require('hlslens').start()<CR>]], kopts)
+    vim.api.nvim_set_keymap("n", "g*", [[g*<Cmd>lua require('hlslens').start()<CR>]], kopts)
+    vim.api.nvim_set_keymap("n", "g#", [[g#<Cmd>lua require('hlslens').start()<CR>]], kopts)
+end
+
+wk.setup({
+    plugins = {
+        marks = true, -- shows a list of your marks on ' and `
+        registers = true, -- shows your registers on " in NORMAL or <C-r> in INSERT mode
+        spelling = {
+            enabled = false, -- enabling this will show WhichKey when pressing z= to select spelling suggestions
+            suggestions = 20, -- how many suggestions should be shown in the list?
+        },
+        -- the presets plugin, adds help for a bunch of default keybindings in Neovim
+        -- No actual key bindings are created
+        presets = {
+            operators = false, -- adds help for operators like d, y, ... and registers them for motion / text object completion
+            motions = true, -- adds help for motions
+            text_objects = true, -- help for text objects triggered after entering an operator
+            windows = true, -- default bindings on <c-w>
+            nav = true, -- misc bindings to work with windows
+            z = true, -- bindings for folds, spelling and others prefixed with z
+            g = true, -- bindings for prefixed with g
+        },
+    },
+    -- add operators that will trigger motion and text object completion
+    -- to enable all native operators, set the preset / operators plugin above
+    operators = { gc = "Comments" },
+    key_labels = {
+        -- override the label used to display some keys. It doesn't effect WK in any other way.
+        -- For example:
+        -- ["<space>"] = "SPC",
+        -- ["<cr>"] = "RET",
+        -- ["<tab>"] = "TAB",
+    },
+    icons = {
+        breadcrumb = "»", -- symbol used in the command line area that shows your active key combo
+        separator = "➜", -- symbol used between a key and it's label
+        group = "+", -- symbol prepended to a group
+    },
+    popup_mappings = {
+        scroll_down = "<c-d>", -- binding to scroll down inside the popup
+        scroll_up = "<c-u>", -- binding to scroll up inside the popup
+    },
+    window = {
+        border = "none", -- none, single, double, shadow
+        position = "bottom", -- bottom, top
+        margin = { 1, 0, 1, 0 }, -- extra window margin [top, right, bottom, left]
+        padding = { 2, 2, 2, 2 }, -- extra window padding [top, right, bottom, left]
+        winblend = 0,
+    },
+    layout = {
+        height = { min = 4, max = 25 }, -- min and max height of the columns
+        width = { min = 20, max = 50 }, -- min and max width of the columns
+        spacing = 3, -- spacing between columns
+        align = "left", -- align columns left, center or right
+    },
+    ignore_missing = false, -- enable this to hide mappings for which you didn't specify a label
+    hidden = { "<silent>", "<cmd>", "<Cmd>", "<CR>", "call", "lua", "^:", "^ " }, -- hide mapping boilerplate
+    show_help = true, -- show help message on the command line when the popup is visible
+    triggers = "auto", -- automatically setup triggers
+    -- triggers = {"<leader>"} -- or specify a list manually
+    triggers_blacklist = {
+        -- list of mode / prefixes that should never be hooked by WhichKey
+        -- this is mostly relevant for key maps that start with a native binding
+        -- most people should not need to change this
+        i = { "j", "k" },
+        v = { "j", "k" },
+    },
+    -- disable the WhichKey popup for certain buf types and file types.
+    -- Disabled by deafult for Telescope
+    disable = {
+        buftypes = {},
+        filetypes = { "TelescopePrompt" },
+    },
+})

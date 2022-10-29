@@ -69,7 +69,7 @@ local function lsp_keymaps(client, bufnr)
     vim.keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<cr>", { buffer = bufnr })
     vim.keymap.set("n", "gm", "<cmd>Telescope lsp_document_symbols<cr>", { buffer = bufnr })
     vim.keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<cr>", { buffer = bufnr })
-    vim.keymap.set("n", "gD", "<cmd>Lspsaga preview_definition<cr>", { buffer = bufnr })
+    vim.keymap.set("n", "gD", "<cmd>Lspsaga peek_definition<cr>", { buffer = bufnr })
     vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<cr>", { buffer = bufnr })
     vim.keymap.set("n", "<c-p>", "<cmd>lua vim.diagnostic.goto_prev()<cr>", { buffer = bufnr })
     vim.keymap.set("n", "<c-n>", "<cmd>lua vim.diagnostic.goto_next()<cr>", { buffer = bufnr })
@@ -137,10 +137,9 @@ M.on_attach = function(client, bufnr)
     lsp_format(client, bufnr)
 end
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
 local status_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
 if status_ok then
-    M.capabilities = cmp_nvim_lsp.update_capabilities(capabilities)
+    M.capabilities = cmp_nvim_lsp.default_capabilities()
 end
 
 return M

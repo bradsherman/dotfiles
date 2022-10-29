@@ -73,7 +73,7 @@ o.showbreak = "↲"
 -- o.listchars="eol:$,tab:→,nbsp:␣,trail:~,extends:⟩,precedes:⟨,space:·"
 o.listchars = "eol:$,tab:▶·,nbsp:␣,trail:~,extends:⟩,precedes:⟨,space:·"
 
-o.winbar = "%=%m %f"
+--[[ o.winbar = "%=%m %f" ]]
 
 vim.cmd("set whichwrap+=<,>,[,],h,l")
 -- This removes some auto-formatting for comments

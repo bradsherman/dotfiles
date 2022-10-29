@@ -1,5 +1,5 @@
 local prev_status_ok, fold_preview = pcall(require, "fold-preview")
-if not prev_status_ok then
+if prev_status_ok then
     fold_preview.setup({
         default_keybindings = false,
         -- "none" | "single" | "double" | "rounded" | "solid" | "shadow" | string[]
@@ -10,8 +10,14 @@ if not prev_status_ok then
     local keymap = vim.keymap
     keymap.amend = require("keymap-amend")
     local map = fold_preview.mapping
-    keymap.amend("n", "h", map.show_clow_preview_open_fold)
+
+    keymap.amend("n", "h", map.show_close_preview_open_fold)
     keymap.amend("n", "l", map.close_preview_open_fold)
+    keymap.amend("n", "zo", map.close_preview)
+    keymap.amend("n", "zO", map.close_preview)
+    keymap.amend("n", "zc", map.close_preview_without_defer)
+    keymap.amend("n", "zR", map.close_preview)
+    keymap.amend("n", "zM", map.close_preview_without_defer)
 end
 
 local status_ok, pretty_fold = pcall(require, "pretty-fold")
