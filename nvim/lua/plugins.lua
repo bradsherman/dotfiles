@@ -42,25 +42,33 @@ return packer.startup(function(use)
     use("wbthomason/packer.nvim")
     use("nvim-lua/popup.nvim")
     use("nvim-lua/plenary.nvim")
+    use({
+        "MrcJkb/haskell-tools.nvim",
+        requires = {
+            "neovim/nvim-lspconfig",
+            "nvim-lua/plenary.nvim",
+            "nvim-telescope/telescope.nvim", -- optional
+        },
+    })
+
     use("TimUntersberger/neogit")
+    use({ "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" } })
     use({ "akinsho/git-conflict.nvim", tag = "*" })
     use({
         "ruifm/gitlinker.nvim",
         requires = "nvim-lua/plenary.nvim",
     })
-    use({ "kevinhwang91/nvim-bqf", ft = "qf" })
     use("ThePrimeagen/git-worktree.nvim")
-    use("Juksuu/worktrees.nvim")
 
     use("numToStr/Comment.nvim")
     use("JoosepAlviste/nvim-ts-context-commentstring")
-    use("tpope/vim-fugitive")
     use("tpope/vim-repeat")
-    -- use("tpope/vim-surround")
     use("kylechui/nvim-surround")
 
     use("rcarriga/nvim-notify")
+    use({ "kevinhwang91/nvim-bqf", ft = "qf" })
 
+    -- colorschemes
     use({
         "mcchrish/zenbones.nvim",
         requires = "rktjmp/lush.nvim",
@@ -71,12 +79,13 @@ return packer.startup(function(use)
     use("sainnhe/everforest")
     use("tanvirtin/monokai.nvim")
     use("shaunsingh/nord.nvim")
-    use("shaunsingh/moonlight.nvim")
+    use("ishan9299/nvim-solarized-lua")
     use("navarasu/onedark.nvim")
     use("NTBBloodbath/doom-one.nvim")
     use({ "catppuccin/nvim", as = "catppuccin" })
     use("rmehri01/onenord.nvim")
     use("daschw/leaf.nvim")
+    use("rebelot/kanagawa.nvim")
 
     use("nvim-lualine/lualine.nvim")
 
@@ -87,7 +96,7 @@ return packer.startup(function(use)
     use("~/.fzf")
     use("junegunn/fzf")
     use("junegunn/fzf.vim")
-    use("nvim-telescope/telescope.nvim")
+    use({ "nvim-telescope/telescope.nvim", requires = "nvim-telescope/telescope-live-grep-args.nvim" })
     use("nvim-telescope/telescope-fzy-native.nvim")
     use("nvim-telescope/telescope-file-browser.nvim")
     use("luc-tielen/telescope_hoogle")
@@ -98,13 +107,9 @@ return packer.startup(function(use)
         requires = { "nvim-telescope/telescope.nvim" },
     })
 
-    use({ "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" } })
-
     use("NvChad/nvim-colorizer.lua")
-    use("luochen1990/rainbow")
     use("karb94/neoscroll.nvim")
-    --[[ use("kevinhwang91/nvim-hlslens") ]]
-    use("petertriho/nvim-scrollbar")
+    --[[ use("petertriho/nvim-scrollbar") ]]
     use("kyazdani42/nvim-web-devicons")
     use("kyazdani42/nvim-tree.lua")
     use({ "nvim-neo-tree/neo-tree.nvim", requires = { "MunifTanjim/nui.nvim", "s1n7ax/nvim-window-picker" } })
@@ -112,9 +117,7 @@ return packer.startup(function(use)
         "mrbjarksen/neo-tree-diagnostics.nvim",
         requires = "nvim-neo-tree/neo-tree.nvim",
     })
-    use("ishan9299/nvim-solarized-lua")
 
-    use("folke/lsp-colors.nvim")
     use("williamboman/mason.nvim")
     use("williamboman/mason-lspconfig.nvim")
     use("neovim/nvim-lspconfig")
@@ -122,7 +125,6 @@ return packer.startup(function(use)
     use("jose-elias-alvarez/typescript.nvim")
     use("rafamadriz/friendly-snippets")
     use("molleweide/LuaSnip-snippets.nvim")
-    use("JASONews/glow-hover")
     use("onsails/lspkind.nvim")
     -- Install nvim-cmp, and buffer source as a dependency
     use({
@@ -142,39 +144,29 @@ return packer.startup(function(use)
     })
     use("L3MON4D3/LuaSnip")
 
-    use({
-        "filipdutescu/renamer.nvim",
-        branch = "master",
-        requires = { "nvim-lua/plenary.nvim" },
-    })
     use("smjonas/inc-rename.nvim")
 
     use("pwntester/octo.nvim")
     use("ldelossa/litee.nvim")
     use("ldelossa/gh.nvim")
-    use("luukvbaal/stabilize.nvim")
 
     use("mfussenegger/nvim-dap")
     use({ "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap" } })
     use({ "nvim-telescope/telescope-dap.nvim" })
     use({ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" }) -- We recommend updating the parsers on update
-    use("mfussenegger/nvim-ts-hint-textobject")
     use("Pocco81/DAPInstall.nvim")
     use("theHamsta/nvim-dap-virtual-text")
     use("nvim-treesitter/nvim-treesitter-context")
     use("nvim-treesitter/playground")
-    use("p00f/nvim-ts-rainbow")
     use("folke/trouble.nvim")
-    use("ray-x/lsp_signature.nvim")
     use("glepnir/lspsaga.nvim")
     use("hashivim/vim-terraform")
     use("stevearc/dressing.nvim")
     use("rainbowhxch/beacon.nvim")
+    use("mrjones2014/nvim-ts-rainbow")
 
     use("nanotee/sqls.nvim")
-    -- -- use 'lifepillar/pgsql.vim'
     use("dhruvasagar/vim-table-mode")
-    -- -- use 'unisonweb/unison', { 'branch': 'trunk', 'rtp': 'editor-support/vim' }
 
     use("akinsho/toggleterm.nvim")
 
@@ -188,10 +180,6 @@ return packer.startup(function(use)
     use("sindrets/diffview.nvim")
     use("folke/zen-mode.nvim")
     use("folke/twilight.nvim")
-    use({
-        "dstein64/vim-startuptime",
-        cmd = "StartupTime",
-    })
 
     use({
         "nvim-neorg/neorg",
@@ -206,17 +194,11 @@ return packer.startup(function(use)
     use("moll/vim-bbye")
     use("lewis6991/impatient.nvim")
 
-    use("narutoxy/dim.lua")
-    -- this may be better since it's at lsp level, but doesn't
-    -- work for haskell
     use("zbirenbaum/neodim")
     use("simrat39/symbols-outline.nvim")
 
-    use("napmn/react-extract.nvim")
     use("ziontee113/syntax-tree-surfer")
     use("LnL7/vim-nix")
-    -- use({ "goolord/alpha-nvim", requires = "kyazdani42/nvim-web-devicons" })
-    use("antoinemadec/FixCursorHold.nvim") -- This is needed to fix lsp doc highlight
 
     use({
         "iamcco/markdown-preview.nvim",
@@ -226,7 +208,6 @@ return packer.startup(function(use)
     })
 
     use("ThePrimeagen/harpoon")
-    use("hlucco/nvim-eswpoch")
     use({
         "anuvyklack/fold-preview.nvim",
         requires = "anuvyklack/keymap-amend.nvim",
@@ -239,14 +220,21 @@ return packer.startup(function(use)
             "anuvyklack/animation.nvim",
         },
     })
-    use("gbprod/yanky.nvim")
+    --[[ use("gbprod/yanky.nvim") ]]
     use({ "mvllow/modes.nvim", tag = "v0.2.0" })
 
     use("sindrets/winshift.nvim")
     use("mrjones2014/smart-splits.nvim")
 
-    use("folke/noice.nvim")
+    --[[ use("folke/noice.nvim") ]]
     use("lukas-reineke/headlines.nvim")
+    use("nvim-zh/colorful-winsep.nvim")
+
+    use("ray-x/guihua.lua")
+    use("ray-x/sad.nvim")
+    use("luukvbaal/statuscol.nvim")
+
+    --[[ use("nyngwang/murmur.lua") ]]
 
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins

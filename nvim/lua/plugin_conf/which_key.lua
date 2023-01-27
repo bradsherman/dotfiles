@@ -20,14 +20,29 @@ wk.register({
     ["<c-f>"] = { "<cmd>Telescope find_files<cr>", "Telescope Files" },
     ["<c-g>"] = { "<cmd>Telescope live_grep<cr>", "Telescope Grep" },
     ["<c-b>"] = { "<cmd>Telescope buffers<cr>", "Telescope Buffers" },
-    ["<leader>ss"] = { "<cmd>Telescope live_grep search_dirs=src<cr>", "Reload Modules" },
-    ["<leader>sd"] = { "<cmd>GrepInDirectory<cr>", "Search In Directory" },
-    ["<leader>sf"] = { "<cmd>GrepInDirectory<cr>", "File In Directory" },
+    ["<leader>gd"] = { "<cmd>GrepInDirectory<cr>", "Search In Directory" },
+    ["<leader>fh"] = {
+        "<cmd>lua require('telescope.builtin').live_grep({glob_pattern='*.hs'})<cr>",
+        "Search Haskell Files",
+    },
+    ["<leader>ft"] = {
+        "<cmd>lua require('telescope.builtin').live_grep({glob_pattern='*.ts,*.js,*.tsx,*.jsx,*.css,*.scss'})<cr>",
+        "Search Web Files",
+    },
+    ["<leader>ff"] = { "<cmd>FileInDirectory<cr>", "File In Directory" },
+    ["<leader>fg"] = {
+        "<cmd>lua require('telescope').extensions.live_grep_args.live_grep_args()<cr>",
+        "Live Grep Args",
+    },
     ["<leader>fe"] = {
         "<cmd>require('telescope').extensions.file_browser.file_browser()<cr>",
         "Telescope File Browser",
     },
-    ["<leader>qr"] = { "<cmd>require('plugin_conf/telescope').reload()<cr>", "Reload Modules" },
+    ["<leader>f?"] = {
+        "<cmd>lua require('notify').notify(vim.fn.expand('%f'))<cr>",
+        "What file am I?",
+    },
+    ["<leader>qr"] = { "<cmd>lua require('plugin_conf/telescope').reload()<cr>", "Reload Modules" },
     ["<leader>bd"] = { "<cmd>%bd|e#<cr>", "Clear Buffers" },
 }, {})
 
@@ -282,18 +297,18 @@ wk.register({
 }, { prefix = "<leader>" })
 
 -- Yanky
-wk.register({
-    y = {
-        name = "Yanky",
-        h = { "<cmd>Telescope yank_history<cr>", "History" },
-        p = { "<Plug>(YankyPutAfter)", "Paste" },
-        P = { "<Plug>(YankyPutBefore)", "Paste Before" },
-        ["gp"] = { "<Plug>(YankyGPutAfter)", "Paste & Move Cursor" },
-        ["gP"] = { "<Plug>(YankyGPutBefore)", "Paste Before & Move Cursor" },
-        ["<c-n>"] = { "<Plug>(YankyCycleForward)", "Cycle Forward" },
-        ["<c-p>"] = { "<Plug>(YankyCycleBackward)", "Cycle Backward" },
-    },
-}, { prefix = "<leader>", mode = "n" })
+--[[ wk.register({ ]]
+--[[     y = { ]]
+--[[         name = "Yanky", ]]
+--[[         h = { "<cmd>Telescope yank_history<cr>", "History" }, ]]
+--[[         p = { "<Plug>(YankyPutAfter)", "Paste" }, ]]
+--[[         P = { "<Plug>(YankyPutBefore)", "Paste Before" }, ]]
+--[[         ["gp"] = { "<Plug>(YankyGPutAfter)", "Paste & Move Cursor" }, ]]
+--[[         ["gP"] = { "<Plug>(YankyGPutBefore)", "Paste Before & Move Cursor" }, ]]
+--[[         ["<c-n>"] = { "<Plug>(YankyCycleForward)", "Cycle Forward" }, ]]
+--[[         ["<c-p>"] = { "<Plug>(YankyCycleBackward)", "Cycle Backward" }, ]]
+--[[     }, ]]
+--[[ }, { prefix = "<leader>", mode = "n" }) ]]
 
 -- Syntax Tree Surfer
 local surfer_ok, _ = pcall(require, "syntax-tree-surfer")

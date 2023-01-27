@@ -10,10 +10,3 @@ wt.setup({
     clearjumps_on_change = true,
     autopush = false,
 })
-
--- local status_ok, wt = pcall(require, "worktrees")
--- if not status_ok then
---     return
--- end
---
--- wt.setup()

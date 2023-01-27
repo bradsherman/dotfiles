@@ -9,6 +9,7 @@
   rb = rebase
   br = branch
   pom = pull origin master
+  dft = difftool
 
 [help]
   autocorrect = 25
@@ -31,6 +32,13 @@
 
 [diff]
     colorMoved = default
+    tool = difftastic
+
+[difftool "difftastic"]
+        cmd = difft "$LOCAL" "$REMOTE"
+
+[difftool]
+    prompt = false
 
 [delta "interactive"]
     keep-plus-minus-markers = false
@@ -43,5 +51,9 @@
     hunk-header-file-style = red
     hunk-header-line-number-style = "#067a00"
     hunk-header-style = file line-number syntax
+
 [pull]
 	ff = only
+
+[pager]
+  difftool = true

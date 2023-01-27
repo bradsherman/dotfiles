@@ -14,12 +14,15 @@ lualine.setup({
         theme = "auto",
         section_separators = { left = "", right = "" },
         component_separators = { left = "", right = "" },
-        -- component_separators = { left = "", right = "" },
-        disabled_filetypes = { "packer", "alpha", "dashboard", "NVimTree", "NeoTree", "Outline" },
+        disabled_filetypes = {
+            statusline = { "packer", "alpha", "dashboard", "NVimTree", "NeoTree", "Outline" },
+            winbar = { "packer", "alpha", "dashboard", "NVimTree", "NeoTree", "Outline" },
+        },
+        ignore_focus = {},
         always_divide_middle = true,
         globalstatus = true,
     },
-    extensions = { "fzf", "fugitive", "nvim-tree", "quickfix" },
+    extensions = { "fzf", "fugitive", "neo-tree", "nvim-dap-ui", "toggleterm", "nvim-tree", "quickfix" },
     sections = {
         lualine_a = {},
         lualine_b = {

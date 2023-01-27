@@ -41,6 +41,7 @@ wo.relativenumber = true
 o.showmatch = true
 o.splitright = true
 o.splitbelow = true
+o.splitkeep = "screen"
 o.backspace = "eol,indent,start"
 o.showcmd = false
 o.showmode = false
@@ -79,3 +80,5 @@ vim.cmd("set whichwrap+=<,>,[,],h,l")
 -- This removes some auto-formatting for comments
 -- see `:help fo-table` for more info
 -- vim.cmd([[au BufEnter * set fo-=c fo-=r fo-=o]])
+
+o.diffopt:append("linematch:50")

@@ -98,14 +98,14 @@ telescope.setup({
     },
 })
 telescope.load_extension("file_browser")
+telescope.load_extension("live_grep_args")
 telescope.load_extension("fzf")
 telescope.load_extension("notify")
 telescope.load_extension("hoogle")
 telescope.load_extension("harpoon")
--- telescope.load_extension("git_worktree")
-telescope.load_extension("worktrees")
-telescope.load_extension("yank_history")
-telescope.load_extension("noice")
+telescope.load_extension("git_worktree")
+--[[ telescope.load_extension("yank_history") ]]
+--[[ telescope.load_extension("noice") ]]
 
 local M = {}
 
@@ -141,7 +141,7 @@ function M.reload()
 
                 -- call the helper method to reload the module
                 -- and give some feedback
-                uReload(name)
+                uReload()
                 print(name .. " RELOADED!!!")
             end)
 

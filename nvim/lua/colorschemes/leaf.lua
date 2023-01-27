@@ -14,5 +14,5 @@ leaf.setup({
     colors = {},
     overrides = {},
     theme = "dark", -- "dark", "light"
-    contrast = "low", -- options: "low", "medium", "high"
+    contrast = "high", -- options: "low", "medium", "high"
 })

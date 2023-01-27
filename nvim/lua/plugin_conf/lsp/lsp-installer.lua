@@ -90,6 +90,37 @@ local default_setup = {
     on_attach = my_handlers.on_attach,
     capabilities = my_handlers.capabilities,
 }
+local def_opts = { noremap = true, silent = true }
+
+local ht_ok, haskell_tools = pcall(require,"haskell-tools")
+if ht_ok then
+    local settings_ok, hls_settings = pcall(require, "plugin_conf.lsp.settings.hls")
+    if not settings_ok then
+        return
+    end
+    haskell_tools.setup({
+        hls = {
+            on_attach = function(client, bufnr)
+                local opts = vim.tbl_extend("keep", def_opts, { buffer = bufnr })
+                -- haskell-language-server relies heavily on codeLenses,
+                -- so auto-refresh (see advanced configuration) is enabled by default
+                vim.keymap.set("n", "<space>ca", vim.lsp.codelens.run, opts)
+                vim.keymap.set("n", "<space>hs", haskell_tools.hoogle.hoogle_signature, opts)
+                my_handlers.on_attach(client, bufnr) -- if defined, see nvim-lspconfig
+            end,
+            settings = hls_settings,
+            capabilities = my_handlers.capabilities,
+        },
+    })
+    -- Suggested keymaps that do not depend on haskell-language-server
+    -- Toggle a GHCi repl for the current package
+    vim.keymap.set("n", "<leader>rr", haskell_tools.repl.toggle, def_opts)
+    -- Toggle a GHCi repl for the current buffer
+    vim.keymap.set("n", "<leader>rf", function()
+        haskell_tools.repl.toggle(vim.api.nvim_buf_get_name(0))
+    end, def_opts)
+    vim.keymap.set("n", "<leader>rq", haskell_tools.repl.quit, def_opts)
+end
 
 mason_lsp.setup_handlers({
     -- The first entry (without a key) will be the default handler
@@ -100,17 +131,17 @@ mason_lsp.setup_handlers({
     end,
     -- special setup for haskell, for some reason it crashes on certain files when used
     -- with nvim lsp installer - could be due to outdated version
-    ["hls"] = function()
-        nvim_lsp.hls.setup({
-            settings = {
-                haskell = {
-                    formattingProvider = "fourmolu",
-                },
-            },
-            on_attach = my_handlers.on_attach,
-            capabilities = my_handlers.capabilities,
-        })
-    end,
+    --[[ ["hls"] = function() ]]
+    --[[     nvim_lsp.hls.setup({ ]]
+    --[[         settings = { ]]
+    --[[             haskell = { ]]
+    --[[                 formattingProvider = "fourmolu", ]]
+    --[[             }, ]]
+    --[[         }, ]]
+    --[[         on_attach = my_handlers.on_attach, ]]
+    --[[         capabilities = my_handlers.capabilities, ]]
+    --[[     }) ]]
+    --[[ end, ]]
     ["sumneko_lua"] = function()
         nvim_lsp.sumneko_lua.setup({
             settings = {
@@ -157,6 +188,13 @@ mason_lsp.setup_handlers({
                     },
                 },
             },
+        })
+    end,
+    ["tflint"] = function()
+        nvim_lsp.tflint.setup({
+            on_attach = my_handlers.on_attach,
+            capabilities = my_handlers.capabilities,
+            root_dir = nvim_lsp.util.root_pattern(".git", ".tflint.hcl"),
         })
     end,
 })

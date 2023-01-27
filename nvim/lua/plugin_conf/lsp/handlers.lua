@@ -34,13 +34,13 @@ M.setup = function()
 
     vim.diagnostic.config(config)
 
-    vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-        border = "rounded",
-    })
-
-    vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-        border = "rounded",
-    })
+    --[[ vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { ]]
+    --[[     border = "rounded", ]]
+    --[[ }) ]]
+    --[[]]
+    --[[ vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { ]]
+    --[[     border = "rounded", ]]
+    --[[ }) ]]
 
     vim.api.nvim_command([[ hi def link LspReferenceText CursorLine ]])
     vim.api.nvim_command([[ hi def link LspReferenceWrite CursorLine ]])
@@ -125,12 +125,12 @@ local lsp_format = function(client, bufnr)
     end
 end
 
-local lsp_sig_ok, lsp_sig = pcall(require, "lsp_signature")
+--[[ local lsp_sig_ok, lsp_sig = pcall(require, "lsp_signature") ]]
 
 M.on_attach = function(client, bufnr)
-    if lsp_sig_ok then
-        lsp_sig.on_attach()
-    end
+    --[[ if lsp_sig_ok then ]]
+    --[[     lsp_sig.on_attach() ]]
+    --[[ end ]]
 
     lsp_keymaps(client, bufnr)
     lsp_highlight_document(client)

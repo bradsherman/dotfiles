@@ -15,8 +15,16 @@ windows.setup({
         },
     },
     ignore = {
-        buftype = { "quickfix" },
-        filetype = { "NvimTree", "neo-tree", "undotree", "gundo", "DiffviewFiles", "DiffviewFilePanel" },
+        buftype = { "quickfix", "DiffviewFilePanel", "NeogitConsole" },
+        filetype = {
+            "NvimTree",
+            "neo-tree",
+            "undotree",
+            "gundo",
+            "DiffviewFiles",
+            "DiffviewFilePanel",
+            "NeogitConsole",
+        },
     },
     animation = {
         enable = true,

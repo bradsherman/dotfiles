@@ -4,6 +4,10 @@ if not status_ok then
 end
 local actions = require("diffview.actions")
 
+require("diffview").setup({
+    -- ...
+})
+
 diffview.setup({
     diff_binaries = false, -- Show diffs for binaries
     enhanced_diff_hl = true, -- See ':h diffview-config-enhanced_diff_hl'
@@ -30,11 +34,14 @@ diffview.setup({
     },
     file_history_panel = {
         log_options = { -- See ':h diffview-config-log_options'
-            single_file = {
-                diff_merges = "combined",
-            },
-            multi_file = {
-                diff_merges = "first-parent",
+            git = {
+                single_file = {
+                    max_count = 512,
+                    follow = true,
+                },
+                multi_file = {
+                    max_count = 128,
+                },
             },
         },
         win_config = { -- See ':h diffview-config-win_config'

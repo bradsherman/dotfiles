@@ -1,7 +1,7 @@
 vim.opt.background = "dark"
 vim.opt.termguicolors = true
 
-local cs = "onenord"
+local cs = "kanagawa"
 
 require("colorschemes." .. cs)
 

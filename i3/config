@@ -13,7 +13,7 @@ set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:SFNS Display 13
+font pango:SFNS Display 10
 
 # allow i3-gaps to work
 for_window [class=".*"] border pixel 0
@@ -235,6 +235,8 @@ bindsym --release Print exec scrot 'screenshot_%Y%m%d_%H%M%S.png' -e 'mkdir -p ~
 # OSX-like area selection screenshots
 bindsym --release Shift+Print exec scrot -s 'screenshot_%Y%m%d_%H%M%S.png' -e 'mkdir -p ~/Pictures/screenshots && mv $f ~/Pictures/screenshots && xclip -selection clipboard -t image/png -i ~/Pictures/screenshots/`ls -1 -t ~/Pictures/screenshots | head -1`' # Area selection
 
+exec dunst
+
 exec alacritty
 assign [class="Alacritty"] $ws1
 exec firefox
@@ -243,10 +245,10 @@ exec slack
 assign [class="Slack"] $ws3
 exec spotify
 assign [class="Spotify"] $ws4
-exec blueman-manager
+# exec blueman-manager
 assign [class="Blueman-manager"] $ws4
 
-exec srandrd .local/bin/display_handler
+exec srandrd ~/.local/bin/display_handler
 
 
 bindsym $mod+b exec --no-startup-id rofi-bluetooth

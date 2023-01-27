@@ -73,7 +73,8 @@ ZSH_THEME="robbyrussell"
 export VIM_MODE_VICMD_KEY="jk"
 export _Z_CMD="j"
 . ~/.local/bin/z.sh
-plugins=(git zsh-syntax-highlighting zsh-autosuggestions z zsh-vim-mode)
+plugins=(git zsh-syntax-highlighting zsh-autosuggestions z zsh-vim-mode nix-shell nix-zsh-completions)
+
 
 source $ZSH/oh-my-zsh.sh
 
@@ -108,8 +109,10 @@ export PATH="/opt/julia/bin:$PATH"
 export EDITOR="nvim"
 alias vim="nvim"
 [ -f "/home/bsherman/.ghcup/env" ] && source "/home/bsherman/.ghcup/env" # ghcup-env
-source /home/bsherman/.local/venv/bin/activate
-export PATH="/usr/lib/postgresql/12/bin:${PATH}"
+#
+# source /home/bsherman/.local/venv/bin/activate
+#
+# export PATH="/usr/lib/postgresql/12/bin:${PATH}"
 export PATH="$HOME/.tfenv/bin:${PATH}"
 export PATH="$HOME/.pkenv/bin:${PATH}"
 export PATH="$HOME/code/lua-language-server/bin/Linux:${PATH}"
@@ -243,3 +246,30 @@ fi
 
 # opam configuration
 [[ ! -r /home/bsherman/.opam/opam-init/init.zsh ]] || source /home/bsherman/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+
+
+
+prompt_nix_shell_setup
+
+
+export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libgtk3-nocsd.so.0
+#compdef gt
+###-begin-gt-completions-###
+#
+# yargs command completion script
+#
+# Installation: /home/bsherman/.nix-profile/bin/gt completion >> ~/.zshrc
+#    or /home/bsherman/.nix-profile/bin/gt completion >> ~/.zprofile on OSX.
+#
+_gt_yargs_completions()
+{
+  local reply
+  local si=$IFS
+  IFS=$'
+' reply=($(COMP_CWORD="$((CURRENT-1))" COMP_LINE="$BUFFER" COMP_POINT="$CURSOR" /home/bsherman/.nix-profile/bin/gt --get-yargs-completions "${words[@]}"))
+  IFS=$si
+  _describe 'values' reply
+}
+compdef _gt_yargs_completions gt
+###-end-gt-completions-###
+

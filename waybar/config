@@ -50,7 +50,7 @@
       "  ",
       "  "
     ],
-    "format-charging": "{capacity}% ",
+    "format-charging": "{capacity}%  ",
     "interval": 30,
     "states": {
       "warning": 25,
@@ -64,15 +64,15 @@
     "format-alt-click": "click-right",
     "format-icons": {
       "wifi": [
-        "",
+        " ",
         "",
-        ""
+        " "
       ],
       "ethernet": [
-        ""
+        " "
       ],
       "disconnected": [
-        ""
+        " "
       ]
     },
     "on-click": "termite -e nmtui",

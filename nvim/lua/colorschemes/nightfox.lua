@@ -8,12 +8,16 @@ local palletes = {
     --     fg1 = "#000000",
     -- },
 }
-
 nightfox.setup({
     options = {
-        transparent = false, -- Disable setting the background color
-        dim_inactive = false, -- Non current window bg to alt color see `hl-NormalNC`
-        terminal_colors = true, -- Configure the colors used when opening :terminal
+        -- Compiled file's destination location
+        compile_path = vim.fn.stdpath("cache") .. "/nightfox",
+        compile_file_suffix = "_compiled", -- Compiled file suffix
+        transparent = false, -- Disable setting background
+        terminal_colors = true, -- Set terminal colors (vim.g.terminal_color_*) used in `:terminal`
+        dim_inactive = false, -- Non focused panes set to alternative background
+        module_default = true, -- Default enable value for modules
+
         styles = {
             comments = "italic,bold", -- Style that is applied to comments: see `highlight-args` for options
             functions = "italic,bold", -- Style that is applied to functions: see `highlight-args` for options
@@ -26,7 +30,7 @@ nightfox.setup({
             visual = true, -- Enable/Disable inverse highlighting for visual selection
             search = true, -- Enable/Disable inverse highlights for search highlights
         },
-        modules = {
+        modules = { -- List of various plugins and additional options
             cmp = true,
             fidget = true,
             gitsigns = true,
@@ -44,11 +48,11 @@ nightfox.setup({
             whichkey = true,
         },
     },
-    pallete = palletes,
+    palettes = palletes,
 })
 
--- Load the configuration set above and apply the colorscheme
-vim.cmd("colorscheme nordfox")
+-- setup must be called before loading
+vim.cmd("colorscheme nightfox")
 
 ---@diagnostic disable-next-line: unused-local
 local nordfox_palette = {

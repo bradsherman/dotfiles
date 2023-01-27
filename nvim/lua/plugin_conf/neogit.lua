@@ -13,6 +13,8 @@ neogit.setup({
     auto_refresh = true,
     disable_builtin_notifications = false,
     use_magit_keybindings = false,
+    console_timeout = 3000,
+    auto_show_console = false,
     -- Change the default way of opening neogit
     kind = "tab",
     -- Change the default way of opening the commit popup
@@ -70,16 +72,6 @@ neogit.setup({
         },
         recent = {
             folded = true,
-        },
-    },
-    -- override/add mappings
-    mappings = {
-        -- modify status buffer mappings
-        status = {
-            -- Adds a mapping with "B" as key that does the "BranchPopup" command
-            -- ["B"] = "BranchPopup",
-            -- Removes the default mapping of "s"
-            -- ["s"] = "",
         },
     },
 })

@@ -65,10 +65,11 @@ underline-size = 2
 underline-color = ${self.background}
 
 [bar/external]
+enable-ipc = true
 monitor = ${env:MONITORS[1]:DP-1}
 bottom = true
 width = 100%
-height = 50
+height = 60
 dpi = 192
 
 tray-position = ${env:MONITOR_TRAY_POSITION:right}
@@ -107,7 +108,8 @@ font-3 = Siji:pixelsize=8;0
 font-4 = Material\ Icons:size=8;0
 font-5 = xos4\ Terminus:size=8;0
 
-modules-left = previous playpause next padding spotify padding pulseaudio padding bluetooth padding timer
+; modules-left = previous playpause next padding spotify padding pulseaudio padding bluetooth padding timer
+modules-left = spotify-prev spotify-play-pause spotify-next padding spotify padding pulseaudio padding bluetooth padding timer
 modules-center = i3
 modules-right = wireless-network padding battery padding date padding
 
@@ -600,14 +602,48 @@ label-separator = |
 label-separator-padding = 0
 label-separator-foreground = #9DA2AC
 
+; [module/spotify]
+; type = custom/script
+; interval = 1
+; format-prefix = " "
+; format = <label>
+; exec = /usr/bin/python3  /home/bsherman/.config/polybar/spotify.py -f '{play_pause} {song} - {artist} - {album}'
+; format-underline = ${root.foreground}
+
 [module/spotify]
 type = custom/script
+tail = true
 interval = 1
-format-prefix = " "
+; prefix symbol is shown before the text
+format-prefix = " "
 format = <label>
-exec = /home/bsherman/.local/venv/bin/python  /home/bsherman/.config/polybar/spotify.py -f '{play_pause} {song} - {artist} - {album}'
+exec = ~/.config/polybar/scroll_spotify_status.sh
 
-format-underline = ${root.foreground}
+[module/spotify-prev]
+type = custom/script
+exec = echo " "
+format = <label>
+click-left = playerctl previous -p spotify
+content-background = ${root.foreground}
+content-foreground = ${root.background}
+
+[module/spotify-play-pause]
+type = custom/ipc
+hook-0 = echo " "
+hook-1 = echo " "
+initial = 1
+click-left = playerctl play-pause -p spotify
+content-background = ${root.foreground}
+content-foreground = ${root.background}
+
+[module/spotify-next]
+type = custom/script
+exec = echo " "
+format = <label>
+click-left = playerctl next -p spotify
+content-background = ${root.foreground}
+content-foreground = ${root.background}
+
 
 [module/previous]
 type = custom/text

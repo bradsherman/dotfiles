@@ -24,7 +24,7 @@ env:
   # TERM: xterm-256color
   TERM: alacritty
 
-# window:
+window:
   # gtk_theme_variant: Light
   # GTK theme variant (Linux/BSD only)
   #
@@ -51,9 +51,9 @@ env:
   #
   # Blank space added around the window in pixels. This padding is scaled
   # by DPI and the specified value is always added at both opposing sides.
-  #padding:
-  #  x: 0
-  #  y: 0
+  padding:
+   x: 5
+   y: 5
 
   # Spread additional padding evenly around the terminal content.
   #dynamic_padding: false
@@ -138,7 +138,7 @@ font:
   #   # style: Bold Italic
   #   style: SemiBold # cascadia
 
-  size: 11
+  size: 16
   # Offset is the extra space around each character. `offset.y` can be thought
   # of as modifying the line spacing, and `offset.x` as modifying the letter
   # spacing.
