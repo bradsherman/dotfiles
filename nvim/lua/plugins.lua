@@ -1,135 +1,104 @@
-local fn = vim.fn
-
--- Automatically install packer
-local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
-if fn.empty(fn.glob(install_path)) > 0 then
-    -- selene: allow(unscoped_variables,unused_variable)
-    PACKER_BOOTSTRAP = fn.system({
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+    vim.fn.system({
         "git",
         "clone",
-        "--depth",
-        "1",
-        "https://github.com/wbthomason/packer.nvim",
-        install_path,
+        "--filter=blob:none",
+        "https://github.com/folke/lazy.nvim.git",
+        "--branch=stable", -- latest stable release
+        lazypath,
     })
-    print("Installing packer close and reopen Neovim...")
-    vim.cmd([[ packadd packer.nvim ]])
 end
-
--- Autocommand that reloads neovim whenever you save the plugins.lua file
-local pc = vim.api.nvim_create_augroup("PackerConfig", { clear = true })
-vim.api.nvim_create_autocmd(
-    "BufWritePost",
-    { pattern = "plugins.lua", command = "source <afile> | PackerSync", group = pc }
-)
+vim.opt.rtp:prepend(lazypath)
 
 -- Use a protected call so we don't error out on first use
-local status_ok, packer = pcall(require, "packer")
+local status_ok, lazy = pcall(require, "lazy")
 if not status_ok then
     return
 end
 
--- Have packer use a popup window
-packer.init({
-    display = {
-        open_fn = function()
-            return require("packer.util").float({ border = "rounded" })
-        end,
-    },
-})
+lazy.setup({
+    "nvim-lua/popup.nvim",
+    "nvim-lua/plenary.nvim",
+    "MunifTanjim/nui.nvim",
+    "s1n7ax/nvim-window-picker",
+    "tpope/vim-repeat",
+    "numToStr/Comment.nvim",
+    { "kylechui/nvim-surround", version = "*", event = "VeryLazy" },
+    "rcarriga/nvim-notify",
+    { "kevinhwang91/nvim-bqf", ft = "qf" },
+    "rktjmp/lush.nvim",
+    "nvim-lualine/lualine.nvim",
+    "j-hui/fidget.nvim",
+    "windwp/nvim-autopairs",
+    "junegunn/fzf",
+    "junegunn/fzf.vim",
+    "NvChad/nvim-colorizer.lua",
+    "karb94/neoscroll.nvim",
+    "kyazdani42/nvim-web-devicons",
+    "kyazdani42/nvim-tree.lua",
+    "nvim-neo-tree/neo-tree.nvim",
+    "mrbjarksen/neo-tree-diagnostics.nvim",
+    "stevearc/dressing.nvim",
+    "dhruvasagar/vim-table-mode",
+    "christoomey/vim-tmux-navigator",
+    "moll/vim-bbye",
+    "lewis6991/impatient.nvim",
+    "nvim-neorg/neorg-telescope",
+    { "nvim-neorg/neorg", dependencies = { "nvim-lua/plenary.nvim", "nvim-neorg/neorg-telescope" } },
+    "ThePrimeagen/harpoon",
 
-return packer.startup(function(use)
-    use("wbthomason/packer.nvim")
-    use("nvim-lua/popup.nvim")
-    use("nvim-lua/plenary.nvim")
-    use({
-        "MrcJkb/haskell-tools.nvim",
-        requires = {
-            "neovim/nvim-lspconfig",
-            "nvim-lua/plenary.nvim",
-            "nvim-telescope/telescope.nvim", -- optional
-        },
-    })
+    -- begin colorschemes
+    { "mcchrish/zenbones.nvim", lazy = true },
+    { "EdenEast/nightfox.nvim", lazy = true },
+    { "folke/tokyonight.nvim", lazy = true },
+    { "marko-cerovac/material.nvim", lazy = true },
+    { "sainnhe/everforest", lazy = true },
+    { "tanvirtin/monokai.nvim", lazy = true },
+    { "shaunsingh/nord.nvim", lazy = true },
+    { "ishan9299/nvim-solarized-lua", lazy = true },
+    { "navarasu/onedark.nvim", lazy = true },
+    { "NTBBloodbath/doom-one.nvim", lazy = true },
+    { "catppuccin/nvim", lazy = true, name = "catppuccin" },
+    { "rmehri01/onenord.nvim", lazy = true },
+    { "daschw/leaf.nvim", lazy = true },
+    { "rebelot/kanagawa.nvim", lazy = true },
+    -- end colorschemes
 
-    use("TimUntersberger/neogit")
-    use({ "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" } })
-    use({ "akinsho/git-conflict.nvim", tag = "*" })
-    use({
-        "ruifm/gitlinker.nvim",
-        requires = "nvim-lua/plenary.nvim",
-    })
-    use("ThePrimeagen/git-worktree.nvim")
+    -- begin git
+    "lewis6991/gitsigns.nvim",
+    "akinsho/git-conflict.nvim",
+    "ruifm/gitlinker.nvim",
+    "ThePrimeagen/git-worktree.nvim",
+    "TimUntersberger/neogit",
+    "pwntester/octo.nvim",
+    "ldelossa/litee.nvim",
+    "ldelossa/gh.nvim",
+    "sindrets/diffview.nvim",
+    -- end git
 
-    use("numToStr/Comment.nvim")
-    use("JoosepAlviste/nvim-ts-context-commentstring")
-    use("tpope/vim-repeat")
-    use("kylechui/nvim-surround")
+    -- being telescope
+    "nvim-telescope/telescope.nvim",
+    "nvim-telescope/telescope-live-grep-args.nvim",
+    "nvim-telescope/telescope-fzy-native.nvim",
+    { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+    "nvim-telescope/telescope-file-browser.nvim",
+    "luc-tielen/telescope_hoogle",
+    "princejoogie/dir-telescope.nvim",
+    -- end telescope
 
-    use("rcarriga/nvim-notify")
-    use({ "kevinhwang91/nvim-bqf", ft = "qf" })
-
-    -- colorschemes
-    use({
-        "mcchrish/zenbones.nvim",
-        requires = "rktjmp/lush.nvim",
-    })
-    use("EdenEast/nightfox.nvim")
-    use("folke/tokyonight.nvim")
-    use("marko-cerovac/material.nvim")
-    use("sainnhe/everforest")
-    use("tanvirtin/monokai.nvim")
-    use("shaunsingh/nord.nvim")
-    use("ishan9299/nvim-solarized-lua")
-    use("navarasu/onedark.nvim")
-    use("NTBBloodbath/doom-one.nvim")
-    use({ "catppuccin/nvim", as = "catppuccin" })
-    use("rmehri01/onenord.nvim")
-    use("daschw/leaf.nvim")
-    use("rebelot/kanagawa.nvim")
-
-    use("nvim-lualine/lualine.nvim")
-
-    use("j-hui/fidget.nvim")
-    use("windwp/nvim-autopairs")
-    use("windwp/nvim-ts-autotag")
-
-    use("~/.fzf")
-    use("junegunn/fzf")
-    use("junegunn/fzf.vim")
-    use({ "nvim-telescope/telescope.nvim", requires = "nvim-telescope/telescope-live-grep-args.nvim" })
-    use("nvim-telescope/telescope-fzy-native.nvim")
-    use("nvim-telescope/telescope-file-browser.nvim")
-    use("luc-tielen/telescope_hoogle")
-    use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
-    use({
-        "princejoogie/dir-telescope.nvim",
-        -- telescope.nvim is a required dependency
-        requires = { "nvim-telescope/telescope.nvim" },
-    })
-
-    use("NvChad/nvim-colorizer.lua")
-    use("karb94/neoscroll.nvim")
-    --[[ use("petertriho/nvim-scrollbar") ]]
-    use("kyazdani42/nvim-web-devicons")
-    use("kyazdani42/nvim-tree.lua")
-    use({ "nvim-neo-tree/neo-tree.nvim", requires = { "MunifTanjim/nui.nvim", "s1n7ax/nvim-window-picker" } })
-    use({
-        "mrbjarksen/neo-tree-diagnostics.nvim",
-        requires = "nvim-neo-tree/neo-tree.nvim",
-    })
-
-    use("williamboman/mason.nvim")
-    use("williamboman/mason-lspconfig.nvim")
-    use("neovim/nvim-lspconfig")
-    use("jose-elias-alvarez/null-ls.nvim")
-    use("jose-elias-alvarez/typescript.nvim")
-    use("rafamadriz/friendly-snippets")
-    use("molleweide/LuaSnip-snippets.nvim")
-    use("onsails/lspkind.nvim")
-    -- Install nvim-cmp, and buffer source as a dependency
-    use({
+    -- begin lsp / cmp
+    "williamboman/mason.nvim",
+    "williamboman/mason-lspconfig.nvim",
+    "neovim/nvim-lspconfig",
+    "jose-elias-alvarez/null-ls.nvim",
+    "jose-elias-alvarez/typescript.nvim",
+    "rafamadriz/friendly-snippets",
+    "molleweide/LuaSnip-snippets.nvim",
+    "onsails/lspkind.nvim",
+    {
         "hrsh7th/nvim-cmp",
-        requires = {
+        dependencies = {
             "hrsh7th/cmp-buffer",
             "hrsh7th/cmp-nvim-lsp",
             "hrsh7th/cmp-path",
@@ -137,109 +106,74 @@ return packer.startup(function(use)
             "hrsh7th/cmp-cmdline",
             "ray-x/cmp-treesitter",
             "quangnguyen30192/cmp-nvim-tags",
-            "saadparwaiz1/cmp_luasnip", -- Snippets source for nvim-cmp
+            "saadparwaiz1/cmp_luasnip",
             "hrsh7th/cmp-nvim-lsp-document-symbol",
             "hrsh7th/cmp-nvim-lsp-signature-help",
         },
-    })
-    use("L3MON4D3/LuaSnip")
+    },
+    "L3MON4D3/LuaSnip",
+    "smjonas/inc-rename.nvim",
+    "MrcJkb/haskell-tools.nvim",
+    "hashivim/vim-terraform",
+    "nanotee/sqls.nvim",
+    "mattn/emmet-vim",
+    "vmchale/dhall-vim",
+    "LnL7/vim-nix",
+    -- end lsp / cmp
 
-    use("smjonas/inc-rename.nvim")
+    -- begin treesitter
+    { "nvim-treesitter/nvim-treesitter", lazy = false },
+    "nvim-treesitter/nvim-treesitter-context",
+    "nvim-treesitter/playground",
+    "JoosepAlviste/nvim-ts-context-commentstring",
+    "windwp/nvim-ts-autotag",
+    "mrjones2014/nvim-ts-rainbow",
+    "ziontee113/syntax-tree-surfer",
+    -- end treesitter
 
-    use("pwntester/octo.nvim")
-    use("ldelossa/litee.nvim")
-    use("ldelossa/gh.nvim")
+    -- begin dap
+    "mfussenegger/nvim-dap",
+    "rcarriga/nvim-dap-ui",
+    "nvim-telescope/telescope-dap.nvim",
+    "Pocco81/DAPInstall.nvim",
+    "theHamsta/nvim-dap-virtual-text",
+    -- end dap
 
-    use("mfussenegger/nvim-dap")
-    use({ "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap" } })
-    use({ "nvim-telescope/telescope-dap.nvim" })
-    use({ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" }) -- We recommend updating the parsers on update
-    use("Pocco81/DAPInstall.nvim")
-    use("theHamsta/nvim-dap-virtual-text")
-    use("nvim-treesitter/nvim-treesitter-context")
-    use("nvim-treesitter/playground")
-    use("folke/trouble.nvim")
-    use("glepnir/lspsaga.nvim")
-    use("hashivim/vim-terraform")
-    use("stevearc/dressing.nvim")
-    use("rainbowhxch/beacon.nvim")
-    use("mrjones2014/nvim-ts-rainbow")
+    -- begin term
+    "akinsho/toggleterm.nvim",
+    -- end term
 
-    use("nanotee/sqls.nvim")
-    use("dhruvasagar/vim-table-mode")
-
-    use("akinsho/toggleterm.nvim")
-
-    use("mattn/emmet-vim")
-
-    use("vmchale/dhall-vim")
-    use("lukas-reineke/indent-blankline.nvim")
-    use("christoomey/vim-tmux-navigator")
-
-    use("folke/todo-comments.nvim")
-    use("sindrets/diffview.nvim")
-    use("folke/zen-mode.nvim")
-    use("folke/twilight.nvim")
-
-    use({
-        "nvim-neorg/neorg",
-        requires = {
-            "nvim-lua/plenary.nvim",
-            "nvim-neorg/neorg-telescope",
-        },
-    })
-
-    use("folke/which-key.nvim")
-    use({ "akinsho/bufferline.nvim", requires = "kyazdani42/nvim-web-devicons" })
-    use("moll/vim-bbye")
-    use("lewis6991/impatient.nvim")
-
-    use("zbirenbaum/neodim")
-    use("simrat39/symbols-outline.nvim")
-
-    use("ziontee113/syntax-tree-surfer")
-    use("LnL7/vim-nix")
-
-    use({
+    -- begin ui
+    "folke/trouble.nvim",
+    "glepnir/lspsaga.nvim",
+    "rainbowhxch/beacon.nvim",
+    "lukas-reineke/indent-blankline.nvim",
+    "folke/todo-comments.nvim",
+    "folke/zen-mode.nvim",
+    "folke/twilight.nvim",
+    "folke/which-key.nvim",
+    "akinsho/bufferline.nvim",
+    "zbirenbaum/neodim",
+    "simrat39/symbols-outline.nvim",
+    {
         "iamcco/markdown-preview.nvim",
-        run = function()
+        build = function()
             vim.fn["mkdp#util#install"]()
         end,
-    })
-
-    use("ThePrimeagen/harpoon")
-    use({
-        "anuvyklack/fold-preview.nvim",
-        requires = "anuvyklack/keymap-amend.nvim",
-    })
-    use("anuvyklack/pretty-fold.nvim")
-    use({
-        "anuvyklack/windows.nvim",
-        requires = {
-            "anuvyklack/middleclass",
-            "anuvyklack/animation.nvim",
-        },
-    })
-    --[[ use("gbprod/yanky.nvim") ]]
-    use({ "mvllow/modes.nvim", tag = "v0.2.0" })
-
-    use("sindrets/winshift.nvim")
-    use("mrjones2014/smart-splits.nvim")
-
-    --[[ use("folke/noice.nvim") ]]
-    use("lukas-reineke/headlines.nvim")
-    use("nvim-zh/colorful-winsep.nvim")
-
-    use("ray-x/guihua.lua")
-    use("ray-x/sad.nvim")
-    use("luukvbaal/statuscol.nvim")
-
-    --[[ use("nyngwang/murmur.lua") ]]
-
-    -- Automatically set up your configuration after cloning packer.nvim
-    -- Put this at the end after all plugins
-    -- selene: allow(undefined_variable)
-    if PACKER_BOOTSTRAP then
-        require("packer").sync()
-    end
-end)
+    },
+    "anuvyklack/keymap-amend.nvim",
+    "anuvyklack/pretty-fold.nvim",
+    "anuvyklack/fold-preview.nvim",
+    "anuvyklack/middleclass",
+    "anuvyklack/animation.nvim",
+    "anuvyklack/windows.nvim",
+    { "mvllow/modes.nvim", tag = "v0.2.0" },
+    "sindrets/winshift.nvim",
+    "mrjones2014/smart-splits.nvim",
+    "lukas-reineke/headlines.nvim",
+    "nvim-zh/colorful-winsep.nvim",
+    "ray-x/guihua.lua",
+    "ray-x/sad.nvim",
+    "luukvbaal/statuscol.nvim",
+    -- end ui
+})

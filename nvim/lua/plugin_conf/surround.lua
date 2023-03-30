@@ -3,6 +3,11 @@ if not status_ok then
     return
 end
 
+local utils_status_ok, surround_utils = pcall(require, "nvim-surround.config")
+if not utils_status_ok then
+    return
+end
+
 surround.setup({
     keymaps = {
         insert = "<C-g>s",
@@ -28,4 +33,9 @@ surround.setup({
         duration = 0,
     },
     move_cursor = "begin",
+    indent_lines = function(start_row, end_row)
+        if start_row ~= end_row then
+            surround_utils.default_opts.indent_lines(start_row, end_row)
+        end
+    end,
 })
