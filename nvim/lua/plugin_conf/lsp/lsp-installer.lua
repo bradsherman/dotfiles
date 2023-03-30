@@ -92,7 +92,7 @@ local default_setup = {
 }
 local def_opts = { noremap = true, silent = true }
 
-local ht_ok, haskell_tools = pcall(require,"haskell-tools")
+local ht_ok, haskell_tools = pcall(require, "haskell-tools")
 if ht_ok then
     local settings_ok, hls_settings = pcall(require, "plugin_conf.lsp.settings.hls")
     if not settings_ok then
@@ -108,7 +108,9 @@ if ht_ok then
                 vim.keymap.set("n", "<space>hs", haskell_tools.hoogle.hoogle_signature, opts)
                 my_handlers.on_attach(client, bufnr) -- if defined, see nvim-lspconfig
             end,
-            settings = hls_settings,
+            settings = function()
+                return hls_settings
+            end,
             capabilities = my_handlers.capabilities,
         },
     })
@@ -129,21 +131,8 @@ mason_lsp.setup_handlers({
     function(server_name) -- default handler (optional)
         nvim_lsp[server_name].setup(default_setup)
     end,
-    -- special setup for haskell, for some reason it crashes on certain files when used
-    -- with nvim lsp installer - could be due to outdated version
-    --[[ ["hls"] = function() ]]
-    --[[     nvim_lsp.hls.setup({ ]]
-    --[[         settings = { ]]
-    --[[             haskell = { ]]
-    --[[                 formattingProvider = "fourmolu", ]]
-    --[[             }, ]]
-    --[[         }, ]]
-    --[[         on_attach = my_handlers.on_attach, ]]
-    --[[         capabilities = my_handlers.capabilities, ]]
-    --[[     }) ]]
-    --[[ end, ]]
-    ["sumneko_lua"] = function()
-        nvim_lsp.sumneko_lua.setup({
+    ["lua_ls"] = function()
+        nvim_lsp.lua_ls.setup({
             settings = {
                 Lua = {
                     diagnostics = {
@@ -175,6 +164,16 @@ mason_lsp.setup_handlers({
             capabilities = my_handlers.capabilities,
         })
     end,
+    --[[ ["sqlls"] = function() ]]
+    --[[     nvim_lsp.sqlls.setup({ ]]
+    --[[         on_attach = function(client, bufnr) ]]
+    --[[             client.server_capabilities.document_formatting = false ]]
+    --[[             client.server_capabilities.document_range_formatting = false ]]
+    --[[             my_handlers.on_attach(client, bufnr) ]]
+    --[[         end, ]]
+    --[[         capabilities = my_handlers.capabilities, ]]
+    --[[     }) ]]
+    --[[ end, ]]
     ["dockerls"] = function()
         nvim_lsp.dockerls.setup({
             on_attach = my_handlers.on_attach,

@@ -26,19 +26,19 @@ if status_ok then
         sections = {
             left = {
                 "content",
-            },
-            right = {
-                " ",
+                "--- ",
                 "number_of_folded_lines",
                 ": ",
                 "percentage",
-                " ",
+            },
+            right = {
                 function(config)
                     return config.fill_char:rep(3)
                 end,
             },
         },
-        fill_char = "•",
+        --[[ fill_char = "•", ]]
+        fill_char = " ",
 
         remove_fold_markers = true,
 

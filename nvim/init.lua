@@ -1,6 +1,6 @@
 require("plugins")
+require("options")
 require("keybindings")
 require("colorschemes")
 require("plugin_conf")
 require("autocommands")
-require("options")

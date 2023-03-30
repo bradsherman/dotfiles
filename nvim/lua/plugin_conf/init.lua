@@ -55,7 +55,7 @@ require("plugin_conf.windows")
 require("plugin_conf.winsep")
 require("plugin_conf.smart_splits")
 require("plugin_conf.fidget")
-require("plugin_conf.headlines")
+--[[ require("plugin_conf.headlines") ]]
 require("plugin_conf.sad")
 require("plugin_conf.statuscol")
 --[[ require("plugin_conf.murmur") ]]

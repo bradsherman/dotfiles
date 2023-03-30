@@ -61,9 +61,26 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 -- Just do popular filetypes until this is fixed
 local fold_fix_group = vim.api.nvim_create_augroup("FixFolding", { clear = true })
 vim.api.nvim_create_autocmd({ "BufEnter" }, {
-    pattern = { "*.hs", "*.lua", "*.ts", "*.js", "*.tsx", "*.jsx", "*.json" },
+    --[[ pattern = { "*.hs", "*.lua", "*.ts", "*.js", "*.tsx", "*.jsx", "*.json" }, ]]
+    pattern = { "*" },
     command = "normal zx",
     group = fold_fix_group,
+})
+-- Persistent Folds
+local save_fold = vim.api.nvim_create_augroup("Persistent Folds", { clear = true })
+vim.api.nvim_create_autocmd("BufWinLeave", {
+    pattern = "*.*",
+    callback = function()
+        vim.cmd.mkview()
+    end,
+    group = save_fold,
+})
+vim.api.nvim_create_autocmd("BufWinEnter", {
+    pattern = "*.*",
+    callback = function()
+        vim.cmd.loadview({ mods = { emsg_silent = true } })
+    end,
+    group = save_fold,
 })
 
 -- vim.api.nvim_create_autocmd({ "BufReadPost,FileReadPost" }, {

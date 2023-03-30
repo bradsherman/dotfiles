@@ -92,12 +92,12 @@ local function lsp_keymaps(client, bufnr)
     end
 end
 
-local no_format_servers = { "tsserver", "hls", "sumneko_lua", "sqls", "dockerls" }
+local no_format_servers = { "tsserver", "hls", "haskell-tools.nvim", "lua_ls", "sqls", "dockerls" }
 
 local lsp_formatting = function(bufnr)
     vim.lsp.buf.format({
         filter = function(client)
-            -- filter out client that you don't want to use
+            -- filter out clients that you don't want to use
             for _, name in pairs(no_format_servers) do
                 if name == client.name then
                     return false
@@ -125,13 +125,7 @@ local lsp_format = function(client, bufnr)
     end
 end
 
---[[ local lsp_sig_ok, lsp_sig = pcall(require, "lsp_signature") ]]
-
 M.on_attach = function(client, bufnr)
-    --[[ if lsp_sig_ok then ]]
-    --[[     lsp_sig.on_attach() ]]
-    --[[ end ]]
-
     lsp_keymaps(client, bufnr)
     lsp_highlight_document(client)
     lsp_format(client, bufnr)
