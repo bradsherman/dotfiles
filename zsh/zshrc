@@ -273,3 +273,19 @@ _gt_yargs_completions()
 compdef _gt_yargs_completions gt
 ###-end-gt-completions-###
 
+
+function author_lines () {
+	if [ -z "$1" ]
+	then
+		pattern="."
+	else
+		pattern="$1"
+	fi
+	git ls-files "${pattern}" | while read f
+	do
+		git blame --line-porcelain $f | grep '^author '
+	done | sort -f | uniq -ic | sort -n
+}
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /nix/store/34m359hc8r2r8h9rsavysjmvyk29m0m6-nomad-1.4.4/bin/nomad nomad

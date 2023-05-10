@@ -88,3 +88,17 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
 --     command = "normal zR",
 --     -- group = fold_fix_group,
 -- })
+
+-- https://github.com/nvim-telescope/telescope.nvim/issues/2027
+local telescope_fix = vim.api.nvim_create_augroup("FixTelescopeMode", { clear = true })
+vim.api.nvim_create_autocmd( -- Prevent entering buffers in insert mode.
+    "WinLeave",
+    {
+        callback = function()
+            if vim.bo.ft == "TelescopePrompt" and vim.fn.mode() == "i" then
+                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "i", false)
+            end
+        end,
+        group = telescope_fix,
+    }
+)

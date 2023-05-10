@@ -220,11 +220,19 @@ set $focused-bg      #81a1c1
 set $unfocused-bg    #9DA2AC
 set $urgent-bg       #d33682
 set $indicator-color #2aa198
+
 #                       border         background     text         indicator
-client.focused          $focused-bg    $focused-bg    $window-text $indicator-color
-client.focused_inactive $unfocused-bg  $unfocused-bg  $window-text $indicator-color
-client.unfocused        $unfocused-bg  $unfocused-bg  $window-text $indicator-color
-client.urgent           $unfocused-bg  $urgent-bg     $window-text $indicator-color
+# client.focused          $focused-bg    $focused-bg    $window-text $indicator-color
+# client.focused_inactive $unfocused-bg  $unfocused-bg  $window-text $indicator-color
+# client.unfocused        $unfocused-bg  $unfocused-bg  $window-text $indicator-color
+# client.urgent           $unfocused-bg  $urgent-bg     $window-text $indicator-color
+
+include ~/.config/sway/kanagawa
+#                       Border        BG            Text        Ind           Child Border
+client.focused          $autumnGreen  $autumnGreen  $sumiInk1   $waveRed      $autumnGreen
+client.focused_inactive $waveBlue2    $waveBlue2    $fujiWhite  $sakuraPink   $waveBlue2
+client.unfocused        $waveBlue1    $waveBlue1    $fujiWhite  $sakuraPink   $waveBlue1
+client.urgent           $autumnRed    $autumnRed    $sumiInk1   $waveRed      $autumnRed
 
 exec_always --no-startup-id ~/.config/waybar/waybar.sh
 

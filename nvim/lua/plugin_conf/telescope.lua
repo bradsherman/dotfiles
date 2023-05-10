@@ -104,6 +104,7 @@ telescope.load_extension("notify")
 telescope.load_extension("hoogle")
 telescope.load_extension("harpoon")
 telescope.load_extension("git_worktree")
+telescope.load_extension("ht")
 --[[ telescope.load_extension("yank_history") ]]
 --[[ telescope.load_extension("noice") ]]
 

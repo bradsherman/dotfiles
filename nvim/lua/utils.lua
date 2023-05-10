@@ -8,7 +8,7 @@ M.reload = function()
     end
 
     dofile(vim.env.MYVIMRC)
-    vim.cmd("PackerCompile")
+    vim.cmd("Lazy sync")
 end
 
 M.print = function(v)
@@ -44,10 +44,24 @@ end
 
 M.update_haskell_tags = function()
     local succ, exitcode, code = os.execute("ghc-tags -c")
-    if not succ then
+    if succ then
+        vim.notify("Tags updated successfully")
+    else
         vim.notify("Failed to update tags - exitcode = (" .. exitcode .. "), code (" .. code .. ")")
     end
-    vim.notify("Tags updated successfully")
+end
+
+M.worktree_workaround = function()
+    vim.ui.input({
+        prompt = "Choose branch name",
+    }, function(branch)
+        if branch ~= nil then
+            require("git-worktree").create_worktree("../" .. branch, branch, "origin")
+            --[[ os.execute("git pull --rebase origin master") ]]
+        else
+            print("Branch is nil")
+        end
+    end)
 end
 
 return M

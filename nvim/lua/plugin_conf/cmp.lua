@@ -24,7 +24,7 @@ window_ops.border = "rounded" -- default
 local nfox_ok, palettes = pcall(require, "nightfox.palette")
 local palette = palettes.load("nordfox")
 
-if true and nfox_ok then
+if false and nfox_ok then
     local cmp_highlights = {
         PmenuSel = { bg = palette.bg1, fg = "NONE" },
         Pmenu = { fg = palette.fg0, bg = palette.bg1 },
@@ -80,19 +80,25 @@ if true and nfox_ok then
 end
 
 cmp.setup({
-    formatting = {
-        fields = { "kind", "abbr", "menu" },
-
-        format = function(entry, vim_item)
-            local kind = require("lspkind").cmp_format({ mode = "symbol_text", maxwidth = 40 })(entry, vim_item)
-            local strings = vim.split(kind.kind, "%s", { trimempty = true })
-            kind.kind = " " .. strings[1] .. " "
-            kind.menu = "    (" .. strings[2] .. ")"
-
-            return kind
-        end,
-    },
-
+    --[[ formatting = { ]]
+    --[[     format = function(entry, vim_item) ]]
+    --[[         require("lspkind").cmp_format() ]]
+    --[[         rq ]]
+    --[[     end, ]]
+    --[[ }, ]]
+    --[[ formatting = { ]]
+    --[[     fields = { "kind", "abbr", "menu" }, ]]
+    --[[]]
+    --[[     format = function(entry, vim_item) ]]
+    --[[         local kind = require("lspkind").cmp_format({ mode = "symbol_text", maxwidth = 40 })(entry, vim_item) ]]
+    --[[         local strings = vim.split(kind.kind, "%s", { trimempty = true }) ]]
+    --[[]]
+    --[[         kind.kind = " " .. strings[1] .. " " ]]
+    --[[         kind.menu = "    (" .. strings[2] .. ")" ]]
+    --[[]]
+    --[[         return kind ]]
+    --[[     end, ]]
+    --[[ }, ]]
     snippet = {
         expand = function(args)
             luasnip.lsp_expand(args.body)

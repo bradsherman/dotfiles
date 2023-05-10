@@ -54,11 +54,11 @@ require("plugin_conf.folds")
 require("plugin_conf.windows")
 require("plugin_conf.winsep")
 require("plugin_conf.smart_splits")
-require("plugin_conf.fidget")
+--[[ require("plugin_conf.fidget") ]]
 --[[ require("plugin_conf.headlines") ]]
 require("plugin_conf.sad")
+require("plugin_conf.hover")
+--[[ require("plugin_conf.oil") ]]
 require("plugin_conf.statuscol")
---[[ require("plugin_conf.murmur") ]]
---[[ require("plugin_conf.noice") ]]
+require("plugin_conf.noice")
 --[[ require("plugin_conf.yanky") ]]
---[[ require("plugin_conf.scrollbar") ]]

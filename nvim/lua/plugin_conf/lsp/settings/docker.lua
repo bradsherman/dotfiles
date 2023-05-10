@@ -1,10 +1,8 @@
 return {
-    settings = {
-        docker = {
-            languageserver = {
-                formatter = {
-                    ignoreMultilineInstructions = true,
-                },
+    docker = {
+        languageserver = {
+            formatter = {
+                ignoreMultilineInstructions = true,
             },
         },
     },

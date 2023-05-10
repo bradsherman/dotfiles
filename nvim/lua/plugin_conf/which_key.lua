@@ -78,10 +78,9 @@ wk.register({
 -- Packer
 wk.register({
     p = {
-        name = "+Packer",
-        c = { "<cmd>PackerCompile<cr>", "Packer Compile" },
-        i = { "<cmd>PackerInstall<cr>", "Packer Install" },
-        u = { "<cmd>PackerSync<cr>", "Packer Sync" },
+        name = "+Lazy",
+        s = { "<cmd>Lazy sync<cr>", "Lazy Sync" },
+        u = { "<cmd>Lazy update<cr>", "Lazy Update" },
     },
 }, { prefix = "<leader>" })
 
@@ -111,6 +110,7 @@ wk.register({
         "Telescope File Browser",
     },
     ["nc"] = { "<cmd>lua require('notify').dismiss({pending = true})<cr>", "Clear Notifications" },
+    ["hs"] = { require("haskell-tools").hoogle.hoogle_signature, "Hoogle Signature" },
 }, { prefix = "<leader>" })
 
 wk.register({
@@ -138,8 +138,25 @@ wk.register({
 --     ["<C-e>"] = { "<cmd>NvimTreeToggle<cr>", "NvimTree Toggle" },
 -- }, {})
 
+local ht_ok, ht = pcall(require, "haskell-tools")
+if ht_ok then
+    wk.register({
+        name = "+Haskell REPL",
+        p = { ht.repl.toggle, "Package" },
+        b = {
+            function()
+                ht.repl.toggle(vim.api.nvim_buf_get_name(0))
+            end,
+            "Buffer",
+        },
+        q = { ht.repl.quit, "Quit" },
+    }, { prefix = "<leader>hr" })
+end
+
 -- Lsp
 wk.register({
+    ["vv"] = { "<cmd>lua require('lsp-selection-range').trigger()<CR>" },
+    ["ve"] = { "<cmd>lua require('lsp-selection-range').expand()<CR>" },
     ["<leader>l"] = {
         name = "+LSP Actions",
         a = { "<cmd>Lspsaga code_action<cr>", "Code Actions" },
@@ -148,6 +165,7 @@ wk.register({
         f = { "<cmd>lua vim.lsp.buf.format({ async = true })<cr>", "Format" },
         h = { "<cmd>Lspsaga signature_help<cr>", "Signature Help" },
         i = { "<cmd>LspInfo<cr>", "LSP Info" },
+        l = { vim.lsp.codelens.run, "LSP Code Lens" },
         p = { "<cmd>TroubleToggle<cr>", "LSP Trouble" },
         r = { "<cmd>IncRename " .. vim.fn.expand("<cword>") .. "<cr>", "Rename" },
         s = { "<cmd>Telescope lsp_workspace_symbols<cr>", "LSP Workspace Symbols" },
@@ -159,7 +177,7 @@ wk.register({
         d = { "<cmd>Telescope lsp_definitions<cr>", "Definitions" },
         D = { "<cmd>Lspsaga peek_definition<cr>", "Preview Definitions" },
         i = { "<cmd>Telescope lsp_implementations<cr>", "Implementations" },
-        K = { "<cmd>Lspsaga hover_doc<cr>", "Hover Doc" },
+        K = { require("hover").hover, "Hover Doc" },
         m = { "<cmd>Telescope lsp_document_symbols<cr>", "Document Symbols" },
         r = { "<cmd>Telescope lsp_references<cr>", "References" },
         t = { "<cmd>Telescope lsp_type_definitions<cr>", "Type Definitions" },
@@ -244,8 +262,69 @@ wk.register({
         d = { "<cmd>Gitsigns preview_hunk<cr>", "Preview Hunk" },
         w = {
             name = "+Worktree",
-            c = { "<cmd>lua require('telescope').extensions.git_worktree.create_git_worktree()<cr>", "Create" },
+            --[[ c = { "<cmd>lua require('telescope').extensions.git_worktree.create_git_worktree()<cr>", "Create" }, ]]
+            c = { "<cmd>lua require('utils').worktree_workaround()<cr>", "Create" },
             s = { "<cmd>lua require('telescope').extensions.git_worktree.git_worktrees()<cr>", "Switch" },
+        },
+    },
+    o = {
+        name = "+Octo",
+        c = {
+            name = "+Comment",
+            a = { "<cmd>Octo comment add<cr>", "Add a comment" },
+            d = { "<cmd>Octo comment delete<cr>", "Delete a comment" },
+        },
+        i = {
+            name = "+Issue",
+            b = { "<cmd>Octo issue browser<cr>", "Open current issue in browser" },
+            c = { "<cmd>Octo issue create<cr>", "Create an issue" },
+            e = { "<cmd>Octo issue edit<cr>", "Edit an issue" },
+            l = { "<cmd>Octo issue list<cr>", "List issues" },
+            o = { "<cmd>Octo issue reopen<cr>", "Reopen the current issue" },
+            r = { "<cmd>Octo issue reload<cr>", "Reload the current issue" },
+            s = { "<cmd>Octo issue search<cr>", "Search issues" },
+            u = { "<cmd>Octo issue url<cr>", "Copy current issue url" },
+            x = { "<cmd>Octo issue close<cr>", "Close the current issue" },
+        },
+        p = {
+            -- Not included: changes
+            name = "+PR",
+            a = { "<cmd>Octo pr ready<cr>", "Mark PR as ready for review" },
+            b = { "<cmd>Octo pr browser<cr>", "Open PR in browser" },
+            c = { "<cmd>Octo pr commits<cr>", "List PR Commits" },
+            d = { "<cmd>Octo pr diff<cr>", "Diff PR" },
+            e = { "<cmd>Octo pr edit<cr>", "Edit PR" },
+            f = { "<cmd>Octo pr search<cr>", "Search PRs" },
+            l = { "<cmd>Octo pr list<cr>", "List PRs" },
+            m = {
+                name = "+Merge",
+                c = { "<cmd>Octo pr merge commit<cr>", "Merge PR with commit strategy" },
+                d = { "<cmd>Octo pr merge delete<cr>", "Merge PR with delete strategy" },
+                r = { "<cmd>Octo pr merge rebase<cr>", "Merge PR with rebase strategy" },
+                s = { "<cmd>Octo pr merge squash<cr>", "Merge PR with squash strategy" },
+            },
+            n = { "<cmd>Octo pr create<cr>", "Create PR" },
+            p = { "<cmd>Octo pr checkout<cr>", "Checkout PR" },
+            r = { "<cmd>Octo pr reopen<cr>", "Reopen PR" },
+            s = { "<cmd>Octo pr checks<cr>", "Show Status of Checks on PR" },
+            t = { "<cmd>Octo pr reload<cr>", "Reload PR" },
+            u = { "<cmd>Octo pr url<cr>", "Copy url to PR" },
+            x = { "<cmd>Octo pr close<cr>", "Close PR" },
+        },
+        r = {
+            name = "+Review",
+            c = { "<cmd>Octo review commit<cr>", "Pick a commit to review" },
+            d = { "<cmd>Octo review discard<cr>", "Discard a pending review" },
+            f = { "<cmd>Octo review submit<cr>", "Submit the review" },
+            r = { "<cmd>Octo review resume<cr>", "Resume a pending review" },
+            s = { "<cmd>Octo review start<cr>", "Start a new review" },
+            t = { "<cmd>Octo review comments<cr>", "View pending comments" },
+            x = { "<cmd>Octo review close<cr>", "Close the review" },
+        },
+        t = {
+            name = "+Thread",
+            r = { "<cmd>Octo thread resolve<cr>", "Resolve thread" },
+            u = { "<cmd>Octo thread unresolve<cr>", "Unresolve thread" },
         },
     },
 }, { prefix = "<leader>" })
@@ -365,15 +444,15 @@ if surfer_ok then
 end
 
 -- Harpoon
-wk.register({
-    h = {
-        name = "Harpoon",
-        a = { "<cmd>lua require('harpoon.mark').add_file()<cr>", "Add File" },
-        m = { "<cmd>lua require('harpoon.ui').toggle_quick_menu()<cr>", "Toggle Menu" },
-        j = { "<cmd>lua require('harpoon.ui').nav_next()<cr>", "Next" },
-        k = { "<cmd>lua require('harpoon.ui').nav_prev()<cr>", "Previous" },
-    },
-}, { prefix = "<leader>" })
+--[[ wk.register({ ]]
+--[[     h = { ]]
+--[[         name = "Harpoon", ]]
+--[[         a = { "<cmd>lua require('harpoon.mark').add_file()<cr>", "Add File" }, ]]
+--[[         m = { "<cmd>lua require('harpoon.ui').toggle_quick_menu()<cr>", "Toggle Menu" }, ]]
+--[[         j = { "<cmd>lua require('harpoon.ui').nav_next()<cr>", "Next" }, ]]
+--[[         k = { "<cmd>lua require('harpoon.ui').nav_prev()<cr>", "Previous" }, ]]
+--[[     }, ]]
+--[[ }, { prefix = "<leader>" }) ]]
 
 local terminal_ok, toggleterm = pcall(require, "toggleterm.terminal")
 if terminal_ok then

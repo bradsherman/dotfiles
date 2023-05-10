@@ -23,13 +23,13 @@ shift $((OPTIND -1))
 # third arg is dst
 # any other args are passed to 'cp'
 function copy_config () {
-  if [[ $app == "all" || $app == $1 ]]; then
+  if [[ $app == "all" || $app == "$1" ]]; then
     echo "Updating application: $1"
     params=()
     for var in "${@:4}"; do
         params+=("$var")
     done
-    cp "${params[@]}" $2 $3
+    cp "${params[@]}" "$2" "$3"
   else
     echo "Skipping application: $1"
   fi
@@ -50,3 +50,4 @@ copy_config "rofi-solarized-light" ~/.local/share/rofi/themes/solarized-light.ra
 copy_config "rofi-nord" ~/.local/share/rofi/themes/nord.rasi .
 copy_config "tmux" ~/.tmux.conf tmux.conf
 copy_config "zsh" ~/.zshrc zsh/zshrc
+cp ~/.local/bin/update-neovim.sh .

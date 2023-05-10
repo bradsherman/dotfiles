@@ -14,6 +14,7 @@ if octo_status_ok then
             size = 10, -- changed files panel rows
             use_icons = true, -- use web-devicons in file panel
         },
+        --[[ use_local_fs = true, ]]
         mappings = {
             issue = {
                 close_issue = "<space>ic", -- close issue

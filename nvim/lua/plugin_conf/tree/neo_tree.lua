@@ -42,7 +42,11 @@ neotree.setup({
     window = { -- see https://github.com/MunifTanjim/nui.nvim/tree/main/lua/nui/popup for
         -- possible options. These can also be functions that return these options.
         position = "right", -- left, right, float, current
-        width = 60, -- applies to left and right positions
+        width = 50, -- applies to left and right positions
+    },
+    filesystem = {
+        use_libuv_file_watcher = true, -- This will use the OS level file watchers to detect changes
+        -- instead of relying on nvim autocmd events.
     },
     sources = {
         "filesystem",

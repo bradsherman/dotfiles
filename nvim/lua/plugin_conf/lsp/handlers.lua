@@ -70,7 +70,8 @@ local function lsp_keymaps(client, bufnr)
     vim.keymap.set("n", "gm", "<cmd>Telescope lsp_document_symbols<cr>", { buffer = bufnr })
     vim.keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<cr>", { buffer = bufnr })
     vim.keymap.set("n", "gD", "<cmd>Lspsaga peek_definition<cr>", { buffer = bufnr })
-    vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<cr>", { buffer = bufnr })
+    vim.keymap.set("n", "K", require("hover").hover, { buffer = bufnr })
+    vim.keymap.set("n", "gK", require("hover").hover_select, { buffer = bufnr })
     vim.keymap.set("n", "<c-p>", "<cmd>lua vim.diagnostic.goto_prev()<cr>", { buffer = bufnr })
     vim.keymap.set("n", "<c-n>", "<cmd>lua vim.diagnostic.goto_next()<cr>", { buffer = bufnr })
     vim.keymap.set("n", "<leader>lh", "<cmd>Lspsaga signature_help<CR>", { buffer = bufnr })
@@ -82,6 +83,8 @@ local function lsp_keymaps(client, bufnr)
         return ":IncRename " .. vim.fn.expand("<cword>")
     end, { buffer = bufnr, expr = true })
     vim.cmd([[ command! Format execute 'lua vim.lsp.buf.format({ async = true })' ]])
+    vim.keymap.set("n", "vv", "<cmd>lua require('lsp-selection-range').trigger()<CR>", { buffer = bufnr })
+    vim.keymap.set("n", "ve", "<cmd>lua require('lsp-selection-range').expand()<CR>", { buffer = bufnr })
 
     -- Set some keybinds conditional on server capabilities
     if client.server_capabilities.document_formatting then
@@ -131,9 +134,22 @@ M.on_attach = function(client, bufnr)
     lsp_format(client, bufnr)
 end
 
-local status_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
-if status_ok then
-    M.capabilities = cmp_nvim_lsp.default_capabilities()
-end
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+
+-- get a weird loop error with this
+--[[ local status_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp") ]]
+--[[ if status_ok then ]]
+--[[     capabilities = cmp_nvim_lsp.default_capabilities() ]]
+--[[ end ]]
+
+--[[ local lsp_capabilities = {} ]]
+--[[ local lsp_select_ok, lsp_selection_range = pcall(require, "lsp-selection-range") ]]
+--[[ if lsp_select_ok then ]]
+--[[     lsp_capabilities = lsp_selection_range.updaate_capabilites({}) ]]
+--[[ end ]]
+
+-- until https://github.com/neovim/neovim/pull/23500/files is merged
+capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = false
+M.capabilities = capabilities
 
 return M

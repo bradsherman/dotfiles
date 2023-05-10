@@ -35,9 +35,14 @@ lazy.setup({
     "junegunn/fzf.vim",
     "NvChad/nvim-colorizer.lua",
     "karb94/neoscroll.nvim",
-    "kyazdani42/nvim-web-devicons",
-    "kyazdani42/nvim-tree.lua",
+    "nvim-tree/nvim-web-devicons",
+    "nvim-tree/nvim-tree.lua",
     "nvim-neo-tree/neo-tree.nvim",
+    {
+        "stevearc/oil.nvim",
+        -- Optional dependencies
+        dependencies = { "nvim-tree/nvim-web-devicons" },
+    },
     "mrbjarksen/neo-tree-diagnostics.nvim",
     "stevearc/dressing.nvim",
     "dhruvasagar/vim-table-mode",
@@ -47,6 +52,7 @@ lazy.setup({
     "nvim-neorg/neorg-telescope",
     { "nvim-neorg/neorg", dependencies = { "nvim-lua/plenary.nvim", "nvim-neorg/neorg-telescope" } },
     "ThePrimeagen/harpoon",
+    "lewis6991/hover.nvim",
 
     -- begin colorschemes
     { "mcchrish/zenbones.nvim", lazy = true },
@@ -71,7 +77,16 @@ lazy.setup({
     "ruifm/gitlinker.nvim",
     "ThePrimeagen/git-worktree.nvim",
     "TimUntersberger/neogit",
-    "pwntester/octo.nvim",
+    --[[ "pwntester/octo.nvim", ]]
+    {
+        "NWVi/octo.nvim",
+        branch = "config-review-use-local-fs",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "nvim-telescope/telescope.nvim",
+            "nvim-web-devicons",
+        },
+    },
     "ldelossa/litee.nvim",
     "ldelossa/gh.nvim",
     "sindrets/diffview.nvim",
@@ -88,13 +103,15 @@ lazy.setup({
     -- end telescope
 
     -- begin lsp / cmp
-    "williamboman/mason.nvim",
+    { "williamboman/mason.nvim", build = ":MasonUpdate" },
     "williamboman/mason-lspconfig.nvim",
     "neovim/nvim-lspconfig",
+    "MrcJkb/haskell-tools.nvim",
     "jose-elias-alvarez/null-ls.nvim",
     "jose-elias-alvarez/typescript.nvim",
     "rafamadriz/friendly-snippets",
     "molleweide/LuaSnip-snippets.nvim",
+    "camilledejoye/nvim-lsp-selection-range",
     "onsails/lspkind.nvim",
     {
         "hrsh7th/nvim-cmp",
@@ -113,12 +130,20 @@ lazy.setup({
     },
     "L3MON4D3/LuaSnip",
     "smjonas/inc-rename.nvim",
-    "MrcJkb/haskell-tools.nvim",
+    {
+        "nvim-neotest/neotest",
+        requires = {
+            "mrcjkb/neotest-haskell",
+            "nvim-treesitter/nvim-treesitter",
+            "nvim-lua/plenary.nvim",
+        },
+    },
     "hashivim/vim-terraform",
     "nanotee/sqls.nvim",
     "mattn/emmet-vim",
     "vmchale/dhall-vim",
     "LnL7/vim-nix",
+    "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
     -- end lsp / cmp
 
     -- begin treesitter
@@ -145,6 +170,7 @@ lazy.setup({
 
     -- begin ui
     "folke/trouble.nvim",
+    "folke/noice.nvim",
     "glepnir/lspsaga.nvim",
     "rainbowhxch/beacon.nvim",
     "lukas-reineke/indent-blankline.nvim",
