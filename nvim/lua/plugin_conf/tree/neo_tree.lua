@@ -41,8 +41,8 @@ neotree.setup({
     },
     window = { -- see https://github.com/MunifTanjim/nui.nvim/tree/main/lua/nui/popup for
         -- possible options. These can also be functions that return these options.
-        position = "right", -- left, right, float, current
-        width = 50, -- applies to left and right positions
+        -- position = "right", -- left, right, float, current
+        -- width = 50, -- applies to left and right positions
     },
     filesystem = {
         use_libuv_file_watcher = true, -- This will use the OS level file watchers to detect changes
@@ -53,5 +53,13 @@ neotree.setup({
         "buffers",
         "git_status",
         "diagnostics",
+    },
+    default_component_configs = {
+        indent = {
+            with_expanders = true, -- if nil and file nesting is enabled, will enable expanders
+            expander_collapsed = " ",
+            expander_expanded = " ",
+            expander_highlight = "NeoTreeExpander",
+        },
     },
 })

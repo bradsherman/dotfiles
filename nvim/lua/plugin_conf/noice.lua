@@ -41,6 +41,17 @@ noice.setup({
             },
             opts = { skip = true },
         },
+        {
+            filter = {
+                event = "msg_show",
+                any = {
+                    { find = "%d+L, %d+B" },
+                    { find = "; after #%d+" },
+                    { find = "; before #%d+" },
+                },
+            },
+            view = "mini",
+        },
     },
     -- you can enable a preset for easier configuration
     presets = {

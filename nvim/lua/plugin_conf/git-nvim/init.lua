@@ -11,4 +11,3 @@ if not gh_exists then
     return
 end
 require("plugin_conf.git-nvim.octo")
-require("plugin_conf.git-nvim.litee_gh")

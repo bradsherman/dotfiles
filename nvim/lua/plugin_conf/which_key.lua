@@ -17,19 +17,27 @@ local update_haskell_tags = require("utils").update_haskell_tags
 
 -- Miscellaneous Telescope mappings
 wk.register({
+    --[[ ["<c-f>"] = { "<cmd>FzfLua files<cr>", "Files" }, ]]
+    --[[ ["<c-g>"] = { "<cmd>FzfLua grep_project<cr>", "Grep" }, ]]
+    --[[ ["<c-b>"] = { "<cmd>FzfLua buffers<cr>", "Buffers" }, ]]
+    --[[ ["<c-f>"] = { "<cmd>Files<cr>", "Files" }, ]]
+    --[[ ["<c-g>"] = { "<cmd>Rg<cr>", "Grep" }, ]]
+    --[[ ["<c-b>"] = { "<cmd>Buffers<cr>", "Buffers" }, ]]
+    --[[ ["<c-r>"] = { "<cmd>FzfLua command_history<cr>", "History" }, ]]
     ["<c-f>"] = { "<cmd>Telescope find_files<cr>", "Telescope Files" },
-    ["<c-g>"] = { "<cmd>Telescope live_grep<cr>", "Telescope Grep" },
+    ["<c-t>"] = { "<cmd>Telescope tags<cr>", "Telescope Tags" },
+    ["<c-g>"] = { "<cmd>lua require('telescope').extensions.live_grep_args.live_grep_args()<cr>", "Telescope Grep" },
     ["<c-b>"] = { "<cmd>Telescope buffers<cr>", "Telescope Buffers" },
     ["<leader>gd"] = { "<cmd>GrepInDirectory<cr>", "Search In Directory" },
     ["<leader>fh"] = {
         "<cmd>lua require('telescope.builtin').live_grep({glob_pattern='*.hs'})<cr>",
-        "Search Haskell Files",
+        "Grep Haskell Files",
     },
     ["<leader>ft"] = {
-        "<cmd>lua require('telescope.builtin').live_grep({glob_pattern='*.ts,*.js,*.tsx,*.jsx,*.css,*.scss'})<cr>",
-        "Search Web Files",
+        "<cmd>lua require('telescope.builtin').live_grep({glob_pattern={'*.ts','*.js','*.tsx','*.jsx','*.css','*.scss'}})<cr>",
+        "Grep Web Files",
     },
-    ["<leader>ff"] = { "<cmd>FileInDirectory<cr>", "File In Directory" },
+    ["<leader>ff"] = { "<cmd>lua MiniFiles.open()<cr>", "Mini Files" },
     ["<leader>fg"] = {
         "<cmd>lua require('telescope').extensions.live_grep_args.live_grep_args()<cr>",
         "Live Grep Args",
@@ -43,7 +51,8 @@ wk.register({
         "What file am I?",
     },
     ["<leader>qr"] = { "<cmd>lua require('plugin_conf/telescope').reload()<cr>", "Reload Modules" },
-    ["<leader>bd"] = { "<cmd>%bd|e#<cr>", "Clear Buffers" },
+    ["<leader>bd"] = { "<cmd>bufdo :Bdelete<cr>", "Clear Buffers" },
+    ["<leader>sn"] = { "<cmd>Telescope manix", "Search Nix" },
 }, {})
 
 -- Quickfix
@@ -114,17 +123,9 @@ wk.register({
 }, { prefix = "<leader>" })
 
 wk.register({
-    f = {
-        name = "+DiffView",
-        o = { "<cmd>DiffviewOpen<cr>", "Diffview Open" },
-        h = { "<cmd>DiffviewOpen HEAD~1<cr>", "Diffview Open Last Commit" },
-        c = { "<cmd>DiffviewClose<cr>", "Diffview Close" },
-        f = { "<cmd>DiffviewFileHistory %<cr>", "Diffview File History" },
-    },
-}, { prefix = "<leader>d" })
-
-wk.register({
     ["<leader>e"] = { "<cmd>Neotree toggle reveal<cr>", "Neotree Find File" },
+    -- ["<C-e>"] = { "<cmd>lua MiniFiles.open()<cr>", "Mini Files" },
+    -- ["<leader>e"] = { "<cmd>lua <cr>", "Neotree Find File" },
     ["<C-e>"] = { "<cmd>Neotree toggle<cr>", "Neotree Toggle" },
 }, {})
 
@@ -155,8 +156,8 @@ end
 
 -- Lsp
 wk.register({
-    ["vv"] = { "<cmd>lua require('lsp-selection-range').trigger()<CR>" },
-    ["ve"] = { "<cmd>lua require('lsp-selection-range').expand()<CR>" },
+    --[[ ["vv"] = { "<cmd>lua require('lsp-selection-range').trigger()<CR>" }, ]]
+    --[[ ["ve"] = { "<cmd>lua require('lsp-selection-range').expand()<CR>" }, ]]
     ["<leader>l"] = {
         name = "+LSP Actions",
         a = { "<cmd>Lspsaga code_action<cr>", "Code Actions" },
@@ -164,12 +165,13 @@ wk.register({
         e = { "<cmd>Lspsaga show_line_diagnostics<cr>", "Line Diagnostics" },
         f = { "<cmd>lua vim.lsp.buf.format({ async = true })<cr>", "Format" },
         h = { "<cmd>Lspsaga signature_help<cr>", "Signature Help" },
-        i = { "<cmd>LspInfo<cr>", "LSP Info" },
+        -- i = { "<cmd>LspInfo<cr>", "LSP Info" },
+        i = { "<cmd>TSToolsOrganizeImports<cr>", "TSToolsOrganizeImports" },
         l = { vim.lsp.codelens.run, "LSP Code Lens" },
-        p = { "<cmd>TroubleToggle<cr>", "LSP Trouble" },
         r = { "<cmd>IncRename " .. vim.fn.expand("<cword>") .. "<cr>", "Rename" },
         s = { "<cmd>Telescope lsp_workspace_symbols<cr>", "LSP Workspace Symbols" },
-        t = { "<cmd>Telescope tags<cr>", "Tags" },
+        --[[ t = { "<cmd>FzfLua tags<cr>", "Tags" }, ]]
+        -- t = { "<cmd>Telescope tags<cr>", "Tags" },
         u = { update_haskell_tags, "Update Haskell tags" },
     },
     g = {
@@ -203,6 +205,20 @@ wk.register({
             n = { "<cmd>GitConflictChooseNone<cr>", "Choose None" },
             o = { "<cmd>GitConflictChooseOurs<cr>", "Choose Ours" },
             t = { "<cmd>GitConflictChooseTheirs<cr>", "Choose Theirs" },
+        },
+        d = {
+            name = "+Diffview/Gitsigns",
+            c = { "<cmd>DiffviewOpen origin/HEAD...HEAD --imply-local<cr>", "Compare Branch" },
+            d = { "<cmd>Gitsigns preview_hunk<cr>", "Preview Hunk" },
+            f = { "<cmd>DiffviewFileHistory %<cr>", "Diffview File History" },
+            h = { "<cmd>DiffviewOpen HEAD~1<cr>", "Diffview Open Last Commit" },
+            l = { "<cmd>Gitsigns blame_line<cr>", "Blame Line" },
+            o = { "<cmd>DiffviewOpen<cr>", "Diffview Open" },
+            r = {
+                "<cmd>DiffviewFileHistory --range=origin/HEAD...HEAD --right-only --no-merges<cr>",
+                "Compare Branch (commitwise)",
+            },
+            x = { "<cmd>DiffviewClose<cr>", "Diffview Close" },
         },
         h = {
             name = "+Github",
@@ -256,14 +272,12 @@ wk.register({
                 t = { "<cmd>GHToggleThreads<cr>", "Toggle" },
             },
         },
-        l = { "<cmd>Gitsigns blame_line<cr>", "Blame Line" },
         n = { "<cmd>Gitsigns next_hunk<cr>", "Next Hunk" },
         p = { "<cmd>Gitsigns prev_hunk<cr>", "Previous Hunk" },
-        d = { "<cmd>Gitsigns preview_hunk<cr>", "Preview Hunk" },
         w = {
             name = "+Worktree",
-            --[[ c = { "<cmd>lua require('telescope').extensions.git_worktree.create_git_worktree()<cr>", "Create" }, ]]
-            c = { "<cmd>lua require('utils').worktree_workaround()<cr>", "Create" },
+            c = { "<cmd>lua require('telescope').extensions.git_worktree.create_git_worktree()<cr>", "Create" },
+            -- c = { "<cmd>lua require('utils').worktree_workaround()<cr>", "Create" },
             s = { "<cmd>lua require('telescope').extensions.git_worktree.git_worktrees()<cr>", "Switch" },
         },
     },
@@ -442,17 +456,6 @@ if surfer_ok then
         ["<A-k>"] = { "<cmd>STSSwapPrevVisual<cr>", "Surf Swap Prev" },
     }, { mode = "x" })
 end
-
--- Harpoon
---[[ wk.register({ ]]
---[[     h = { ]]
---[[         name = "Harpoon", ]]
---[[         a = { "<cmd>lua require('harpoon.mark').add_file()<cr>", "Add File" }, ]]
---[[         m = { "<cmd>lua require('harpoon.ui').toggle_quick_menu()<cr>", "Toggle Menu" }, ]]
---[[         j = { "<cmd>lua require('harpoon.ui').nav_next()<cr>", "Next" }, ]]
---[[         k = { "<cmd>lua require('harpoon.ui').nav_prev()<cr>", "Previous" }, ]]
---[[     }, ]]
---[[ }, { prefix = "<leader>" }) ]]
 
 local terminal_ok, toggleterm = pcall(require, "toggleterm.terminal")
 if terminal_ok then

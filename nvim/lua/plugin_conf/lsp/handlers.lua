@@ -2,10 +2,10 @@ local M = {}
 
 M.setup = function()
     local signs = {
-        { name = "DiagnosticSignError", text = "" },
-        { name = "DiagnosticSignWarn", text = "" },
-        { name = "DiagnosticSignHint", text = "" },
-        { name = "DiagnosticSignInfo", text = "" },
+        { name = "DiagnosticSignError", text = " " },
+        { name = "DiagnosticSignWarn", text = " " },
+        { name = "DiagnosticSignHint", text = " " },
+        { name = "DiagnosticSignInfo", text = " " },
     }
 
     for _, sign in ipairs(signs) do
@@ -13,7 +13,14 @@ M.setup = function()
     end
 
     local config = {
-        virtual_text = false,
+        virtual_text = {
+            source = "always",
+            spacing = 4,
+            prefix = "●",
+            -- this will set set the prefix to a function that returns the diagnostics icon based on the severity
+            -- this only works on a recent 0.10.0 build. Will be set to "●" when not supported
+            -- prefix = "icons",
+        },
         -- show signs
         sign = true,
         -- signs = {
@@ -49,15 +56,12 @@ end
 
 local function lsp_highlight_document(client)
     if client.server_capabilities.documentHighlightProvider then
-        vim.api.nvim_exec(
-            [[
+        vim.api.nvim_command([[
               augroup lsp_document_highlight
                 autocmd! * <buffer>
                 autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
                 autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-            ]],
-            false
-        )
+            ]])
     end
     -- autocmd CursorHold <buffer> lua vim.diagnostic.open_float(0, {scope="line"})
 end
@@ -82,9 +86,9 @@ local function lsp_keymaps(client, bufnr)
     vim.keymap.set("n", "<space>lr", function()
         return ":IncRename " .. vim.fn.expand("<cword>")
     end, { buffer = bufnr, expr = true })
-    vim.cmd([[ command! Format execute 'lua vim.lsp.buf.format({ async = true })' ]])
-    vim.keymap.set("n", "vv", "<cmd>lua require('lsp-selection-range').trigger()<CR>", { buffer = bufnr })
-    vim.keymap.set("n", "ve", "<cmd>lua require('lsp-selection-range').expand()<CR>", { buffer = bufnr })
+    vim.cmd([[ command! Format execute 'lua vim.lsp.buf.format({ async = false })' ]])
+    vim.keymap.set("n", "<leader>lvv", "<cmd>lua require('lsp-selection-range').trigger()<CR>", { buffer = bufnr })
+    vim.keymap.set("v", "<leader>lve", "<cmd>lua require('lsp-selection-range').expand()<CR>", { buffer = bufnr })
 
     -- Set some keybinds conditional on server capabilities
     if client.server_capabilities.document_formatting then
@@ -95,7 +99,7 @@ local function lsp_keymaps(client, bufnr)
     end
 end
 
-local no_format_servers = { "tsserver", "hls", "haskell-tools.nvim", "lua_ls", "sqls", "dockerls" }
+local no_format_servers = { "tsserver", "typescript-tools.nvim", "hls", "haskell-tools.nvim", "lua_ls", "sqls", "dockerls" }
 
 local lsp_formatting = function(bufnr)
     vim.lsp.buf.format({
@@ -128,28 +132,39 @@ local lsp_format = function(client, bufnr)
     end
 end
 
+local lsp_inlay_hints = function(client, bufnr)
+    local inlay_hint = vim.lsp.buf.inlay_hint or vim.lsp.inlay_hint
+    if client.supports_method("textDocument/inlayHint") and inlay_hint then
+        inlay_hint(bufnr, true)
+    end
+end
+
 M.on_attach = function(client, bufnr)
     lsp_keymaps(client, bufnr)
     lsp_highlight_document(client)
     lsp_format(client, bufnr)
+    lsp_inlay_hints(client, bufnr)
 end
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
+-- local capabilities = vim.lsp.protocol.make_client_capabilities()
+
+-- local status_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+-- if status_ok then
+-- end
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 -- get a weird loop error with this
---[[ local status_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp") ]]
---[[ if status_ok then ]]
---[[     capabilities = cmp_nvim_lsp.default_capabilities() ]]
---[[ end ]]
-
---[[ local lsp_capabilities = {} ]]
---[[ local lsp_select_ok, lsp_selection_range = pcall(require, "lsp-selection-range") ]]
---[[ if lsp_select_ok then ]]
---[[     lsp_capabilities = lsp_selection_range.updaate_capabilites({}) ]]
---[[ end ]]
+-- local lsp_select_ok, lsp_selection_range = pcall(require, "lsp-selection-range")
+-- if lsp_select_ok then
+--     M.capabilities = lsp_selection_range.update_capabilites(vim.lsp.protocol.make_client_capabilities())
+-- end
 
 -- until https://github.com/neovim/neovim/pull/23500/files is merged
-capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = false
+-- capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = false
+-- capabilities.textDocument.foldingRange = {
+--     dynamicRegistration = false,
+--     lineFoldingOnly = true,
+-- }
 M.capabilities = capabilities
 
 return M

@@ -18,8 +18,8 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 -- Trim whitespace on save
-local ws = vim.api.nvim_create_augroup("TrimWhitespace", { clear = true })
-vim.api.nvim_create_autocmd("BufWritePre", { command = "%s/\\s\\+$//e", group = ws })
+-- local ws = vim.api.nvim_create_augroup("TrimWhitespace", { clear = true })
+-- vim.api.nvim_create_autocmd("BufWritePre", { command = "%s/\\s\\+$//e", group = ws })
 
 -- Return to last edit position when opening a file
 local ep = vim.api.nvim_create_augroup("ResumeEditPosition", { clear = true })
@@ -63,9 +63,10 @@ local fold_fix_group = vim.api.nvim_create_augroup("FixFolding", { clear = true 
 vim.api.nvim_create_autocmd({ "BufEnter" }, {
     --[[ pattern = { "*.hs", "*.lua", "*.ts", "*.js", "*.tsx", "*.jsx", "*.json" }, ]]
     pattern = { "*" },
-    command = "normal zx",
+    command = "set foldexpr=nvim_treesitter#foldexpr()", --"normal zx zR",
     group = fold_fix_group,
 })
+
 -- Persistent Folds
 local save_fold = vim.api.nvim_create_augroup("Persistent Folds", { clear = true })
 vim.api.nvim_create_autocmd("BufWinLeave", {
@@ -83,11 +84,12 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
     group = save_fold,
 })
 
--- vim.api.nvim_create_autocmd({ "BufReadPost,FileReadPost" }, {
---     pattern = { "*" },
---     command = "normal zR",
---     -- group = fold_fix_group,
--- })
+local lua_folds = vim.api.nvim_create_augroup("Fix Lua Folds", { clear = true })
+vim.api.nvim_create_autocmd("BufWinEnter", {
+    pattern = "*.lua",
+    command = "set foldlevel=99",
+    group = lua_folds,
+})
 
 -- https://github.com/nvim-telescope/telescope.nvim/issues/2027
 local telescope_fix = vim.api.nvim_create_augroup("FixTelescopeMode", { clear = true })
@@ -102,3 +104,10 @@ vim.api.nvim_create_autocmd( -- Prevent entering buffers in insert mode.
         group = telescope_fix,
     }
 )
+
+local neogit_commit_fix = vim.api.nvim_create_augroup("neogit-additions", { clear = true })
+vim.api.nvim_create_autocmd("FileType", {
+    group = neogit_commit_fix,
+    pattern = "NeogitCommitMessage",
+    command = "silent! set filetype=gitcommit",
+})

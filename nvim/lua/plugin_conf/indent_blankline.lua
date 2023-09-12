@@ -1,4 +1,4 @@
-local status_ok, blankline = pcall(require, "indent_blankline")
+local status_ok, blankline = pcall(require, "ibl")
 if not status_ok then
     return
 end
@@ -35,23 +35,17 @@ local filetype_excludes = {
     "Trouble",
 }
 
-local use_ts = true
-local show_context = true
-
-vim.g.indent_blankline_buftype_exclude = buftype_excludes
-vim.g.indent_blankline_filetype_exclude = filetype_excludes
-vim.g.indent_blankline_use_treesitter = use_ts
-vim.g.indent_blankline_show_trailing_blankline_indent = false
-vim.g.indent_blankline_show_current_context = show_context
-vim.g.indent_blankline_show_first_indent_level = false
-
 blankline.setup({
-    char = "┆",
-    buftype_exclude = buftype_excludes,
-    space_char_blankline = " ",
-    use_treesitter = use_ts,
-    show_current_context = show_context,
-    show_current_context_start = show_context,
+    -- char = "┆",
+    -- buftype_exclude = buftype_excludes,
+    -- space_char_blankline = " ",
+    -- use_treesitter = use_ts,
+    -- show_current_context = show_context,
+    -- show_current_context_start = show_context,
+    exclude = {
+        buftypes = buftype_excludes,
+        filetypes = filetype_excludes,
+    },
 })
 
 -- local nfox_ok, palettes = pcall(require, "nightfox.palette")

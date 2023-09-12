@@ -32,7 +32,7 @@ nightfox.setup({
         },
         modules = { -- List of various plugins and additional options
             cmp = true,
-            fidget = true,
+            fidget = false,
             gitsigns = true,
             lightspeed = true,
             lsp_saga = true,

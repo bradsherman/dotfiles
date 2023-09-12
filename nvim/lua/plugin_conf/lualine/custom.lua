@@ -31,7 +31,7 @@ lualine.setup({
                 "diff",
                 colored = true, -- displays diff status in color if set to true
                 -- symbols = { added = "+", modified = "~", removed = "-" }, -- changes diff symbols
-                symbols = { added = " ", modified = "柳 ", removed = " " },
+                symbols = { added = " ", modified = " ", removed = " " },
                 cond = hide_in_width,
             },
         },

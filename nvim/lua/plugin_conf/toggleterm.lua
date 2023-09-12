@@ -11,7 +11,7 @@ toggleterm.setup({
     shade_terminals = true,
     shading_factor = 2,
     start_in_insert = false,
-    insert_mappings = true,
+    insert_mappings = false,
     persist_size = true,
     direction = "horizontal",
     close_on_exit = true,
@@ -33,12 +33,14 @@ toggleterm.setup({
 })
 
 local function set_terminal_keymaps()
-    vim.keymap.set("t", "<esc>", [[<C-\><C-n>]])
-    vim.keymap.set("t", "jk", [[<C-\><C-n>]])
-    vim.keymap.set("t", "<C-h>", [[<C-\><C-n><C-W>h]])
-    vim.keymap.set("t", "<C-j>", [[<C-\><C-n><C-W>j]])
-    vim.keymap.set("t", "<C-k>", [[<C-\><C-n><C-W>k]])
-    vim.keymap.set("t", "<C-l>", [[<C-\><C-n><C-W>l]])
+    if vim.fn.win_gettype() ~= "popup" then
+        vim.keymap.set("t", "<esc>", [[<C-\><C-n>]])
+        vim.keymap.set("t", "jk", [[<C-\><C-n>]])
+        vim.keymap.set("t", "<C-h>", [[<C-\><C-n><C-W>h]])
+        vim.keymap.set("t", "<C-j>", [[<C-\><C-n><C-W>j]])
+        vim.keymap.set("t", "<C-k>", [[<C-\><C-n><C-W>k]])
+        vim.keymap.set("t", "<C-l>", [[<C-\><C-n><C-W>l]])
+    end
 end
 local term_aucmd = vim.api.nvim_create_augroup("ToggleTerm", { clear = true })
 vim.api.nvim_create_autocmd("TermOpen", {

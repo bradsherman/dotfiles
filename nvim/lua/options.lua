@@ -4,17 +4,21 @@ local wo = vim.wo
 
 o.compatible = false
 vim.cmd("filetype plugin indent on")
--- vim.cmd("syntax enable")
+vim.cmd("syntax enable")
 o.hidden = true
 o.visualbell = false
 o.errorbells = false
 o.timeoutlen = 100
 o.encoding = "UTF-8"
 o.fillchars:append("fold:•")
+o.foldcolumn = "0"
+o.foldlevel = 99
+o.foldlevelstart = 99
+o.foldmethod = "expr"
+-- wo.foldexpr = "nvim_treesitter#foldexpr()"
 o.foldenable = true
-wo.foldlevel = 99
-wo.foldmethod = "expr"
-wo.foldexpr = "nvim_treesitter#foldexpr()"
+o.tags = "./tags"
+o.completeopt = "menu,menuone,noselect"
 
 local tabsize = 2
 o.tabstop = tabsize
@@ -82,3 +86,12 @@ vim.cmd("set whichwrap+=<,>,[,],h,l")
 -- vim.cmd([[au BufEnter * set fo-=c fo-=r fo-=o]])
 
 o.diffopt:append("linematch:50")
+
+vim.on_key(function(char)
+    if vim.fn.mode() == "n" then
+        local new_hlsearch = vim.tbl_contains({ "<CR>", "n", "N", "*", "#", "?", "/" }, vim.fn.keytrans(char))
+        if vim.opt.hlsearch ~= new_hlsearch then
+            vim.opt.hlsearch = new_hlsearch
+        end
+    end
+end, vim.api.nvim_create_namespace("auto_hlsearch"))

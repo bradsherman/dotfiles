@@ -43,6 +43,7 @@ M.file_exists = function(name)
 end
 
 M.update_haskell_tags = function()
+    os.execute("rm tags")
     local succ, exitcode, code = os.execute("ghc-tags -c")
     if succ then
         vim.notify("Tags updated successfully")

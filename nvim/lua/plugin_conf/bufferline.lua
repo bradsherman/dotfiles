@@ -38,9 +38,18 @@ bufferline.setup({
         tab_size = 18,
         diagnostics = "nvim_lsp", -- | "coc",
         diagnostics_update_in_insert = false,
-        -- diagnostics_indicator = function(count, level, diagnostics_dict, context)
-        --   return "("..count..")"
-        -- end,
+        diagnostics_indicator = function(_, _, diag)
+            -- local icons = require("lazyvim.config").icons.diagnostics
+            local icons = {
+                Error = " ",
+                Warn = " ",
+                Hint = " ",
+                Info = " ",
+            }
+            local ret = (diag.error and icons.Error .. diag.error .. " " or "")
+                .. (diag.warning and icons.Warn .. diag.warning or "")
+            return vim.trim(ret)
+        end,
         -- NOTE: this will be called a lot so don't do any heavy processing here
         -- custom_filter = function(buf_number)
         --   -- filter out filetypes you don't want to see
@@ -88,7 +97,7 @@ bufferline.setup({
         -- can go back to 'padded_slant' or 'slant' once colors are fixed
         separator_style = "padded_slant",
         enforce_regular_tabs = true,
-        always_show_bufferline = true,
+        always_show_bufferline = false,
         -- sort_by = 'id' | 'extension' | 'relative_directory' | 'directory' | 'tabs' | function(buffer_a, buffer_b)
         --   -- add custom logic
         --   return buffer_a.modified > buffer_b.modified

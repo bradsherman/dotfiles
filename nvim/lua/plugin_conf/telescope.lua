@@ -5,14 +5,13 @@ end
 
 local actions = require("telescope.actions")
 local previewers = require("telescope.previewers")
-local sorters = require("telescope.sorters")
 local uReload = require("utils").reload
 local print = require("utils").print
 
 telescope.setup({
-    picker = {
-        hidden = false,
-    },
+    -- picker = {
+    -- hidden = false,
+    -- },
     defaults = {
         vimgrep_arguments = {
             "rg",
@@ -28,44 +27,22 @@ telescope.setup({
             -- "--hidden",
         },
         prompt_prefix = "     ",
-        selection_caret = "  ",
+        -- selection_caret = "  ",
+        -- prompt_prefix = " ",
+        selection_caret = " ",
         entry_prefix = "  ",
-        initial_mode = "insert",
-        selection_strategy = "reset",
-        dynamic_preview_title = true,
-        sorting_strategy = "ascending",
-        layout_strategy = "horizontal",
-        layout_config = {
-            horizontal = {
-                prompt_position = "top",
-                preview_width = 0.55,
-                results_width = 0.8,
-            },
-            vertical = {
-                mirror = false,
-            },
-            width = 0.80,
-            height = 0.85,
-            preview_cutoff = 120,
-        },
-        file_sorter = sorters.get_fuzzy_file,
         file_ignore_patterns = { "node_modules", ".git/", "dist/" },
-        generic_sorter = sorters.get_generic_fuzzy_sorter,
         path_display = {
             shorten = {
                 len = 3,
                 exclude = { -1 },
             },
         },
-        winblend = 0,
-        border = {},
-        borderchars = { "" },
-        color_devicons = true,
         use_less = false,
         set_env = { ["COLORTERM"] = "truecolor" },
-        file_previewer = previewers.vim_buffer_cat.new,
-        grep_previewer = previewers.vim_buffer_vimgrep.new,
-        qflist_previewer = previewers.vim_buffer_qflist.new,
+        file_previewer = previewers.cat.new,
+        grep_previewer = previewers.vimgrep.new,
+        qflist_previewer = previewers.qflist.new,
         buffer_previewer_maker = previewers.buffer_previewer_maker,
         mappings = {
             i = {
@@ -95,6 +72,20 @@ telescope.setup({
             override_file_sorter = true,
             case_mode = "smart_case",
         },
+        live_grep_args = {
+            auto_quoting = true, -- enable/disable auto-quoting
+            -- define mappings, e.g.
+            mappings = { -- extend mappings
+                -- i = {
+                -- ["<C-k>"] = lga_actions.quote_prompt(),
+                -- ["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
+                -- },
+            },
+            -- ... also accepts theme settings, for example:
+            -- theme = "dropdown", -- use dropdown theme
+            -- theme = { }, -- use own theme spec
+            -- layout_config = { mirror=true }, -- mirror preview pane
+        },
     },
 })
 telescope.load_extension("file_browser")
@@ -102,11 +93,10 @@ telescope.load_extension("live_grep_args")
 telescope.load_extension("fzf")
 telescope.load_extension("notify")
 telescope.load_extension("hoogle")
-telescope.load_extension("harpoon")
 telescope.load_extension("git_worktree")
 telescope.load_extension("ht")
---[[ telescope.load_extension("yank_history") ]]
---[[ telescope.load_extension("noice") ]]
+telescope.load_extension("noice")
+telescope.load_extension("manix")
 
 local M = {}
 
@@ -160,7 +150,7 @@ if not dir_tele_ok then
 end
 dir_tele.setup({
     hidden = true,
-    respect_gitignore = true,
+    no_ignore = true,
 })
 
 return M

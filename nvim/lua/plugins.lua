@@ -1,5 +1,5 @@
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
     vim.fn.system({
         "git",
         "clone",
@@ -27,39 +27,33 @@ lazy.setup({
     { "kylechui/nvim-surround", version = "*", event = "VeryLazy" },
     "rcarriga/nvim-notify",
     { "kevinhwang91/nvim-bqf", ft = "qf" },
-    "rktjmp/lush.nvim",
+    { "SmiteshP/nvim-navic", lazy = true },
     "nvim-lualine/lualine.nvim",
-    "j-hui/fidget.nvim",
     "windwp/nvim-autopairs",
     "junegunn/fzf",
     "junegunn/fzf.vim",
+    "ibhagwan/fzf-lua",
     "NvChad/nvim-colorizer.lua",
     "karb94/neoscroll.nvim",
+    "Aasim-A/scrollEOF.nvim",
     "nvim-tree/nvim-web-devicons",
-    "nvim-tree/nvim-tree.lua",
     "nvim-neo-tree/neo-tree.nvim",
-    {
-        "stevearc/oil.nvim",
-        -- Optional dependencies
-        dependencies = { "nvim-tree/nvim-web-devicons" },
-    },
     "mrbjarksen/neo-tree-diagnostics.nvim",
     "stevearc/dressing.nvim",
     "dhruvasagar/vim-table-mode",
-    "christoomey/vim-tmux-navigator",
     "moll/vim-bbye",
-    "lewis6991/impatient.nvim",
     "nvim-neorg/neorg-telescope",
     { "nvim-neorg/neorg", dependencies = { "nvim-lua/plenary.nvim", "nvim-neorg/neorg-telescope" } },
-    "ThePrimeagen/harpoon",
     "lewis6991/hover.nvim",
 
     -- begin colorschemes
+    -- set lazy = false for main colorscheme
     { "mcchrish/zenbones.nvim", lazy = true },
     { "EdenEast/nightfox.nvim", lazy = true },
     { "folke/tokyonight.nvim", lazy = true },
     { "marko-cerovac/material.nvim", lazy = true },
     { "sainnhe/everforest", lazy = true },
+    { "sainnhe/sonokai", lazy = true },
     { "tanvirtin/monokai.nvim", lazy = true },
     { "shaunsingh/nord.nvim", lazy = true },
     { "ishan9299/nvim-solarized-lua", lazy = true },
@@ -68,51 +62,44 @@ lazy.setup({
     { "catppuccin/nvim", lazy = true, name = "catppuccin" },
     { "rmehri01/onenord.nvim", lazy = true },
     { "daschw/leaf.nvim", lazy = true },
-    { "rebelot/kanagawa.nvim", lazy = true },
+    { "rebelot/kanagawa.nvim", lazy = false },
+    { "projekt0n/github-nvim-theme", lazy = true },
     -- end colorschemes
 
     -- begin git
     "lewis6991/gitsigns.nvim",
     "akinsho/git-conflict.nvim",
     "ruifm/gitlinker.nvim",
-    "ThePrimeagen/git-worktree.nvim",
-    "TimUntersberger/neogit",
-    --[[ "pwntester/octo.nvim", ]]
-    {
-        "NWVi/octo.nvim",
-        branch = "config-review-use-local-fs",
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-            "nvim-telescope/telescope.nvim",
-            "nvim-web-devicons",
-        },
-    },
-    "ldelossa/litee.nvim",
-    "ldelossa/gh.nvim",
+    "bradsherman/git-worktree.nvim",
+    "NeogitOrg/neogit",
     "sindrets/diffview.nvim",
     -- end git
 
     -- being telescope
     "nvim-telescope/telescope.nvim",
     "nvim-telescope/telescope-live-grep-args.nvim",
-    "nvim-telescope/telescope-fzy-native.nvim",
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
     "nvim-telescope/telescope-file-browser.nvim",
     "luc-tielen/telescope_hoogle",
-    "princejoogie/dir-telescope.nvim",
+    "mrcjkb/telescope-manix",
     -- end telescope
 
     -- begin lsp / cmp
     { "williamboman/mason.nvim", build = ":MasonUpdate" },
     "williamboman/mason-lspconfig.nvim",
     "neovim/nvim-lspconfig",
-    "MrcJkb/haskell-tools.nvim",
+    { "MrcJkb/haskell-tools.nvim", branch = "2.x.x" },
+    "folke/neodev.nvim",
     "jose-elias-alvarez/null-ls.nvim",
-    "jose-elias-alvarez/typescript.nvim",
+    {
+        "pmizio/typescript-tools.nvim",
+        dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+        opts = {},
+    },
     "rafamadriz/friendly-snippets",
     "molleweide/LuaSnip-snippets.nvim",
+    "mrcjkb/haskell-snippets.nvim",
     "camilledejoye/nvim-lsp-selection-range",
-    "onsails/lspkind.nvim",
     {
         "hrsh7th/nvim-cmp",
         dependencies = {
@@ -128,31 +115,25 @@ lazy.setup({
             "hrsh7th/cmp-nvim-lsp-signature-help",
         },
     },
-    "L3MON4D3/LuaSnip",
+    { "L3MON4D3/LuaSnip", build = "make install_jsregexp" },
     "smjonas/inc-rename.nvim",
-    {
-        "nvim-neotest/neotest",
-        requires = {
-            "mrcjkb/neotest-haskell",
-            "nvim-treesitter/nvim-treesitter",
-            "nvim-lua/plenary.nvim",
-        },
-    },
     "hashivim/vim-terraform",
     "nanotee/sqls.nvim",
     "mattn/emmet-vim",
     "vmchale/dhall-vim",
     "LnL7/vim-nix",
-    "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
+    -- { "mrcjkb/nvim-lsp-foldexpr", lazy = false },
+    "mfussenegger/nvim-lint",
+    "mhartington/formatter.nvim",
     -- end lsp / cmp
 
     -- begin treesitter
-    { "nvim-treesitter/nvim-treesitter", lazy = false },
+    { "nvim-treesitter/nvim-treesitter", lazy = false, build = ":TSUpdate" },
     "nvim-treesitter/nvim-treesitter-context",
     "nvim-treesitter/playground",
     "JoosepAlviste/nvim-ts-context-commentstring",
     "windwp/nvim-ts-autotag",
-    "mrjones2014/nvim-ts-rainbow",
+    "hiphish/rainbow-delimiters.nvim",
     "ziontee113/syntax-tree-surfer",
     -- end treesitter
 
@@ -169,37 +150,53 @@ lazy.setup({
     -- end term
 
     -- begin ui
-    "folke/trouble.nvim",
     "folke/noice.nvim",
     "glepnir/lspsaga.nvim",
     "rainbowhxch/beacon.nvim",
-    "lukas-reineke/indent-blankline.nvim",
+    { "lukas-reineke/indent-blankline.nvim", branch = "v3" },
     "folke/todo-comments.nvim",
     "folke/zen-mode.nvim",
     "folke/twilight.nvim",
     "folke/which-key.nvim",
     "akinsho/bufferline.nvim",
     "zbirenbaum/neodim",
-    "simrat39/symbols-outline.nvim",
     {
         "iamcco/markdown-preview.nvim",
         build = function()
             vim.fn["mkdp#util#install"]()
         end,
     },
-    "anuvyklack/keymap-amend.nvim",
-    "anuvyklack/pretty-fold.nvim",
-    "anuvyklack/fold-preview.nvim",
+    { "kevinhwang91/promise-async" },
+    { "kevinhwang91/nvim-ufo", dependencies = { "kevinhwang91/promise-async" } },
     "anuvyklack/middleclass",
     "anuvyklack/animation.nvim",
     "anuvyklack/windows.nvim",
-    { "mvllow/modes.nvim", tag = "v0.2.0" },
     "sindrets/winshift.nvim",
     "mrjones2014/smart-splits.nvim",
-    "lukas-reineke/headlines.nvim",
     "nvim-zh/colorful-winsep.nvim",
-    "ray-x/guihua.lua",
-    "ray-x/sad.nvim",
     "luukvbaal/statuscol.nvim",
+    "Bekaboo/dropbar.nvim",
+    { "goolord/alpha-nvim", event = "VimEnter" },
     -- end ui
+
+    -- begin testing
+    "mrcjkb/neotest-haskell",
+    {
+        "nvim-neotest/neotest",
+        dependencies = {
+            "mrcjkb/neotest-haskell",
+            "nvim-treesitter/nvim-treesitter",
+            "nvim-lua/plenary.nvim",
+        },
+    },
+    -- end testing
+
+    -- begin mini.nvim
+    { "echasnovski/mini.files", version = false },
+    {
+        "echasnovski/mini.indentscope",
+        version = false, -- wait till new 0.7.0 release to put it back on semver
+        event = { "BufReadPre", "BufNewFile" },
+    },
+    -- end mini.nvim
 })

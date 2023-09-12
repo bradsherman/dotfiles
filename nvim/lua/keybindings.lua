@@ -2,8 +2,9 @@ vim.keymap.set("n", "<space>", "<nop>")
 vim.g.leader = " "
 vim.g.mapleader = " "
 
-vim.keymap.set("n", "<leader>w", ":update<cr>")
-vim.keymap.set("n", "<leader>,", ":noh<cr>")
+vim.keymap.set("n", "<leader>w", ":w<cr>")
+vim.keymap.set("n", "<leader>,", "<cmd>noh<cr>")
+-- vim.keymap.set("n", "<leader>,", "<cmd>nohlsearch|diffupdate|normal! <C-l><cr>")
 
 vim.keymap.set("i", "jk", "<esc>")
 vim.keymap.set("n", ";", ":")
@@ -48,6 +49,12 @@ vim.keymap.set("x", "J", ":move '>+1<CR>gv-gv")
 vim.keymap.set("x", "K", ":move '<-2<CR>gv-gv")
 vim.keymap.set("x", "<A-j>", ":move '>+1<CR>gv-gv")
 vim.keymap.set("x", "<A-k>", ":move '<-2<CR>gv-gv")
+
+-- vim-cutlass
+-- vim.keymap.set("n", "x", "d")
+-- vim.keymap.set("x", "x", "d")
+-- vim.keymap.set("n", "xx", "dd")
+-- vim.keymap.set("n", "X", "D")
 
 -- omap     <silent> m :<C-U>lua require('tsht').nodes()<CR>
 -- vnoremap <silent> m :lua require('tsht').nodes()<CR>

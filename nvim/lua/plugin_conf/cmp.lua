@@ -13,6 +13,11 @@ if luasnip_status_ok then
 end
 luasnip.config.setup({ history = false })
 
+local hask_snips_ok, haskell_snippets = pcall(require, "haskell-snippets")
+if hask_snips_ok then
+    luasnip.add_snippets("haskell", haskell_snippets.all, { key = "haskell" })
+end
+
 local has_words_before = function()
     local line, col = unpack(vim.api.nvim_win_get_cursor(0))
     return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
@@ -79,26 +84,35 @@ if false and nfox_ok then
     end
 end
 
+local kind_icons = {
+    Text = "",
+    Method = "󰆧",
+    Function = "󰊕",
+    Constructor = "",
+    Field = "󰇽",
+    Variable = "󰂡",
+    Class = "󰠱",
+    Interface = "",
+    Module = "",
+    Property = "󰜢",
+    Unit = "",
+    Value = "󰎠",
+    Enum = "",
+    Keyword = "󰌋",
+    Snippet = "",
+    Color = "󰏘",
+    File = "󰈙",
+    Reference = "",
+    Folder = "󰉋",
+    EnumMember = "",
+    Constant = "󰏿",
+    Struct = "",
+    Event = "",
+    Operator = "󰆕",
+    TypeParameter = "󰅲",
+}
+
 cmp.setup({
-    --[[ formatting = { ]]
-    --[[     format = function(entry, vim_item) ]]
-    --[[         require("lspkind").cmp_format() ]]
-    --[[         rq ]]
-    --[[     end, ]]
-    --[[ }, ]]
-    --[[ formatting = { ]]
-    --[[     fields = { "kind", "abbr", "menu" }, ]]
-    --[[]]
-    --[[     format = function(entry, vim_item) ]]
-    --[[         local kind = require("lspkind").cmp_format({ mode = "symbol_text", maxwidth = 40 })(entry, vim_item) ]]
-    --[[         local strings = vim.split(kind.kind, "%s", { trimempty = true }) ]]
-    --[[]]
-    --[[         kind.kind = " " .. strings[1] .. " " ]]
-    --[[         kind.menu = "    (" .. strings[2] .. ")" ]]
-    --[[]]
-    --[[         return kind ]]
-    --[[     end, ]]
-    --[[ }, ]]
     snippet = {
         expand = function(args)
             luasnip.lsp_expand(args.body)
@@ -106,12 +120,37 @@ cmp.setup({
     },
     window = {
         -- completion = window_ops,
-        completion = {
-            winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
-            col_offset = -3,
-            side_padding = 0,
-        },
+        -- completion = {
+        --     winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
+        --     col_offset = -3,
+        --     side_padding = 0,
+        -- },
         documentation = window_ops,
+    },
+    formatting = {
+        fields = { "kind", "abbr", "menu" },
+        format = function(entry, vim_item)
+            if vim.tbl_contains({ "path" }, entry.source.name) then
+                local icon, hl_group = require("nvim-web-devicons").get_icon(entry:get_completion_item().label)
+                if icon then
+                    vim_item.kind = icon
+                    vim_item.kind_hl_group = hl_group
+                    return vim_item
+                end
+            end
+
+            -- Kind icons
+            vim_item.kind = string.format("%s %s", kind_icons[vim_item.kind], vim_item.kind) -- This concatonates the icons with the name of the item kind
+            -- Source
+            vim_item.menu = ({
+                buffer = "[Buffer]",
+                nvim_lsp = "[LSP]",
+                luasnip = "[LuaSnip]",
+                nvim_lua = "[Lua]",
+                latex_symbols = "[LaTeX]",
+            })[entry.source.name]
+            return vim_item
+        end,
     },
     mapping = {
         ["<C-p>"] = cmp.mapping.select_prev_item({ "i", "c" }),
@@ -123,9 +162,15 @@ cmp.setup({
             i = cmp.mapping.abort(),
             c = cmp.mapping.close(),
         }),
-        ["<CR>"] = cmp.mapping.confirm({
-            behavior = cmp.ConfirmBehavior.Replace,
-            select = true,
+        ["<CR>"] = cmp.mapping({
+            i = function(fallback)
+                if cmp.visible() and cmp.get_active_entry() then
+                    cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
+                else
+                    fallback()
+                end
+            end,
+            s = cmp.mapping.confirm({ select = true }),
         }),
         ["<Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
@@ -151,16 +196,16 @@ cmp.setup({
     },
     sources = cmp.config.sources({
         { name = "nvim_lsp" },
-        { name = "treesitter" },
-        { name = "buffer" },
         { name = "luasnip" },
+        { name = "treesitter" },
+        -- { name = "buffer" },
         { name = "nvim_lua" },
         { name = "path" },
         { name = "neorg" },
         { name = "tags" },
     }),
     experimental = {
-        ghost_text = true,
+        ghost_text = false,
     },
 })
 
@@ -172,11 +217,10 @@ cmp.setup.filetype("gitcommit", {
 })
 
 -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline("/", {
+cmp.setup.cmdline({ "/", "?" }, {
     mapping = cmp.mapping.preset.cmdline(),
     sources = cmp.config.sources({
-        --     { name = "nvim_lsp_document_symbol" },
-        -- }, {
+        { name = "nvim_lsp_document_symbol" },
         { name = "buffer" },
     }),
 })

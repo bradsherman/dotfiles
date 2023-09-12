@@ -6,6 +6,8 @@ end
 require("plugin_conf.lsp.lsp-installer")
 require("plugin_conf.lsp.handlers").setup()
 require("plugin_conf.lsp.null-ls")
+require("plugin_conf.lsp.linting")
+require("plugin_conf.lsp.formatting")
 
 --[[ local lines_status_ok, lsp_lines = pcall(require, "lsp_lines") ]]
 --[[ if lines_status_ok then ]]
