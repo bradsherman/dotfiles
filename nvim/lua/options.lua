@@ -32,7 +32,7 @@ o.copyindent = true
 o.expandtab = true
 bo.expandtab = true
 o.shiftround = true
-o.updatetime = 300
+o.updatetime = 200
 
 o.mouse = "a"
 o.shortmess:append("c")
@@ -68,7 +68,8 @@ bo.swapfile = false
 o.backup = false
 local undo_dir = os.getenv("HOME") .. "/.vim/undodir"
 os.execute("mkdir -p " .. undo_dir)
-o.undodir = undo_dir
+o.undodir = { undo_dir }
+vim.cmd([[set viewoptions-=curdir]])
 bo.undofile = true
 
 o.grepprg = "rg --vimgrep --smart-case --follow"
@@ -76,7 +77,8 @@ o.grepprg = "rg --vimgrep --smart-case --follow"
 -- o.showbreak = "↪ "
 o.showbreak = "↲"
 -- o.listchars="eol:$,tab:→,nbsp:␣,trail:~,extends:⟩,precedes:⟨,space:·"
-o.listchars = "eol:$,tab:▶·,nbsp:␣,trail:~,extends:⟩,precedes:⟨,space:·"
+-- o.listchars = "eol:$,tab:▶·,nbsp:␣,trail:~,extends:⟩,precedes:⟨,space:·"
+o.listchars = { eol = "$", tab = "▶·", nbsp = "␣", trail = "~", extends = "⟩", precedes = "⟨", space = "·" }
 
 --[[ o.winbar = "%=%m %f" ]]
 

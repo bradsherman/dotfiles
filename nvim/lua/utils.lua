@@ -64,5 +64,41 @@ M.worktree_workaround = function()
         end
     end)
 end
+-- see if the file exists
+local function file_exists(file)
+    local f = io.open(file, "rb")
+    if f then
+        f:close()
+    end
+    return f ~= nil
+end
+
+M.get_haskell_package_name = function()
+    local HtProjectHelpers = require("haskell-tools.project.helpers")
+    local file = vim.api.nvim_buf_get_name(0)
+    local result = HtProjectHelpers.get_package_yaml(file)
+
+    if not file_exists(result) then
+        vim.notify("Unable to find package.yaml")
+    end
+
+    local package_name = nil
+    for line in io.lines(result) do
+        for k, v in string.gmatch(line, "(%a+):%s+(.+)") do
+            if k == "name" then
+                package_name = v
+            end
+        end
+    end
+    if not package_name then
+        vim.notify("Unable to find package name.")
+    else
+        return package_name
+        -- local Terminal = require("toggleterm.terminal").Terminal
+        -- local stack = Terminal:new({ cmd = "stack build " .. package_name })
+        -- -- TODO: figure out how to report result, use overseer?
+        -- stack:toggle()
+    end
+end
 
 return M

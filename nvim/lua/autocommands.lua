@@ -17,10 +17,6 @@ vim.api.nvim_create_autocmd("FileType", {
     group = md,
 })
 
--- Trim whitespace on save
--- local ws = vim.api.nvim_create_augroup("TrimWhitespace", { clear = true })
--- vim.api.nvim_create_autocmd("BufWritePre", { command = "%s/\\s\\+$//e", group = ws })
-
 -- Return to last edit position when opening a file
 local ep = vim.api.nvim_create_augroup("ResumeEditPosition", { clear = true })
 vim.api.nvim_create_autocmd("BufReadPost", {
@@ -35,9 +31,9 @@ vim.api.nvim_create_autocmd("FileType", {
     group = cm,
 })
 
-local ht = vim.api.nvim_create_augroup("HaskellTabs", { clear = true })
+local ht = vim.api.nvim_create_augroup("Bigger Tabs", { clear = true })
 vim.api.nvim_create_autocmd("FileType", {
-    pattern = "haskell",
+    pattern = { "haskell", "lua" },
     callback = function()
         vim.cmd("setlocal tabstop=4")
         vim.cmd("setlocal softtabstop=4")
@@ -51,7 +47,7 @@ local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = t
 vim.api.nvim_create_autocmd("TextYankPost", {
     pattern = "*",
     callback = function()
-        vim.highlight.on_yank()
+        vim.highlight.on_yank({ timeout = 200 })
     end,
     group = highlight_group,
 })
@@ -59,13 +55,13 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 -- Fix folding on telescope find files
 -- Info here: https://github.com/nvim-telescope/telescope.nvim/issues/699
 -- Just do popular filetypes until this is fixed
-local fold_fix_group = vim.api.nvim_create_augroup("FixFolding", { clear = true })
-vim.api.nvim_create_autocmd({ "BufEnter" }, {
-    --[[ pattern = { "*.hs", "*.lua", "*.ts", "*.js", "*.tsx", "*.jsx", "*.json" }, ]]
-    pattern = { "*" },
-    command = "set foldexpr=nvim_treesitter#foldexpr()", --"normal zx zR",
-    group = fold_fix_group,
-})
+-- local fold_fix_group = vim.api.nvim_create_augroup("FixFolding", { clear = true })
+-- vim.api.nvim_create_autocmd({ "BufEnter" }, {
+--     --[[ pattern = { "*.hs", "*.lua", "*.ts", "*.js", "*.tsx", "*.jsx", "*.json" }, ]]
+--     pattern = { "*" },
+--     command = "set foldexpr=nvim_treesitter#foldexpr()", --"normal zx zR",
+--     group = fold_fix_group,
+-- })
 
 -- Persistent Folds
 local save_fold = vim.api.nvim_create_augroup("Persistent Folds", { clear = true })
@@ -92,18 +88,18 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
 })
 
 -- https://github.com/nvim-telescope/telescope.nvim/issues/2027
-local telescope_fix = vim.api.nvim_create_augroup("FixTelescopeMode", { clear = true })
-vim.api.nvim_create_autocmd( -- Prevent entering buffers in insert mode.
-    "WinLeave",
-    {
-        callback = function()
-            if vim.bo.ft == "TelescopePrompt" and vim.fn.mode() == "i" then
-                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "i", false)
-            end
-        end,
-        group = telescope_fix,
-    }
-)
+-- local telescope_fix = vim.api.nvim_create_augroup("FixTelescopeMode", { clear = true })
+-- vim.api.nvim_create_autocmd( -- Prevent entering buffers in insert mode.
+--     "WinLeave",
+--     {
+--         callback = function()
+--             if vim.bo.ft == "TelescopePrompt" and vim.fn.mode() == "i" then
+--                 vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "i", false)
+--             end
+--         end,
+--         group = telescope_fix,
+--     }
+-- )
 
 local neogit_commit_fix = vim.api.nvim_create_augroup("neogit-additions", { clear = true })
 vim.api.nvim_create_autocmd("FileType", {
