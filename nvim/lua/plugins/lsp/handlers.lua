@@ -1,3 +1,5 @@
+local methods = vim.lsp.protocol.Methods
+
 local M = {}
 
 M.setup = function()
@@ -41,29 +43,36 @@ M.setup = function()
 
     vim.diagnostic.config(config)
 
-    --[[ vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { ]]
-    --[[     border = "rounded", ]]
-    --[[ }) ]]
-    --[[]]
-    --[[ vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { ]]
-    --[[     border = "rounded", ]]
-    --[[ }) ]]
+    vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+        border = "rounded",
+    })
+
+    vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+        border = "rounded",
+    })
 
     vim.api.nvim_command([[ hi def link LspReferenceText CursorLine ]])
     vim.api.nvim_command([[ hi def link LspReferenceWrite CursorLine ]])
     vim.api.nvim_command([[ hi def link LspReferenceRead CursorLine ]])
 end
 
--- local function lsp_highlight_document(client)
---     if client.server_capabilities.documentHighlightProvider then
---         vim.api.nvim_command([[
---               augroup lsp_document_highlight
---                 autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
---                 autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
---             ]])
---     end
---     -- autocmd CursorHold <buffer> lua vim.diagnostic.open_float(0, {scope="line"})
--- end
+local function lsp_highlight_document(client, bufnr)
+    if client.supports_method(methods.textDocument_documentHighlight) then
+        local under_cursor_highlights_group = vim.api.nvim_create_augroup("cursor_highlights", { clear = false })
+        vim.api.nvim_create_autocmd({ "CursorHold", "InsertLeave", "BufEnter" }, {
+            group = under_cursor_highlights_group,
+            desc = "Highlight references under the cursor",
+            buffer = bufnr,
+            callback = vim.lsp.buf.document_highlight,
+        })
+        vim.api.nvim_create_autocmd({ "CursorMoved", "InsertEnter", "BufLeave" }, {
+            group = under_cursor_highlights_group,
+            desc = "Clear highlight references",
+            buffer = bufnr,
+            callback = vim.lsp.buf.clear_references,
+        })
+    end
+end
 
 -- TODO: register these with which key instead
 local function lsp_keymaps(client, bufnr)
@@ -96,77 +105,47 @@ local function lsp_keymaps(client, bufnr)
     end
 end
 
--- formatting is now handled by conform.nvim
--- local no_format_servers = {
---     "tsserver",
---     "typescript-tools.nvim",
---     "typescript-tools",
---     "hls",
---     "haskell-tools.nvim",
---     "lua_ls",
---     "sqls",
---     "dockerls",
--- }
---
--- local lsp_formatting = function(bufnr)
---     vim.lsp.buf.format({
---         filter = function(client)
---             -- filter out clients that you don't want to use
---             for _, name in pairs(no_format_servers) do
---                 if name == client.name then
---                     return false
---                 end
---             end
---             return true
---         end,
---         bufnr = bufnr,
---     })
--- end
---
--- local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
---
--- add to your shared on_attach callback
--- local lsp_format = function(client, bufnr)
---     if client.supports_method("textDocument/formatting") then
---         vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
---         vim.api.nvim_create_autocmd("BufWritePre", {
---             group = augroup,
---             buffer = bufnr,
---             callback = function()
---                 -- lsp_formatting(bufnr)
---             end,
---         })
---     end
--- end
-
--- vim.api.nvim_create_autocmd("BufWritePre", {
---     group = vim.api.nvim_create_augroup("TS_organize_imports", { clear = true }),
---     desc = "TS_organize_imports",
---     pattern = { "*.ts", "*.tsx", "*.js", "*.jsx" },
---     callback = function()
---         -- vim.cmd([[TSToolsAddMissingImports]])
---         -- vim.cmd("write")
---         vim.cmd([[TSToolsOrganizeImports]])
---         vim.cmd("write")
---     end,
--- })
-
 local lsp_inlay_hints = function(client, bufnr)
-    if client.supports_method("textDocument/inlayHint") and vim.lsp.inlay_hint then
-        vim.lsp.inlay_hint.enable(bufnr, true)
+    if client.supports_method(methods.textDocument_inlayHint) then
+        local inlay_hints_group = vim.api.nvim_create_augroup("toggle_inlay_hints", { clear = false })
+
+        -- Initial inlay hint display.
+        -- Idk why but without the delay inlay hints aren't displayed at the very start.
+        vim.defer_fn(function()
+            local mode = vim.api.nvim_get_mode().mode
+            vim.lsp.inlay_hint.enable(mode == "n" or mode == "v", { bufnr = bufnr })
+        end, 500)
+
+        vim.api.nvim_create_autocmd("InsertEnter", {
+            group = inlay_hints_group,
+            desc = "Enable inlay hints",
+            buffer = bufnr,
+            callback = function()
+                vim.lsp.inlay_hint.enable(false, { bufnr = bufnr })
+            end,
+        })
+        vim.api.nvim_create_autocmd("InsertLeave", {
+            group = inlay_hints_group,
+            desc = "Disable inlay hints",
+            buffer = bufnr,
+            callback = function()
+                vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+            end,
+        })
     end
 end
 
 M.on_attach = function(client, bufnr)
     lsp_keymaps(client, bufnr)
-    -- lsp_highlight_document(client)
-    -- lsp_format(client, bufnr)
+    lsp_highlight_document(client, bufnr)
     lsp_inlay_hints(client, bufnr)
 end
 
--- local capabilities = vim.lsp.protocol.make_client_capabilities()
-
-local capabilities = require("cmp_nvim_lsp").default_capabilities()
+local capabilities = vim.tbl_deep_extend(
+    "force",
+    vim.lsp.protocol.make_client_capabilities(),
+    require("cmp_nvim_lsp").default_capabilities()
+)
 
 M.capabilities = capabilities
 

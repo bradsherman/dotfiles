@@ -22,6 +22,7 @@ return {
                     "haskell",
                     "hcl",
                     "html",
+                    "http",
                     "javascript",
                     "json",
                     "lua",
@@ -45,6 +46,7 @@ return {
                     "typescript",
                     "terraform",
                     "vim",
+                    "xml",
                     "yaml",
                     "zig",
                 },
@@ -62,7 +64,31 @@ return {
                     },
                 },
                 autopairs = { enable = true },
-                autotag = { enable = true, enable_close_on_slash = false },
+                autotag = {
+                    enable = true,
+                    filetypes = {
+                        "elixir",
+                        "eelixir",
+                        "heex",
+                        "html",
+                        "javascript",
+                        "typescript",
+                        "javascriptreact",
+                        "typescriptreact",
+                        "svelte",
+                        "vue",
+                        "tsx",
+                        "jsx",
+                        "rescript",
+                        "xml",
+                        "php",
+                        "markdown",
+                        "astro",
+                        "glimmer",
+                        "handlebars",
+                        "hbs",
+                    },
+                },
                 playground = {
                     enable = true,
                     disable = {},
@@ -90,8 +116,12 @@ return {
         "JoosepAlviste/nvim-ts-context-commentstring",
         config = function()
             vim.g.skip_ts_context_commentstring_module = true
-            require("ts_context_commentstring").setup({})
+            require("ts_context_commentstring").setup({ enable_autocmd = false })
         end,
     },
     "windwp/nvim-ts-autotag",
+    {
+        "yorickpeterse/nvim-tree-pairs",
+        config = true,
+    },
 }

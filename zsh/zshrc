@@ -8,7 +8,8 @@ export ZSH="/home/bsherman/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="robbyrussell"
+# ZSH_THEME="robbyrussell"
+ZSH_THEME="candy"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -73,7 +74,7 @@ ZSH_THEME="robbyrussell"
 export VIM_MODE_VICMD_KEY="jk"
 export _Z_CMD="j"
 . ~/.local/bin/z.sh
-plugins=(git zsh-syntax-highlighting zsh-autosuggestions z zsh-vim-mode nix-shell nix-zsh-completions)
+plugins=(git fzf-tab zsh-syntax-highlighting zsh-autosuggestions z zsh-vim-mode nix-shell nix-zsh-completions)
 
 
 source $ZSH/oh-my-zsh.sh
@@ -115,7 +116,7 @@ alias vim="nvim"
 # export PATH="/usr/lib/postgresql/12/bin:${PATH}"
 export PATH="$HOME/.tfenv/bin:${PATH}"
 export PATH="$HOME/.pkenv/bin:${PATH}"
-export PATH="$HOME/code/lua-language-server/bin/Linux:${PATH}"
+export PATH="$HOME/code/lua-language-server/bin:${PATH}"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -126,11 +127,11 @@ fpath+=${ZDOTDIR:-~}/.zsh_functions
 if type rg &> /dev/null; then
   export FZF_DEFAULT_COMMAND='rg --files'
 fi
+# --preview-window=:hidden
 export FZF_DEFAULT_OPTS="
 -m --height 50% --border --layout=reverse
 --info=inline --color=dark
 --prompt='~ ' --pointer='▶' --marker='✗'
---preview-window=:hidden
 --preview '([[ -f {} ]] && (bat --style=numbers --color=always {} ||
   cat {})) || ([[ -d {} ]] && (tree -C {} | less)) ||
   echo {} 2> /dev/null | head -200'
@@ -144,6 +145,7 @@ alias v3="vim ~/.config/i3/config"
 export BAT_THEME="OneHalfDark"
 alias cat="batcat --theme=$BAT_THEME"
 alias c='clear'
+alias zj='zellij'
 
 
 # define function that retrieves and runs last command
@@ -199,10 +201,15 @@ function ghcid_run {
 
 alias sqlite="rlwrap -a -c -i sqlite3"
 alias sqlite3="rlwrap -a -c -i sqlite3"
-alias ls='exa'
 alias htop='btm'
 alias man='tldr'
 alias shake='stack exec shake --'
+
+alias ls='lsd'
+alias l='ls -l'
+alias la='ls -a'
+alias lla='ls -la'
+alias lt='ls --tree'
 
 export LOCAL_CONN_STRING="postgresql://app:password123@localhost:5432/main"
 
@@ -252,27 +259,10 @@ fi
 prompt_nix_shell_setup
 
 
-export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libgtk3-nocsd.so.0
-#compdef gt
-###-begin-gt-completions-###
-#
-# yargs command completion script
-#
-# Installation: /home/bsherman/.nix-profile/bin/gt completion >> ~/.zshrc
-#    or /home/bsherman/.nix-profile/bin/gt completion >> ~/.zprofile on OSX.
-#
-_gt_yargs_completions()
-{
-  local reply
-  local si=$IFS
-  IFS=$'
-' reply=($(COMP_CWORD="$((CURRENT-1))" COMP_LINE="$BUFFER" COMP_POINT="$CURSOR" /home/bsherman/.nix-profile/bin/gt --get-yargs-completions "${words[@]}"))
-  IFS=$si
-  _describe 'values' reply
-}
-compdef _gt_yargs_completions gt
-###-end-gt-completions-###
+source "$HOME/.cargo/env"
 
+
+export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libgtk3-nocsd.so.0
 
 function author_lines () {
 	if [ -z "$1" ]
@@ -289,3 +279,47 @@ function author_lines () {
 
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /nix/store/34m359hc8r2r8h9rsavysjmvyk29m0m6-nomad-1.4.4/bin/nomad nomad
+#compdef gt
+###-begin-gt-completions-###
+#
+# yargs command completion script
+#
+# Installation: gt completion >> ~/.zshrc
+#    or gt completion >> ~/.zprofile on OSX.
+#
+_gt_yargs_completions()
+{
+  local reply
+  local si=$IFS
+  IFS=$'
+' reply=($(COMP_CWORD="$((CURRENT-1))" COMP_LINE="$BUFFER" COMP_POINT="$CURSOR" gt --get-yargs-completions "${words[@]}"))
+  IFS=$si
+  _describe 'values' reply
+}
+compdef _gt_yargs_completions gt
+###-end-gt-completions-###
+
+# eval "$(starship init zsh)"
+
+export GPG_TTY=$(tty)
+gpgconf --launch gpg-agent
+
+. "$HOME/.asdf/asdf.sh"
+# append completions to fpath
+fpath=(${ASDF_DIR}/completions $fpath)
+# initialise completions with ZSH's compinit
+autoload -Uz compinit && compinit
+source ~/.oh-my-zsh/custom/plugins/fzf-tab/fzf-tab.plugin.zsh
+
+# bun completions
+[ -s "/home/bsherman/.bun/_bun" ] && source "/home/bsherman/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+
+# fly
+export FLYCTL_INSTALL="/home/bsherman/.fly"
+export PATH="$FLYCTL_INSTALL/bin:$PATH"
+eval "$(/home/bsherman/.local/bin/mise activate zsh)"

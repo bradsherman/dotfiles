@@ -1,6 +1,7 @@
 return {
     -- "polarmutex/git-worktree.nvim",
     "bradsherman/git-worktree.nvim",
+    branch = "fix-telescope-path",
     config = function(_, opts)
         local wt = require("git-worktree")
         wt.on_tree_change(function(op, meta)

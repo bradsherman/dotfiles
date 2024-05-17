@@ -14,7 +14,7 @@ return {
             -- as an escape hatch for people who cannot bear it for whatever reason
             indicator = {
                 -- icon = "▎",
-                style = "underline",
+                -- style = "underline",
             },
             buffer_close_icon = "",
             modified_icon = "●",
@@ -93,7 +93,7 @@ return {
             -- can also be a table containing 2 custom separators
             -- [focused and unfocused]. eg: { '|', '|' }
             -- can go back to 'padded_slant' or 'slant' once colors are fixed
-            separator_style = "thick",
+            separator_style = "thin",
             enforce_regular_tabs = true,
             always_show_bufferline = false,
             -- sort_by = 'id' | 'extension' | 'relative_directory' | 'directory' | 'tabs' | function(buffer_a, buffer_b)

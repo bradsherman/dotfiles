@@ -7,4 +7,10 @@ return {
             "nvim-lua/plenary.nvim",
         },
     },
+    {
+        "FabijanZulj/blame.nvim",
+        config = function()
+            require("blame").setup()
+        end,
+    },
 }

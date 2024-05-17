@@ -212,39 +212,65 @@ font:
 #     - { index: 16, color: '0xc9826b' }
 #     - { index: 17, color: '0xbf88bc' }
 
-# Kanagawa Alacritty Colors
+# Sonokai Andromeda colors
 colors:
   primary:
-    background: '0x1f1f28'
-    foreground: '0xdcd7ba'
+    background: "0x2b2d3a"
+    foreground: "0xe1e3e4"
 
   normal:
-    black:   '0x090618'
-    red:     '0xc34043'
-    green:   '0x76946a'
-    yellow:  '0xc0a36e'
-    blue:    '0x7e9cd8'
-    magenta: '0x957fb8'
-    cyan:    '0x6a9589'
-    white:   '0xc8c093'
+    black: "0x181a1c"
+    red: "0xfb617e"
+    green: "0x9ed06c"
+    yellow: "0xedc763"
+    blue: "0x6dcae8"
+    magenta: "0xbb97ee"
+    cyan: "0xf89860"
+    white: "0xe1e3e4"
 
   bright:
-    black:   '0x727169'
-    red:     '0xe82424'
-    green:   '0x98bb6c'
-    yellow:  '0xe6c384'
-    blue:    '0x7fb4ca'
-    magenta: '0x938aa9'
-    cyan:    '0x7aa89f'
-    white:   '0xdcd7ba'
+    black: "0x7e8294"
+    red: "0xfb617e"
+    green: "0x9ed06c"
+    yellow: "0xedc763"
+    blue: "0x6dcae8"
+    magenta: "0xbb97ee"
+    cyan: "0xf89860"
+    white: "0xe1e3e4"
 
-  selection:
-    background: '0x2d4f67'
-    foreground: '0xc8c093'
-
-  indexed_colors:
-    - { index: 16, color: '0xffa066' }
-    - { index: 17, color: '0xff5d62' }
+# Kanagawa Alacritty Colors
+# colors:
+#   primary:
+#     background: '0x1f1f28'
+#     foreground: '0xdcd7ba'
+#
+#   normal:
+#     black:   '0x090618'
+#     red:     '0xc34043'
+#     green:   '0x76946a'
+#     yellow:  '0xc0a36e'
+#     blue:    '0x7e9cd8'
+#     magenta: '0x957fb8'
+#     cyan:    '0x6a9589'
+#     white:   '0xc8c093'
+#
+#   bright:
+#     black:   '0x727169'
+#     red:     '0xe82424'
+#     green:   '0x98bb6c'
+#     yellow:  '0xe6c384'
+#     blue:    '0x7fb4ca'
+#     magenta: '0x938aa9'
+#     cyan:    '0x7aa89f'
+#     white:   '0xdcd7ba'
+#
+#   selection:
+#     background: '0x2d4f67'
+#     foreground: '0xc8c093'
+#
+#   indexed_colors:
+#     - { index: 16, color: '0xffa066' }
+#     - { index: 17, color: '0xff5d62' }
 
 # # TokyoNight Alacritty Colors
 # colors:

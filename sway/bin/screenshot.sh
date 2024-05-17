@@ -1,6 +1,7 @@
 #!/bin/sh
 # shellcheck disable=3024,3037
 
+echo "HELLO"
 copy_area="Screenshot area to clipboard"
 area_to_file="Screenshot area to file"
 all_displays_to_file="Screenshot all displays to file"
@@ -10,36 +11,45 @@ copy_window="Screenshot focused window to clipboard"
 window_to_file="Screenshot focused window to file"
 copy_monitor="Screenshot focused monitor to clipboard"
 monitor_to_file="Screenshot focused monitor to file"
+echo "HELLO2"
 
 # Store each option in a single string seperated by newlines.
 options="${copy_area}\n${area_to_file}\n${all_displays_to_file}\n${copy_all_displays}\n${copy_area_ocr}\n${copy_window}\n${window_to_file}\n${copy_monitor}\n${monitor_to_file}"
 
 # Prompt the user with wofi.
 choice="$(echo "$options" | rofi -width 600 -dmenu -p \>)"
+echo "GOT A CHOICE"
+echo "$choice"
+
+grim="$HOME/.nix-profile/bin/grim"
+slurp="$HOME/.nix-profile/bin/slurp"
 
 # Make sure that all pictures are saved in the screenshots folder.
 stamp=$(date +'%s_grim.png')
+echo "$stamp"
 output="$HOME/Pictures/screenshots/$stamp"
-cmd="grim ${output}"
+echo "$output"
+cmd="${grim} ${output}"
+echo "$cmd"
 
 case $choice in
     "$copy_area")
-        grim -g "$(slurp)" - | wl-copy
+        ${grim} -g "$(${slurp})" - | wl-copy
         ;;
     "$area_to_file")
-        ${cmd} -g "$(slurp)"
+        ${cmd} -g "$(${slurp})"
         ;;
     "$all_displays_to_file")
         ${cmd}
         ;;
     "${copy_all_displays}")
-        grim - | wl-copy
+        ${grim} - | wl-copy
         ;;
     "$copy_area_ocr")
-        ${cmd} -g "$(slurp)" - | tesseract - - | wl-copy
+        ${grim} -g "$(slurp)" - | tesseract - - | wl-copy
         ;;
     "$copy_window")
-        ${cmd} -g "$(swaymsg -t get_tree | jq -j '.. | select(.type?) | select(.focused).rect | "\(.x),\(.y) \(.width)x\(.height)"')" - | wl-copy
+        ${grim} -g "$(swaymsg -t get_tree | jq -j '.. | select(.type?) | select(.focused).rect | "\(.x),\(.y) \(.width)x\(.height)"')" - | wl-copy
         ;;
     "$window_to_file")
         ${cmd} -g "$(swaymsg -t get_tree | jq -j '.. | select(.type?) | select(.focused).rect | "\(.x),\(.y) \(.width)x\(.height)"')"

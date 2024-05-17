@@ -1,5 +1,6 @@
 return {
     "nvim-lualine/lualine.nvim",
+    enabled = false,
     opts = function()
         local function fg(name)
             ---@type {foreground?:number}?

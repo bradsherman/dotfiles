@@ -25,19 +25,19 @@ return {
             -- ["<c-g>"] = { "<cmd>FzfxLiveGrep<cr>", "Fzfx Grep" },
             -- ["<c-b>"] = { "<cmd>FzfxBuffers<cr>", "Fzfx Buffers" },
 
-            ["<c-f>"] = { "<cmd>FzfLua files<cr>", "Files" },
-            ["<c-g>"] = { "<cmd>FzfLua live_grep<cr>", "Grep" },
-            ["<c-b>"] = { "<cmd>FzfLua buffers<cr>", "Buffers" },
-            ["<c-t>"] = { "<cmd>FzfLua tags<cr>", "Tags" },
+            -- ["<c-f>"] = { "<cmd>FzfLua files<cr>", "Files" },
+            -- ["<c-g>"] = { "<cmd>FzfLua live_grep<cr>", "Grep" },
+            -- ["<c-b>"] = { "<cmd>FzfLua buffers<cr>", "Buffers" },
+            -- ["<c-t>"] = { "<cmd>FzfLua tags<cr>", "Tags" },
             ["R"] = { "<cmd>FzfLua resume<cr>", "Resume" },
 
-            -- ["<c-f>"] = { "<cmd>Telescope find_files<cr>", "Telescope Files" },
-            -- ["<c-g>"] = {
-            --     "<cmd>lua require('telescope').extensions.live_grep_args.live_grep_args()<cr>",
-            --     "Telescope Grep",
-            -- },
-            -- ["<c-b>"] = { "<cmd>Telescope buffers<cr>", "Telescope Buffers" },
-            -- ["<c-t>"] = { "<cmd>Telescope tags<cr>", "Telescope Tags" },
+            ["<c-f>"] = { "<cmd>Telescope find_files<cr>", "Telescope Files" },
+            ["<c-g>"] = {
+                "<cmd>lua require('telescope').extensions.live_grep_args.live_grep_args()<cr>",
+                "Telescope Grep",
+            },
+            ["<c-b>"] = { "<cmd>Telescope buffers<cr>", "Telescope Buffers" },
+            ["<c-t>"] = { "<cmd>Telescope tags<cr>", "Telescope Tags" },
 
             -- ["<c-f>"] = { "<cmd>Pick files<cr>", "mini.pick Files" },
             -- ["<c-g>"] = { "<cmd>Pick grep_live<cr>", "mini.pick Grep" },
@@ -73,10 +73,27 @@ return {
         -- Spectre
         wk.register({
             s = {
+                -- f = {
+                --     function()
+                --         local menu = require("pickers.spectre")
+                --         menu.toggle()
+                --     end,
+                --     "Spectre",
+                -- },
                 f = {
                     name = "+Spectre",
                     r = { "<cmd>Spectre<cr>", "Spectre" },
                     w = { "<cmd>lua require('spectre').open_visual({select_word=true})<cr>", "Spectre Current Word" },
+                },
+            },
+        }, { prefix = "<leader>" })
+
+        -- GrugFar
+        wk.register({
+            f = {
+                a = {
+                    name = "+GrugFar",
+                    r = { "<cmd>GrugFar<cr>", "GrugFar" },
                 },
             },
         }, { prefix = "<leader>" })
@@ -108,7 +125,7 @@ return {
         wk.register({
             c = {
                 name = "+Colorizer",
-                t = { "<cmd>ColorizerToggle<cr>", "Toggle Colorizer" },
+                t = { "<cmd>HighlightColors Toggle<cr>", "Toggle Colorizer" },
             },
         }, { prefix = "<leader>" })
 
@@ -165,7 +182,9 @@ return {
             ["-"] = { "<cmd>Oil<cr>", "Open parent directory" },
             ["<C-e>"] = { "<cmd>Oil<cr>", "Open parent directory" },
             ["<leader>e"] = { "<cmd>Oil<cr>", "Open parent directory" },
+            -- ["-"] = { "<cmd>lua MiniFiles.open()<cr>", "Mini Files" },
             -- ["<C-e>"] = { "<cmd>lua MiniFiles.open()<cr>", "Mini Files" },
+            -- ["<leader>e"] = { "<cmd>lua MiniFiles.open()<cr>", "Mini Files" },
         }, {})
 
         -- Lsp
@@ -184,8 +203,20 @@ return {
                 t = { "<cmd>Telescope tags<cr>", "Tags" },
                 u = { update_haskell_tags, "Update Haskell tags" },
             },
-            ["<c-p>"] = { "<cmd>lua vim.diagnostic.goto_prev()<cr>", "Prev Diagnostic" },
-            ["<c-n>"] = { "<cmd>lua vim.diagnostic.goto_next()<cr>", "Prev Diagnostic" },
+            ["<c-p>"] = {
+                function()
+                    require("delimited").goto_prev()
+                end,
+                "Prev Diagnostic",
+            },
+            ["<c-n>"] = {
+                function()
+                    require("delimited").goto_next()
+                end,
+                "Next Diagnostic",
+            },
+            -- ["<c-p>"] = { "<cmd>lua vim.diagnostic.goto_prev()<cr>", "Prev Diagnostic" },
+            -- ["<c-n>"] = { "<cmd>lua vim.diagnostic.goto_next()<cr>", "Next Diagnostic" },
             g = {
                 name = "+LSP Types",
                 d = { "<cmd>Telescope lsp_definitions<cr>", "Definitions" },
@@ -291,7 +322,15 @@ return {
                     name = "+Worktree",
                     c = { "<cmd>lua require('telescope').extensions.git_worktree.create_git_worktree()<cr>", "Create" },
                     -- c = { "<cmd>lua require('utils').worktree_workaround()<cr>", "Create" },
-                    s = { "<cmd>lua require('telescope').extensions.git_worktree.git_worktrees()<cr>", "Switch" },
+                    -- s = { "<cmd>lua require('neogit').action('worktree', 'visit', {})<cr>", "Switch" },
+                    s = {
+                        function()
+                            require("telescope").extensions.git_worktree.git_worktrees({
+                                path_display = {},
+                            })
+                        end,
+                        "Switch",
+                    },
                 },
             },
             o = {
@@ -502,7 +541,13 @@ return {
                 },
             }, { prefix = "<leader>" })
         end
+        wk.register({
+            name = "+Rest",
+            r = { "<cmd>Rest run<CR>", "Run" },
+            l = { "<cmd>Rest run last<CR>", "Rerun" },
+        }, { prefix = "<leader>r" })
 
+        -- Neorg
         wk.register({
             name = "+Neorg",
             j = {
@@ -522,10 +567,21 @@ return {
                 d = { "<cmd>Neorg workspace default<CR>", "Default" },
                 h = { "<cmd>Neorg workspace home<CR>", "Home" },
                 j = { "<cmd>Neorg workspace work<CR>", "Work" },
-                s = { "<cmd>Neorg workspace generate-workspace-summary<CR>", "Summary" },
+                s = { "<cmd>Neorg generate-workspace-summary<CR>", "Summary" },
                 w = { "<cmd>Neorg workspace<CR>", "Select" },
             },
         }, { prefix = "<leader>n" })
+
+        wk.register({
+            name = "+Neotest",
+            a = { "<cmd>lua require('neotest').run.attach()<cr>", "Attach Nearest" },
+            d = { "<cmd>lua require('neotest').run.attach({ strategy = 'dap' })<cr>", "Debug Nearest" },
+            f = { "<cmd>lua require('neotest').run.run(vim.fn.expand('%'))<cr>", "Test File" },
+            o = { "<cmd>lua require('neotest').output_panel.toggle()<cr>", "Toggle Output" },
+            s = { "<cmd>lua require('neotest').run.stop()<cr>", "Stop Nearest" },
+            t = { "<cmd>lua require('neotest').run.run()<cr>", "Test Nearest" },
+            w = { "<cmd>lua require('neotest').watch.toggle(vim.fn.expand('%'))<cr>", "Watch File" },
+        }, { prefix = "<leader>u" })
 
         wk.setup(opts)
     end,

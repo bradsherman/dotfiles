@@ -72,7 +72,9 @@ o.undodir = { undo_dir }
 vim.cmd([[set viewoptions-=curdir]])
 bo.undofile = true
 
-o.grepprg = "rg --vimgrep --smart-case --follow"
+o.grepprg = "rg --vimgrep --smart-case --follow --hidden"
+-- o.grepprg = "rg --vimgrep"
+o.grepformat = "%f:%l:%c:%m"
 -- other useful chars: eol:↲,nbsp:␣
 -- o.showbreak = "↪ "
 o.showbreak = "↲"

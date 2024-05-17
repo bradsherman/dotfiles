@@ -3,21 +3,24 @@
     border-radius: 0;
     /* font-family:   "Noto Sans", "Font Awesome 5 Free"; */
     font-family:   fontawesome, sans-serif;
-    font-size:     20px;
+    font-size:     18px;
     box-shadow:    none;
     text-shadow:   none;
     transition-duration: 0s;
 }
 
 window {
-    color:      rgba(217, 216, 216, 1);
-    background: rgba(35, 31, 32, 0.85);
+    /* color:      rgba(217, 216, 216, 1); */
+    color:      #DCD7BA;
+    /* background: rgba(35, 31, 32, 0.85); */
+    /* background: rgba(22, 22, 29, 0.85); */
+    background: rgba(31, 31, 40, 0.85);
 }
 
-/* window#waybar.solo { */
-/*     color:      rgba(217, 216, 216, 1); */
-/*     background: rgba(35, 31, 32, 0.85); */
-/* } */
+.modules-center {
+  margin-right: 20px;
+  margin-left: 20px;
+}
 
 #workspaces {
     margin: 0 5px;
@@ -25,25 +28,43 @@ window {
 
 #workspaces button {
     padding:    0 5px;
-    color:      rgba(217, 216, 216, 0.4);
+    /* color:      rgba(217, 216, 216, 0.4); */
+    /* color: #DCD7BA; */
+    color: rgba(220, 215, 186, 0.4);
 }
 
 #workspaces button.visible {
-    color:      rgba(217, 216, 216, 1);
+    /* color:      rgba(217, 216, 216, 1); */
+    color: #DCD7BA;
 }
 
 #workspaces button.focused {
-    border-top: 3px solid rgba(217, 216, 216, 1);
-    border-bottom: 3px solid rgba(217, 216, 216, 0);
+    /* border-top: 3px solid rgba(217, 216, 216, 1); */
+    border-top: 3px solid #658594;
+    /* border-bottom: 3px solid rgba(217, 216, 216, 0); */
+    border-bottom: 3px solid rgba(31, 31, 40, 0);
+}
+
+#workspaces button:hover {
+    background-color: rgba(101,133,148, 0.2);
 }
 
 #workspaces button.urgent {
-    color:      rgba(238, 46, 36, 1);
+    /* color:      rgba(238, 46, 36, 1); */
+    color: rgba(195,64,67, 1);
 }
 
-#mode, #battery, #cpu, #memory, #network, #pulseaudio, #idle_inhibitor, #backlight, #custom-storage, #custom-spotify, #custom-weather, #custom-mail {
+#cava, #mode, #battery, #cpu, #memory, #network, #pulseaudio, #idle_inhibitor, #backlight, #custom-storage, #custom-spotify, #custom-weather, #custom-mail {
     margin:     0px 6px 0px 10px;
     min-width:  25px;
+}
+
+#cava {
+  color: #98BB6C;
+}
+
+#tray {
+  margin: 0px 6px 0px 10px;
 }
 
 #clock {
@@ -57,21 +78,31 @@ window {
 }
 
 #battery.warning {
-   color:       rgba(255, 210, 4, 1);
+    /* color:       rgba(255, 210, 4, 1); */
+    color: #FF9E3B;
+    background: rgba(31, 31, 40, 0.85);
 }
 
 #battery.critical {
-    color:      rgba(238, 46, 36, 1);
+    /* color:      rgba(238, 46, 36, 1); */
+    color: rgba(195,64,67, 1);
+    background: rgba(31, 31, 40, 0.85);
 }
 
 #battery.charging {
-    color:      rgba(217, 216, 216, 1);
+    /* color:      rgba(217, 216, 216, 1); */
+    color: #DCD7BA;
+    background: rgba(31, 31, 40, 0.85);
 }
 
 #custom-storage.warning {
-    color:      rgba(255, 210, 4, 1);
+    /* color:      rgba(255, 210, 4, 1); */
+    color: #FF9E3B;
+    background: rgba(31, 31, 40, 0.85);
 }
 
 #custom-storage.critical {
-    color:      rgba(238, 46, 36, 1);
+    /* color:      rgba(238, 46, 36, 1); */
+    color: rgba(195,64,67, 1);
+    background: rgba(31, 31, 40, 0.85);
 }

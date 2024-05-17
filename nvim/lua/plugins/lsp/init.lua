@@ -76,7 +76,7 @@ return {
                     nvim_lsp[server_name].setup(default_setup)
                 end,
                 ["lua_ls"] = function()
-                    local settings_ok, lua_settings = pcall(require, "plugin_conf.lsp.settings.lua")
+                    local settings_ok, lua_settings = pcall(require, "plugins.lsp.settings.lua")
                     if not settings_ok then
                         return
                     end
@@ -97,8 +97,81 @@ return {
                         capabilities = my_handlers.capabilities,
                     })
                 end,
+                -- ["emmet_language_server"] = function()
+                --     nvim_lsp.emmet_language_server.setup({
+                --         capabilities = my_handlers.capabilities,
+                --         on_attach = my_handlers.on_attach,
+                --         filetypes = {
+                --             "css",
+                --             "elixir",
+                --             "eelixir",
+                --             "eruby",
+                --             "heex",
+                --             "html",
+                --             "javascript",
+                --             "javascriptreact",
+                --             "less",
+                --             "sass",
+                --             "scss",
+                --             "pug",
+                --             "typescriptreact",
+                --         },
+                --     })
+                -- end,
+                ["tailwindcss"] = function()
+                    nvim_lsp.tailwindcss.setup({
+                        capabilities = my_handlers.capabilities,
+                        on_attach = my_handlers.on_attach,
+                        filetypes = { "html", "elixir", "eelixir", "heex" },
+                        root_dir = nvim_lsp.util.root_pattern(
+                            "tailwind.config.js",
+                            "tailwind.config.ts",
+                            "postcss.config.js",
+                            "postcss.config.ts",
+                            "package.json",
+                            "node_modules",
+                            ".git",
+                            "mix.exs"
+                        ),
+                        init_options = {
+                            userLanguages = {
+                                elixir = "html-eex",
+                                eelixir = "html-eex",
+                                heex = "html-eex",
+                            },
+                        },
+                        settings = {
+                            tailwindCSS = {
+                                experimental = {
+                                    classRegex = {
+                                        'class[:]\\s*"([^"]*)"',
+                                    },
+                                },
+                            },
+                        },
+                    })
+                end,
+                -- ["elixirls"] = function()
+                --     nvim_lsp.elixirls.setup({
+                --         cmd = { vim.fn.expand("~/.local/bin/elixir-ls/language_server.sh") },
+                --         capabilities = my_handlers.capabilities,
+                --         on_attach = my_handlers.on_attach,
+                --         settings = {
+                --             elixirLS = {
+                --                 -- I choose to disable dialyzer for personal reasons, but
+                --                 -- I would suggest you also disable it unless you are well
+                --                 -- acquainted with dialzyer and know how to use it.
+                --                 dialyzerEnabled = false,
+                --                 -- I also choose to turn off the auto dep fetching feature.
+                --                 -- It often get's into a weird state that requires deleting
+                --                 -- the .elixir_ls directory and restarting your editor.
+                --                 fetchDeps = false,
+                --             },
+                --         },
+                --     })
+                -- end,
                 ["dockerls"] = function()
-                    local settings_ok, docker_settings = pcall(require, "plugin_conf.lsp.settings.docker")
+                    local settings_ok, docker_settings = pcall(require, "plugins.lsp.settings.docker")
                     if not settings_ok then
                         return
                     end
@@ -126,7 +199,7 @@ return {
                     })
                 end,
                 ["yamlls"] = function()
-                    local settings_ok, yaml_settings = pcall(require, "plugin_conf.lsp.settings.yaml")
+                    local settings_ok, yaml_settings = pcall(require, "plugins.lsp.settings.yaml")
                     if not settings_ok then
                         return
                     end
@@ -192,6 +265,9 @@ return {
                     capabilities = my_handlers.capabilities,
                     settings = {
                         haskell = {
+                            checkProject = false,
+                            checkParents = "CheckOnSave",
+                            formattingProvider = "fourmolu",
                             plugin = {
                                 stan = { globalOn = false },
                                 semanticTokens = { globalOn = true },
@@ -200,7 +276,7 @@ return {
                     },
                 },
                 tools = {
-                    codeLens = { autoRefresh = true },
+                    codeLens = { autoRefresh = false },
                     hoogle = { mode = "auto" },
                     -- hover = {},
                     definition = { hoogle_signature_fallback = true },
@@ -211,7 +287,6 @@ return {
             }
         end,
     },
-    "folke/neodev.nvim",
     {
         "pmizio/typescript-tools.nvim",
         dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
@@ -233,6 +308,7 @@ return {
                     separate_diagnostic_server = true,
                     -- "change"|"insert_leave" determine when the client asks the server about diagnostic
                     publish_diagnostic_on = "insert_leave",
+                    expose_as_code_action = "all",
                     -- string|nil -specify a custom path to `tsserver.js` file, if this is nil or file under path
                     -- not exists then standard path resolution strategy is applied
                     tsserver_path = nil,
@@ -248,6 +324,48 @@ return {
                 },
             }
         end,
+    },
+    {
+        "elixir-tools/elixir-tools.nvim",
+        version = "*",
+        event = { "BufReadPre", "BufNewFile" },
+        config = function()
+            local elixir = require("elixir")
+            local elixirls = require("elixir.elixirls")
+
+            elixir.setup({
+                nextls = { enable = true },
+                credo = { enable = true },
+                elixirls = {
+                    cmd = { vim.fn.expand("~/.local/bin/elixir-ls/language_server.sh") },
+                    enable = true,
+                    settings = elixirls.settings({
+                        dialyzerEnabled = true,
+                        enableTestLenses = false,
+                    }),
+                    on_attach = function(client, bufnr)
+                        vim.keymap.set("n", "<space>fp", ":ElixirFromPipe<cr>", { buffer = true, noremap = true })
+                        vim.keymap.set("n", "<space>tp", ":ElixirToPipe<cr>", { buffer = true, noremap = true })
+                        vim.keymap.set("v", "<space>em", ":ElixirExpandMacro<cr>", { buffer = true, noremap = true })
+                        local handlers_ok, my_handlers = pcall(require, "plugins.lsp.handlers")
+                        if handlers_ok then
+                            my_handlers.on_attach(client, bufnr)
+                        end
+                    end,
+                },
+            })
+        end,
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+        },
+    },
+    -- tailwind-tools.lua
+    {
+        "luckasRanarison/tailwind-tools.nvim",
+        dependencies = { "nvim-treesitter/nvim-treesitter" },
+        opts = {
+            custom_filetypes = { "heex", "elixir", "eelixir" },
+        },
     },
     {
         "smjonas/inc-rename.nvim",
@@ -268,10 +386,9 @@ return {
             { "nvim-telescope/telescope.nvim" },
         },
     },
-    -- { "Zeioth/garbage-day.nvim", event = "VeryLazy" },
     {
         "mrcjkb/rustaceanvim",
-        version = "^3", -- Recommended
+        version = "^4", -- Recommended
         ft = { "rust" },
     },
 }

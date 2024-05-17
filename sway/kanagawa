@@ -98,7 +98,7 @@ set $carpYellow     #E6C384
 set $sakuraPink     #D27E99
 
 # Standout specials 1 (builtin variables)
-set $waveRed 	    #E46876
+set $waveRed 	      #E46876
 
 # Standout specials 2 (exception handling, return)
 set $peachRed 	    #FF5D62

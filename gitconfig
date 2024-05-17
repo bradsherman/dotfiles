@@ -1,5 +1,7 @@
 [user]
 	name = Brad Sherman
+	email = brad.sherman@bitnomial.com
+	signingKey = /home/bsherman/.ssh/id_ed25519.pub
 
 [alias]
   fixup = !REV=$(git log --oneline origin/master..HEAD | fzf --prompt 'fixup> ' | awk '{print $1}') && git commit --fixup $REV && EDITOR=true git rebase -i --autosquash --autostash $REV^
@@ -10,13 +12,20 @@
   br = branch
   pom = pull origin master
   rom = pull --rebase origin master
+  df = difftool
   dft = difftool
+  dlog = "!f() { : git log ; GIT_EXTERNAL_DIFF=difft git log -p --ext-diff $@; }; f"
+  rblame = !git blame -w -M -C -C -C
+
+[push]
+  autoSetupRemote = true
 
 [help]
   autocorrect = 25
 
 [commit]
   template = ~/.gitmessage
+	gpgSign = true
 
 [merge]
     conflictstyle = diff3
@@ -24,6 +33,7 @@
 [diff]
     colorMoved = default
     tool = difftastic
+    external = difft
 
 [difftool "difftastic"]
         cmd = difft "$LOCAL" "$REMOTE"
@@ -31,48 +41,78 @@
 [difftool]
     prompt = false
 
-[core]
-    pager = delta
+; [core]
+;     pager = delta
 
-[interactive]
-    diffFilter = delta --color-only --features=interactive
+; [interactive]
+;     diffFilter = delta --color-only --features=interactive
 
-[delta]
-    features = decorations # unobtrusive-line-numbers # side-by-side
-    navigate = true
-
-[delta "interactive"]
-    keep-plus-minus-markers = false
-
-[delta "side-by-side"]
-    side-by-side = true
-    line-numbers-left-format = ""
-    line-numbers-right-format = "│ "
-
-[delta "decorations"]
-    commit-decoration-style = bold box blue ol
-    commit-style = raw
-    file-style = omit
-    hunk-header-decoration-style = blue box
-    hunk-header-file-style = red
-    hunk-header-line-number-style = "#067a00"
-    hunk-header-style = file line-number # syntax
-    light = false
-    line-numbers = false
-    zero-style = dim syntax
-
-[delta "unobtrusive-line-numbers"]
-    line-numbers = true
-    line-numbers-minus-style = "#444444"
-    line-numbers-zero-style = "#444444"
-    line-numbers-plus-style = "#444444"
-    line-numbers-left-format = "{nm:>4}┊"
-    line-numbers-right-format = "{np:>4}│"
-    line-numbers-left-style = blue
-    line-numbers-right-style = blue
-
+; [delta]
+;     features = decorations unobtrusive-line-numbers side-by-side
+;     navigate = true
+;     true-color = always
+;     minus-style                   = syntax "#37222c"
+;     minus-non-emph-style          = syntax "#37222c"
+;     minus-emph-style              = syntax "#713137"
+;     minus-empty-line-marker-style = syntax "#37222c"
+;     line-numbers-minus-style      = "#b2555b"
+;     plus-style                    = syntax "#20303b"
+;     plus-non-emph-style           = syntax "#20303b"
+;     plus-emph-style               = syntax "#2c5a66"
+;     plus-empty-line-marker-style  = syntax "#20303b"
+;     line-numbers-plus-style       = "#266d6a"
+;     line-numbers-zero-style       = "#3b4261"
+;
+; [delta "interactive"]
+;     keep-plus-minus-markers = false
+;
+; [delta "side-by-side"]
+;     side-by-side = true
+;     line-numbers-left-format = ""
+;     line-numbers-right-format = "│ "
+;
+; [delta "decorations"]
+;     commit-decoration-style = bold box blue ol
+;     commit-style = raw
+;     file-style = omit
+;     hunk-header-decoration-style = blue box
+;     hunk-header-file-style = red
+;     hunk-header-line-number-style = "#067a00"
+;     hunk-header-style = file line-number # syntax
+;     light = false
+;     line-numbers = false
+;     zero-style = dim syntax
+;
+; [delta "unobtrusive-line-numbers"]
+;     line-numbers = true
+;     line-numbers-minus-style = "#444444"
+;     line-numbers-zero-style = "#444444"
+;     line-numbers-plus-style = "#444444"
+;     line-numbers-left-format = "{nm:>4}┊"
+;     line-numbers-right-format = "{np:>4}│"
+;     line-numbers-left-style = blue
+;     line-numbers-right-style = blue
+;
 [pull]
 	ff = only
 
 [pager]
   difftool = true
+
+[includeIf "gitdir:~/code/bitnomial/"]
+    path = ~/.gitconfig-work
+[tag]
+	gpgSign = true
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	allowedSignersFile = /home/bsherman/.config/git/allowed_signers
+[branch]
+	sort = -committerdate
+[column]
+	ui = auto
+[maintenance]
+	repo = /home/bsherman/code/bitnomial/atomic-block-trades
+[diff "lockb"]
+	textconv = bun
+	binary = true

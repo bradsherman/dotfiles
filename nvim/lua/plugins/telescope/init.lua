@@ -17,7 +17,7 @@ return {
                 -- },
                 defaults = {
                     borderchars = { "█", " ", "▀", "█", "█", " ", " ", "▀" },
-                    -- borderchars = { "🭽", "▔", "🭾", "▕", "🭿", "▁", "🭼", "▏" },
+                    -- borderchars = { "🭽", "▔", "🭾", "▕", "🭿", "▁", "🭼", "▏" }
                     vimgrep_arguments = {
                         "rg",
                         "--color=never",
@@ -41,11 +41,14 @@ return {
                     -- prompt_prefix = " ",
                     selection_caret = " ",
                     entry_prefix = "  ",
-                    file_ignore_patterns = { "node_modules", ".git/", "dist/" },
+                    file_ignore_patterns = { "node_modules/", ".git/", "dist/", ".elixir_ls/", "_build/" },
                     path_display = {
-                        shorten = {
-                            len = 3,
-                            exclude = { -1 },
+                        -- shorten = {
+                        --     len = 3,
+                        --     exclude = { -1 },
+                        -- },
+                        filename_first = {
+                            reverse_directories = false,
                         },
                     },
                     use_less = false,
@@ -67,6 +70,19 @@ return {
                 pickers = {
                     find_files = {
                         hidden = true,
+                        follow = true,
+                        -- find_command = {
+                        --     "fd",
+                        --     "--color=never",
+                        --     "--type",
+                        --     "f",
+                        --     "-x",
+                        --     "printf",
+                        --     '"{}: [0;9{//}[0m {}"',
+                        -- },
+                        -- string.format(
+                        -- [[fd --color=never --type f --hidden --follow --exclude .git -x printf "{/} %s {}\n"]],
+                        -- fzfutils.ansi_codes.grey('{//}')
                     },
                     buffers = {
                         show_all_buffers = true,

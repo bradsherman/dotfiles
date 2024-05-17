@@ -17,6 +17,17 @@ vim.api.nvim_create_autocmd("FileType", {
     group = md,
 })
 
+local norg = vim.api.nvim_create_augroup("Norg", { clear = true })
+vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
+    pattern = "*.norg",
+    callback = function()
+        vim.cmd("set wrap")
+        vim.cmd("set spell spelllang=en")
+        vim.cmd("setlocal spell textwidth=120")
+    end,
+    group = norg,
+})
+
 -- Return to last edit position when opening a file
 local ep = vim.api.nvim_create_augroup("ResumeEditPosition", { clear = true })
 vim.api.nvim_create_autocmd("BufReadPost", {

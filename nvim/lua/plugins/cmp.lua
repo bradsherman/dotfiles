@@ -22,6 +22,7 @@ return {
             "hrsh7th/cmp-nvim-lsp-document-symbol",
             "hrsh7th/cmp-nvim-lsp-signature-help",
             "L3MON4D3/LuaSnip",
+            "luckasRanarison/tailwind-tools.nvim",
         },
         config = function()
             local cmp = require("cmp")
@@ -29,8 +30,8 @@ return {
 
             luasnip.config.setup({ history = false })
 
-            local haskell_snippets = require("haskell-snippets")
-            luasnip.add_snippets("haskell", haskell_snippets.all, { key = "haskell" })
+            local haskell_snippets = require("haskell-snippets").all
+            luasnip.add_snippets("haskell", haskell_snippets, { key = "haskell" })
 
             local has_words_before = function()
                 local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -70,8 +71,13 @@ return {
             }
 
             cmp.setup({
-                completion = {
-                    keyword_length = 2,
+                -- completion = {
+                --     keyword_length = 2,
+                -- },
+                view = {
+                    entries = {
+                        follow_cursor = true,
+                    },
                 },
                 snippet = {
                     expand = function(args)
@@ -110,6 +116,9 @@ return {
                             nvim_lua = "[Lua]",
                             latex_symbols = "[LaTeX]",
                         })[entry.source.name]
+
+                        vim_item.before = require("tailwind-tools.cmp").lspkind_format
+
                         return vim_item
                     end,
                 },
@@ -156,12 +165,12 @@ return {
                     end, { "i", "s" }),
                 },
                 sources = cmp.config.sources({
-                    { name = "nvim_lsp" },
                     { name = "luasnip" },
+                    { name = "nvim_lsp" },
+                    { name = "neorg" },
                     { name = "treesitter" },
                     { name = "nvim_lua" },
                     { name = "path" },
-                    { name = "neorg" },
                     { name = "tags" },
                 }, {
                     { name = "buffer" },

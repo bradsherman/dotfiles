@@ -70,14 +70,14 @@ return {
             -- Conform will run multiple formatters sequentially
             python = { "isort", "black" },
             -- Use a sub-list to run only the first available formatter
-            javascript = { { "prettier" } },
-            typescript = { { "prettier" } },
-            javascriptreact = { { "prettier" } },
-            typescriptreact = { { "prettier" } },
+            javascript = { { "prettierd" } },
+            typescript = { { "prettierd" } },
+            javascriptreact = { { "prettierd" } },
+            typescriptreact = { { "prettierd" } },
             sql = { "sqlfluff" },
             nix = { "nixfmt" },
             haskell = { "fourmolu" },
-            ["*"] = { "injected", "trim_whitespace", "trim_newlines" },
+            ["*"] = { "trim_whitespace", "trim_newlines" },
         },
         format_on_save = function(bufnr)
             -- Disable with a global or buffer-local variable

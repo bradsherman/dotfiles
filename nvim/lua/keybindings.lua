@@ -1,6 +1,8 @@
 vim.keymap.set("n", "<space>", "<nop>")
 vim.g.leader = " "
 vim.g.mapleader = " "
+vim.g.localleader = ","
+vim.g.maplocalleader = ","
 
 vim.keymap.set("n", "<leader>w", ":w<cr>")
 vim.keymap.set("n", "<leader>,", "<cmd>noh<cr>")
@@ -12,6 +14,8 @@ vim.keymap.set("n", ":", ";")
 
 vim.keymap.set("n", "j", "gj")
 vim.keymap.set("n", "k", "gk")
+
+vim.keymap.set("n", "gf", "gF", { silent = true })
 
 vim.keymap.set("n", "<leader>o", "o<esc>k")
 vim.keymap.set("n", "<leader>O", "O<esc>j")
@@ -42,6 +46,9 @@ vim.keymap.set("v", ">", ">gv")
 vim.keymap.set("v", "<A-j>", ":m .+1<cr>==")
 vim.keymap.set("v", "<A-k>", ":m .-2<cr>==")
 vim.keymap.set("v", "p", '"_dP')
+
+vim.keymap.set("n", "<A-o>", "O<esc>")
+vim.keymap.set("n", "<A-n>", "$a<cr><esc>")
 
 -- Visual Block --
 -- Move text up and down

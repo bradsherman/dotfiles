@@ -9,6 +9,10 @@ return {
         --    "curl", "wget", "bitsadmin", "go"
         require("dbee").install("go")
     end,
+    keys = {
+        { "<leader>po", "<cmd>Dbee open<cr>", desc = "Open Dbee" },
+        { "<leader>pc", "<cmd>Dbee close<cr>", desc = "Close Dbee" },
+    },
     config = function()
         require("dbee").setup({
             sources = {
