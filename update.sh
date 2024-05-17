@@ -43,6 +43,7 @@ copy_config "fonts" ~/.fonts.conf fonts.conf
 copy_config "gitconfig" ~/.gitconfig gitconfig
 copy_config "i3" ~/.config/i3 .
 copy_config "nvim" ~/.config/nvim .
+copy_config "nvim-rocks" ~/.config/nvim-rocks .
 copy_config "polybar" ~/.config/polybar .
 copy_config "sway" ~/.config/sway .
 copy_config "waybar" ~/.config/waybar .
