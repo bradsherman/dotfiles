@@ -52,4 +52,5 @@ copy_config "rofi-nord" ~/.local/share/rofi/themes/nord.rasi .
 copy_config "tmux" ~/.tmux.conf tmux.conf
 copy_config "wezterm" ~/.config/wezterm .
 copy_config "zsh" ~/.zshrc zsh/zshrc
+copy_config "zellij" ~/.config/zellij .
 cp ~/.local/bin/update-neovim.sh .
