@@ -50,5 +50,6 @@ copy_config "waybar" ~/.config/waybar .
 copy_config "rofi-solarized-light" ~/.local/share/rofi/themes/solarized-light.rasi .
 copy_config "rofi-nord" ~/.local/share/rofi/themes/nord.rasi .
 copy_config "tmux" ~/.tmux.conf tmux.conf
+copy_config "wezterm" ~/.config/wezterm .
 copy_config "zsh" ~/.zshrc zsh/zshrc
 cp ~/.local/bin/update-neovim.sh .
