@@ -8,6 +8,7 @@ return {
             "saadparwaiz1/cmp_luasnip",
         },
     },
+    "R-nvim/cmp-r",
     {
         "hrsh7th/nvim-cmp",
         event = "InsertEnter",
@@ -20,8 +21,19 @@ return {
             "ray-x/cmp-treesitter",
             "quangnguyen30192/cmp-nvim-tags",
             "hrsh7th/cmp-nvim-lsp-document-symbol",
+            "windwp/nvim-autopairs",
             "hrsh7th/cmp-nvim-lsp-signature-help",
             "L3MON4D3/LuaSnip",
+            {
+                {
+                    "MattiasMTS/cmp-dbee",
+                    dependencies = {
+                        { "kndndrj/nvim-dbee" },
+                    },
+                    ft = "sql", -- optional but good to have
+                    opts = {}, -- needed
+                },
+            },
             "luckasRanarison/tailwind-tools.nvim",
         },
         config = function()
@@ -167,11 +179,14 @@ return {
                 sources = cmp.config.sources({
                     { name = "luasnip" },
                     { name = "nvim_lsp" },
+                    { name = "cmp-dbee" },
                     { name = "neorg" },
+                    { name = "cmp_r" },
                     { name = "treesitter" },
                     { name = "nvim_lua" },
                     { name = "path" },
                     { name = "tags" },
+                    { name = "lazydev", group_index = 0 }, -- set group index to 0 to skip loading LuaLS completions
                 }, {
                     { name = "buffer" },
                 }),
@@ -205,6 +220,39 @@ return {
                     { name = "cmdline" },
                 }),
             })
+
+            require("cmp_r").setup({})
+
+            -- Nvim autopairs
+            local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+            local ts_utils = require("nvim-treesitter.ts_utils")
+
+            local ts_node_func_parens_disabled = {
+                -- ecma
+                named_imports = true,
+                -- rust
+                use_declaration = true,
+            }
+
+            local default_handler = cmp_autopairs.filetypes["*"]["("].handler
+            cmp_autopairs.filetypes["*"]["("].handler = function(char, item, bufnr, rules, commit_character)
+                local node_type = ts_utils.get_node_at_cursor():type()
+                if ts_node_func_parens_disabled[node_type] then
+                    if item.data then
+                        item.data.funcParensDisabled = true
+                    else
+                        char = ""
+                    end
+                end
+                default_handler(char, item, bufnr, rules, commit_character)
+            end
+
+            cmp.event:on(
+                "confirm_done",
+                cmp_autopairs.on_confirm_done({
+                    sh = false,
+                })
+            )
 
             -- this loads friendly snippets
             require("luasnip.loaders.from_vscode").lazy_load()

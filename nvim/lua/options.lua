@@ -49,7 +49,7 @@ o.splitkeep = "screen"
 o.backspace = "eol,indent,start"
 o.showcmd = false
 o.showmode = false
-wo.cursorline = true
+wo.cursorline = false
 o.wildmenu = true
 o.cmdheight = 1
 o.clipboard:append("unnamedplus")
@@ -61,6 +61,7 @@ o.incsearch = true
 o.hlsearch = false
 o.ignorecase = true
 o.smartcase = true
+o.inccommand = "split"
 
 o.termguicolors = true
 

@@ -1,3 +1,15 @@
+-- temp workaround until plugins update
+vim.tbl_add_reverse_lookup = function(tbl)
+    for k, v in pairs(tbl) do
+        tbl[v] = k
+    end
+end
+
+vim.lsp.get_active_clients = vim.lsp.get_clients
+vim.lsp.buf_get_clients = function(bufnr)
+    return vim.lsp.get_clients({ bufnr = bufnr })
+end
+
 require("options")
 require("keybindings")
 require("plugins")

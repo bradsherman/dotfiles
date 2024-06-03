@@ -30,14 +30,7 @@ return {
             vim.keymap.set("n", "gK", require("hover").hover_select, { desc = "hover.nvim (select)" })
 
             -- Mouse support
-            -- vim.keymap.set("n", "<MouseMove>", require("hover").hover_mouse, { desc = "hover.nvim (mouse)" })
-            -- vim.o.mousemoveevent = true
-        end,
-    },
-    {
-        "soulis-1256/eagle.nvim",
-        config = function()
-            require("eagle").setup()
+            vim.keymap.set("n", "<MouseMove>", require("hover").hover_mouse, { desc = "hover.nvim (mouse)" })
             vim.o.mousemoveevent = true
         end,
     },

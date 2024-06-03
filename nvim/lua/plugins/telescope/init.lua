@@ -10,11 +10,7 @@ return {
         },
         opts = function()
             local actions = require("telescope.actions")
-            local previewers = require("telescope.previewers")
             return {
-                -- picker = {
-                -- hidden = false,
-                -- },
                 defaults = {
                     borderchars = { "█", " ", "▀", "█", "█", " ", " ", "▀" },
                     -- borderchars = { "🭽", "▔", "🭾", "▕", "🭿", "▁", "🭼", "▏" }
@@ -53,10 +49,6 @@ return {
                     },
                     use_less = false,
                     set_env = { ["COLORTERM"] = "truecolor" },
-                    file_previewer = previewers.cat.new,
-                    grep_previewer = previewers.vimgrep.new,
-                    qflist_previewer = previewers.qflist.new,
-                    buffer_previewer_maker = previewers.buffer_previewer_maker,
                     mappings = {
                         i = {
                             ["<c-n>"] = actions.cycle_history_next,

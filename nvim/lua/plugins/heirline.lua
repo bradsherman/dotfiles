@@ -325,8 +325,12 @@ return {
             hl = { fg = "blue", bg = "bright_bg" },
         }
 
+        local lsp_attached = function()
+            return next(vim.lsp.get_clients({ bufnr = 0 })) ~= nil
+        end
+
         local LSPActive = {
-            condition = conditions.lsp_attached,
+            condition = lsp_attached,
             update = { "LspAttach", "LspDetach" },
 
             -- You can keep it simple,
@@ -516,7 +520,7 @@ return {
             -- tabline = { ... },
             -- statuscolumn = { ... },
             opts = {
-                colors = colors,
+                colors = setup_colors(),
             },
         })
     end,

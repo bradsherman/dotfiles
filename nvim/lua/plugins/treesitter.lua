@@ -63,32 +63,32 @@ return {
                         node_decremental = "<leader>sd",
                     },
                 },
-                autopairs = { enable = true },
-                autotag = {
-                    enable = true,
-                    filetypes = {
-                        "elixir",
-                        "eelixir",
-                        "heex",
-                        "html",
-                        "javascript",
-                        "typescript",
-                        "javascriptreact",
-                        "typescriptreact",
-                        "svelte",
-                        "vue",
-                        "tsx",
-                        "jsx",
-                        "rescript",
-                        "xml",
-                        "php",
-                        "markdown",
-                        "astro",
-                        "glimmer",
-                        "handlebars",
-                        "hbs",
-                    },
-                },
+                -- autopairs = { enable = true },
+                -- autotag = {
+                --     enable = true,
+                --     filetypes = {
+                --         "elixir",
+                --         "eelixir",
+                --         "heex",
+                --         "html",
+                --         "javascript",
+                --         "typescript",
+                --         "javascriptreact",
+                --         "typescriptreact",
+                --         "svelte",
+                --         "vue",
+                --         "tsx",
+                --         "jsx",
+                --         "rescript",
+                --         "xml",
+                --         "php",
+                --         "markdown",
+                --         "astro",
+                --         "glimmer",
+                --         "handlebars",
+                --         "hbs",
+                --     },
+                -- },
                 playground = {
                     enable = true,
                     disable = {},
@@ -119,7 +119,20 @@ return {
             require("ts_context_commentstring").setup({ enable_autocmd = false })
         end,
     },
-    "windwp/nvim-ts-autotag",
+    {
+        "windwp/nvim-ts-autotag",
+        config = function()
+            require("nvim-ts-autotag").setup({
+                opts = {
+                    -- Defaults
+                    enable_close = true, -- Auto close tags
+                    enable_rename = true, -- Auto rename pairs of tags
+                    enable_close_on_slash = true, -- Auto close on trailing </
+                },
+            })
+        end,
+    },
+
     {
         "yorickpeterse/nvim-tree-pairs",
         config = true,
