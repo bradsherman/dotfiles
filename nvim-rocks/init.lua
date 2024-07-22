@@ -1,9 +1,10 @@
-require('options')
-require('keybindings')
+require("options")
+require("keybindings")
 
 local rocks_config = {
-    rocks_path = "/home/bsherman/.local/share/nvim-rocks/rocks",
-    luarocks_binary = "/home/bsherman/.local/share/nvim-rocks/rocks/bin/luarocks",
+  rocks_path = vim.env.HOME .. "/.local/share/nvim-rocks/rocks",
+	luarocks_binary = "/usr/local/bin/luarocks",
+	-- luarocks_binary = "/home/bsherman/.local/share/nvim-rocks/rocks/bin/luarocks",
 }
 
 vim.g.rocks_nvim = rocks_config
@@ -23,6 +24,9 @@ package.cpath = package.cpath .. ";" .. table.concat(luarocks_cpath, ";")
 
 vim.opt.runtimepath:append(vim.fs.joinpath(rocks_config.rocks_path, "lib", "luarocks", "rocks-5.1", "rocks.nvim", "*"))
 
+ 
 -- This is necessary to autoload the colorscheme
-require('rocks').packadd('kanagawa.nvim')
-require('rocks').packadd('heirline.nvim')
+-- vim.cmd("packadd kanagawa.nvim")
+-- vim.cmd("packadd heirline.nvim")
+require("rocks").packadd("kanagawa.nvim")
+require("rocks").packadd("heirline.nvim")

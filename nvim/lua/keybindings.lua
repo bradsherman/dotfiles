@@ -1,4 +1,3 @@
-vim.keymap.set("n", "<space>", "<nop>")
 vim.g.leader = " "
 vim.g.mapleader = " "
 vim.g.localleader = ","

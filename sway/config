@@ -36,8 +36,9 @@ exec nm-applet
 
 # exec ~/.fehbg
 # output * bg /home/bsherman/Pictures/ocean-night.jpg fill
-# exec_always killall swaybg
-exec swaybg -o "*" -i "/home/bsherman/Pictures/leaves.png" -m fill
+exec_always killall swaybg
+# exec_always swaybg -o "*" -i "/home/bsherman/Pictures/kanagawa.jpg" -m fill
+exec_always swaybg -o "*" -i "/home/bsherman/Pictures/leaves.png" -m fill
 
 set $laptop "Chimei Innolux Corporation 0x14D5 0x00000000"
 bindswitch --reload --locked lid:on output $laptop disable

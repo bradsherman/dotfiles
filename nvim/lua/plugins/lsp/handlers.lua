@@ -20,6 +20,10 @@ local function lsp_highlight_document(client, bufnr)
     end
 end
 
+local function diag_jump(count)
+    vim.diagnostic.jump({ count = count, float = true })
+end
+
 -- TODO: register these with which key instead
 local function lsp_keymaps(client, bufnr)
     vim.keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<cr>", { buffer = bufnr })
@@ -30,8 +34,12 @@ local function lsp_keymaps(client, bufnr)
     -- vim.keymap.set("n", "gD", "<cmd>Lspsaga peek_definition<cr>", { buffer = bufnr })
     vim.keymap.set("n", "K", require("hover").hover, { buffer = bufnr })
     vim.keymap.set("n", "gK", require("hover").hover_select, { buffer = bufnr })
-    vim.keymap.set("n", "<c-p>", "<cmd>lua vim.diagnostic.goto_prev()<cr>", { buffer = bufnr })
-    vim.keymap.set("n", "<c-n>", "<cmd>lua vim.diagnostic.goto_next()<cr>", { buffer = bufnr })
+    vim.keymap.set("n", "<c-p>", function()
+        diag_jump(-1)
+    end, { buffer = bufnr })
+    vim.keymap.set("n", "<c-n>", function()
+        diag_jump(1)
+    end, { buffer = bufnr })
     -- vim.keymap.set("n", "<leader>lh", "<cmd>Lspsaga signature_help<CR>", { buffer = bufnr })
     vim.keymap.set("n", "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<cr>", { buffer = bufnr })
     -- vim.keymap.set("n", "<leader>la", "<cmd>Lspsaga code_action<cr>", { buffer = bufnr })

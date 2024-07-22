@@ -119,4 +119,11 @@ return {
     "nvim-telescope/telescope-file-browser.nvim",
     "luc-tielen/telescope_hoogle",
     "mrcjkb/telescope-manix",
+    {
+        "fdschmidt93/telescope-egrepify.nvim",
+        dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
+        config = function()
+            require("telescope").load_extension("egrepify")
+        end,
+    },
 }

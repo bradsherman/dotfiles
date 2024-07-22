@@ -1,2 +1,2 @@
-vim.opt.background = "light"
-vim.cmd.colorscheme("kanagawa-lotus")
+vim.opt.background = "dark"
+vim.cmd.colorscheme("kanagawa-wave")

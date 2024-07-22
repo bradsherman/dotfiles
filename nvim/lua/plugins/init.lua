@@ -88,7 +88,6 @@ return {
     "dhruvasagar/vim-table-mode",
     "moll/vim-bbye",
     "nvim-neorg/neorg-telescope",
-    { "nvim-pack/nvim-spectre", dependencies = { "nvim-lua/plenary.nvim" } },
     {
         "MagicDuck/grug-far.nvim",
         config = function()
@@ -185,5 +184,11 @@ return {
         "chrisgrieser/nvim-recorder",
         dependencies = "rcarriga/nvim-notify", -- optional
         opts = {}, -- required even with default settings, since it calls `setup()`
+    },
+    {
+        "max397574/better-escape.nvim",
+        config = function()
+            require("better_escape").setup()
+        end,
     },
 }

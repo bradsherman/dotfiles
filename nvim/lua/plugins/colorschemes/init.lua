@@ -105,7 +105,7 @@ return {
                     PmenuThumb = { bg = theme.ui.bg_p2 },
 
                     -- block telescope?
-                    TelescopeTitle = { fg = theme.ui.special, bold = true },
+                    TelescopeTitle = { fg = theme.ui.special, bold = true, blend = vim.o.pumblend },
                     TelescopePromptNormal = { bg = theme.ui.bg_p1 },
                     TelescopePromptBorder = { fg = theme.ui.bg_p1, bg = theme.ui.bg_p1 },
                     TelescopeResultsNormal = { fg = theme.ui.fg_dim, bg = theme.ui.bg_m1 },
@@ -199,6 +199,19 @@ return {
             vim.opt.termguicolors = true
             require("rose-pine").setup(opts)
             vim.cmd([[ colorscheme rose-pine ]])
+        end,
+    },
+    {
+        "rachartier/tiny-devicons-auto-colors.nvim",
+        dependencies = {
+            "nvim-tree/nvim-web-devicons",
+        },
+        event = "VeryLazy",
+        config = function()
+            local colors = require("kanagawa.colors").setup()
+            local palette_colors = colors.palette
+            -- local theme_colors = colors.theme
+            require("tiny-devicons-auto-colors").setup({ colors = palette_colors })
         end,
     },
 }

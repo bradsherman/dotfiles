@@ -1,8 +1,8 @@
 return {
-    { "echasnovski/mini.extra", version = "*" },
+    { "echasnovski/mini.extra" },
+    { "echasnovski/mini.ai" },
     {
         "echasnovski/mini.files",
-        version = "*",
         opts = {
             -- Customization of explorer windows
             windows = {
@@ -21,7 +21,6 @@ return {
     },
     {
         "echasnovski/mini.indentscope",
-        version = "*",
         -- event = { "BufReadPre", "BufNewFile" },
         opts = {
             symbol = "│",
@@ -29,8 +28,14 @@ return {
         },
     },
     {
+        "echasnovski/mini.nvim",
+        version = false,
+        config = function()
+            require("mini.icons").setup()
+        end,
+    },
+    {
         "echasnovski/mini.pick",
-        version = "*",
         opts = {
             -- Delays (in ms; should be at least 1)
             delay = {

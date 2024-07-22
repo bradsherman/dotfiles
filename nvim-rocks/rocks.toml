@@ -16,7 +16,7 @@ neorg = { version = "8.4.0", opt = true }
 "rocks-git.nvim" = "1.3.0"
 "rocks-config.nvim" = "1.2.3"
 "kanagawa.nvim" = { version = "scm", opt = true }
-"oil.nvim" = "2.7.0"
+# "oil.nvim" = "2.7.0"
 "haskell-tools.nvim" = "3.1.8"
 "heirline.nvim" = { version = "1.0.3", opt = true }
 rustaceanvim = "4.21.0"
@@ -36,13 +36,12 @@ nvim-lspconfig = "0.1.7"
 "toggleterm.nvim" = "2.10.0"
 nvim-web-devicons = "0.99"
 neogit = { version = "scm", branch = "nightly" }
-# tree-sitter-lua = "scm"
-# tree-sitter-xml = "scm"
-# tree-sitter-http = "scm"
-# tree-sitter-json = "scm"
-# tree-sitter-graphql = "scm"
-"rocks-treesitter.nvim" = "scm"
+tree-sitter-lua = "scm"
+tree-sitter-xml = "scm"
 tree-sitter-http = "scm"
+tree-sitter-json = "scm"
+tree-sitter-graphql = "scm"
+"rocks-treesitter.nvim" = "scm"
 
 [treesitter]
 auto_highlight = "all"

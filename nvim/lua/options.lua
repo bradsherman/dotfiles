@@ -53,7 +53,7 @@ wo.cursorline = false
 o.wildmenu = true
 o.cmdheight = 1
 o.clipboard:append("unnamedplus")
-wo.colorcolumn = "120"
+-- wo.colorcolumn = "120"
 wo.signcolumn = "yes"
 vim.go.laststatus = 3
 
@@ -71,7 +71,12 @@ local undo_dir = os.getenv("HOME") .. "/.vim/undodir"
 os.execute("mkdir -p " .. undo_dir)
 o.undodir = { undo_dir }
 vim.cmd([[set viewoptions-=curdir]])
-bo.undofile = true
+vim.opt.undofile = true
+local keyset = vim.keymap.set
+keyset("i", ",", ",<C-g>U")
+keyset("i", ".", ".<C-g>U")
+keyset("i", "!", "!<C-g>U")
+keyset("i", "?", "?<C-g>U")
 
 o.grepprg = "rg --vimgrep --smart-case --follow --hidden"
 -- o.grepprg = "rg --vimgrep"

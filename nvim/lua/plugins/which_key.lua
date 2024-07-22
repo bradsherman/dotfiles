@@ -1,5 +1,6 @@
 return {
     "folke/which-key.nvim",
+    -- event = "VeryLazy",
     config = function(_, opts)
         local wk = require("which-key")
         wk.setup(opts)
@@ -16,7 +17,7 @@ return {
         local update_haskell_tags = require("utils").update_haskell_tags
 
         -- Miscellaneous Telescope mappings
-        wk.register({
+        wk.add({
             --[[ ["<c-f>"] = { "<cmd>Files<cr>", "Files" }, ]]
             --[[ ["<c-g>"] = { "<cmd>Rg<cr>", "Grep" }, ]]
             --[[ ["<c-b>"] = { "<cmd>Buffers<cr>", "Buffers" }, ]]
@@ -29,417 +30,388 @@ return {
             -- ["<c-g>"] = { "<cmd>FzfLua live_grep<cr>", "Grep" },
             -- ["<c-b>"] = { "<cmd>FzfLua buffers<cr>", "Buffers" },
             -- ["<c-t>"] = { "<cmd>FzfLua tags<cr>", "Tags" },
-            ["R"] = { "<cmd>FzfLua resume<cr>", "Resume" },
+            { "R", "<cmd>FzfLua resume<cr>", desc = "Resume" },
 
-            ["<c-f>"] = { "<cmd>Telescope find_files<cr>", "Telescope Files" },
-            ["<c-g>"] = {
-                "<cmd>lua require('telescope').extensions.live_grep_args.live_grep_args()<cr>",
-                "Telescope Grep",
-            },
-            ["<c-b>"] = { "<cmd>Telescope buffers<cr>", "Telescope Buffers" },
-            ["<c-t>"] = { "<cmd>Telescope tags<cr>", "Telescope Tags" },
+            { "<c-f>", "<cmd>Telescope find_files<cr>", desc = "Telescope Files" },
+            { "<c-g>", "<cmd>Telescope egrepify<cr>", desc = "Telescope Grep" },
+            -- ["<c-g>"] = {
+            --     "<cmd>lua require('telescope').extensions.live_grep_args.live_grep_args()<cr>",
+            --     "Telescope Grep",
+            -- },
+            { "<c-b>", "<cmd>Telescope buffers<cr>", desc = "Telescope Buffers" },
+            { "<c-t>", "<cmd>Telescope tags<cr>", desc = "Telescope Tags" },
 
             -- ["<c-f>"] = { "<cmd>Pick files<cr>", "mini.pick Files" },
             -- ["<c-g>"] = { "<cmd>Pick grep_live<cr>", "mini.pick Grep" },
             -- ["<c-b>"] = { "<cmd>Pick buffers<cr>", "mini.pick Buffers" },
 
-            ["<leader>gd"] = { "<cmd>GrepInDirectory<cr>", "Search In Directory" },
-            ["<leader>fh"] = {
+            { "<leader>gd", "<cmd>GrepInDirectory<cr>", desc = "Search In Directory" },
+            {
+                "<leader>fh",
                 "<cmd>lua require('telescope.builtin').live_grep({glob_pattern='*.hs'})<cr>",
-                "Grep Haskell Files",
+                desc = "Grep Haskell Files",
             },
-            ["<leader>ft"] = {
+            {
+                "<leader>ft",
                 "<cmd>lua require('telescope.builtin').live_grep({glob_pattern={'*.ts','*.js','*.tsx','*.jsx','*.css','*.scss'}})<cr>",
-                "Grep Web Files",
+                desc = "Grep Web Files",
             },
-            ["<leader>ff"] = { "<cmd>lua MiniFiles.open()<cr>", "Mini Files" },
-            ["<leader>fg"] = {
+            { "<leader>ff", "<cmd>lua MiniFiles.open()<cr>", desc = "Mini Files" },
+            {
+                "<leader>fg",
                 "<cmd>lua require('telescope').extensions.live_grep_args.live_grep_args()<cr>",
-                "Live Grep Args",
+                desc = "Live Grep Args",
             },
-            ["<leader>fe"] = {
+            {
+                "<leader>fe",
                 "<cmd>require('telescope').extensions.file_browser.file_browser()<cr>",
-                "Telescope File Browser",
+                desc = "Telescope File Browser",
             },
-            ["<leader>f?"] = {
+            {
+                "<leader>f?",
                 "<cmd>lua require('notify').notify(vim.fn.expand('%f'))<cr>",
-                "What file am I?",
+                desc = "What file am I?",
             },
-            ["<leader>qr"] = { "<cmd>lua require('plugin_conf/telescope').reload()<cr>", "Reload Modules" },
-            ["<leader>bd"] = { "<cmd>bufdo :Bdelete<cr>", "Clear Buffers" },
-            ["<leader>sn"] = { "<cmd>Telescope manix<cr>", "Search Nix" },
-        }, {})
-
-        -- Spectre
-        wk.register({
-            s = {
-                -- f = {
-                --     function()
-                --         local menu = require("pickers.spectre")
-                --         menu.toggle()
-                --     end,
-                --     "Spectre",
-                -- },
-                f = {
-                    name = "+Spectre",
-                    r = { "<cmd>Spectre<cr>", "Spectre" },
-                    w = { "<cmd>lua require('spectre').open_visual({select_word=true})<cr>", "Spectre Current Word" },
-                },
-            },
-        }, { prefix = "<leader>" })
+            { "<leader>qr", "<cmd>lua require('plugin_conf/telescope').reload()<cr>", desc = "Reload Modules" },
+            { "<leader>bd", "<cmd>bufdo :Bdelete<cr>", desc = "Clear Buffers" },
+            { "<leader>sn", "<cmd>Telescope manix<cr>", desc = "Search Nix" },
+        })
 
         -- GrugFar
-        wk.register({
-            f = {
-                a = {
-                    name = "+GrugFar",
-                    r = { "<cmd>GrugFar<cr>", "GrugFar" },
-                },
-            },
-        }, { prefix = "<leader>" })
+        wk.add({
+            { "<leader>far", "<cmd>GrugFar<cr>", desc = "Find And Replace" },
+        })
 
         -- Overseer
-        wk.register({
-            b = {
-                name = "+Overseer",
-                a = { "<cmd>OverseerTaskAction<cr>", "Action" },
-                b = { "<cmd>OverseerRun stack_build_package<cr>", "Build Stack Package" },
-                i = { "<cmd>OverseerInfo<cr>", "Info" },
-                r = { "<cmd>OverseerRun<cr>", "Run" },
-                t = { "<cmd>OverseerToggle<cr>", "Toggle" },
-            },
-        }, { prefix = "<leader>" })
+        wk.add({
+            { "<leader>b", group = "+Overseer" },
+            { "<leader>ba", "<cmd>OverseerTaskAction<cr>", desc = "Action" },
+            { "<leader>bb", "<cmd>OverseerRestartLast<cr>", desc = "Restart Last" },
+            { "<leader>bi", "<cmd>OverseerInfo<cr>", desc = "Info" },
+            { "<leader>br", "<cmd>OverseerRun<cr>", desc = "Run" },
+            { "<leader>bs", "<cmd>OverseerRun stack_build_package<cr>", desc = "Build Stack Package" },
+            { "<leader>bt", "<cmd>OverseerToggle<cr>", desc = "Toggle" },
+        })
 
         -- Quickfix
-        wk.register({
-            q = {
-                name = "+Quickfix",
-                j = { "<cmd>cnext<cr>", "Quickfix next" },
-                k = { "<cmd>cprev<cr>", "Quickfix prev" },
-                c = { "<cmd>copen<cr>", "Quickfix open" },
-                q = { "<cmd>cclose<cr>", "Quickfix close" },
-            },
-        }, { prefix = "<leader>" })
+        wk.add({
+            { "<leader>q", group = "+Quickfix" },
+            { "<leader>qj", "<cmd>cnext<cr>", desc = "Quickfix next" },
+            { "<leader>qk", "<cmd>cprev<cr>", desc = "Quickfix prev" },
+            { "<leader>qc", "<cmd>copen<cr>", desc = "Quickfix open" },
+            { "<leader>qq", "<cmd>cclose<cr>", desc = "Quickfix close" },
+        })
 
         -- Colorizer
-        wk.register({
-            c = {
-                name = "+Colorizer",
-                t = { "<cmd>HighlightColors Toggle<cr>", "Toggle Colorizer" },
-            },
-        }, { prefix = "<leader>" })
+        wk.add({
+            { "<leader>ct", "<cmd>HighlightColors Toggle<cr>", desc = "Toggle Colorizer" },
+        })
 
         -- Markdown Preview
-        wk.register({
-            ["m"] = {
-                name = "+Markdown",
-                p = { "<cmd>MarkdownPreview<cr>", "Markdown Preview" },
-                s = { "<cmd>MarkdownPreviewStop<cr>", "Markdown Preview Stop" },
-                t = { "<cmd>MarkdownPreviewToggle<cr>", "Markdown Preview Toggle" },
-            },
-        }, { prefix = "<leader>" })
+        wk.add({
+            { "<leader>m", group = "+Markdown" },
+            { "<leader>mp", "<cmd>MarkdownPreview<cr>", desc = "Markdown Preview" },
+            { "<leader>ms", "<cmd>MarkdownPreviewStop<cr>", desc = "Markdown Preview Stop" },
+            { "<leader>mt", "<cmd>MarkdownPreviewToggle<cr>", desc = "Markdown Preview Toggle" },
+        })
 
         -- Lazy
-        wk.register({
-            p = {
-                name = "+Lazy",
-                s = { "<cmd>Lazy sync<cr>", "Lazy Sync" },
-                u = { "<cmd>Lazy update<cr>", "Lazy Update" },
-            },
-        }, { prefix = "<leader>" })
+        wk.add({
+            { "<leader>p", "+Lazy" },
+            { "<leader>ps", "<cmd>Lazy sync<cr>", desc = "Lazy Sync" },
+            { "<leader>pu", "<cmd>Lazy update<cr>", desc = "Lazy Update" },
+        })
 
         -- Zen Mode
-        wk.register({
-            z = {
-                name = "ZenMode",
-                m = {
-                    "<cmd>ZenMode<cr>",
-                    "Toggle Zen Mode",
-                },
-                t = {
-                    "<cmd>Twilight<cr>",
-                    "Toggle Twilight",
-                },
-            },
-        }, { prefix = "<leader>" })
+        wk.add({
+            { "<leader>z", group = "+ZenMode" },
+            { "<leader>zm", "<cmd>ZenMode<cr>", desc = "Toggle Zen Mode" },
+            { "<leader>zt", "<cmd>Twilight<cr>", desc = "Toggle Twilight" },
+        })
 
         -- Misc
-        wk.register({
-            ["<tab>"] = { "<cmd>b#<cr>", "Previous Buffer" },
-            ["tm"] = { "<cmd>TableModeToggle<cr>", "Toggle TableMode" },
-            ["sw"] = { "<cmd>set list!<cr>", "Show Whitespace Chars" },
-            ["se"] = { "<cmd>Eswpoch<cr>", "Epoch Switcher" },
-            ["fe"] = {
+        wk.add({
+            { "<leader><tab>", "<cmd>b#<cr>", desc = "Previous Buffer" },
+            { "<leader>tm", "<cmd>TableModeToggle<cr>", desc = "Toggle TableMode" },
+            { "<leader>sw", "<cmd>set list!<cr>", desc = "Show Whitespace Chars" },
+            { "<leader>se", "<cmd>Eswpoch<cr>", desc = "Epoch Switcher" },
+            {
+                "<leader>fe",
                 "<cmd>lua require('telescope').extensions.file_browser.file_browser()<cr>",
-                "Telescope File Browser",
+                desc = "Telescope File Browser",
             },
-            ["nc"] = { "<cmd>lua require('notify').dismiss({pending = true})<cr>", "Clear Notifications" },
-            -- ["hs"] = { require("haskell-tools").hoogle.hoogle_signature, "Hoogle Signature" },
-            a = { "<cmd>AerialToggle!<cr>", "Aerial Toggle" },
-        }, { prefix = "<leader>" })
+            { "<leader>nc", "<cmd>lua require('notify').dismiss({pending = true})<cr>", desc = "Clear Notifications" },
+            { "<leader>hs", require("haskell-tools").hoogle.hoogle_signature, desc = "Hoogle Signature" },
+            { "<leader>a", "<cmd>AerialToggle!<cr>", desc = "Aerial Toggle" },
+        })
 
-        wk.register({
-            ["-"] = { "<cmd>Oil<cr>", "Open parent directory" },
-            ["<C-e>"] = { "<cmd>Oil<cr>", "Open parent directory" },
-            ["<leader>e"] = { "<cmd>Oil<cr>", "Open parent directory" },
-            -- ["-"] = { "<cmd>lua MiniFiles.open()<cr>", "Mini Files" },
-            -- ["<C-e>"] = { "<cmd>lua MiniFiles.open()<cr>", "Mini Files" },
-            -- ["<leader>e"] = { "<cmd>lua MiniFiles.open()<cr>", "Mini Files" },
-        }, {})
+        wk.add({
+            { "-", "<cmd>Oil<cr>", desc = "Open parent directory" },
+            { "<C-e>", "<cmd>Oil<cr>", desc = "Open parent directory" },
+            { "<leader>e", "<cmd>Oil<cr>", desc = "Open parent directory" },
+            -- { "-", "<cmd>lua MiniFiles.open()<cr>", desc = "Mini Files" },
+            -- { "<C-e>", "<cmd>lua MiniFiles.open()<cr>", desc = "Mini Files" },
+            -- { "<leader>e", "<cmd>lua MiniFiles.open()<cr>", desc = "Mini Files" },
+        })
 
         -- Lsp
-        wk.register({
-            ["<leader>l"] = {
-                name = "+LSP Actions",
-                a = { "<cmd>lua vim.lsp.buf.code_action()<cr>", "Code Actions" },
-                -- a = { "<cmd>Lspsaga code_action<cr>", "Code Actions" },
-                d = { "<cmd>Telescope diagnostics<cr>", "LSP Diagnostics" },
-                -- e = { "<cmd>Lspsaga show_line_diagnostics<cr>", "Line Diagnostics" },
-                f = { "<cmd>lua vim.lsp.buf.format({ async = true })<cr>", "Format" },
-                i = { "<cmd>TSToolsOrganizeImports<cr>", "TSToolsOrganizeImports" },
-                l = { vim.lsp.codelens.run, "LSP Code Lens" },
-                r = { "<cmd>IncRename " .. vim.fn.expand("<cword>") .. "<cr>", "Rename" },
-                s = { "<cmd>Telescope lsp_workspace_symbols<cr>", "LSP Workspace Symbols" },
-                t = { "<cmd>Telescope tags<cr>", "Tags" },
-                u = { update_haskell_tags, "Update Haskell tags" },
+        wk.add({
+            {
+                { "<leader>l", group = "+LSP Actions" },
+                { "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<cr>", desc = "Code Actions" },
+                { "<leader>ld", "<cmd>Telescope diagnostics<cr>", desc = "LSP Diagnostics" },
+                { "<leader>lf", "<cmd>lua vim.lsp.buf.format({ async = true })<cr>", desc = "Format" },
+                { "<leader>li", "<cmd>TSToolsOrganizeImports<cr>", desc = "TSToolsOrganizeImports" },
+                { "<leader>ll", vim.lsp.codelens.run, desc = "LSP Code Lens" },
+                { "<leader>lr", "<cmd>IncRename " .. vim.fn.expand("<cword>") .. "<cr>", desc = "Rename" },
+                { "<leader>ls", "<cmd>Telescope lsp_workspace_symbols<cr>", desc = "LSP Workspace Symbols" },
+                { "<leader>lt", "<cmd>Telescope tags<cr>", desc = "Tags" },
+                { "<leader>lu", update_haskell_tags, desc = "Update Haskell tags" },
             },
-            ["<c-p>"] = {
+            {
+                "<c-p>",
                 function()
-                    require("delimited").goto_prev()
+                    vim.diagnostic.jump({ count = -1, float = true })
                 end,
-                "Prev Diagnostic",
+                desc = "Prev Diagnostic",
             },
-            ["<c-n>"] = {
+            {
+                "<c-n>",
                 function()
-                    require("delimited").goto_next()
+                    vim.diagnostic.jump({ count = 1, float = true })
                 end,
-                "Next Diagnostic",
+                desc = "Next Diagnostic",
             },
-            -- ["<c-p>"] = { "<cmd>lua vim.diagnostic.goto_prev()<cr>", "Prev Diagnostic" },
-            -- ["<c-n>"] = { "<cmd>lua vim.diagnostic.goto_next()<cr>", "Next Diagnostic" },
-            g = {
-                name = "+LSP Types",
-                d = { "<cmd>Telescope lsp_definitions<cr>", "Definitions" },
-                i = { "<cmd>Telescope lsp_implementations<cr>", "Implementations" },
-                K = { require("hover").hover, "Hover Doc" },
-                m = { "<cmd>Telescope lsp_document_symbols<cr>", "Document Symbols" },
-                r = { "<cmd>Telescope lsp_references<cr>", "References" },
-                t = { "<cmd>Telescope lsp_type_definitions<cr>", "Type Definitions" },
+            {
+                { "g", group = "+LSP Types" },
+                { "gd", "<cmd>Telescope lsp_definitions<cr>", desc = "Definitions" },
+                { "gi", "<cmd>Telescope lsp_implementations<cr>", desc = "Implementations" },
+                { "gK", require("hover").hover, desc = "Hover Doc" },
+                { "gm", "<cmd>Telescope lsp_document_symbols<cr>", desc = "Document Symbols" },
+                { "gr", "<cmd>Telescope lsp_references<cr>", desc = "References" },
+                { "gt", "<cmd>Telescope lsp_type_definitions<cr>", desc = "Type Definitions" },
             },
-        }, {})
+        })
 
         -- Git
-        wk.register({
-            g = {
-                name = "+Git",
-                -- Fugitive
-                s = { "<cmd>G<cr>", "Git Status" },
-                -- Telescope
-                b = { "<cmd>Telescope git_branches<cr>", "Git Branches" },
-                -- Neogit
-                g = { "<cmd>Neogit<cr>", "Neogit" },
-                c = {
-                    name = "+Conflict",
-                    b = { "<cmd>GitConflictChooseBoth<cr>", "Choose Both" },
-                    j = { "<cmd>GitConflictNextConflict<cr>", "Next Conflict" },
-                    k = { "<cmd>GitConflictPrevConflict<cr>", "Previous Conflict" },
-                    l = { "<cmd>GitConflictListQf<cr>", "To Quickfix" },
-                    n = { "<cmd>GitConflictChooseNone<cr>", "Choose None" },
-                    o = { "<cmd>GitConflictChooseOurs<cr>", "Choose Ours" },
-                    r = { "<cmd>GitConflictRefresh<cr>", "Refresh" },
-                    t = { "<cmd>GitConflictChooseTheirs<cr>", "Choose Theirs" },
+        wk.add({
+            { "<leader>g", group = "+Git" },
+            -- Telescope
+            { "<leader>bg", "<cmd>Telescope git_branches<cr>", desc = "Git Branches" },
+            -- Neogit
+            { "<leader>gg", "<cmd>Neogit<cr>", desc = "Neogit" },
+            {
+                { "<leader>gc", group = "+Conflict" },
+                { "<leader>gcb", "<cmd>GitConflictChooseBoth<cr>", desc = "Choose Both" },
+                { "<leader>gcj", "<cmd>GitConflictNextConflict<cr>", desc = "Next Conflict" },
+                { "<leader>gck", "<cmd>GitConflictPrevConflict<cr>", desc = "Previous Conflict" },
+                { "<leader>gcl", "<cmd>GitConflictListQf<cr>", desc = "To Quickfix" },
+                { "<leader>gcn", "<cmd>GitConflictChooseNone<cr>", desc = "Choose None" },
+                { "<leader>gco", "<cmd>GitConflictChooseOurs<cr>", desc = "Choose Ours" },
+                { "<leader>gcr", "<cmd>GitConflictRefresh<cr>", desc = "Refresh" },
+                { "<leader>gct", "<cmd>GitConflictChooseTheirs<cr>", desc = "Choose Theirs" },
+            },
+            {
+                { "<leader>gd", group = "+Diffview/Gitsigns" },
+                { "<leader>gdc", "<cmd>DiffviewOpen origin/HEAD...HEAD --imply-local<cr>", desc = "Compare Branch" },
+                { "<leader>gdd", "<cmd>Gitsigns preview_hunk<cr>", desc = "Preview Hunk" },
+                { "<leader>gdf", "<cmd>DiffviewFileHistory %<cr>", desc = "Diffview File History" },
+                { "<leader>gdh", "<cmd>DiffviewOpen HEAD~1<cr>", desc = "Diffview Open Last Commit" },
+                { "<leader>gdl", "<cmd>Gitsigns blame_line<cr>", desc = "Blame Line" },
+                { "<leader>gdo", "<cmd>DiffviewOpen<cr>", desc = "Diffview Open" },
+                {
+                    "<leader>gdr",
+                    "<cmd>DiffviewFileHistory --range=origin/HEAD...HEAD --right-only --no-merges<cr>",
+                    desc = "Compare Branch (commitwise)",
                 },
-                d = {
-                    name = "+Diffview/Gitsigns",
-                    c = { "<cmd>DiffviewOpen origin/HEAD...HEAD --imply-local<cr>", "Compare Branch" },
-                    d = { "<cmd>Gitsigns preview_hunk<cr>", "Preview Hunk" },
-                    f = { "<cmd>DiffviewFileHistory %<cr>", "Diffview File History" },
-                    h = { "<cmd>DiffviewOpen HEAD~1<cr>", "Diffview Open Last Commit" },
-                    l = { "<cmd>Gitsigns blame_line<cr>", "Blame Line" },
-                    o = { "<cmd>DiffviewOpen<cr>", "Diffview Open" },
-                    r = {
-                        "<cmd>DiffviewFileHistory --range=origin/HEAD...HEAD --right-only --no-merges<cr>",
-                        "Compare Branch (commitwise)",
-                    },
-                    s = { "<cmd>Gitsigns stage_hunk<cr>", "Stage Hunk" },
-                    x = { "<cmd>DiffviewClose<cr>", "Diffview Close" },
+                { "<leader>gds", "<cmd>Gitsigns stage_hunk<cr>", desc = "Stage Hunk" },
+                { "<leader>gdx", "<cmd>DiffviewClose<cr>", desc = "Diffview Close" },
+            },
+            {
+                { "<leader>gh", group = "+Github" },
+                {
+                    { "<leader>ghc", group = "+Commits" },
+                    { "<leader>ghcc", "<cmd>GHCloseCommit<cr>", desc = "Close" },
+                    { "<leader>ghce", "<cmd>GHExpandCommit<cr>", desc = "Expand" },
+                    { "<leader>ghco", "<cmd>GHOpenToCommit<cr>", desc = "Open To" },
+                    { "<leader>ghcp", "<cmd>GHPopOutCommit<cr>", desc = "Pop Out" },
+                    { "<leader>ghcz", "<cmd>GHCollapseCommit<cr>", desc = "Collapse" },
                 },
-                h = {
-                    name = "+Github",
-                    c = {
-                        name = "+Commits",
-                        c = { "<cmd>GHCloseCommit<cr>", "Close" },
-                        e = { "<cmd>GHExpandCommit<cr>", "Expand" },
-                        o = { "<cmd>GHOpenToCommit<cr>", "Open To" },
-                        p = { "<cmd>GHPopOutCommit<cr>", "Pop Out" },
-                        z = { "<cmd>GHCollapseCommit<cr>", "Collapse" },
-                    },
-                    d = { "<cmd>GHOpenDebugBuffer<cr>", "Open Debug Buffer" },
-                    i = {
-                        name = "+Issues",
-                        l = { "<cmd>Octo issue list<cr>", "List Issues (Octo)" },
-                        p = { "<cmd>GHPreviewIssue<cr>", "Preview" },
-                    },
-                    l = {
-                        name = "+Litee/Labels",
-                        a = { "<cmd>GHAddLabel<cr>", "Add Label to PR" },
-                        r = { "<cmd>GHRemoveLabel<cr>", "Remove Label to PR" },
-                        t = { "<cmd>LTPanel<cr>", "Toggle Panel" },
-                    },
-                    r = {
-                        name = "+Review",
-                        b = { "<cmd>GHStartReview<cr>", "Begin" },
-                        c = { "<cmd>GHCloseReview<cr>", "Close" },
-                        d = { "<cmd>GHDeleteReview<cr>", "Delete" },
-                        e = { "<cmd>GHExpandReview<cr>", "Expand" },
-                        s = { "<cmd>GHSubmitReview<cr>", "Submit" },
-                        z = { "<cmd>GHCollapseReview<cr>", "Collapse" },
-                    },
-                    p = {
-                        name = "+Pull Request",
-                        c = { "<cmd>GHClosePR<cr>", "Close" },
-                        d = { "<cmd>GHPRDetails<cr>", "Details" },
-                        e = { "<cmd>GHExpandPR<cr>", "Expand" },
-                        l = { "<cmd>Octo pr list<cr>", "List (Octo)" },
-                        m = { "<cmd>GHRequestedReview<cr>", "My PRs To Review" },
-                        o = { "<cmd>GHOpenPR<cr>", "Open" },
-                        p = { "<cmd>GHPopOutPR<cr>", "PopOut" },
-                        r = { "<cmd>GHRefreshPR<cr>", "Refresh" },
-                        s = { "<cmd>GHSearchPRs<cr>", "Search All PRs" },
-                        t = { "<cmd>GHOpenToPR<cr>", "Open To" },
-                        z = { "<cmd>GHCollapsePR<cr>", "Collapse" },
-                    },
-                    t = {
-                        name = "+Threads",
-                        c = { "<cmd>GHCreateThread<cr>", "Create" },
-                        n = { "<cmd>GHNextThread<cr>", "Next" },
-                        t = { "<cmd>GHToggleThreads<cr>", "Toggle" },
-                    },
+                { "<leader>ghd", "<cmd>GHOpenDebugBuffer<cr>", desc = "Open Debug Buffer" },
+                {
+                    { "<leader>ghi", group = "+Issues" },
+                    { "<leader>ghil", "<cmd>Octo issue list<cr>", desc = "List Issues (Octo)" },
+                    { "<leader>ghip", "<cmd>GHPreviewIssue<cr>", desc = "Preview" },
                 },
-                n = { "<cmd>Gitsigns next_hunk<cr>", "Next Hunk" },
-                p = { "<cmd>Gitsigns prev_hunk<cr>", "Previous Hunk" },
-                w = {
-                    name = "+Worktree",
-                    c = { "<cmd>lua require('telescope').extensions.git_worktree.create_git_worktree()<cr>", "Create" },
-                    -- c = { "<cmd>lua require('utils').worktree_workaround()<cr>", "Create" },
-                    -- s = { "<cmd>lua require('neogit').action('worktree', 'visit', {})<cr>", "Switch" },
-                    s = {
-                        function()
-                            require("telescope").extensions.git_worktree.git_worktrees({
-                                path_display = {},
-                            })
-                        end,
-                        "Switch",
-                    },
+                {
+                    { "<leader>ghl", group = "+Litee/Labels" },
+                    { "<leader>ghla", "<cmd>GHAddLabel<cr>", desc = "Add Label to PR" },
+                    { "<leader>ghlr", "<cmd>GHRemoveLabel<cr>", desc = "Remove Label to PR" },
+                    { "<leader>ghlt", "<cmd>LTPanel<cr>", desc = "Toggle Panel" },
+                },
+                {
+                    { "<leader>ghr", group = "+Review" },
+                    { "<leader>ghrb", "<cmd>GHStartReview<cr>", desc = "Begin" },
+                    { "<leader>ghrc", "<cmd>GHCloseReview<cr>", desc = "Close" },
+                    { "<leader>ghrd", "<cmd>GHDeleteReview<cr>", desc = "Delete" },
+                    { "<leader>ghre", "<cmd>GHExpandReview<cr>", desc = "Expand" },
+                    { "<leader>ghrs", "<cmd>GHSubmitReview<cr>", desc = "Submit" },
+                    { "<leader>ghrz", "<cmd>GHCollapseReview<cr>", desc = "Collapse" },
+                },
+                {
+                    { "<leader>ghp", name = "+Pull Request" },
+                    { "<leader>ghpc", "<cmd>GHClosePR<cr>", desc = "Close" },
+                    { "<leader>ghpd", "<cmd>GHPRDetails<cr>", desc = "Details" },
+                    { "<leader>ghpe", "<cmd>GHExpandPR<cr>", desc = "Expand" },
+                    { "<leader>ghpl", "<cmd>Octo pr list<cr>", desc = "List (Octo)" },
+                    { "<leader>ghpm", "<cmd>GHRequestedReview<cr>", desc = "My PRs To Review" },
+                    { "<leader>ghpo", "<cmd>GHOpenPR<cr>", desc = "Open" },
+                    { "<leader>ghpp", "<cmd>GHPopOutPR<cr>", desc = "PopOut" },
+                    { "<leader>ghpr", "<cmd>GHRefreshPR<cr>", desc = "Refresh" },
+                    { "<leader>ghps", "<cmd>GHSearchPRs<cr>", desc = "Search All PRs" },
+                    { "<leader>ghpt", "<cmd>GHOpenToPR<cr>", desc = "Open To" },
+                    { "<leader>ghpz", "<cmd>GHCollapsePR<cr>", desc = "Collapse" },
+                },
+                {
+                    { "<leader>ght", name = "+Threads" },
+                    { "<leader>ghtc", "<cmd>GHCreateThread<cr>", desc = "Create" },
+                    { "<leader>ghtn", "<cmd>GHNextThread<cr>", desc = "Next" },
+                    { "<leader>ghtt", "<cmd>GHToggleThreads<cr>", desc = "Toggle" },
                 },
             },
-            o = {
-                name = "+Octo",
-                c = {
-                    name = "+Comment",
-                    a = { "<cmd>Octo comment add<cr>", "Add a comment" },
-                    d = { "<cmd>Octo comment delete<cr>", "Delete a comment" },
+            { "<leader>gn", "<cmd>Gitsigns next_hunk<cr>", desc = "Next Hunk" },
+            { "<leader>gp", "<cmd>Gitsigns prev_hunk<cr>", desc = "Previous Hunk" },
+            {
+                { "<leader>gw", group = "+Worktree" },
+                {
+                    "<leader>gwc",
+                    "<cmd>lua require('telescope').extensions.git_worktree.create_git_worktree()<cr>",
+                    desc = "Create",
                 },
-                i = {
-                    name = "+Issue",
-                    b = { "<cmd>Octo issue browser<cr>", "Open current issue in browser" },
-                    c = { "<cmd>Octo issue create<cr>", "Create an issue" },
-                    e = { "<cmd>Octo issue edit<cr>", "Edit an issue" },
-                    l = { "<cmd>Octo issue list<cr>", "List issues" },
-                    o = { "<cmd>Octo issue reopen<cr>", "Reopen the current issue" },
-                    r = { "<cmd>Octo issue reload<cr>", "Reload the current issue" },
-                    s = { "<cmd>Octo issue search<cr>", "Search issues" },
-                    u = { "<cmd>Octo issue url<cr>", "Copy current issue url" },
-                    x = { "<cmd>Octo issue close<cr>", "Close the current issue" },
+                {
+                    "<leader>gws",
+                    function()
+                        require("telescope").extensions.git_worktree.git_worktrees({
+                            path_display = {},
+                        })
+                    end,
+                    desc = "Switch",
                 },
-                p = {
+            },
+            {
+                { "<leader>go", group = "+Octo" },
+                {
+                    { "<leader>goc", group = "+Comment" },
+                    { "<leader>goca", "<cmd>Octo comment add<cr>", desc = "Add a comment" },
+                    { "<leader>gocd", "<cmd>Octo comment delete<cr>", desc = "Delete a comment" },
+                },
+                {
+                    { "<leader>goi", group = "+Issue" },
+                    { "<leader>goib", "<cmd>Octo issue browser<cr>", desc = "Open current issue in browser" },
+                    { "<leader>goic", "<cmd>Octo issue create<cr>", desc = "Create an issue" },
+                    { "<leader>goie", "<cmd>Octo issue edit<cr>", desc = "Edit an issue" },
+                    { "<leader>goil", "<cmd>Octo issue list<cr>", desc = "List issues" },
+                    { "<leader>goio", "<cmd>Octo issue reopen<cr>", desc = "Reopen the current issue" },
+                    { "<leader>goir", "<cmd>Octo issue reload<cr>", desc = "Reload the current issue" },
+                    { "<leader>gois", "<cmd>Octo issue search<cr>", desc = "Search issues" },
+                    { "<leader>goiu", "<cmd>Octo issue url<cr>", desc = "Copy current issue url" },
+                    { "<leader>goix", "<cmd>Octo issue close<cr>", desc = "Close the current issue" },
+                },
+                {
                     -- Not included: changes
-                    name = "+PR",
-                    a = { "<cmd>Octo pr ready<cr>", "Mark PR as ready for review" },
-                    b = { "<cmd>Octo pr browser<cr>", "Open PR in browser" },
-                    c = { "<cmd>Octo pr commits<cr>", "List PR Commits" },
-                    d = { "<cmd>Octo pr diff<cr>", "Diff PR" },
-                    e = { "<cmd>Octo pr edit<cr>", "Edit PR" },
-                    f = { "<cmd>Octo pr search<cr>", "Search PRs" },
-                    l = { "<cmd>Octo pr list<cr>", "List PRs" },
-                    m = {
-                        name = "+Merge",
-                        c = { "<cmd>Octo pr merge commit<cr>", "Merge PR with commit strategy" },
-                        d = { "<cmd>Octo pr merge delete<cr>", "Merge PR with delete strategy" },
-                        r = { "<cmd>Octo pr merge rebase<cr>", "Merge PR with rebase strategy" },
-                        s = { "<cmd>Octo pr merge squash<cr>", "Merge PR with squash strategy" },
+                    { "<leader>gop", group = "+PR" },
+                    { "<leader>gopa", "<cmd>Octo pr ready<cr>", desc = "Mark PR as ready for review" },
+                    { "<leader>gopb", "<cmd>Octo pr browser<cr>", desc = "Open PR in browser" },
+                    { "<leader>gopc", "<cmd>Octo pr commits<cr>", desc = "List PR Commits" },
+                    { "<leader>gopd", "<cmd>Octo pr diff<cr>", desc = "Diff PR" },
+                    { "<leader>gope", "<cmd>Octo pr edit<cr>", desc = "Edit PR" },
+                    { "<leader>gopf", "<cmd>Octo pr search<cr>", desc = "Search PRs" },
+                    { "<leader>gopl", "<cmd>Octo pr list<cr>", desc = "List PRs" },
+                    {
+                        { "<leader>gopm", group = "+Merge" },
+                        { "<leader>gopmc", "<cmd>Octo pr merge commit<cr>", desc = "Merge PR with commit strategy" },
+                        { "<leader>gopmd", "<cmd>Octo pr merge delete<cr>", desc = "Merge PR with delete strategy" },
+                        { "<leader>gopmr", "<cmd>Octo pr merge rebase<cr>", desc = "Merge PR with rebase strategy" },
+                        { "<leader>gopms", "<cmd>Octo pr merge squash<cr>", desc = "Merge PR with squash strategy" },
                     },
-                    n = { "<cmd>Octo pr create<cr>", "Create PR" },
-                    p = { "<cmd>Octo pr checkout<cr>", "Checkout PR" },
-                    r = { "<cmd>Octo pr reopen<cr>", "Reopen PR" },
-                    s = { "<cmd>Octo pr checks<cr>", "Show Status of Checks on PR" },
-                    t = { "<cmd>Octo pr reload<cr>", "Reload PR" },
-                    u = { "<cmd>Octo pr url<cr>", "Copy url to PR" },
-                    x = { "<cmd>Octo pr close<cr>", "Close PR" },
+                    { "<leader>gopn", "<cmd>Octo pr create<cr>", desc = "Create PR" },
+                    { "<leader>gopp", "<cmd>Octo pr checkout<cr>", desc = "Checkout PR" },
+                    { "<leader>gopr", "<cmd>Octo pr reopen<cr>", desc = "Reopen PR" },
+                    { "<leader>gops", "<cmd>Octo pr checks<cr>", desc = "Show Status of Checks on PR" },
+                    { "<leader>gopt", "<cmd>Octo pr reload<cr>", desc = "Reload PR" },
+                    { "<leader>gopu", "<cmd>Octo pr url<cr>", desc = "Copy url to PR" },
+                    { "<leader>gopx", "<cmd>Octo pr close<cr>", desc = "Close PR" },
                 },
-                r = {
-                    name = "+Review",
-                    c = { "<cmd>Octo review commit<cr>", "Pick a commit to review" },
-                    d = { "<cmd>Octo review discard<cr>", "Discard a pending review" },
-                    f = { "<cmd>Octo review submit<cr>", "Submit the review" },
-                    r = { "<cmd>Octo review resume<cr>", "Resume a pending review" },
-                    s = { "<cmd>Octo review start<cr>", "Start a new review" },
-                    t = { "<cmd>Octo review comments<cr>", "View pending comments" },
-                    x = { "<cmd>Octo review close<cr>", "Close the review" },
+                {
+                    { "<leader>gor", group = "+Review" },
+                    { "<leader>gorc", "<cmd>Octo review commit<cr>", desc = "Pick a commit to review" },
+                    { "<leader>gord", "<cmd>Octo review discard<cr>", desc = "Discard a pending review" },
+                    { "<leader>gorf", "<cmd>Octo review submit<cr>", desc = "Submit the review" },
+                    { "<leader>gorr", "<cmd>Octo review resume<cr>", desc = "Resume a pending review" },
+                    { "<leader>gors", "<cmd>Octo review start<cr>", desc = "Start a new review" },
+                    { "<leader>gort", "<cmd>Octo review comments<cr>", desc = "View pending comments" },
+                    { "<leader>gorx", "<cmd>Octo review close<cr>", desc = "Close the review" },
                 },
-                t = {
-                    name = "+Thread",
-                    r = { "<cmd>Octo thread resolve<cr>", "Resolve thread" },
-                    u = { "<cmd>Octo thread unresolve<cr>", "Unresolve thread" },
+                {
+                    { "<leader>got", group = "+Thread" },
+                    { "<leader>gotr", "<cmd>Octo thread resolve<cr>", desc = "Resolve thread" },
+                    { "<leader>gotu", "<cmd>Octo thread unresolve<cr>", desc = "Unresolve thread" },
                 },
             },
-        }, { prefix = "<leader>" })
+        })
 
         -- Debug
-        wk.register({
-            d = {
-                name = "Debug",
-                s = {
-                    name = "Step",
-                    c = { "<cmd>lua require('dap').continue()<CR>", "Continue" },
-                    v = { "<cmd>lua require('dap').step_over()<CR>", "Step Over" },
-                    i = { "<cmd>lua require('dap').step_into()<CR>", "Step Into" },
-                    o = { "<cmd>lua require('dap').step_out()<CR>", "Step Out" },
+        wk.add({
+            {
+                { "<leader>d", group = "+Debug" },
+                {
+                    { "<leader>ds", group = "+Step" },
+                    { "<leader>dsc", "<cmd>lua require('dap').continue()<CR>", desc = "Continue" },
+                    { "<leader>dsv", "<cmd>lua require('dap').step_over()<CR>", desc = "Step Over" },
+                    { "<leader>dsi", "<cmd>lua require('dap').step_into()<CR>", desc = "Step Into" },
+                    { "<leader>dso", "<cmd>lua require('dap').step_out()<CR>", desc = "Step Out" },
                 },
-                h = {
-                    name = "Hover",
-                    h = { "<cmd>lua require('dap.ui.variables').hover()<CR>", "Hover" },
-                    v = { "<cmd>lua require('dap.ui.variables').visual_hover()<CR>", "Visual Hover" },
+                {
+                    { "<leader>dh", group = "+Hover" },
+                    { "<leader>dhh", "<cmd>lua require('dap.ui.variables').hover()<CR>", desc = "Hover" },
+                    { "<leader>dhv", "<cmd>lua require('dap.ui.variables').visual_hover()<CR>", desc = "Visual Hover" },
                 },
-                u = {
-                    name = "UI",
-                    h = { "<cmd>lua require('dap.ui.widgets').hover()<CR>", "Hover" },
-                    f = {
+                {
+                    { "<leader>du", group = "+UI" },
+                    { "<leader>duh", "<cmd>lua require('dap.ui.widgets').hover()<CR>", desc = "Hover" },
+                    {
+                        "<leader>duf",
                         "<cmd>lua local widgets=require('dap.ui.widgets');widgets.centered_float(widgets.scopes)<CR>",
-                        "Float",
+                        desc = "Float",
                     },
                 },
-                r = {
-                    name = "Repl",
-                    o = { "<cmd>lua require('dap').repl.open()<CR>", "Open" },
-                    l = { "<cmd>lua require('dap').repl.run_last()<CR>", "Run Last" },
+                {
+                    { "<leader>dr", group = "+REPL" },
+                    { "<leader>dro", "<cmd>lua require('dap').repl.open()<CR>", desc = "Open" },
+                    { "<leader>drl", "<cmd>lua require('dap').repl.run_last()<CR>", desc = "Run Last" },
                 },
-                b = {
-                    name = "Breakpoints",
-                    c = {
+                {
+                    { "<leader>db", group = "+Breakpoints" },
+                    {
+                        "<leader>dbc",
                         "<cmd>lua require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>",
-                        "Breakpoint Condition",
+                        desc = "Breakpoint Condition",
                     },
-                    m = {
+                    {
+                        "<leader>dbm",
                         "<cmd>lua require('dap').set_breakpoint({ nil, nil, vim.fn.input('Log point message: ') })<CR>",
-                        "Log Point Message",
+                        desc = "Log Point Message",
                     },
-                    t = { "<cmd>lua require('dap').toggle_breakpoint()<CR>", "Create" },
+                    {
+                        "<leader>dbt",
+                        "<cmd>lua require('dap').toggle_breakpoint()<CR>",
+                        desc = "Create",
+                    },
                 },
-                c = { "<cmd>lua require('dap').scopes()<CR>", "Scopes" },
-                i = { "<cmd>lua require('dap').toggle()<CR>", "Toggle" },
+                { "<leader>dc", "<cmd>lua require('dap').scopes()<CR>", desc = "Scopes" },
+                { "<leader>di", "<cmd>lua require('dap').toggle()<CR>", desc = "Toggle" },
             },
-        }, { prefix = "<leader>" })
+        })
 
         -- Syntax Tree Surfer
         local surfer_ok, _ = pcall(require, "syntax-tree-surfer")
@@ -448,51 +420,56 @@ return {
                 vim.opt.opfunc = cmd
                 return "g@l"
             end
-            wk.register({
-                v = {
-                    name = "Syntax Tree Surfer Swapping",
-                    -- d = { "<cmd>lua require('syntax-tree-surfer').move('n', false)<cr>", "Continue" },
-                    d = {
+            wk.add({
+                {
+                    { "v", group = "+Syntax Tree Surfer" },
+                    {
+                        "vd",
                         function()
                             swapper("v:lua.STSSwapCurrentNodeNextNormal_Dot")
                         end,
-                        "Swap Current Next",
+                        desc = "Swap Current Next",
                     },
-                    D = {
+                    {
+                        "vD",
                         function()
                             swapper("v:lua.STSSwapDownNormal_Dot")
                         end,
-                        "Swap Master Next",
+                        desc = "Swap Master Next",
                     },
-                    u = {
+                    {
+                        "vu",
                         function()
                             swapper("v:lua.STSSwapCurrentNodePrevNormal_Dot")
                         end,
-                        "Swap Current Prev",
+                        desc = "Swap Current Prev",
                     },
-                    U = {
+                    {
+                        "vU",
                         function()
                             swapper("v:lua.STSSwapUpNormal_Dot")
                         end,
-                        "Swap Master Prev",
+                        desc = "Swap Master Prev",
                     },
                     -- u = { "<cmd>lua require('syntax-tree-surfer').move('n', true)<cr>", "Previous" },
                     -- .select() will show you what you will be swapping with .move(), you'll get used to .select() and .move() behavior quite soon!
-                    x = { "<cmd>STSSelectMasterNode<cr>", "Select" },
+                    { "vx", "<cmd>STSSelectMasterNode<cr>", desc = "Select" },
                     -- .select_current_node() will select the current node at your cursor
-                    n = { "<cmd>STSSelectCurrentNode<cr>", "Select Current" },
-                    -- o = { "<cmd>lua require('dap').step_out()<CR>", "Step Out" },
+                    { "vn", "<cmd>STSSelectCurrentNode<cr>", desc = "Select Current" },
                 },
-            }, { mode = "n" })
+            })
 
-            wk.register({
-                J = { "<cmd>STSSelectNextSiblingNode<cr>", "Surf Next" },
-                K = { "<cmd>STSSelectPrevSiblingNode<cr>", "Surf Prev" },
-                H = { "<cmd>STSSelectParentNode<cr>", "Surf Parent" },
-                L = { "<cmd>STSSelectChildNode<cr>", "Surf Child" },
-                ["<A-j>"] = { "<cmd>STSSwapNextVisual<cr>", "Surf Swap Next" },
-                ["<A-k>"] = { "<cmd>STSSwapPrevVisual<cr>", "Surf Swap Prev" },
-            }, { mode = "x" })
+            wk.add({
+                {
+                    mode = "x",
+                    { "J", "<cmd>STSSelectNextSiblingNode<cr>", desc = "Surf Next" },
+                    { "K", "<cmd>STSSelectPrevSiblingNode<cr>", desc = "Surf Prev" },
+                    { "H", "<cmd>STSSelectParentNode<cr>", desc = "Surf Parent" },
+                    { "L", "<cmd>STSSelectChildNode<cr>", desc = "Surf Child" },
+                    { "<A-j>", "<cmd>STSSwapNextVisual<cr>", desc = "Surf Swap Next" },
+                    { "<A-k>", "<cmd>STSSwapPrevVisual<cr>", desc = "Surf Swap Prev" },
+                },
+            })
         end
 
         local terminal_ok, toggleterm = pcall(require, "toggleterm.terminal")
@@ -529,131 +506,108 @@ return {
             end
 
             -- ToggleTerm
-            wk.register({
-                t = {
-                    name = "+ToggleTerm",
-                    g = { _GHCI_TOGGLE, "GHCi" },
-                    h = { _HTOP_TOGGLE, "HTOP" },
-                    l = { _LAZYGIT_TOGGLE, "LazyGit" },
-                    n = { _NODE_TOGGLE, "Node" },
-                    p = { _PYTHON_TOGGLE, "Python" },
-                    t = { "<cmd>ToggleTerm<cr>", "Toggle Term" },
+            wk.add({
+                {
+                    { "<leader>t", group = "+ToggleTerm" },
+                    { "<leader>tg", _GHCI_TOGGLE, desc = "GHCi" },
+                    { "<leader>th", _HTOP_TOGGLE, desc = "HTOP" },
+                    { "<leader>tl", _LAZYGIT_TOGGLE, desc = "LazyGit" },
+                    { "<leader>tn", _NODE_TOGGLE, desc = "Node" },
+                    { "<leader>tp", _PYTHON_TOGGLE, desc = "Python" },
+                    { "<leader>tt", "<cmd>ToggleTerm<cr>", desc = "Toggle Term" },
                 },
-            }, { prefix = "<leader>" })
+            })
         end
-        wk.register({
-            name = "+Rest",
-            r = { "<cmd>Rest run<CR>", "Run" },
-            l = { "<cmd>Rest run last<CR>", "Rerun" },
-        }, { prefix = "<leader>r" })
+        wk.add({
+            { "<leader>r", group = "+Rest" },
+            { "<leader>rr", "<cmd>Rest run<CR>", desc = "Run" },
+            { "<leader>rl", "<cmd>Rest run last<CR>", desc = "Rerun" },
+        })
 
         -- Neorg
-        wk.register({
-            name = "+Neorg",
-            j = {
-                name = "+Journal",
-                j = { "<cmd>Neorg journal today<CR>", "Today" },
-                m = { "<cmd>Neorg journal tomorrow<CR>", "Tomorrow" },
-                t = { "<cmd>Neorg journal template<CR>", "Template" },
-                y = { "<cmd>Neorg journal yesterday<CR>", "Yesterday" },
+        wk.add({
+            { "<leader>n", group = "+Neorg" },
+            {
+                { "<leader>nj", group = "+Journal" },
+                { "<leader>njj", "<cmd>Neorg journal today<CR>", desc = "Today" },
+                { "<leader>njm", "<cmd>Neorg journal tomorrow<CR>", desc = "Tomorrow" },
+                { "<leader>njt", "<cmd>Neorg journal template<CR>", desc = "Template" },
+                { "<leader>njy", "<cmd>Neorg journal yesterday<CR>", desc = "Yesterday" },
             },
-            i = { "<cmd>Neorg index<CR>", "Index" },
-            m = { "<cmd>Neorg inject-metadata<CR>", "Generate Metadata" },
-            r = { "<cmd>Neorg return<CR>", "Return" },
-            s = { "<cmd>Neorg sync-parsers<CR>", "Sync Parsers" },
-            t = { "<cmd>Neorg toc<CR>", "Table of Contents" },
-            w = {
-                name = "+Workspace",
-                d = { "<cmd>Neorg workspace default<CR>", "Default" },
-                h = { "<cmd>Neorg workspace home<CR>", "Home" },
-                j = { "<cmd>Neorg workspace work<CR>", "Work" },
-                s = { "<cmd>Neorg generate-workspace-summary<CR>", "Summary" },
-                w = { "<cmd>Neorg workspace<CR>", "Select" },
+            { "<leader>ni", "<cmd>Neorg index<CR>", desc = "Index" },
+            { "<leader>nm", "<cmd>Neorg inject-metadata<CR>", desc = "Generate Metadata" },
+            { "<leader>nr", "<cmd>Neorg return<CR>", desc = "Return" },
+            { "<leader>ns", "<cmd>Neorg sync-parsers<CR>", desc = "Sync Parsers" },
+            { "<leader>nt", "<cmd>Neorg toc<CR>", desc = "Table of Contents" },
+            {
+                { "<leader>nw", group = "+Workspace" },
+                { "<leader>nwd", "<cmd>Neorg workspace default<CR>", desc = "Default" },
+                { "<leader>nwh", "<cmd>Neorg workspace home<CR>", desc = "Home" },
+                { "<leader>nwj", "<cmd>Neorg workspace work<CR>", desc = "Work" },
+                { "<leader>nws", "<cmd>Neorg generate-workspace-summary<CR>", desc = "Summary" },
+                { "<leader>nww", "<cmd>Neorg workspace<CR>", desc = "Select" },
             },
-        }, { prefix = "<leader>n" })
+        })
 
-        wk.register({
-            name = "+Neotest",
-            a = { "<cmd>lua require('neotest').run.attach()<cr>", "Attach Nearest" },
-            d = { "<cmd>lua require('neotest').run.attach({ strategy = 'dap' })<cr>", "Debug Nearest" },
-            f = { "<cmd>lua require('neotest').run.run(vim.fn.expand('%'))<cr>", "Test File" },
-            o = { "<cmd>lua require('neotest').output_panel.toggle()<cr>", "Toggle Output" },
-            s = { "<cmd>lua require('neotest').run.stop()<cr>", "Stop Nearest" },
-            t = { "<cmd>lua require('neotest').run.run()<cr>", "Test Nearest" },
-            w = { "<cmd>lua require('neotest').watch.toggle(vim.fn.expand('%'))<cr>", "Watch File" },
-        }, { prefix = "<leader>u" })
+        wk.add({
+            { "<leader>u", group = "+Neotest" },
+            { "<leader>ua", "<cmd>lua require('neotest').run.attach()<cr>", desc = "Attach Nearest" },
+            {
+                "<leader>ud",
+                "<cmd>lua require('neotest').run.attach({ strategy = 'dap' })<cr>",
+                desc = "Debug Nearest",
+            },
+            { "<leader>uf", "<cmd>lua require('neotest').run.run(vim.fn.expand('%'))<cr>", desc = "Test File" },
+            { "<leader>uo", "<cmd>lua require('neotest').output_panel.toggle()<cr>", desc = "Toggle Output" },
+            { "<leader>us", "<cmd>lua require('neotest').run.stop()<cr>", desc = "Stop Nearest" },
+            { "<leader>ut", "<cmd>lua require('neotest').run.run()<cr>", desc = "Test Nearest" },
+            { "<leader>uw", "<cmd>lua require('neotest').watch.toggle(vim.fn.expand('%'))<cr>", desc = "Watch File" },
+        })
+
+        wk.add({ { "<leader>uu", "<cmd>UndotreeToggle<cr>", desc = "Undo Tree" } })
 
         wk.setup(opts)
     end,
-    opts = {
-        plugins = {
-            marks = true, -- shows a list of your marks on ' and `
-            registers = true, -- shows your registers on " in NORMAL or <C-r> in INSERT mode
-            spelling = {
-                enabled = false, -- enabling this will show WhichKey when pressing z= to select spelling suggestions
-                suggestions = 20, -- how many suggestions should be shown in the list?
-            },
-            -- the presets plugin, adds help for a bunch of default keybindings in Neovim
-            -- No actual key bindings are created
-            presets = {
-                operators = false, -- adds help for operators like d, y, ... and registers them for motion / text object completion
-                motions = true, -- adds help for motions
-                text_objects = true, -- help for text objects triggered after entering an operator
-                windows = true, -- default bindings on <c-w>
-                nav = true, -- misc bindings to work with windows
-                z = true, -- bindings for folds, spelling and others prefixed with z
-                g = true, -- bindings for prefixed with g
-            },
-        },
-        -- add operators that will trigger motion and text object completion
-        -- to enable all native operators, set the preset / operators plugin above
-        operators = { gc = "Comments" },
-        key_labels = {
-            -- override the label used to display some keys. It doesn't effect WK in any other way.
-            -- For example:
-            -- ["<space>"] = "SPC",
-            -- ["<cr>"] = "RET",
-            -- ["<tab>"] = "TAB",
-        },
-        icons = {
-            breadcrumb = "»", -- symbol used in the command line area that shows your active key combo
-            separator = "➜", -- symbol used between a key and it's label
-            group = "+", -- symbol prepended to a group
-        },
-        popup_mappings = {
-            scroll_down = "<c-d>", -- binding to scroll down inside the popup
-            scroll_up = "<c-u>", -- binding to scroll up inside the popup
-        },
-        window = {
-            border = "none", -- none, single, double, shadow
-            position = "bottom", -- bottom, top
-            margin = { 1, 0, 1, 0 }, -- extra window margin [top, right, bottom, left]
-            padding = { 2, 2, 2, 2 }, -- extra window padding [top, right, bottom, left]
-            winblend = 0,
-        },
-        layout = {
-            height = { min = 4, max = 25 }, -- min and max height of the columns
-            width = { min = 20, max = 50 }, -- min and max width of the columns
-            spacing = 3, -- spacing between columns
-            align = "left", -- align columns left, center or right
-        },
-        ignore_missing = false, -- enable this to hide mappings for which you didn't specify a label
-        hidden = { "<silent>", "<cmd>", "<Cmd>", "<CR>", "call", "lua", "^:", "^ " }, -- hide mapping boilerplate
-        show_help = true, -- show help message on the command line when the popup is visible
-        triggers = "auto", -- automatically setup triggers
-        -- triggers = {"<leader>"} -- or specify a list manually
-        triggers_blacklist = {
-            -- list of mode / prefixes that should never be hooked by WhichKey
-            -- this is mostly relevant for key maps that start with a native binding
-            -- most people should not need to change this
-            i = { "j", "k" },
-            v = { "j", "k" },
-        },
-        -- disable the WhichKey popup for certain buf types and file types.
-        -- Disabled by deafult for Telescope
-        disable = {
-            buftypes = {},
-            filetypes = { "TelescopePrompt" },
-        },
-    },
+    opts = {},
+    --    opts = {
+    --        plugins = {
+    --            marks = true, -- shows a list of your marks on ' and `
+    --            registers = true, -- shows your registers on " in NORMAL or <C-r> in INSERT mode
+    --            spelling = {
+    --                enabled = false, -- enabling this will show WhichKey when pressing z= to select spelling suggestions
+    --                suggestions = 20, -- how many suggestions should be shown in the list?
+    --            },
+    --            -- the presets plugin, adds help for a bunch of default keybindings in Neovim
+    --            -- No actual key bindings are created
+    --            presets = {
+    --                operators = false, -- adds help for operators like d, y, ... and registers them for motion / text object completion
+    --                motions = true, -- adds help for motions
+    --                text_objects = true, -- help for text objects triggered after entering an operator
+    --                windows = true, -- default bindings on <c-w>
+    --                nav = true, -- misc bindings to work with windows
+    --                z = true, -- bindings for folds, spelling and others prefixed with z
+    --                g = true, -- bindings for prefixed with g
+    --            },
+    --        },
+    --        icons = {
+    --            breadcrumb = "»", -- symbol used in the command line area that shows your active key combo
+    --            separator = "➜", -- symbol used between a key and it's label
+    --            group = "+", -- symbol prepended to a group
+    --        },
+    --        layout = {
+    --            height = { min = 4, max = 25 }, -- min and max height of the columns
+    --            width = { min = 20, max = 50 }, -- min and max width of the columns
+    --            spacing = 3, -- spacing between columns
+    --            align = "left", -- align columns left, center or right
+    --        },
+    --        -- show_help = true, -- show help message on the command line when the popup is visible
+    --        -- triggers = "auto", -- automatically setup triggers
+    --        -- triggers = { "<leader>" }, -- or specify a list manually
+    --        -- disable the WhichKey popup for certain buf types and file types.
+    --        -- Disabled by deafult for Telescope
+    --        disable = {
+    --            buftypes = {},
+    --            filetypes = { "TelescopePrompt" },
+    --        },
+    --    },
 }
