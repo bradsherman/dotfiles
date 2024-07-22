@@ -42,7 +42,6 @@ return {
                         before = [[vim.opt.background = "light"]],
                     },
                 },
-                themeConfigFile = "~/.config/nvim/lua/theme.lua", -- Described below
                 livePreview = true, -- Apply theme while browsing. Default to true.
             })
         end,
