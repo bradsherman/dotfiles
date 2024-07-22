@@ -17,10 +17,10 @@ return {
                 -- style = "underline",
             },
             buffer_close_icon = "",
-            modified_icon = "●",
-            close_icon = "",
-            left_trunc_marker = "",
-            right_trunc_marker = "",
+            modified_icon = "● ",
+            close_icon = " ",
+            left_trunc_marker = " ",
+            right_trunc_marker = " ",
             --- name_formatter can be used to change the buffer's label in the bufferline.
             --- Please note some names can/will break the
             --- bufferline so use this at your discretion knowing that it has

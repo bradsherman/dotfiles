@@ -1,11 +1,11 @@
 return {
-    "mrcjkb/neotest-haskell",
+    { "mrcjkb/neotest-haskell", enabled = false },
     "jfpedroza/neotest-elixir",
     {
         "nvim-neotest/neotest",
         dependencies = {
             "folke/neodev.nvim",
-            "mrcjkb/neotest-haskell",
+            -- "mrcjkb/neotest-haskell",
             "jfpedroza/neotest-elixir",
             "nvim-neotest/nvim-nio",
             "antoinemadec/FixCursorHold.nvim",
@@ -15,7 +15,7 @@ return {
         config = function()
             require("neotest").setup({
                 adapters = {
-                    require("neotest-haskell"),
+                    -- require("neotest-haskell"),
                     require("neotest-elixir"),
                     require("rustaceanvim.neotest"),
                 },

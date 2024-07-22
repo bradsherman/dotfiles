@@ -38,7 +38,6 @@ return {
                         },
                     },
                     ["core.journal"] = {},
-                    ["core.mode"] = {},
                     ["core.summary"] = {},
                     ["core.ui.calendar"] = {},
                     ["core.integrations.telescope"] = {},
