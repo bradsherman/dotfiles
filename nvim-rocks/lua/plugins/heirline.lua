@@ -1,47 +1,45 @@
 local heirline = require("heirline")
 local conditions = require("heirline.conditions")
 local utils = require("heirline.utils")
+local function get_hl(hlgroup)
+    local hl = utils.get_highlight(hlgroup)
+    return setmetatable(hl, {
+        __index = function()
+            return "none"
+        end,
+    })
+end
 
---local kana_colors = require("kanagawa.colors").setup() -- wink
-local colors = {
-    bright_bg = utils.get_highlight("Folded").bg,
-    bright_fg = utils.get_highlight("Folded").fg,
-    red = utils.get_highlight("DiagnosticError").fg,
-    dark_red = utils.get_highlight("DiffDelete").bg,
-    green = utils.get_highlight("String").fg,
-    blue = utils.get_highlight("Function").fg,
-    gray = utils.get_highlight("NonText").fg,
-    orange = utils.get_highlight("Constant").fg,
-    purple = utils.get_highlight("Statement").fg,
-    cyan = utils.get_highlight("Special").fg,
-    diag_warn = utils.get_highlight("DiagnosticWarn").fg,
-    diag_error = utils.get_highlight("DiagnosticError").fg,
-    diag_hint = utils.get_highlight("DiagnosticHint").fg,
-    diag_info = utils.get_highlight("DiagnosticInfo").fg,
-    git_del = utils.get_highlight("diffDeleted").fg,
-    git_add = utils.get_highlight("diffAdded").fg,
-    git_change = utils.get_highlight("diffChanged").fg,
-}
--- local colors = {
---     bright_bg = kana_colors.theme.ui.bg_p1,
---     bright_fg = kana_colors.theme.ui.fg,
---     red = kana_colors.theme.diag.error,
---     dark_red = kana_colors.theme.diff.delete,
---     green = kana_colors.theme.syn.string,
---     blue = kana_colors.theme.syn.fun,
---     gray = kana_colors.theme.ui.nontext,
---     orange = kana_colors.theme.syn.constant,
---     purple = kana_colors.theme.syn.statement,
---     cyan = kana_colors.theme.ui.special,
---     diag_warn = kana_colors.theme.diag.warning,
---     diag_error = kana_colors.theme.diag.error,
---     diag_hint = kana_colors.theme.diag.hint,
---     diag_info = kana_colors.theme.diag.info,
---     git_del = kana_colors.theme.diff.delete,
---     git_add = kana_colors.theme.diff.add,
---     git_change = kana_colors.theme.diff.change,
--- }
-heirline.load_colors(colors)
+local function setup_colors()
+    return {
+        bright_bg = get_hl("Folded").bg,
+        bright_fg = get_hl("Folded").fg,
+        red = get_hl("DiagnosticError").fg,
+        dark_red = get_hl("DiffDelete").bg,
+        green = get_hl("String").fg,
+        blue = get_hl("Function").fg,
+        gray = get_hl("NonText").fg,
+        orange = get_hl("Constant").fg,
+        purple = get_hl("Statement").fg,
+        cyan = get_hl("Special").fg,
+        diag_warn = get_hl("DiagnosticWarn").fg,
+        diag_error = get_hl("DiagnosticError").fg,
+        diag_hint = get_hl("DiagnosticHint").fg,
+        diag_info = get_hl("DiagnosticInfo").fg,
+        git_del = get_hl("DiffDeleted").fg,
+        git_add = get_hl("DiffAdded").fg,
+        git_change = get_hl("DiffChanged").fg,
+    }
+end
+vim.api.nvim_create_augroup("Heirline", { clear = true })
+vim.api.nvim_create_autocmd("ColorScheme", {
+    callback = function()
+        utils.on_colorscheme(setup_colors)
+    end,
+    group = "Heirline",
+})
+
+heirline.load_colors(setup_colors)
 
 local ViMode = {
     -- get vim current mode, this information will be required by the provider
@@ -208,8 +206,8 @@ local FileNameModifer = {
 -- let's add the children to our FileNameBlock component
 FileNameBlock = utils.insert(
     FileNameBlock,
-    FileIcon,
     utils.insert(FileNameModifer, FileName), -- a new table where FileName is a child of FileNameModifier
+    FileIcon,
     FileFlags,
     { provider = "%<" } -- this means that the statusline is cut here when there's not enough space
 )
@@ -304,8 +302,12 @@ local ScrollBar = {
     hl = { fg = "blue", bg = "bright_bg" },
 }
 
+local lsp_attached = function()
+    return next(vim.lsp.get_clients({ bufnr = 0 })) ~= nil
+end
+
 local LSPActive = {
-    condition = conditions.lsp_attached,
+    condition = lsp_attached,
     update = { "LspAttach", "LspDetach" },
 
     -- You can keep it simple,
@@ -326,10 +328,6 @@ local Diagnostics = {
 
     condition = conditions.has_diagnostics,
 
-    -- { name = "DiagnosticSignError", text = " " },
-    -- { name = "DiagnosticSignWarn", text = " " },
-    -- { name = "DiagnosticSignHint", text = " " },
-    -- { name = "DiagnosticSignInfo", text = " " },
     static = {
         error_icon = " ",
         warn_icon = " ",
@@ -385,9 +383,7 @@ local Git = {
 
     init = function(self)
         self.status_dict = vim.b.gitsigns_status_dict
-        self.has_changes = self.status_dict.added ~= 0
-            or self.status_dict.removed ~= 0
-            or self.status_dict.changed ~= 0
+        self.has_changes = self.status_dict.added ~= 0 or self.status_dict.removed ~= 0 or self.status_dict.changed ~= 0
     end,
 
     hl = { fg = "orange" },
@@ -460,6 +456,54 @@ local WorkDir = {
     hl = { fg = "blue", bold = true },
 }
 
+local Spacer = { provider = " " }
+local function rpad(child)
+    return {
+        condition = child.condition,
+        child,
+        Spacer,
+    }
+end
+local function OverseerTasksForStatus(status)
+    return {
+        condition = function(self)
+            return self.tasks[status]
+        end,
+        provider = function(self)
+            return string.format("%s%d", self.symbols[status], #self.tasks[status])
+        end,
+        hl = function(self)
+            return {
+                fg = utils.get_highlight(string.format("Overseer%s", status)).fg,
+            }
+        end,
+    }
+end
+
+local Overseer = {
+    condition = function()
+        return package.loaded.overseer
+    end,
+    init = function(self)
+        local tasks = require("overseer.task_list").list_tasks({ unique = true })
+        local tasks_by_status = require("overseer.util").tbl_group_by(tasks, "status")
+        self.tasks = tasks_by_status
+    end,
+    static = {
+        symbols = {
+            ["CANCELED"] = " ",
+            ["FAILURE"] = "󰅚 ",
+            ["SUCCESS"] = "󰄴 ",
+            ["RUNNING"] = "󰑮 ",
+        },
+    },
+
+    rpad(OverseerTasksForStatus("CANCELED")),
+    rpad(OverseerTasksForStatus("RUNNING")),
+    rpad(OverseerTasksForStatus("SUCCESS")),
+    rpad(OverseerTasksForStatus("FAILURE")),
+}
+
 local Align = { provider = "%=" }
 local Space = { provider = " " }
 
@@ -473,6 +517,8 @@ local StatusLine = {
     Git,
     Space,
     Diagnostics,
+    Space,
+    Overseer,
     Align,
     -- { flexible = 3,   { Navic, Space }, { provider = "" } },
     LSPActive,
@@ -495,6 +541,6 @@ heirline.setup({
     -- tabline = { ... },
     -- statuscolumn = { ... },
     opts = {
-        colors = colors,
+        colors = setup_colors(),
     },
 })

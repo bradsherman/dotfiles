@@ -27,6 +27,10 @@ return {
         end, {})
     end,
     opts = {
+        task_list = {
+            max_height = { 0.3 },
+            min_height = { 0.3 },
+        },
         templates = { "builtin", "user.stack_build" },
         strategy = {
             "terminal",

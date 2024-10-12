@@ -8,7 +8,7 @@ return {
             "saadparwaiz1/cmp_luasnip",
         },
     },
-    "R-nvim/cmp-r",
+    { "R-nvim/cmp-r" },
     {
         "hrsh7th/nvim-cmp",
         event = "InsertEnter",
@@ -220,6 +220,15 @@ return {
                     { name = "cmdline" },
                 }),
             })
+
+            -- require("cmp").setup({
+            --     sources = {
+            --         { name = "git" },
+            --         -- more sources
+            --     },
+            -- })
+
+            -- require("cmp_git").setup()
 
             require("cmp_r").setup({})
 

@@ -44,7 +44,7 @@ config.colors = {
 	-- brights = { "#a6a69c", "#E46876", "#87a987", "#e6c384", "#7fb4ca", "#938aa9", "#7aa89f", "#c5c9c5" },
 	-- indexed = { [16] = "#b6927b", [17] = "#b98d7b" },
 }
-config.font = wezterm.font("Iosevka Nerd Font")
+config.font = wezterm.font("Berkeley Mono")
 -- config.font = wezterm.font("Victor Mono")
 -- config.font = wezterm.font("Rec Mono Duotone")
 config.term = "wezterm"
@@ -52,12 +52,21 @@ config.window_background_opacity = 0.85
 config.text_background_opacity = 0.85
 config.enable_tab_bar = false
 -- config.default_prog = { "zellij", "-l", "welcome" }
+config.window_padding = {
+	left = "2cell",
+	right = "2cell",
+	top = "1cell",
+	bottom = "1cell",
+}
+config.warn_about_missing_glyphs = false
 config.keys = {
 	{
 		key = "Enter",
 		mods = "ALT",
 		action = wezterm.action.DisableDefaultAssignment,
 	},
+
+	{ key = "Backspace", mods = "CTRL", action = wezterm.action.SendKey({ key = "w", mods = "CTRL" }) },
 }
 
 return config

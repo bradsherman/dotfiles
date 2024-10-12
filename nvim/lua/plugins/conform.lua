@@ -70,10 +70,10 @@ return {
             -- Conform will run multiple formatters sequentially
             python = { "isort", "black" },
             -- Use a sub-list to run only the first available formatter
-            javascript = { { "prettierd" } },
-            typescript = { { "prettierd" } },
-            javascriptreact = { { "prettierd" } },
-            typescriptreact = { { "prettierd" } },
+            javascript = { "prettierd" },
+            typescript = { "prettierd" },
+            javascriptreact = { "prettierd" },
+            typescriptreact = { "prettierd" },
             sql = { "sqlfluff" },
             nix = { "nixfmt" },
             haskell = { "fourmolu" },

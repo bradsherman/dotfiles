@@ -71,11 +71,12 @@ ZSH_THEME="candy"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-export VIM_MODE_VICMD_KEY="jk"
-export _Z_CMD="j"
-. ~/.local/bin/z.sh
-plugins=(git fzf-tab zsh-syntax-highlighting zsh-autosuggestions z zsh-vim-mode nix-shell nix-zsh-completions)
 
+plugins=(git fzf-tab fast-syntax-highlighting zsh-autosuggestions nix-shell)
+
+# export VIM_MODE_VICMD_KEY="jk"
+# export _Z_CMD="j"
+# . ~/.local/bin/z.sh
 
 source $ZSH/oh-my-zsh.sh
 
@@ -109,7 +110,6 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH="/opt/julia/bin:$PATH"
 export EDITOR="nvim"
 alias vim="nvim"
-[ -f "/home/bsherman/.ghcup/env" ] && source "/home/bsherman/.ghcup/env" # ghcup-env
 #
 # source /home/bsherman/.local/venv/bin/activate
 #
@@ -121,8 +121,8 @@ export PATH="$HOME/code/lua-language-server/bin:${PATH}"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 /usr/bin/keychain $HOME/.ssh/id_ed25519
-source $HOME/.keychain/bsherman-sh
-fpath+=${ZDOTDIR:-~}/.zsh_functions
+source $HOME/.keychain/brad-ThinkPadP16-sh
+# fpath+=${ZDOTDIR:-~}/.zsh_functions
 
 if type rg &> /dev/null; then
   export FZF_DEFAULT_COMMAND='rg --files'
@@ -143,7 +143,7 @@ alias vz="vim ~/.zshrc"
 alias sz="source ~/.zshrc"
 alias v3="vim ~/.config/i3/config"
 export BAT_THEME="OneHalfDark"
-alias cat="batcat --theme=$BAT_THEME"
+alias cat="bat --theme=$BAT_THEME"
 alias c='clear'
 alias zj='zellij'
 
@@ -165,6 +165,7 @@ alias zj='zellij'
 # bindkey -M vicmd '^p' run-again
 bindkey '^H' backward-kill-word
 
+export ANSIBLE_FORCE_COLOR=True
 export ANSIBLE_STDOUT_CALLBACK=yaml
 bindkey -M viins 'jk' vi-cmd-mode
 
@@ -213,7 +214,7 @@ alias lt='ls --tree'
 
 export LOCAL_CONN_STRING="postgresql://app:password123@localhost:5432/main"
 
-source /home/bsherman/.config/broot/launcher/bash/br
+# source /home/bsherman/.config/broot/launcher/bash/br
 
 export PATH="/home/bsherman/.bitcoin/bin:$PATH"
 export PATH="$PATH:/usr/local/go/bin"
@@ -256,13 +257,11 @@ fi
 
 
 
-prompt_nix_shell_setup
+# prompt_nix_shell_setup
 
 
 source "$HOME/.cargo/env"
 
-
-export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libgtk3-nocsd.so.0
 
 function author_lines () {
 	if [ -z "$1" ]
@@ -308,8 +307,8 @@ gpgconf --launch gpg-agent
 # append completions to fpath
 fpath=(${ASDF_DIR}/completions $fpath)
 # initialise completions with ZSH's compinit
-autoload -Uz compinit && compinit
-source ~/.oh-my-zsh/custom/plugins/fzf-tab/fzf-tab.plugin.zsh
+# autoload -Uz compinit && compinit
+# source ~/.oh-my-zsh/custom/plugins/fzf-tab/fzf-tab.plugin.zsh
 
 # bun completions
 [ -s "/home/bsherman/.bun/_bun" ] && source "/home/bsherman/.bun/_bun"
@@ -322,4 +321,32 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 # fly
 export FLYCTL_INSTALL="/home/bsherman/.fly"
 export PATH="$FLYCTL_INSTALL/bin:$PATH"
-eval "$(/home/bsherman/.local/bin/mise activate zsh)"
+
+# eval "$(/home/bsherman/.local/bin/mise activate zsh)"
+
+
+if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then
+    . $HOME/.nix-profile/etc/profile.d/nix.sh
+    export LOCALE_ARCHIVE="$(nix-env --installed --no-name --out-path --query glibc-locales)/lib/locale/locale-archive"
+    export XDG_DATA_DIRS="$HOME/.nix-profile/share:$XDG_DATA_DIRS"
+fi
+
+[ -f "/home/bsherman/.ghcup/env" ] && . "/home/bsherman/.ghcup/env" # ghcup-env
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+function fzf-kill-processes() {
+  local pid
+  pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
+
+  if [ "x$pid" != "x" ]
+  then
+    echo $pid | xargs kill -${1:-9}
+  fi
+}
+
+if [ -e /home/bsherman/.nix-profile/etc/profile.d/nix.sh ]; then . /home/bsherman/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+
+eval "$(zoxide init --cmd cd zsh)"

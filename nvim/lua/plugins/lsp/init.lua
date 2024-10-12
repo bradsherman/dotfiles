@@ -5,14 +5,15 @@ return {
         dependencies = { "williamboman/mason.nvim" },
         config = function()
             local config = {
-                virtual_text = {
-                    source = "always",
-                    spacing = 4,
-                    prefix = "●",
-                    -- this will set set the prefix to a function that returns the diagnostics icon based on the severity
-                    -- this only works on a recent 0.10.0 build. Will be set to "●" when not supported
-                    -- prefix = "icons",
-                },
+                virtual_text = false,
+                -- virtual_text = {
+                --     source = "always",
+                --     spacing = 4,
+                --     prefix = "●",
+                --     -- this will set set the prefix to a function that returns the diagnostics icon based on the severity
+                --     -- this only works on a recent 0.10.0 build. Will be set to "●" when not supported
+                --     -- prefix = "icons",
+                -- },
                 -- show signs
                 sign = true,
                 signs = {
@@ -98,42 +99,21 @@ return {
                         capabilities = my_handlers.capabilities,
                     })
                 end,
-                -- ["emmet_language_server"] = function()
-                --     nvim_lsp.emmet_language_server.setup({
-                --         capabilities = my_handlers.capabilities,
-                --         on_attach = my_handlers.on_attach,
-                --         filetypes = {
-                --             "css",
-                --             "elixir",
-                --             "eelixir",
-                --             "eruby",
-                --             "heex",
-                --             "html",
-                --             "javascript",
-                --             "javascriptreact",
-                --             "less",
-                --             "sass",
-                --             "scss",
-                --             "pug",
-                --             "typescriptreact",
-                --         },
-                --     })
-                -- end,
                 ["tailwindcss"] = function()
                     nvim_lsp.tailwindcss.setup({
                         capabilities = my_handlers.capabilities,
                         on_attach = my_handlers.on_attach,
                         filetypes = { "html", "elixir", "eelixir", "heex" },
-                        root_dir = nvim_lsp.util.root_pattern(
-                            "tailwind.config.js",
-                            "tailwind.config.ts",
-                            "postcss.config.js",
-                            "postcss.config.ts",
-                            "package.json",
-                            "node_modules",
-                            ".git",
-                            "mix.exs"
-                        ),
+                        -- root_dir = nvim_lsp.util.root_pattern(
+                        --     "tailwind.config.js",
+                        --     "tailwind.config.ts",
+                        --     "postcss.config.js",
+                        --     "postcss.config.ts",
+                        --     "package.json",
+                        --     "node_modules",
+                        --     ".git",
+                        --     "mix.exs"
+                        -- ),
                         init_options = {
                             userLanguages = {
                                 elixir = "html-eex",
@@ -236,7 +216,7 @@ return {
     },
     {
         "MrcJkb/haskell-tools.nvim",
-        version = "^3",
+        version = "^4",
         ft = { "haskell", "lhaskell", "cabal", "cabalproject" },
         config = function()
             local handlers_ok, my_handlers = pcall(require, "plugins.lsp.handlers")
@@ -248,7 +228,7 @@ return {
                     on_attach = function(client, bufnr, ht)
                         local opts = { noremap = true, silent = true, buffer = bufnr }
                         vim.keymap.set("n", "<space>ca", vim.lsp.codelens.run, opts)
-                        vim.keymap.set("n", "<space>hs", ht.hoogle.hoogle_signature, opts)
+                        vim.keymap.set("n", "<space>sh", ht.hoogle.hoogle_signature, opts)
                         -- vim.keymap.set("n", "<space>ea", ht.lsp.buf_eval_all, opts)
                         -- Suggested keymaps that do not depend on haskell-language-server
                         -- Toggle a GHCi repl for the current package
@@ -258,23 +238,23 @@ return {
                             ht.repl.toggle(vim.api.nvim_buf_get_name(0))
                         end, opts)
                         vim.keymap.set("n", "<leader>rq", ht.repl.quit, opts)
-                        vim.keymap.set("n", "<leader>hs", "<cmd>HsPackageYaml<cr>", opts)
-                        vim.keymap.set("n", "<leader>hp", "<cmd>HsProjectFile<cr>", opts)
+                        vim.keymap.set("n", "<leader>hs", "<cmd>Haskell packageYaml<cr>", opts)
+                        vim.keymap.set("n", "<leader>hp", "<cmd>Haskell projectFile<cr>", opts)
                         ht.dap.discover_configurations(bufnr)
                         my_handlers.on_attach(client, bufnr) -- if defined, see nvim-lspconfig
                     end,
                     capabilities = my_handlers.capabilities,
-                    settings = {
-                        haskell = {
-                            checkProject = false,
-                            checkParents = "CheckOnSave",
-                            formattingProvider = "fourmolu",
-                            plugin = {
-                                stan = { globalOn = false },
-                                semanticTokens = { globalOn = true },
-                            },
-                        },
-                    },
+                    -- settings = {
+                    --     haskell = {
+                    -- checkProject = false,
+                    -- checkParents = "CheckOnSave",
+                    -- formattingProvider = "fourmolu",
+                    -- plugin = {
+                    --     stan = { globalOn = false },
+                    --     semanticTokens = { globalOn = true },
+                    -- },
+                    --     },
+                    -- },
                 },
                 tools = {
                     codeLens = { autoRefresh = false },
@@ -283,7 +263,9 @@ return {
                     definition = { hoogle_signature_fallback = true },
                     repl = { handler = "toggleterm" },
                     -- tags = {},
-                    -- log = {},
+                    log = {
+                        level = vim.log.levels.DEBUG,
+                    },
                 },
             }
         end,
@@ -338,8 +320,9 @@ return {
                 nextls = { enable = true },
                 credo = { enable = true },
                 elixirls = {
-                    cmd = { vim.fn.expand("~/.local/bin/elixir-ls/language_server.sh") },
+                    -- cmd = { vim.fn.expand("~/.local/bin/elixir-ls/language_server.sh") },
                     enable = true,
+                    repo = "elixir-lsp/elixir-ls",
                     settings = elixirls.settings({
                         dialyzerEnabled = true,
                         enableTestLenses = false,

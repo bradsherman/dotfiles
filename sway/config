@@ -24,8 +24,8 @@ gaps inner 5
 #          before-sleep 'swaylock -f -c 000000' &
 
 # set locker timeout
-# exec_always killall swayidle
-exec $HOME/.config/sway/swayidle.sh
+exec_always killall swayidle
+exec_always $HOME/.config/sway/swayidle.sh
 
 # enable lock ($mod+shift+x)
 bindsym $mod+shift+x exec $HOME/.config/swaylock/lock.sh 50
@@ -38,7 +38,7 @@ exec nm-applet
 # output * bg /home/bsherman/Pictures/ocean-night.jpg fill
 exec_always killall swaybg
 # exec_always swaybg -o "*" -i "/home/bsherman/Pictures/kanagawa.jpg" -m fill
-exec_always swaybg -o "*" -i "/home/bsherman/Pictures/leaves.png" -m fill
+exec_always swaybg -o "*" -i "/home/bsherman/Pictures/trees.jpg" -m fill
 
 set $laptop "Chimei Innolux Corporation 0x14D5 0x00000000"
 bindswitch --reload --locked lid:on output $laptop disable
@@ -58,8 +58,8 @@ bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +10% && $
 bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
 bindsym $mod+shift+equal exec pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
 bindsym $mod+shift+minus exec pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
-bindsym XF86MonBrightnessUp exec light -A 10
-bindsym XF86MonBrightnessDown exec light -U 10
+bindsym XF86MonBrightnessUp exec brightnessctl set +10%
+bindsym XF86MonBrightnessDown exec brightnessctl set 10%-
 bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym Control+XF86AudioMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 bindsym $mod+shift+m exec pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
@@ -75,7 +75,7 @@ bindsym $mod+Shift+q kill
 
 # start dmenu (a program launcher)
 # bindsym $mod+d exec dmenu_run
-bindsym $mod+space exec ~/.config/i3/bin/rofi_app_launcher
+bindsym $mod+space exec ~/.config/sway/bin/rofi_app_launcher
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
@@ -148,7 +148,7 @@ bindsym $mod+Shift+r reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+c restart
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'swaymsg exit'"
+bindsym $mod+Shift+e exec "swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your X session.' -B 'Yes, exit sway' 'swaymsg exit'"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -218,7 +218,6 @@ exec_always ~/.config/waybar/waybar.sh
 
 bindsym $mod+p exec ~/.config/sway/bin/logout
 # bindsym $mod+shift+p exec ~/.config/i3/bin/display
-bindsym $mod+shift+n exec ~/.config/i3/bin/pause_dunst
 
 # exec_always setxkbmap -layout us -option ctrl:nocaps
 # xkb_variant ,nodeadkeys
@@ -276,33 +275,40 @@ bindsym $mod+equal move workspace to output right
 # bindsym --release Shift+Print exec scrot -s 'screenshot_%Y%m%d_%H%M%S.png' -e 'mkdir -p ~/Pictures/screenshots && mv $f ~/Pictures/screenshots && xclip -selection clipboard -t image/png -i ~/Pictures/screenshots/`ls -1 -t ~/Pictures/screenshots | head -1`' # Area selection
 # bindsym Print exec ~/.config/sway/bin/screenshot.sh >> screenshot_output.txt
 bindsym Print exec ~/.nix-profile/bin/grim -g "$(~/.nix-profile/bin/slurp)" - | wl-copy
+bindsym $mod+Shift+p exec ~/.nix-profile/bin/grim -g "$(~/.nix-profile/bin/slurp)" - | wl-copy
 bindsym Shift+Print exec ~/.config/sway/bin/screenshot.sh
 
 
 exec wezterm
-assign [class="Alacritty"] $ws1
-assign [app_id="org.wezfurlong.wezterm"] $ws1
+# assign [class="Alacritty"] $ws1
+# assign [app_id="org.wezfurlong.wezterm"] $ws1
 for_window [app_id="org.wezfurlong.wezterm"] opacity 85%
 exec firefox
-assign [class="Firefox"] $ws2
+# assign [class="Firefox"] $ws2
 exec slack
 # for_window [class="Slack"] move scratchpad
-assign [class="Slack"] $ws3
+# assign [class="Slack"] $ws3
 exec spotify
-assign [class="Spotify"] $ws4
+# assign [class="Spotify"] $ws4
 # exec blueman-manager
-assign [class="Blueman-manager"] $ws4
+# assign [class="Blueman-manager"] $ws4
 
 bindsym $mod+b exec ~/.local/bin/rofi-bluetooth
 
-exec_always "pkill mako; ~/.nix-profile/bin/mako"
-bindsym $mod+Escape exec ~/.nix-profile/bin/makoctl dismiss -a
+exec_always "pkill mako; mako"
+bindsym $mod+Escape exec makoctl dismiss -a
+bindsym $mod+Shift+Escape exec ~/.config/mako/silence.sh
+bindsym $mod+Shift+n exec ~/.config/mako/unsilence.sh
 
-exec sway-audio-idle-inhibit
+# bindsym $mod+Shift+Escape exec makoctl mode -a do-not-disturb
+# bindsym $mod+Shift+n exec makoctl mode -r do-not-disturb
+
+exec_always killall sway-audio-idle-inhibit
+exec_always sway-audio-idle-inhibit
 
 # https://github.com/swaywm/sway/issues/5732
 exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
 
 # prevent screen locking while something is full screen
-for_window [class=".*"] inhibit_idle fullscreen
-for_window [app_id=".*"] inhibit_idle fullscreen
+# for_window [class=".*"] inhibit_idle fullscreen
+# for_window [app_id=".*"] inhibit_idle fullscreen

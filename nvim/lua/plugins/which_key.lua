@@ -18,32 +18,21 @@ return {
 
         -- Miscellaneous Telescope mappings
         wk.add({
-            --[[ ["<c-f>"] = { "<cmd>Files<cr>", "Files" }, ]]
-            --[[ ["<c-g>"] = { "<cmd>Rg<cr>", "Grep" }, ]]
-            --[[ ["<c-b>"] = { "<cmd>Buffers<cr>", "Buffers" }, ]]
-
-            -- ["<c-f>"] = { "<cmd>FzfxFiles<cr>", "Fzfx Files" },
-            -- ["<c-g>"] = { "<cmd>FzfxLiveGrep<cr>", "Fzfx Grep" },
-            -- ["<c-b>"] = { "<cmd>FzfxBuffers<cr>", "Fzfx Buffers" },
-
-            -- ["<c-f>"] = { "<cmd>FzfLua files<cr>", "Files" },
-            -- ["<c-g>"] = { "<cmd>FzfLua live_grep<cr>", "Grep" },
-            -- ["<c-b>"] = { "<cmd>FzfLua buffers<cr>", "Buffers" },
-            -- ["<c-t>"] = { "<cmd>FzfLua tags<cr>", "Tags" },
+            { "<c-f>", "<cmd>FzfLua files<cr>", desc = "Files" },
+            { "<c-g>", "<cmd>FzfLua live_grep_glob<cr>", desc = "Grep" },
+            -- { "<c-g>", "<cmd>FzfLua live_grep<cr>", desc = "Grep" },
+            { "<c-b>", "<cmd>FzfLua buffers<cr>", desc = "Buffers" },
+            { "<c-t>", "<cmd>FzfLua tags<cr>", desc = "Tags" },
             { "R", "<cmd>FzfLua resume<cr>", desc = "Resume" },
 
-            { "<c-f>", "<cmd>Telescope find_files<cr>", desc = "Telescope Files" },
-            { "<c-g>", "<cmd>Telescope egrepify<cr>", desc = "Telescope Grep" },
+            -- { "<c-f>", "<cmd>Telescope find_files<cr>", desc = "Telescope Files" },
+            -- { "<c-g>", "<cmd>Telescope egrepify<cr>", desc = "Telescope Grep" },
             -- ["<c-g>"] = {
             --     "<cmd>lua require('telescope').extensions.live_grep_args.live_grep_args()<cr>",
             --     "Telescope Grep",
             -- },
-            { "<c-b>", "<cmd>Telescope buffers<cr>", desc = "Telescope Buffers" },
-            { "<c-t>", "<cmd>Telescope tags<cr>", desc = "Telescope Tags" },
-
-            -- ["<c-f>"] = { "<cmd>Pick files<cr>", "mini.pick Files" },
-            -- ["<c-g>"] = { "<cmd>Pick grep_live<cr>", "mini.pick Grep" },
-            -- ["<c-b>"] = { "<cmd>Pick buffers<cr>", "mini.pick Buffers" },
+            -- { "<c-b>", "<cmd>Telescope buffers<cr>", desc = "Telescope Buffers" },
+            -- { "<c-t>", "<cmd>Telescope tags<cr>", desc = "Telescope Tags" },
 
             { "<leader>gd", "<cmd>GrepInDirectory<cr>", desc = "Search In Directory" },
             {
@@ -141,8 +130,9 @@ return {
                 desc = "Telescope File Browser",
             },
             { "<leader>nc", "<cmd>lua require('notify').dismiss({pending = true})<cr>", desc = "Clear Notifications" },
-            { "<leader>hs", require("haskell-tools").hoogle.hoogle_signature, desc = "Hoogle Signature" },
-            { "<leader>a", "<cmd>AerialToggle!<cr>", desc = "Aerial Toggle" },
+            { "<leader>hs", "<cmd>Haskell packageYaml", desc = "Package Yaml" },
+            { "<leader>hp", "<cmd>Haskell projectFile", desc = "Project File" },
+            -- { "<leader>a", "<cmd>AerialToggle!<cr>", desc = "Aerial Toggle" },
         })
 
         wk.add({
@@ -158,14 +148,14 @@ return {
         wk.add({
             {
                 { "<leader>l", group = "+LSP Actions" },
-                { "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<cr>", desc = "Code Actions" },
+                { "<leader>la", "<cmd>lua require('fastaction').code_action()<cr>", desc = "Code Actions" },
+                -- { "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<cr>", desc = "Code Actions" },
                 { "<leader>ld", "<cmd>Telescope diagnostics<cr>", desc = "LSP Diagnostics" },
                 { "<leader>lf", "<cmd>lua vim.lsp.buf.format({ async = true })<cr>", desc = "Format" },
                 { "<leader>li", "<cmd>TSToolsOrganizeImports<cr>", desc = "TSToolsOrganizeImports" },
                 { "<leader>ll", vim.lsp.codelens.run, desc = "LSP Code Lens" },
                 { "<leader>lr", "<cmd>IncRename " .. vim.fn.expand("<cword>") .. "<cr>", desc = "Rename" },
                 { "<leader>ls", "<cmd>Telescope lsp_workspace_symbols<cr>", desc = "LSP Workspace Symbols" },
-                { "<leader>lt", "<cmd>Telescope tags<cr>", desc = "Tags" },
                 { "<leader>lu", update_haskell_tags, desc = "Update Haskell tags" },
             },
             {
@@ -184,20 +174,20 @@ return {
             },
             {
                 { "g", group = "+LSP Types" },
-                { "gd", "<cmd>Telescope lsp_definitions<cr>", desc = "Definitions" },
-                { "gi", "<cmd>Telescope lsp_implementations<cr>", desc = "Implementations" },
+                { "gd", "<cmd>FzfLua lsp_definitions<cr>", desc = "Definitions" },
+                { "gi", "<cmd>FzfLua lsp_implementations<cr>", desc = "Implementations" },
                 { "gK", require("hover").hover, desc = "Hover Doc" },
-                { "gm", "<cmd>Telescope lsp_document_symbols<cr>", desc = "Document Symbols" },
-                { "gr", "<cmd>Telescope lsp_references<cr>", desc = "References" },
-                { "gt", "<cmd>Telescope lsp_type_definitions<cr>", desc = "Type Definitions" },
+                { "gm", "<cmd>FzfLua lsp_document_symbols<cr>", desc = "Document Symbols" },
+                { "gr", "<cmd>FzfLua lsp_references<cr>", desc = "References" },
+                -- { "gt", "<cmd>Telescope lsp_type_definitions<cr>", desc = "Type Definitions" },
+                { "gt", "<cmd>FzfLua lsp_typedefs<cr>", desc = "Type Definitions" },
             },
         })
 
         -- Git
         wk.add({
             { "<leader>g", group = "+Git" },
-            -- Telescope
-            { "<leader>bg", "<cmd>Telescope git_branches<cr>", desc = "Git Branches" },
+            { "<leader>bg", "<cmd>FzfLua git_branches<cr>", desc = "Git Branches" },
             -- Neogit
             { "<leader>gg", "<cmd>Neogit<cr>", desc = "Neogit" },
             {
@@ -514,7 +504,7 @@ return {
                     { "<leader>tl", _LAZYGIT_TOGGLE, desc = "LazyGit" },
                     { "<leader>tn", _NODE_TOGGLE, desc = "Node" },
                     { "<leader>tp", _PYTHON_TOGGLE, desc = "Python" },
-                    { "<leader>tt", "<cmd>ToggleTerm<cr>", desc = "Toggle Term" },
+                    { "<leader>tt", "<cmd>ToggleTerm direction=horizontal<cr>", desc = "Toggle Term" },
                 },
             })
         end
@@ -565,6 +555,7 @@ return {
         })
 
         wk.add({ { "<leader>uu", "<cmd>UndotreeToggle<cr>", desc = "Undo Tree" } })
+        wk.add({ { "<leader>o", "<cmd>Outline<cr>", desc = "Outline" } })
 
         wk.setup(opts)
     end,

@@ -8,7 +8,7 @@ vim.cmd("syntax enable")
 o.hidden = true
 o.visualbell = false
 o.errorbells = false
-o.timeoutlen = 100
+o.timeoutlen = 500
 o.encoding = "UTF-8"
 o.fillchars:append("fold:•")
 o.foldcolumn = "0"

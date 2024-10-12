@@ -1,12 +1,8 @@
 local actions = require("telescope.actions")
-local previewers = require("telescope.previewers")
-require('telescope').setup({
-    -- picker = {
-    -- hidden = false,
-    -- },
+local opts = {
     defaults = {
         borderchars = { "█", " ", "▀", "█", "█", " ", " ", "▀" },
-        -- borderchars = { "🭽", "▔", "🭾", "▕", "🭿", "▁", "🭼", "▏" },
+        -- borderchars = { "🭽", "▔", "🭾", "▕", "🭿", "▁", "🭼", "▏" }
         vimgrep_arguments = {
             "rg",
             "--color=never",
@@ -30,19 +26,18 @@ require('telescope').setup({
         -- prompt_prefix = " ",
         selection_caret = " ",
         entry_prefix = "  ",
-        file_ignore_patterns = { "node_modules", ".git/", "dist/" },
+        file_ignore_patterns = { "node_modules/", ".git/", "dist/", ".elixir_ls/", "_build/" },
         path_display = {
-            shorten = {
-                len = 3,
-                exclude = { -1 },
+            -- shorten = {
+            --     len = 3,
+            --     exclude = { -1 },
+            -- },
+            filename_first = {
+                reverse_directories = false,
             },
         },
         use_less = false,
         set_env = { ["COLORTERM"] = "truecolor" },
-        file_previewer = previewers.cat.new,
-        grep_previewer = previewers.vimgrep.new,
-        qflist_previewer = previewers.qflist.new,
-        buffer_previewer_maker = previewers.buffer_previewer_maker,
         mappings = {
             i = {
                 ["<c-n>"] = actions.cycle_history_next,
@@ -56,6 +51,19 @@ require('telescope').setup({
     pickers = {
         find_files = {
             hidden = true,
+            follow = true,
+            -- find_command = {
+            --     "fd",
+            --     "--color=never",
+            --     "--type",
+            --     "f",
+            --     "-x",
+            --     "printf",
+            --     '"{}: [0;9{//}[0m {}"',
+            -- },
+            -- string.format(
+            -- [[fd --color=never --type f --hidden --follow --exclude .git -x printf "{/} %s {}\n"]],
+            -- fzfutils.ansi_codes.grey('{//}')
         },
         buffers = {
             show_all_buffers = true,
@@ -92,4 +100,5 @@ require('telescope').setup({
             -- layout_config = { mirror=true }, -- mirror preview pane
         },
     },
-})
+}
+require("telescope").setup(opts)

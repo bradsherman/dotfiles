@@ -1,4 +1,4 @@
-require('neogit').setup({
+local opts = {
     disable_hint = true,
     disable_context_highlighting = false,
     disable_signs = false,
@@ -95,4 +95,6 @@ require('neogit').setup({
             hidden = false,
         },
     },
-})
+}
+
+require("neogit").setup(opts)

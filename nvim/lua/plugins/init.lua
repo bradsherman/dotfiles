@@ -12,15 +12,15 @@ return {
             comment.setup({
                 pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
             })
-        end,
-    },
-    {
-        "ibhagwan/fzf-lua",
-        -- optional for icon support
-        dependencies = { "nvim-tree/nvim-web-devicons" },
-        config = function()
-            -- calling `setup` is optional for customization
-            require("fzf-lua").setup({ "telescope" })
+
+            local get_option = vim.filetype.get_option
+
+            ---@diagnostic disable-next-line: duplicate-set-field
+            vim.filetype.get_option = function(filetype, option)
+                return option == "commentstring"
+                        and require("ts_context_commentstring.internal").calculate_commentstring()
+                    or get_option(filetype, option)
+            end
         end,
     },
     "Aasim-A/scrollEOF.nvim",
@@ -120,8 +120,6 @@ return {
         },
     },
 
-    "akinsho/toggleterm.nvim",
-
     { "j-hui/fidget.nvim", opts = {} },
     { "xiyaowong/transparent.nvim" },
     {
@@ -137,14 +135,6 @@ return {
         "folke/twilight.nvim",
         opts = {},
     },
-    {
-        "iamcco/markdown-preview.nvim",
-        cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-        ft = { "markdown" },
-        build = function()
-            vim.fn["mkdp#util#install"]()
-        end,
-    },
     { "kevinhwang91/promise-async" },
     {
         "anuvyklack/windows.nvim",
@@ -152,6 +142,7 @@ return {
             "anuvyklack/middleclass",
             "anuvyklack/animation.nvim",
         },
+        enabled = false,
         config = function()
             vim.o.winwidth = 10
             vim.o.winminwidth = 10
@@ -159,8 +150,8 @@ return {
             require("windows").setup()
         end,
     },
-    "sindrets/winshift.nvim",
-    "mrjones2014/smart-splits.nvim",
+    -- "sindrets/winshift.nvim",
+    -- "mrjones2014/smart-splits.nvim",
     "luukvbaal/statuscol.nvim",
     {
         "OlegGulevskyy/better-ts-errors.nvim",
@@ -173,9 +164,6 @@ return {
 
     "Vigemus/iron.nvim",
 
-    -- { "AdeAttwood/ivy.nvim", build = "cargo build --release" },
-
-    { "fazibear/screen_saviour.nvim" },
     {
         "danymat/neogen",
         config = true,

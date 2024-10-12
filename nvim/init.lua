@@ -1,19 +1,6 @@
--- temp workaround until plugins update
-vim.tbl_add_reverse_lookup = function(tbl)
-    for k, v in pairs(tbl) do
-        tbl[v] = k
-    end
-end
-
-vim.lsp.get_active_clients = vim.lsp.get_clients
-vim.lsp.buf_get_clients = function(bufnr)
-    return vim.lsp.get_clients({ bufnr = bufnr })
-end
-
 require("options")
 require("keybindings")
-require("plugins")
---require("colorschemes")
+require("lazy-plugins")
 require("autocommands")
 
 local rocks_config = {
@@ -33,6 +20,7 @@ local luarocks_cpath = {
     vim.fs.joinpath(rocks_config.rocks_path, "lib", "lua", "5.1", "?.so"),
     vim.fs.joinpath(rocks_config.rocks_path, "lib64", "lua", "5.1", "?.so"),
 }
+
 package.cpath = package.cpath .. ";" .. table.concat(luarocks_cpath, ";")
 
 vim.opt.runtimepath:append(vim.fs.joinpath(rocks_config.rocks_path, "lib", "luarocks", "rocks-5.1", "rocks.nvim", "*"))

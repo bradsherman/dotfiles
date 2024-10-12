@@ -1,8 +1,9 @@
+local overseer = require("overseer")
+
 return {
     name = "stack_build_package",
+    desc = "build the package which contains the current file",
     builder = function()
-        -- Full path to current file (see :help expand())
-        -- local file = vim.fn.expand("%:p")
         local utils = require("utils")
         local package_name = utils.get_haskell_package_name()
         return {
@@ -22,11 +23,12 @@ return {
                             { "skip_until", { skip_matching_line = false }, "error:", "warning:" },
                             {
                                 "extract",
-                                "^([^%s].+):(%d+):(%d+): (.+):$",
+                                "^([^%s].+):(%d+):(%d+): (.*): (.*)$",
                                 "filename",
                                 "lnum",
                                 "col",
                                 "severity",
+                                "ghcerr",
                             },
                             { "extract_multiline", "^(    .+)", "text" },
                         },
@@ -37,6 +39,7 @@ return {
             },
         }
     end,
+    tags = { overseer.TAG.BUILD },
     condition = {
         filetype = { "haskell" },
     },

@@ -111,6 +111,19 @@ return {
         end,
     },
     {
+        "nvim-treesitter/nvim-treesitter-textobjects",
+        dependencies = { "nvim-treesitter" },
+    },
+    { "cshuaimin/ssr.nvim" },
+    {
+        "Wansmer/treesj",
+        keys = { "<space>m", "<space>j", "<space>s" },
+        dependencies = { "nvim-treesitter/nvim-treesitter" }, -- if you install parsers with `nvim-treesitter`
+        config = function()
+            require("treesj").setup({})
+        end,
+    },
+    {
         "nvim-treesitter/nvim-treesitter-context",
         config = function()
             require("treesitter-context").setup({
@@ -134,7 +147,6 @@ return {
     {
         "JoosepAlviste/nvim-ts-context-commentstring",
         config = function()
-            vim.g.skip_ts_context_commentstring_module = true
             require("ts_context_commentstring").setup({ enable_autocmd = false })
         end,
     },

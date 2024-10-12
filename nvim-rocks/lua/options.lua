@@ -8,7 +8,7 @@ vim.cmd("syntax enable")
 o.hidden = true
 o.visualbell = false
 o.errorbells = false
-o.timeoutlen = 100
+o.timeoutlen = 500
 o.encoding = "UTF-8"
 o.fillchars:append("fold:•")
 o.foldcolumn = "0"
@@ -49,11 +49,11 @@ o.splitkeep = "screen"
 o.backspace = "eol,indent,start"
 o.showcmd = false
 o.showmode = false
-wo.cursorline = true
+wo.cursorline = false
 o.wildmenu = true
 o.cmdheight = 1
 o.clipboard:append("unnamedplus")
-wo.colorcolumn = "120"
+-- wo.colorcolumn = "120"
 wo.signcolumn = "yes"
 vim.go.laststatus = 3
 
@@ -61,6 +61,7 @@ o.incsearch = true
 o.hlsearch = false
 o.ignorecase = true
 o.smartcase = true
+o.inccommand = "split"
 
 o.termguicolors = true
 
@@ -70,9 +71,16 @@ local undo_dir = os.getenv("HOME") .. "/.vim/undodir"
 os.execute("mkdir -p " .. undo_dir)
 o.undodir = { undo_dir }
 vim.cmd([[set viewoptions-=curdir]])
-bo.undofile = true
+vim.opt.undofile = true
+local keyset = vim.keymap.set
+keyset("i", ",", ",<C-g>U")
+keyset("i", ".", ".<C-g>U")
+keyset("i", "!", "!<C-g>U")
+keyset("i", "?", "?<C-g>U")
 
-o.grepprg = "rg --vimgrep --smart-case --follow"
+o.grepprg = "rg --vimgrep --smart-case --follow --hidden"
+-- o.grepprg = "rg --vimgrep"
+o.grepformat = "%f:%l:%c:%m"
 -- other useful chars: eol:↲,nbsp:␣
 -- o.showbreak = "↪ "
 o.showbreak = "↲"

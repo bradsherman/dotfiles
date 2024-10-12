@@ -8,4 +8,8 @@ ps aux | grep waybar | grep -v nvim | grep -v waybar.sh | awk '{print $2}' | xar
 while pgrep -x waybar >/dev/null; do sleep 1; done
 
 # Launch main
-/home/bsherman/.nix-profile/bin/waybar
+waybar >> ~/.waybar.log
+
+
+# If you want to mess with styles
+# GTK_DEBUG=interactive waybar >> ~/.waybar.log
