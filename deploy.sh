@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 function usage () {
     echo "usage: $0 [-h] [-a (application)]"
