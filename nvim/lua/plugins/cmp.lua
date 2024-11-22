@@ -8,16 +8,22 @@ return {
             "saadparwaiz1/cmp_luasnip",
         },
     },
-    { "R-nvim/cmp-r" },
     {
-        "hrsh7th/nvim-cmp",
+        -- "hrsh7th/nvim-cmp",
+        "iguanacucumber/magazine.nvim",
+        name = "nvim-cmp", -- Otherwise highlighting gets messed up
         event = "InsertEnter",
         dependencies = {
-            "hrsh7th/cmp-buffer",
-            "hrsh7th/cmp-nvim-lsp",
-            "hrsh7th/cmp-path",
-            "hrsh7th/cmp-nvim-lua",
-            "hrsh7th/cmp-cmdline",
+            -- "hrsh7th/cmp-buffer",
+            { "iguanacucumber/mag-buffer", name = "cmp-buffer" },
+            -- "hrsh7th/cmp-nvim-lsp",
+            { "iguanacucumber/mag-nvim-lsp", name = "cmp-nvim-lsp", opts = {} },
+            -- "hrsh7th/cmp-path",
+            "https://codeberg.org/FelipeLema/cmp-async-path", -- not by me, but better than cmp-path
+            -- "hrsh7th/cmp-nvim-lua",
+            { "iguanacucumber/mag-nvim-lua", name = "cmp-nvim-lua" },
+            -- "hrsh7th/cmp-cmdline",
+            { "iguanacucumber/mag-cmdline", name = "cmp-cmdline" },
             "ray-x/cmp-treesitter",
             "quangnguyen30192/cmp-nvim-tags",
             "hrsh7th/cmp-nvim-lsp-document-symbol",
@@ -229,8 +235,7 @@ return {
             -- })
 
             -- require("cmp_git").setup()
-
-            require("cmp_r").setup({})
+            -- require("cmp_r").setup({})
 
             -- Nvim autopairs
             local cmp_autopairs = require("nvim-autopairs.completion.cmp")

@@ -127,16 +127,21 @@ source $HOME/.keychain/brad-ThinkPadP16-sh
 if type rg &> /dev/null; then
   export FZF_DEFAULT_COMMAND='rg --files'
 fi
-# --preview-window=:hidden
-export FZF_DEFAULT_OPTS="
--m --height 50% --border --layout=reverse
---info=inline --color=dark
---prompt='~ ' --pointer='▶' --marker='✗'
---preview '([[ -f {} ]] && (bat --style=numbers --color=always {} ||
-  cat {})) || ([[ -d {} ]] && (tree -C {} | less)) ||
-  echo {} 2> /dev/null | head -200'
---bind 'ctrl-e:execute(echo {+} | xargs -o nvim)'
---bind '?:toggle-preview'"
+
+export FZF_DEFAULT_OPTS='
+  -m --height 50% --layout=reverse
+  --color=fg:#c5c9c5,fg+:#C8C093,bg:-1,bg+:#2d4f67
+  --color=hl:#5f87af,hl+:#5fd7ff,info:#afaf87,marker:#8a9a7b
+  --color=prompt:#c4746e,spinner:#a292a3,pointer:#938AA9,header:#8ea4a2
+  --color=border:#0d0c0c,label:#aeaeae,query:#d9d9d9
+  --border="rounded" --border-label="Files" --border-label-pos="0" --preview-window="border-rounded"
+  --padding="1" --prompt="> " --marker=">" --pointer="◆"
+  --separator="" --scrollbar="│"
+  --preview "([[ -f {} ]] && (bat --style=numbers --color=always {} ||
+      cat {})) || ([[ -d {} ]] && (tree -C {} | less)) ||
+      echo {} 2> /dev/null | head -200"
+  --bind "ctrl-e:execute(echo {+} | xargs -o nvim)"
+  --bind "?:toggle-preview"'
 
 alias vv="pushd ~/.config/nvim; vim .; popd;"
 alias vz="vim ~/.zshrc"
@@ -206,7 +211,8 @@ alias htop='btm'
 alias man='tldr'
 alias shake='stack exec shake --'
 
-alias ls='lsd'
+# alias ls='lsd'
+alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"
 alias l='ls -l'
 alias la='ls -a'
 alias lla='ls -la'
@@ -347,6 +353,24 @@ function fzf-kill-processes() {
   fi
 }
 
+function stack-packages() {
+  pkg=$(stack ide packages --stdout | fzf)
+  stack build $pkg
+}
+
 if [ -e /home/bsherman/.nix-profile/etc/profile.d/nix.sh ]; then . /home/bsherman/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
 
 eval "$(zoxide init --cmd cd zsh)"
+
+# pnpm
+export PNPM_HOME="/home/bsherman/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+
+export ANTHROPIC_API_KEY=$(op item get "Anthropic API KEY" --fields "notesPlain")
+
+eval "$(direnv hook zsh)"

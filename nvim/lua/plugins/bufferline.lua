@@ -1,5 +1,30 @@
 return {
     "akinsho/bufferline.nvim",
+    enabled = false,
+    config = function(_, opts)
+        require("bufferline").setup(opts)
+        -- require("bufferline").setup({
+        --     options = {
+        --         indicator_icon = " ",
+        --         separator_style = { "", "" },
+        --         tab_size = 0,
+        --         buffer_close_icon = "",
+        --         modified_icon = "",
+        --         close_icon = "",
+        --     },
+        -- })
+        -- vim.cmd([[
+        --     autocmd ColorScheme * highlight BufferLineFill guibg=none
+        --     autocmd ColorScheme * highlight BufferLineBackground guifg=#7a7c9e
+        --     autocmd ColorScheme * highlight BufferLineBufferSelected guifg=white gui=none
+        --     ]])
+        vim.g.transparent_groups = vim.list_extend(
+            vim.g.transparent_groups or {},
+            vim.tbl_map(function(v)
+                return v.hl_group
+            end, vim.tbl_values(require("bufferline.config").highlights))
+        )
+    end,
     opts = {
         options = {
             themable = true,

@@ -7,6 +7,7 @@ end
 
 config.color_scheme = "Kanagawa (Gogh)"
 config.force_reverse_video_cursor = true
+config.window_decorations = "RESIZE"
 config.colors = {
 	-- Kanagaway Wave
 	foreground = "#dcd7ba",
@@ -68,5 +69,6 @@ config.keys = {
 
 	{ key = "Backspace", mods = "CTRL", action = wezterm.action.SendKey({ key = "w", mods = "CTRL" }) },
 }
+config.enable_kitty_keyboard = true
 
 return config

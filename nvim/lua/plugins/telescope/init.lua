@@ -37,7 +37,7 @@ return {
                     -- prompt_prefix = " ",
                     selection_caret = " ",
                     entry_prefix = "  ",
-                    file_ignore_patterns = { "node_modules/", ".git/", "dist/", ".elixir_ls/", "_build/" },
+                    file_ignore_patterns = { "node_modules/", ".git/", "dist/", ".elixir_ls/", "_build/", ".jj/" },
                     path_display = {
                         -- shorten = {
                         --     len = 3,
@@ -51,8 +51,8 @@ return {
                     set_env = { ["COLORTERM"] = "truecolor" },
                     mappings = {
                         i = {
-                            ["<c-n>"] = actions.cycle_history_next,
-                            ["<c-p>"] = actions.cycle_history_prev,
+                            ["<c-n>"] = actions.move_selection_next,
+                            ["<c-p>"] = actions.move_selection_previous,
                             ["<c-j>"] = actions.move_selection_next,
                             ["<c-k>"] = actions.move_selection_previous,
                             ["<c-q>"] = actions.send_to_qflist,

@@ -1,8 +1,11 @@
 return {
     {
         "nvim-neorg/neorg",
-        dependencies = { "luarocks.nvim", "nvim-tree/nvim-web-devicons" },
+        dependencies = {
+            "nvim-tree/nvim-web-devicons",
+        },
         version = "*",
+        lazy = false,
         config = function()
             require("neorg").setup({
                 load = {

@@ -1,31 +1,23 @@
 return {
     "mfussenegger/nvim-lint",
+    event = { "BufReadPre", "BufNewFile" },
     config = function()
         local lint = require("lint")
+        local web_linter = "eslint_d"
         lint.linters_by_ft = {
             sh = { "shellcheck" },
             -- haskell = { "hlint" },
             lua = { "selene" },
+            javascript = { web_linter },
+            javascriptreact = { web_linter },
+            typescript = { web_linter },
+            typescriptreact = { web_linter },
         }
 
-        local web_languages = {
-            "javascript",
-            "javascriptreact",
-            "typescript",
-            "typescriptreact",
-            "vue",
-        }
-        -- use eslint until eslint_d upgrades to new format
-        for _, name in pairs(web_languages) do
-            if not lint.linters_by_ft[name] then
-                lint.linters_by_ft[name] = { "eslint" }
-            end
-            -- if not vim.tbl_contains(lint.linters_by_ft[name], "eslint_d") then
-            --     table.insert(lint.linters_by_ft[name], "eslint_d")
-            -- end
-        end
+        local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
 
         vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
+            group = lint_augroup,
             callback = function()
                 local get_clients = vim.lsp.get_clients
                 local client = get_clients({ bufnr = 0 })[1] or nil

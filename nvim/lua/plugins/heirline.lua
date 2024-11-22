@@ -16,6 +16,8 @@ return {
 
         local function setup_colors()
             return {
+                -- bright_bg = "none",
+                -- bright_fg = "none",
                 bright_bg = get_hl("Folded").bg,
                 bright_fg = get_hl("Folded").fg,
                 red = get_hl("DiagnosticError").fg,
@@ -112,19 +114,19 @@ return {
                     t = "T",
                 },
                 mode_colors = {
-                    n = "red",
-                    i = "green",
-                    v = "cyan",
-                    V = "cyan",
-                    ["\22"] = "cyan",
-                    c = "orange",
-                    s = "purple",
-                    S = "purple",
-                    ["\19"] = "purple",
-                    R = "orange",
-                    r = "orange",
-                    ["!"] = "red",
-                    t = "red",
+                    n = "#FF5D62",
+                    i = "#98BB6C",
+                    v = "#658594",
+                    V = "#658594",
+                    ["\22"] = "#658594",
+                    c = "#FF9E3B",
+                    s = "#957FB8",
+                    S = "#957FB8",
+                    ["\19"] = "#957FB8",
+                    R = "#FF9E3B",
+                    r = "#FF9E3B",
+                    ["!"] = "#FF5D62",
+                    t = "#FF5D62",
                 },
             },
             -- We can now access the value of mode() that, by now, would have been
@@ -180,16 +182,16 @@ return {
             provider = function(self)
                 -- first, trim the pattern relative to the current directory. For other
                 -- options, see :h filename-modifers
-                local filename = vim.fn.fnamemodify(self.filename, ":.")
+                local filename = vim.fn.fnamemodify(self.filename, ":t")
                 if filename == "" then
                     return "[No Name]"
                 end
                 -- now, if the filename would occupy more than 1/4th of the available
                 -- space, we trim the file path to its initials
                 -- See Flexible Components section below for dynamic truncation
-                if not conditions.width_percent_below(#filename, 0.25) then
-                    filename = vim.fn.pathshorten(filename)
-                end
+                -- if not conditions.width_percent_below(#filename, 0.25) then
+                --     filename = vim.fn.pathshorten(filename)
+                -- end
                 return filename
             end,
             hl = { fg = utils.get_highlight("Directory").fg },

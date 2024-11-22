@@ -2,7 +2,9 @@ return {
     {
         "vhyrro/luarocks.nvim",
         priority = 3000,
-        config = true,
+        opts = {
+            "lua-utils",
+        },
     },
     {
         "rest-nvim/rest.nvim",

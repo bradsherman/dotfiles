@@ -11,8 +11,8 @@ local has_words_before = function()
     return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
 
-local window_ops = cmp.config.window.bordered()
-window_ops.border = "rounded" -- default
+-- local window_ops = cmp.config.window.bordered()
+-- window_ops.border = "rounded" -- default
 
 local kind_icons = {
     Text = "",
@@ -56,15 +56,15 @@ cmp.setup({
             luasnip.lsp_expand(args.body)
         end,
     },
-    window = {
-        completion = window_ops,
-        -- completion = {
-        --     winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
-        --     col_offset = -3,
-        --     side_padding = 0,
-        -- },
-        documentation = window_ops,
-    },
+    -- window = {
+    -- completion = window_ops,
+    -- completion = {
+    --     winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
+    --     col_offset = -3,
+    --     side_padding = 0,
+    -- },
+    -- documentation = window_ops,
+    -- },
     formatting = {
         fields = { "kind", "abbr", "menu" },
         format = function(entry, vim_item)
@@ -88,7 +88,7 @@ cmp.setup({
                 latex_symbols = "[LaTeX]",
             })[entry.source.name]
 
-            vim_item.before = require("tailwind-tools.cmp").lspkind_format
+            -- vim_item.before = require("tailwind-tools.cmp").lspkind_format
 
             return vim_item
         end,

@@ -5,19 +5,17 @@ return {
         dependencies = { "williamboman/mason.nvim" },
         config = function()
             local config = {
-                virtual_text = false,
-                -- virtual_text = {
-                --     source = "always",
-                --     spacing = 4,
-                --     prefix = "●",
-                --     -- this will set set the prefix to a function that returns the diagnostics icon based on the severity
-                --     -- this only works on a recent 0.10.0 build. Will be set to "●" when not supported
-                --     -- prefix = "icons",
-                -- },
+                -- virtual_text = false,
+                virtual_text = {
+                    source = "always",
+                    spacing = 4,
+                    prefix = "●",
+                    -- this will set set the prefix to a function that returns the diagnostics icon based on the severity
+                    -- this only works on a recent 0.10.0 build. Will be set to "●" when not supported
+                    -- prefix = "icons",
+                },
                 -- show signs
-                sign = true,
                 signs = {
-
                     { name = "DiagnosticSignError", text = " " },
                     { name = "DiagnosticSignWarn", text = " " },
                     { name = "DiagnosticSignHint", text = " " },

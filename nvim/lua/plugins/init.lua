@@ -120,8 +120,13 @@ return {
         },
     },
 
-    { "j-hui/fidget.nvim", opts = {} },
-    { "xiyaowong/transparent.nvim" },
+    {
+        "xiyaowong/transparent.nvim",
+        config = function()
+            require("transparent").clear_prefix("BufferLine")
+            require("transparent").clear_prefix("Buffer")
+        end,
+    },
     {
         "folke/todo-comments.nvim",
         dependencies = { "nvim-lua/plenary.nvim" },
