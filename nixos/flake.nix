@@ -10,6 +10,7 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    zjstatus = { url = "github:dj95/zjstatus"; };
   };
 
   outputs = { self, nixpkgs, home-manager, ... }@inputs:
@@ -17,13 +18,14 @@
       inherit (self) outputs;
       system = "x86_64-linux";
     in {
-      overlays = import ./overlays {inherit inputs;};
+      overlays = import ./overlays { inherit inputs; };
       nixosConfigurations.default = nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = { inherit inputs outputs; };
         modules = [
           ./hosts/default/configuration.nix
-          home-manager.nixosModules.home-manager {
+          home-manager.nixosModules.home-manager
+          {
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = false;
@@ -31,5 +33,5 @@
           }
         ];
       };
-  };
+    };
 }

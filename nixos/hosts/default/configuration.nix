@@ -2,14 +2,13 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ pkgs, inputs, ... }:
+{ pkgs, inputs, outputs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      inputs.home-manager.nixosModules.default
-    ];
+  imports = [ # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    inputs.home-manager.nixosModules.default
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -57,7 +56,7 @@
     settings = {
       default_session = {
         command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd sway";
-	user = "greeter";
+        user = "greeter";
       };
     };
   };
@@ -89,6 +88,14 @@
     # no need to redefine it in your config for now)
     #media-session.enable = true;
   };
+  services.pipewire.wireplumber.extraConfig.bluetoothEnhancements = {
+    "monitor.bluez.properties" = {
+      "bluez5.enable-sbc-xq" = true;
+      "bluez5.enable-msbc" = true;
+      "bluez5.enable-hw-volume" = true;
+      "bluez5.roles" = [ "hsp_hs" "hsp_ag" "hfp_hf" "hfp_ag" ];
+    };
+  };
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
@@ -97,51 +104,36 @@
   users.users.bsherman = {
     isNormalUser = true;
     description = "Brad Sherman";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" ];
     shell = pkgs.zsh;
   };
 
   home-manager = {
     extraSpecialArgs = { inherit inputs; };
     backupFileExtension = "backup";
-    users = {
-      "bsherman" = import ./home.nix;
-    };
+    users = { "bsherman" = import ./home.nix; };
   };
 
   programs.zsh = {
     enable = true;
     enableCompletion = true;
-    # autosuggestions.enable = true;
-    # syntaxHighlighting.enable = true;
-
-    # shellAliases = {
-    #   ll = "ls -l";
-    #   edit = "sudo -e";
-    #   update = "sudo nixos-rebuild switch --flake";
-    # };
-    #
-    # history.size = 10000;
-    # history.ignoreAllDups = true;
-    # history.path = "$HOME/.zsh_history";
-    # history.ignorePatterns = ["rm *" "pkill *" "cp *"];
+    autosuggestions.enable = true;
+    syntaxHighlighting.enable = true;
   };
-
 
   # Install firefox.
   programs.firefox.enable = true;
-  security.pam.services.swaylock = {};
+  security.pam.services.swaylock = { };
   # Allow unfree packages
-  nixpkgs.config = {
-    allowUnfree = true;
+  nixpkgs = {
+    config = { allowUnfree = true; };
+    overlays = [
+      outputs.overlays.stable-packages
+      outputs.overlays.wf-recorder
+      outputs.overlays.zjstatus
+    ];
   };
-
-  # nixpkgs = {
-  #   overlays = [
-  #     outputs.overlays.stable-packages
-  #   ];
-  # };
-
+  environment.pathsToLink = [ "/share/zsh" ];
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -152,6 +144,9 @@
     coreutils
     pkg-config
     xz
+    pulseaudio
+    pavucontrol
+    networkmanagerapplet
 
     sway
     swaybg
@@ -184,10 +179,12 @@
     '';
   };
 
-  # programs.sway = {
-  #   enable = true;
-  #   wrapperFeatures.gtk = false;
-  # };
+  virtualisation.docker.enable = true;
+
+  programs.sway = {
+    enable = false;
+    wrapperFeatures.gtk = true;
+  };
   systemd.user.services.kanshi = {
     description = "kanshi daemon";
     environment = {
@@ -196,7 +193,7 @@
     };
     serviceConfig = {
       Type = "simple";
-      ExecStart = ''${pkgs.kanshi}/bin/kanshi'';
+      ExecStart = "${pkgs.kanshi}/bin/kanshi";
     };
   };
 

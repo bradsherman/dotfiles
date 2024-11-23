@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 function usage () {
     echo "usage: $0 [-h] [-a (application)]"
@@ -29,7 +29,9 @@ function copy_config () {
     for var in "${@:4}"; do
         params+=("$var")
     done
-    rsync --recursive --delete-after --inplace "${params[@]}" "$2" "$3"
+    if [[ -d "$2" || -f "$2" ]]; then
+      rsync --recursive --delete-after --inplace "${params[@]}" "$2" "$3"
+    fi
   else
     echo "Skipping application: $1"
   fi
@@ -53,4 +55,5 @@ copy_config "tmux" ~/.tmux.conf tmux.conf
 copy_config "wezterm" ~/.config/wezterm .
 copy_config "zsh" ~/.zshrc zsh/zshrc
 copy_config "zellij" ~/.config/zellij .
+copy_config "nix" ~/nixos .
 cp ~/.local/bin/update-neovim.sh .
