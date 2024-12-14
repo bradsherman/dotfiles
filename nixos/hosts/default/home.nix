@@ -50,6 +50,11 @@
     pkgs.lazygit
     pkgs.tree
 
+    # Proton
+    pkgs.proton-pass
+    pkgs.protonvpn-gui
+    pkgs.protonvpn-cli
+
     # langs
     pkgs.libgcc
     pkgs.gcc
@@ -100,6 +105,7 @@
     ./modules/fzf.nix
     ./modules/git.nix
     ./modules/mako.nix
+    ./modules/nushell.nix
     ./modules/nvim.nix
     ./modules/swayidle.nix
     ./modules/wezterm.nix
@@ -120,6 +126,7 @@
   programs.direnv = {
     enable = true;
     enableZshIntegration = true;
+    enableNushellIntegration = true;
     nix-direnv.enable = true;
   };
 

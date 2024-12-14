@@ -1,11 +1,27 @@
 { ... }:
 
 {
+  home.file = {
+    ".zsh_custom/themes/robbyrussell.zsh-theme".text = ''
+      PROMPT="%(?:%{$fg_bold[green]%}%1{➜%} :%{$fg_bold[red]%}%1{➜%} ) %{$fg[cyan]%}%c%{$reset_color%}"
+      PROMPT+=' $(git_prompt_info)'
+
+      ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg_bold[blue]%}git:(%{$fg[red]%}"
+      ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%} "
+      ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[blue]%}) %{$fg[yellow]%}%1{✗ %}"
+      ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[blue]%})"
+    '';
+  };
   programs.zsh = {
     enable = true;
     enableCompletion = true;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
+    oh-my-zsh = {
+      enable = true;
+      theme = "robbyrussell";
+      custom = "$HOME/.zsh_custom";
+    };
 
     shellAliases = {
       vim = "nvim";
@@ -88,10 +104,10 @@
 
       eval "$(direnv hook zsh)"
     '';
-    localVariables = {
-      PROMPT =
-        "%F{33}b%f%F{39}s%f%F{38}h%f%F{44}erman%f%F{50}@%f%F{43}nix%f%F{44}os%f%F{38}:%1~/%f %F{44}%#%f ";
-    };
+    # localVariables = {
+    #   PROMPT =
+    #     "%F{33}b%f%F{39}s%f%F{38}h%f%F{44}erman%f%F{50}@%f%F{43}nix%f%F{44}os%f%F{38}:%1~/%f %F{44}%#%f ";
+    # };
     sessionVariables = {
       BAT_THEME = "kanagawa";
       EDITOR = "nvim";
