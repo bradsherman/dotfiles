@@ -45,6 +45,7 @@
     pkgs.flyctl
     pkgs.jq
     pkgs.jujutsu
+    # pkgs.gg
     pkgs.stylua
     pkgs.lazygit
     pkgs.tree

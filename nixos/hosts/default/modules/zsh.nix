@@ -45,14 +45,24 @@
       bindkey "^P" up-line-or-search
       bindkey "^N" down-line-or-search
       bindkey -M viins 'jk' vi-cmd-mode
+
       keychain $HOME/.ssh/id_ed25519
+
+      function init_ssh_key () {
+        eval "$(ssh-agent -s)"
+        ssh-add ~/.ssh/id_ed25519
+      }
+
       [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
       if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then
           . $HOME/.nix-profile/etc/profile.d/nix.sh
           export LOCALE_ARCHIVE="/usr/lib/locale/locale-archive"
           export TERMINFO=$HOME/.nix-profile/share/terminfo
       fi
+
       [[ ! -r /home/bsherman/.opam/opam-init/init.zsh ]] || source /home/bsherman/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+
       function author_lines () {
         if [ -z "$1" ]
         then
@@ -69,8 +79,11 @@
       [ -f "/home/bsherman/.ghcup/env" ] && . "/home/bsherman/.ghcup/env" # ghcup-env
 
       zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+
       [ -s "/home/bsherman/.bun/_bun" ] && source "/home/bsherman/.bun/_bun"
+
       if [ -e /home/bsherman/.nix-profile/etc/profile.d/nix.sh ]; then . /home/bsherman/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+
       eval "$(zoxide init --cmd cd zsh)"
 
       eval "$(direnv hook zsh)"

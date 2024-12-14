@@ -104,9 +104,10 @@
   users.users.bsherman = {
     isNormalUser = true;
     description = "Brad Sherman";
-    extraGroups = [ "networkmanager" "wheel" "docker" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" "video" ];
     shell = pkgs.zsh;
   };
+  users.groups.video = { };
 
   home-manager = {
     extraSpecialArgs = { inherit inputs; };
@@ -128,6 +129,7 @@
   nixpkgs = {
     config = { allowUnfree = true; };
     overlays = [
+      outputs.overlays.gg
       outputs.overlays.stable-packages
       outputs.overlays.wf-recorder
       outputs.overlays.zjstatus
@@ -147,6 +149,8 @@
     pulseaudio
     pavucontrol
     networkmanagerapplet
+    light
+    brightnessctl
 
     sway
     swaybg

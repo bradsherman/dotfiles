@@ -1,4 +1,7 @@
-{ inputs, ... }: {
+{ inputs, ... }:
+
+let gg-version = "v0.23.0";
+in {
   # This one brings our custom packages from the 'pkgs' directory
   # additions = final: _prev: import ../pkgs {pkgs = final;};
 
@@ -15,6 +18,35 @@
           sha256 = "sha256-7jbX5k8dh4dWfolMkZXiERuM72zVrkarsamXnd+1YoI=";
         })
       ];
+    };
+  };
+
+  # I can't get this to work, I guess there's a sandbox thing with `npm install`
+  gg = final: prev: {
+    gg = final.stdenv.mkDerivation {
+      name = "gg";
+      src = builtins.fetchTarball {
+        url =
+          "https://github.com/gulbanana/gg/archive/refs/tags/${gg-version}.tar.gz";
+        sha256 = "1z0xnmnb6ais7lyqs20nk3nxy0w73q4pa3frknidq1ii0ck4y349";
+      };
+      buildInputs = [
+        final.nodejs_22
+        #   final.pango
+        #   final.atkmm
+        #   final.gdk-pixbuf
+        #   final.gtk3
+        #   final.webkitgtk_4_1
+      ];
+      buildPhase = ''
+        npm install
+        # echo "Hi"
+        # npm run tauri build
+      '';
+      installPhase = ''
+        mkdir -p $out/bin
+        cp gg $out/bin
+      '';
     };
   };
 
