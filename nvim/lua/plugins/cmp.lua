@@ -1,6 +1,7 @@
 return {
     {
         "L3MON4D3/LuaSnip",
+        enabled = true,
         build = "make install_jsregexp",
         dependencies = {
             "rafamadriz/friendly-snippets",
@@ -12,6 +13,7 @@ return {
         -- "hrsh7th/nvim-cmp",
         "iguanacucumber/magazine.nvim",
         name = "nvim-cmp", -- Otherwise highlighting gets messed up
+        enabled = true,
         event = "InsertEnter",
         dependencies = {
             -- "hrsh7th/cmp-buffer",
@@ -57,8 +59,8 @@ return {
                     and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
             end
 
-            local window_ops = cmp.config.window.bordered()
-            window_ops.border = "rounded" -- default
+            -- local window_ops = cmp.config.window.bordered()
+            -- window_ops.border = "rounded" -- default
 
             local kind_icons = {
                 Text = "",

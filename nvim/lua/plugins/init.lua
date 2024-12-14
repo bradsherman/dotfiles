@@ -113,6 +113,7 @@ return {
     {
         {
             "Bekaboo/dropbar.nvim",
+            enabled = false,
             -- optional, but required for fuzzy finder support
             dependencies = {
                 "nvim-telescope/telescope-fzf-native.nvim",
@@ -157,7 +158,20 @@ return {
     },
     -- "sindrets/winshift.nvim",
     -- "mrjones2014/smart-splits.nvim",
-    "luukvbaal/statuscol.nvim",
+    {
+        "luukvbaal/statuscol.nvim",
+        config = function()
+            local builtin = require("statuscol.builtin")
+            require("statuscol").setup({
+                relculright = true,
+                segments = {
+                    { text = { builtin.foldfunc }, click = "v:lua.ScFa" },
+                    { text = { "%s" }, click = "v:lua.ScSa" },
+                    { text = { builtin.lnumfunc, " " }, click = "v:lua.ScLa" },
+                },
+            })
+        end,
+    },
     {
         "OlegGulevskyy/better-ts-errors.nvim",
         dependencies = { "MunifTanjim/nui.nvim" },

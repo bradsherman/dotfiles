@@ -1,52 +1,5 @@
 return {
     {
-        "zaldih/themery.nvim",
-        enabled = true,
-        config = function()
-            -- Minimal config
-            require("themery").setup({
-                themes = {
-                    {
-                        colorscheme = "kanagawa-wave",
-                        name = "Kanagawa Wave",
-                        before = [[vim.opt.background = "dark"]],
-                    },
-                    {
-                        colorscheme = "kanagawa-dragon",
-                        name = "Kanagawa Dragon",
-                        before = [[vim.opt.background = "dark"]],
-                    },
-                    {
-                        colorscheme = "kanagawa-lotus",
-                        name = "Kanagawa Lotus",
-                        before = [[vim.opt.background = "light"]],
-                    },
-                    {
-                        colorscheme = "bamboo",
-                        name = "Bamboo",
-                        before = [[vim.opt.background = "dark"]],
-                    },
-                    {
-                        colorscheme = "bamboo",
-                        name = "Bamboo Light",
-                        before = [[vim.opt.background = "light"]],
-                    },
-                    {
-                        colorscheme = "onenord",
-                        name = "OneNord",
-                        before = [[vim.opt.background = "dark"]],
-                    },
-                    {
-                        colorscheme = "solarized-high",
-                        name = "Solarized Light",
-                        before = [[vim.opt.background = "light"]],
-                    },
-                },
-                livePreview = true, -- Apply theme while browsing. Default to true.
-            })
-        end,
-    },
-    {
         "rebelot/kanagawa.nvim",
         config = function(_, opts)
             vim.opt.background = "dark"
@@ -64,7 +17,7 @@ return {
             keywordStyle = { italic = true },
             statementStyle = { bold = true },
             typeStyle = {},
-            transparent = true, -- do not set background color
+            transparent = false, -- do not set background color
             dimInactive = true, -- dim inactive window `:h hl-NormalNC`
             terminalColors = true, -- define vim.g.terminal_color_{0,17}
             colors = { -- add/modify theme and palette colors

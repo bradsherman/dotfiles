@@ -72,7 +72,7 @@ ZSH_THEME="candy"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 
-plugins=(git fzf-tab fast-syntax-highlighting zsh-autosuggestions nix-shell)
+plugins=(git fzf-tab fast-syntax-highlighting zsh-autosuggestions nix-shell nix-zsh-completions)
 
 # export VIM_MODE_VICMD_KEY="jk"
 # export _Z_CMD="j"
@@ -143,7 +143,7 @@ export FZF_DEFAULT_OPTS='
   --bind "ctrl-e:execute(echo {+} | xargs -o nvim)"
   --bind "?:toggle-preview"'
 
-alias vv="pushd ~/.config/nvim; vim .; popd;"
+alias vv="pushd ~/.config/nvim; vim; popd;"
 alias vz="vim ~/.zshrc"
 alias sz="source ~/.zshrc"
 alias v3="vim ~/.config/i3/config"
@@ -252,18 +252,17 @@ function build_deploy_vagrant {
 alias luamake=/home/bsherman/code/lua-language-server/3rd/luamake/luamake
 export VAULT_ADDR=http://127.0.0.1:8200
 
-if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then
+if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ] && ! [ -n "${__ETC_PROFILE_NIX_SOURCED:-}" ]; then
     . $HOME/.nix-profile/etc/profile.d/nix.sh
-    export LOCALE_ARCHIVE="/usr/lib/locale/locale-archive"
+    # export LOCALE_ARCHIVE="/usr/lib/locale/locale-archive"
+    export LOCALE_ARCHIVE="$(nix-env --installed --no-name --out-path --query glibc-locales)/lib/locale/locale-archive"
+    export XDG_DATA_DIRS="$HOME/.nix-profile/share:$XDG_DATA_DIRS"
     export TERMINFO=$HOME/.nix-profile/share/terminfo
+    export __ETC_PROFILE_NIX_SOURCED=1
 fi
 
 # opam configuration
 [[ ! -r /home/bsherman/.opam/opam-init/init.zsh ]] || source /home/bsherman/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
-
-
-
-# prompt_nix_shell_setup
 
 
 source "$HOME/.cargo/env"
@@ -331,11 +330,6 @@ export PATH="$FLYCTL_INSTALL/bin:$PATH"
 # eval "$(/home/bsherman/.local/bin/mise activate zsh)"
 
 
-if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then
-    . $HOME/.nix-profile/etc/profile.d/nix.sh
-    export LOCALE_ARCHIVE="$(nix-env --installed --no-name --out-path --query glibc-locales)/lib/locale/locale-archive"
-    export XDG_DATA_DIRS="$HOME/.nix-profile/share:$XDG_DATA_DIRS"
-fi
 
 [ -f "/home/bsherman/.ghcup/env" ] && . "/home/bsherman/.ghcup/env" # ghcup-env
 
@@ -358,7 +352,6 @@ function stack-packages() {
   stack build $pkg
 }
 
-if [ -e /home/bsherman/.nix-profile/etc/profile.d/nix.sh ]; then . /home/bsherman/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
 
 eval "$(zoxide init --cmd cd zsh)"
 
@@ -374,3 +367,5 @@ esac
 export ANTHROPIC_API_KEY=$(op item get "Anthropic API KEY" --fields "notesPlain")
 
 eval "$(direnv hook zsh)"
+
+prompt_nix_shell_setup

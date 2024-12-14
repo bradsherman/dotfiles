@@ -7,7 +7,7 @@ end
 
 config.color_scheme = "Kanagawa (Gogh)"
 config.force_reverse_video_cursor = true
-config.window_decorations = "RESIZE"
+config.window_decorations = "NONE"
 config.colors = {
 	-- Kanagaway Wave
 	foreground = "#dcd7ba",
@@ -49,8 +49,8 @@ config.font = wezterm.font("Berkeley Mono")
 -- config.font = wezterm.font("Victor Mono")
 -- config.font = wezterm.font("Rec Mono Duotone")
 config.term = "wezterm"
-config.window_background_opacity = 0.85
-config.text_background_opacity = 0.85
+config.window_background_opacity = 0.9
+config.text_background_opacity = 0.9
 config.enable_tab_bar = false
 -- config.default_prog = { "zellij", "-l", "welcome" }
 config.window_padding = {

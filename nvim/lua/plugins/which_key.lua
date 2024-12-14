@@ -18,21 +18,22 @@ return {
 
         -- Miscellaneous Telescope mappings
         wk.add({
-            { "<c-f>", "<cmd>FzfLua files<cr>", desc = "Files" },
-            { "<c-g>", "<cmd>FzfLua live_grep_glob<cr>", desc = "Grep" },
+            -- { "<c-f>", "<cmd>FzfLua files<cr>", desc = "Files" },
+            -- { "<c-g>", "<cmd>FzfLua live_grep_glob<cr>", desc = "Grep" },
             -- { "<c-g>", "<cmd>FzfLua live_grep<cr>", desc = "Grep" },
-            { "<c-b>", "<cmd>FzfLua buffers<cr>", desc = "Buffers" },
-            { "<c-t>", "<cmd>FzfLua tags<cr>", desc = "Tags" },
-            { "R", "<cmd>FzfLua resume<cr>", desc = "Resume" },
+            -- { "<c-b>", "<cmd>FzfLua buffers<cr>", desc = "Buffers" },
+            -- { "<c-t>", "<cmd>FzfLua tags<cr>", desc = "Tags" },
+            -- { "R", "<cmd>FzfLua resume<cr>", desc = "Resume" },
 
-            -- { "<c-f>", "<cmd>Telescope find_files<cr>", desc = "Telescope Files" },
+            { "<c-f>", "<cmd>Telescope find_files<cr>", desc = "Telescope Files" },
             -- { "<c-g>", "<cmd>Telescope egrepify<cr>", desc = "Telescope Grep" },
+            { "<c-g>", require("plugins.telescope.multigrep").live_multigrep, desc = "Telescope Grep" },
             -- ["<c-g>"] = {
             --     "<cmd>lua require('telescope').extensions.live_grep_args.live_grep_args()<cr>",
             --     "Telescope Grep",
             -- },
-            -- { "<c-b>", "<cmd>Telescope buffers<cr>", desc = "Telescope Buffers" },
-            -- { "<c-t>", "<cmd>Telescope tags<cr>", desc = "Telescope Tags" },
+            { "<c-b>", "<cmd>Telescope buffers<cr>", desc = "Telescope Buffers" },
+            { "<c-t>", "<cmd>Telescope tags<cr>", desc = "Telescope Tags" },
 
             { "<leader>gd", "<cmd>GrepInDirectory<cr>", desc = "Search In Directory" },
             {
@@ -148,8 +149,8 @@ return {
         wk.add({
             {
                 { "<leader>l", group = "+LSP Actions" },
-                { "<leader>la", "<cmd>lua require('fastaction').code_action()<cr>", desc = "Code Actions" },
-                -- { "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<cr>", desc = "Code Actions" },
+                -- { "<leader>la", "<cmd>lua require('fastaction').code_action()<cr>", desc = "Code Actions" },
+                { "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<cr>", desc = "Code Actions" },
                 { "<leader>ld", "<cmd>Telescope diagnostics<cr>", desc = "LSP Diagnostics" },
                 { "<leader>lf", "<cmd>lua vim.lsp.buf.format({ async = true })<cr>", desc = "Format" },
                 { "<leader>li", "<cmd>TSToolsOrganizeImports<cr>", desc = "TSToolsOrganizeImports" },
@@ -161,14 +162,18 @@ return {
             {
                 "<c-p>",
                 function()
-                    vim.diagnostic.jump({ count = -1, float = true })
+                    vim.diagnostic.jump({ count = -1, float = false })
+                    -- assume current buffer
+                    -- require("tiny-inline-diagnostic").get_diagnostic_under_cursor(0)
                 end,
                 desc = "Prev Diagnostic",
             },
             {
                 "<c-n>",
                 function()
-                    vim.diagnostic.jump({ count = 1, float = true })
+                    vim.diagnostic.jump({ count = 1, float = false })
+                    -- assume current buffer
+                    -- require("tiny-inline-diagnostic").get_diagnostic_under_cursor(0)
                 end,
                 desc = "Next Diagnostic",
             },
@@ -178,7 +183,7 @@ return {
                 { "gi", "<cmd>FzfLua lsp_implementations<cr>", desc = "Implementations" },
                 { "gK", require("hover").hover, desc = "Hover Doc" },
                 { "gm", "<cmd>FzfLua lsp_document_symbols<cr>", desc = "Document Symbols" },
-                { "gr", "<cmd>FzfLua lsp_references<cr>", desc = "References" },
+                -- { "gr", "<cmd>FzfLua lsp_references<cr>", desc = "References" },
                 -- { "gt", "<cmd>Telescope lsp_type_definitions<cr>", desc = "Type Definitions" },
                 { "gt", "<cmd>FzfLua lsp_typedefs<cr>", desc = "Type Definitions" },
             },
@@ -556,6 +561,17 @@ return {
 
         wk.add({ { "<leader>uu", "<cmd>UndotreeToggle<cr>", desc = "Undo Tree" } })
         wk.add({ { "<leader>o", "<cmd>Outline<cr>", desc = "Outline" } })
+
+        wk.add({
+            {
+                "<leader>fs",
+                function()
+                    require("rip-substitute").sub()
+                end,
+                mode = { "n", "x" },
+                desc = " rip substitute",
+            },
+        })
 
         wk.setup(opts)
     end,

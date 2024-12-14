@@ -8,9 +8,9 @@ return {
             -- { "<c-b>", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
             -- { "<c-t>", "<cmd>Telescope tags<cr>", desc = "Tags" },
         },
-        opts = function()
+        config = function()
             local actions = require("telescope.actions")
-            return {
+            require("telescope").setup({
                 defaults = {
                     borderchars = { "█", " ", "▀", "█", "█", " ", " ", "▀" },
                     -- borderchars = { "🭽", "▔", "🭾", "▕", "🭿", "▁", "🭼", "▏" }
@@ -63,6 +63,7 @@ return {
                     find_files = {
                         hidden = true,
                         follow = true,
+                        theme = "ivy",
                         -- find_command = {
                         --     "fd",
                         --     "--color=never",
@@ -79,6 +80,7 @@ return {
                     buffers = {
                         show_all_buffers = true,
                         sort_lastused = true,
+                        theme = "ivy",
                         mappings = {
                             i = {
                                 ["<c-d>"] = "delete_buffer",
@@ -111,7 +113,8 @@ return {
                         -- layout_config = { mirror=true }, -- mirror preview pane
                     },
                 },
-            }
+            })
+            require("telescope").load_extension("fzf")
         end,
     },
     "nvim-telescope/telescope-live-grep-args.nvim",

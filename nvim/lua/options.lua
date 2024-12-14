@@ -10,13 +10,20 @@ o.visualbell = false
 o.errorbells = false
 o.timeoutlen = 500
 o.encoding = "UTF-8"
-o.fillchars:append("fold:•")
-o.foldcolumn = "0"
+-- o.fillchars:append("fold:•")
+o.fillchars:append("eob: ")
+o.fillchars:append("fold: ")
+o.fillchars:append("foldopen:")
+o.fillchars:append("foldsep: ")
+o.fillchars:append("foldclose:")
+-- vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
+-- o.foldcolumn = "0"
+o.foldcolumn = "1"
 o.foldlevel = 99
 o.foldlevelstart = 99
-o.foldmethod = "expr"
--- wo.foldexpr = "nvim_treesitter#foldexpr()"
 o.foldenable = true
+-- o.foldmethod = "expr"
+-- wo.foldexpr = "nvim_treesitter#foldexpr()"
 o.tags = "./tags"
 o.completeopt = "menu,menuone,noselect"
 
