@@ -122,6 +122,7 @@
   };
 
   programs.waybar = { enable = true; };
+  programs.keychain.enable = true;
 
   programs.direnv = {
     enable = true;
