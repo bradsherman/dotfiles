@@ -28,10 +28,7 @@
     pkgs.fzf
     pkgs.gnumake
     pkgs.unzip
-    (pkgs.nerdfonts.override {
-      fonts =
-        [ "FiraCode" "Hack" "Hasklig" "Iosevka" "IosevkaTerm" "SourceCodePro" ];
-    })
+
     pkgs.zoxide
     pkgs.gnupg
     pkgs.keychain
@@ -49,6 +46,14 @@
     pkgs.stylua
     pkgs.lazygit
     pkgs.tree
+
+    # Fonts
+    pkgs.nerd-fonts.fira-code
+    pkgs.nerd-fonts.hack
+    pkgs.nerd-fonts.hasklug
+    pkgs.nerd-fonts.iosevka
+    pkgs.nerd-fonts.iosevka-term
+    pkgs.nerd-fonts.sauce-code-pro
 
     # Proton
     pkgs.proton-pass
@@ -78,6 +83,7 @@
     pkgs.spotify
     pkgs.slack
     pkgs.zoom-us
+    pkgs.roam-research
 
     # # You can also create simple shell scripts directly inside your
     # # configuration. For example, this adds a command 'my-hello' to your
