@@ -23,7 +23,7 @@ return {
         },
 
         -- use a release tag to download pre-built binaries
-        version = "v0.*",
+        version = "*",
         -- OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
         -- build = 'cargo build --release',
         -- If you use nix, you can build from source using latest nightly rust with:
@@ -38,6 +38,11 @@ return {
             -- see the "default configuration" section below for full documentation on how to define
             -- your own keymap.
             keymap = { preset = "super-tab" },
+            completion = {
+                list = { selection = "auto_insert" },
+                -- experimental auto-brackets support
+                accept = { auto_brackets = { enabled = true } },
+            },
 
             appearance = {
                 -- Sets the fallback highlight groups to nvim-cmp's highlight groups
@@ -52,9 +57,10 @@ return {
             -- default list of enabled providers defined so that you can extend it
             -- elsewhere in your config, without redefining it, via `opts_extend`
             sources = {
-                completion = {
-                    enabled_providers = { "lsp", "path", "luasnip", "snippets", "buffer" },
-                },
+                default = { "lsp", "path", "snippets", "buffer" },
+                -- completion = {
+                --     enabled_providers = { "lsp", "path", "luasnip", "snippets", "buffer" },
+                -- },
                 providers = {
                     luasnip = {
                         name = "luasnip",
@@ -84,11 +90,8 @@ return {
                 end,
             },
 
-            -- experimental auto-brackets support
-            -- completion = { accept = { auto_brackets = { enabled = true } } }
-
             -- experimental signature help support
-            -- signature = { enabled = true }
+            signature = { enabled = true },
         },
         -- allows extending the enabled_providers array elsewhere in your config
         -- without having to redefine it

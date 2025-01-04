@@ -203,6 +203,7 @@ return {
     },
     {
         "ColinKennedy/cursor-text-objects.nvim",
+        enabled = true,
         config = function()
             local down_description = "Operate from your current cursor to the end of some text-object."
             local up_description = "Operate from the start of some text-object to your current cursor."

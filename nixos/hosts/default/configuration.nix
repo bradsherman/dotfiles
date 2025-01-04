@@ -73,7 +73,7 @@
   services.printing.enable = true;
 
   # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   security.polkit.enable = true;
   services.pipewire = {
@@ -121,6 +121,10 @@
     autosuggestions.enable = true;
     syntaxHighlighting.enable = true;
   };
+
+  programs._1password-gui.enable = true;
+  programs._1password-gui.polkitPolicyOwners = [ "bsherman" ];
+  programs._1password.enable = true;
 
   # Install firefox.
   programs.firefox.enable = true;

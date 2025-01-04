@@ -46,6 +46,9 @@
     pkgs.stylua
     pkgs.lazygit
     pkgs.tree
+    pkgs.bottom
+    pkgs.ghostty
+    pkgs.xfce.thunar
 
     # Fonts
     pkgs.nerd-fonts.fira-code
@@ -73,6 +76,7 @@
     # pkgs.haskell.compiler.ghc98 # .withPackages (hp: with hp; [ zlib ])
     # pkgs.haskell.packages.ghc98.haskell-language-server
     pkgs.haskellPackages.fourmolu
+    pkgs.haskellPackages.fast-tags
     # pkgs.haskellPackages.ghcup
     pkgs.stack
     pkgs.cabal-install
@@ -128,12 +132,15 @@
   };
 
   programs.waybar = { enable = true; };
-  programs.keychain.enable = true;
+  programs.keychain = {
+    enable = true;
+    enableZshIntegration = true;
+    keys = [ "id_ed25519" ];
+  };
 
   programs.direnv = {
     enable = true;
     enableZshIntegration = true;
-    enableNushellIntegration = true;
     nix-direnv.enable = true;
   };
 

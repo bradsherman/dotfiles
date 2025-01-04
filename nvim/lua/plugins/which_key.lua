@@ -93,8 +93,15 @@ return {
         })
 
         -- Colorizer
+        -- wk.add({
+        --     { "<leader>ct", "<cmd>HighlightColors Toggle<cr>", desc = "Toggle Colorizer" },
+        -- })
+
+        -- Code Companion
         wk.add({
-            { "<leader>ct", "<cmd>HighlightColors Toggle<cr>", desc = "Toggle Colorizer" },
+            { "<leader>c", group = "+Code Companion" },
+            { "<leader>cc", "<cmd>CodeCompanionChat<cr>", desc = "Open Chat" },
+            { "<leader>ct", "<cmd>CodeCompanionChat Toggle<cr>", desc = "Toggle" },
         })
 
         -- Markdown Preview
@@ -149,8 +156,8 @@ return {
         wk.add({
             {
                 { "<leader>l", group = "+LSP Actions" },
-                -- { "<leader>la", "<cmd>lua require('fastaction').code_action()<cr>", desc = "Code Actions" },
-                { "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<cr>", desc = "Code Actions" },
+                { "<leader>la", "<cmd>lua require('fastaction').code_action()<cr>", desc = "Code Actions" },
+                -- { "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<cr>", desc = "Code Actions" },
                 { "<leader>ld", "<cmd>Telescope diagnostics<cr>", desc = "LSP Diagnostics" },
                 { "<leader>lf", "<cmd>lua vim.lsp.buf.format({ async = true })<cr>", desc = "Format" },
                 { "<leader>li", "<cmd>TSToolsOrganizeImports<cr>", desc = "TSToolsOrganizeImports" },

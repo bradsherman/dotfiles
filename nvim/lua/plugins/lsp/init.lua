@@ -76,9 +76,10 @@ return {
                     nvim_lsp[server_name].setup(default_setup)
                 end,
                 ["lua_ls"] = function()
-                    local settings_ok, lua_settings = pcall(require, "plugins.lsp.settings.lua")
-                    if not settings_ok then
-                        return
+                    local lua_settings = {}
+                    local settings_ok, maybe_lua_settings = pcall(require, "plugins.lsp.settings.lua")
+                    if settings_ok then
+                        lua_settings = vim.tbl_deep_extend("force", lua_settings, maybe_lua_settings)
                     end
                     nvim_lsp.lua_ls.setup({
                         settings = lua_settings,
