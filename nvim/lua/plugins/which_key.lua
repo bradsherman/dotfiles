@@ -140,7 +140,7 @@ return {
             { "<leader>nc", "<cmd>lua require('notify').dismiss({pending = true})<cr>", desc = "Clear Notifications" },
             { "<leader>hs", "<cmd>Haskell packageYaml", desc = "Package Yaml" },
             { "<leader>hp", "<cmd>Haskell projectFile", desc = "Project File" },
-            -- { "<leader>a", "<cmd>AerialToggle!<cr>", desc = "Aerial Toggle" },
+            { "<leader>a", "<cmd>AerialToggle!<cr>", desc = "Aerial Toggle" },
         })
 
         wk.add({
@@ -477,11 +477,6 @@ return {
         local terminal_ok, toggleterm = pcall(require, "toggleterm.terminal")
         if terminal_ok then
             local Terminal = toggleterm.Terminal
-            local lazygit = Terminal:new({ cmd = "lazygit", hidden = true })
-
-            function _LAZYGIT_TOGGLE()
-                lazygit:toggle()
-            end
 
             local node = Terminal:new({ cmd = "node", hidden = true })
 

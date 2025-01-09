@@ -342,7 +342,6 @@ return {
             "nvim-lua/plenary.nvim",
         },
     },
-    -- tailwind-tools.lua
     {
         "luckasRanarison/tailwind-tools.nvim",
         dependencies = { "nvim-treesitter/nvim-treesitter" },
@@ -371,7 +370,7 @@ return {
     },
     {
         "mrcjkb/rustaceanvim",
-        version = "^4", -- Recommended
+        version = "^5", -- Recommended
         ft = { "rust" },
     },
 }

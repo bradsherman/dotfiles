@@ -110,16 +110,6 @@ return {
             })
         end,
     },
-    {
-        {
-            "Bekaboo/dropbar.nvim",
-            enabled = false,
-            -- optional, but required for fuzzy finder support
-            dependencies = {
-                "nvim-telescope/telescope-fzf-native.nvim",
-            },
-        },
-    },
 
     {
         "xiyaowong/transparent.nvim",
@@ -133,14 +123,6 @@ return {
         dependencies = { "nvim-lua/plenary.nvim" },
         opts = {},
     },
-    {
-        "folke/zen-mode.nvim",
-        opts = {},
-    },
-    {
-        "folke/twilight.nvim",
-        opts = {},
-    },
     { "kevinhwang91/promise-async" },
     {
         "anuvyklack/windows.nvim",
@@ -148,7 +130,7 @@ return {
             "anuvyklack/middleclass",
             "anuvyklack/animation.nvim",
         },
-        enabled = false,
+        enabled = true,
         config = function()
             vim.o.winwidth = 10
             vim.o.winminwidth = 10
@@ -156,8 +138,6 @@ return {
             require("windows").setup()
         end,
     },
-    -- "sindrets/winshift.nvim",
-    -- "mrjones2014/smart-splits.nvim",
     {
         "luukvbaal/statuscol.nvim",
         config = function()
@@ -178,10 +158,7 @@ return {
         config = true,
     },
     "hiphish/rainbow-delimiters.nvim",
-    "ziontee113/syntax-tree-surfer",
     -- end ui
-
-    "Vigemus/iron.nvim",
 
     {
         "danymat/neogen",

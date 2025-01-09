@@ -31,7 +31,7 @@ return {
             max_height = { 0.3 },
             min_height = { 0.3 },
         },
-        templates = { "builtin", "user.stack_build" },
+        templates = { "builtin", "user.stack_build", "user.stack_test" },
         strategy = {
             "terminal",
         },
