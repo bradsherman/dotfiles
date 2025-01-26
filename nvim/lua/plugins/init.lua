@@ -26,6 +26,7 @@ return {
     "Aasim-A/scrollEOF.nvim",
     {
         "nvim-tree/nvim-web-devicons",
+        commit = "aafa5c187a15701a7299a392b907ec15d9a7075f",
         priority = 500,
         opts = {
             -- your personnal icons can go here (to override)

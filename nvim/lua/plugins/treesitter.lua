@@ -203,7 +203,6 @@ return {
     },
     {
         "ColinKennedy/cursor-text-objects.nvim",
-        enabled = false,
         config = function()
             local down_description = "Operate from your current cursor to the end of some text-object."
             local up_description = "Operate from the start of some text-object to your current cursor."
@@ -268,5 +267,18 @@ return {
     {
         "yorickpeterse/nvim-tree-pairs",
         config = true,
+    },
+    {
+        "aaronik/treewalker.nvim",
+        opts = {
+            highlight = true, -- Whether to briefly highlight the node after jumping to it
+        },
+        config = function(_, opts)
+            vim.api.nvim_set_keymap("n", "<M-j>", ":Treewalker Down<CR>", { noremap = true })
+            vim.api.nvim_set_keymap("n", "<M-k>", ":Treewalker Up<CR>", { noremap = true })
+            vim.api.nvim_set_keymap("n", "<M-h>", ":Treewalker Left<CR>", { noremap = true })
+            vim.api.nvim_set_keymap("n", "<M-l>", ":Treewalker Right<CR>", { noremap = true })
+            require("treewalker").setup(opts)
+        end,
     },
 }

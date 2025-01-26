@@ -46,16 +46,11 @@ return {
                 "<cmd>lua require('telescope.builtin').live_grep({glob_pattern={'*.ts','*.js','*.tsx','*.jsx','*.css','*.scss'}})<cr>",
                 desc = "Grep Web Files",
             },
-            { "<leader>ff", "<cmd>lua MiniFiles.open()<cr>", desc = "Mini Files" },
+            { "<leader>fe", "<cmd>lua MiniFiles.open()<cr>", desc = "Mini Files" },
             {
                 "<leader>fg",
                 "<cmd>lua require('telescope').extensions.live_grep_args.live_grep_args()<cr>",
                 desc = "Live Grep Args",
-            },
-            {
-                "<leader>fe",
-                "<cmd>require('telescope').extensions.file_browser.file_browser()<cr>",
-                desc = "Telescope File Browser",
             },
             {
                 "<leader>f?",
@@ -93,15 +88,8 @@ return {
         })
 
         -- Colorizer
-        -- wk.add({
-        --     { "<leader>ct", "<cmd>HighlightColors Toggle<cr>", desc = "Toggle Colorizer" },
-        -- })
-
-        -- Code Companion
         wk.add({
-            { "<leader>c", group = "+Code Companion" },
-            { "<leader>cc", "<cmd>CodeCompanionChat<cr>", desc = "Open Chat" },
-            { "<leader>ct", "<cmd>CodeCompanionChat Toggle<cr>", desc = "Toggle" },
+            { "<leader>ct", "<cmd>HighlightColors Toggle<cr>", desc = "Toggle Colorizer" },
         })
 
         -- Markdown Preview
@@ -133,7 +121,7 @@ return {
             { "<leader>sw", "<cmd>set list!<cr>", desc = "Show Whitespace Chars" },
             { "<leader>se", "<cmd>Eswpoch<cr>", desc = "Epoch Switcher" },
             {
-                "<leader>fe",
+                "<leader>ff",
                 "<cmd>lua require('telescope').extensions.file_browser.file_browser()<cr>",
                 desc = "Telescope File Browser",
             },
@@ -414,65 +402,6 @@ return {
                 { "<leader>di", "<cmd>lua require('dap').toggle()<CR>", desc = "Toggle" },
             },
         })
-
-        -- Syntax Tree Surfer
-        -- local surfer_ok, _ = pcall(require, "syntax-tree-surfer")
-        -- if surfer_ok then
-        --     local swapper = function(cmd)
-        --         vim.opt.opfunc = cmd
-        --         return "g@l"
-        --     end
-        --     wk.add({
-        --         {
-        --             { "v", group = "+Syntax Tree Surfer" },
-        --             {
-        --                 "vd",
-        --                 function()
-        --                     swapper("v:lua.STSSwapCurrentNodeNextNormal_Dot")
-        --                 end,
-        --                 desc = "Swap Current Next",
-        --             },
-        --             {
-        --                 "vD",
-        --                 function()
-        --                     swapper("v:lua.STSSwapDownNormal_Dot")
-        --                 end,
-        --                 desc = "Swap Master Next",
-        --             },
-        --             {
-        --                 "vu",
-        --                 function()
-        --                     swapper("v:lua.STSSwapCurrentNodePrevNormal_Dot")
-        --                 end,
-        --                 desc = "Swap Current Prev",
-        --             },
-        --             {
-        --                 "vU",
-        --                 function()
-        --                     swapper("v:lua.STSSwapUpNormal_Dot")
-        --                 end,
-        --                 desc = "Swap Master Prev",
-        --             },
-        --             -- u = { "<cmd>lua require('syntax-tree-surfer').move('n', true)<cr>", "Previous" },
-        --             -- .select() will show you what you will be swapping with .move(), you'll get used to .select() and .move() behavior quite soon!
-        --             { "vx", "<cmd>STSSelectMasterNode<cr>", desc = "Select" },
-        --             -- .select_current_node() will select the current node at your cursor
-        --             { "vn", "<cmd>STSSelectCurrentNode<cr>", desc = "Select Current" },
-        --         },
-        --     })
-        --
-        --     wk.add({
-        --         {
-        --             mode = "x",
-        --             { "J", "<cmd>STSSelectNextSiblingNode<cr>", desc = "Surf Next" },
-        --             { "K", "<cmd>STSSelectPrevSiblingNode<cr>", desc = "Surf Prev" },
-        --             { "H", "<cmd>STSSelectParentNode<cr>", desc = "Surf Parent" },
-        --             { "L", "<cmd>STSSelectChildNode<cr>", desc = "Surf Child" },
-        --             { "<A-j>", "<cmd>STSSwapNextVisual<cr>", desc = "Surf Swap Next" },
-        --             { "<A-k>", "<cmd>STSSwapPrevVisual<cr>", desc = "Surf Swap Prev" },
-        --         },
-        --     })
-        -- end
 
         local terminal_ok, toggleterm = pcall(require, "toggleterm.terminal")
         if terminal_ok then

@@ -6,6 +6,7 @@ return {
         disable_signs = false,
         graph_style = "unicode",
         disable_commit_confirmation = true,
+        process_spinner = false,
         -- Neogit refreshes its internal state after specific events, which can be expensive depending on the repository size.
         -- Disabling `auto_refresh` will make it so you have to manually refresh the status after you open it.
         auto_refresh = true,

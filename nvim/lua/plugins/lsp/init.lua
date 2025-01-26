@@ -205,7 +205,7 @@ return {
                 -- "rust_analyzer",
                 "taplo",
                 "terraformls",
-                "tflint",
+                -- "tflint",
                 --[[ "tsserver", ]]
                 "v_analyzer",
                 "yamlls",
