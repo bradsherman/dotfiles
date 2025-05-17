@@ -77,6 +77,9 @@ return {
                         -- [[fd --color=never --type f --hidden --follow --exclude .git -x printf "{/} %s {}\n"]],
                         -- fzfutils.ansi_codes.grey('{//}')
                     },
+                    live_grep = {
+                        theme = "ivy",
+                    },
                     buffers = {
                         show_all_buffers = true,
                         sort_lastused = true,
@@ -115,6 +118,7 @@ return {
                 },
             })
             require("telescope").load_extension("fzf")
+            require("telescope").load_extension("hoogle")
         end,
     },
     "nvim-telescope/telescope-live-grep-args.nvim",

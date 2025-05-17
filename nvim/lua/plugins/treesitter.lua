@@ -1,5 +1,14 @@
 return {
     {
+        "mawkler/jsx-element.nvim",
+        dependencies = {
+            "nvim-treesitter/nvim-treesitter",
+            "nvim-treesitter/nvim-treesitter-textobjects",
+        },
+        ft = { "typescriptreact", "javascriptreact", "javascript" },
+        opts = {},
+    },
+    {
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
         event = { "BufReadPre", "BufNewFile" },
@@ -101,7 +110,8 @@ return {
             require("nvim-treesitter.configs").setup({
                 textobjects = {
                     select = {
-                        enable = true,
+                        -- Disable to not conflict with mini.ai?
+                        enable = false,
 
                         -- Automatically jump forward to textobj, similar to targets.vim
                         lookahead = true,

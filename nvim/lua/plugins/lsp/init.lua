@@ -5,14 +5,15 @@ return {
         dependencies = { "williamboman/mason.nvim" },
         config = function()
             local config = {
-                virtual_text = false,
+                -- virtual_lines = {
+                --     format = function(diag)
+                --         return "● " .. diag.source .. ": " .. diag.message
+                --     end,
+                -- },
                 -- virtual_text = {
                 --     source = "always",
                 --     spacing = 4,
                 --     prefix = "●",
-                --     -- this will set set the prefix to a function that returns the diagnostics icon based on the severity
-                --     -- this only works on a recent 0.10.0 build. Will be set to "●" when not supported
-                --     -- prefix = "icons",
                 -- },
                 -- show signs
                 signs = {
@@ -34,15 +35,6 @@ return {
                     prefix = "",
                 },
             }
-
-            vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-                border = "rounded",
-            })
-
-            vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-                border = "rounded",
-            })
-
             vim.diagnostic.config(config)
 
             vim.api.nvim_command([[ hi def link LspReferenceText CursorLine ]])
@@ -54,10 +46,6 @@ return {
         "williamboman/mason-lspconfig.nvim",
         dependencies = { "williamboman/mason.nvim", "neovim/nvim-lspconfig", "SmiteshP/nvim-navic" },
         config = function(_, opts)
-            local mason_lsp = require("mason-lspconfig")
-            mason_lsp.setup(opts)
-            local nvim_lsp = require("lspconfig")
-
             local handlers_ok, my_handlers = pcall(require, "plugins.lsp.handlers")
             if not handlers_ok then
                 return
@@ -68,127 +56,94 @@ return {
                 capabilities = my_handlers.capabilities,
             }
 
-            mason_lsp.setup_handlers({
-                -- The first entry (without a key) will be the default handler
-                -- and will be called for each installed server that doesn't have
-                -- a dedicated handler.
-                function(server_name) -- default handler (optional)
-                    nvim_lsp[server_name].setup(default_setup)
+            local mason_lsp = require("mason-lspconfig")
+            mason_lsp.setup(opts)
+            local nvim_lsp = require("lspconfig")
+
+            local lua_settings = {}
+            local settings_ok, maybe_lua_settings = pcall(require, "plugins.lsp.settings.lua")
+            if settings_ok then
+                lua_settings = vim.tbl_deep_extend("force", lua_settings, maybe_lua_settings)
+            end
+            vim.lsp.config("lua_ls", {
+                settings = lua_settings,
+                on_attach = my_handlers.on_attach,
+                capabilities = my_handlers.capabilities,
+            })
+
+            vim.lsp.config("ts_ls", {
+                on_attach = my_handlers.on_attach,
+                capabilities = my_handlers.capabilities,
+            })
+
+            vim.lsp.config("sqls", {
+                on_attach = function(client, bufnr)
+                    client.server_capabilities.document_formatting = false
+                    client.server_capabilities.document_range_formatting = false
+                    require("sqls").on_attach(client, bufnr)
+                    my_handlers.on_attach(client, bufnr)
                 end,
-                ["lua_ls"] = function()
-                    local lua_settings = {}
-                    local settings_ok, maybe_lua_settings = pcall(require, "plugins.lsp.settings.lua")
-                    if settings_ok then
-                        lua_settings = vim.tbl_deep_extend("force", lua_settings, maybe_lua_settings)
-                    end
-                    nvim_lsp.lua_ls.setup({
-                        settings = lua_settings,
-                        on_attach = my_handlers.on_attach,
-                        capabilities = my_handlers.capabilities,
-                    })
-                end,
-                ["sqls"] = function()
-                    nvim_lsp.sqls.setup({
-                        on_attach = function(client, bufnr)
-                            client.server_capabilities.document_formatting = false
-                            client.server_capabilities.document_range_formatting = false
-                            require("sqls").on_attach(client, bufnr)
-                            my_handlers.on_attach(client, bufnr)
-                        end,
-                        capabilities = my_handlers.capabilities,
-                    })
-                end,
-                ["tailwindcss"] = function()
-                    nvim_lsp.tailwindcss.setup({
-                        capabilities = my_handlers.capabilities,
-                        on_attach = my_handlers.on_attach,
-                        filetypes = { "html", "elixir", "eelixir", "heex" },
-                        -- root_dir = nvim_lsp.util.root_pattern(
-                        --     "tailwind.config.js",
-                        --     "tailwind.config.ts",
-                        --     "postcss.config.js",
-                        --     "postcss.config.ts",
-                        --     "package.json",
-                        --     "node_modules",
-                        --     ".git",
-                        --     "mix.exs"
-                        -- ),
-                        init_options = {
-                            userLanguages = {
-                                elixir = "html-eex",
-                                eelixir = "html-eex",
-                                heex = "html-eex",
+                capabilities = my_handlers.capabilities,
+            })
+
+            vim.lsp.config("tailwindcss", {
+                capabilities = my_handlers.capabilities,
+                on_attach = my_handlers.on_attach,
+                filetypes = { "html", "elixir", "eelixir", "heex" },
+                init_options = {
+                    userLanguages = {
+                        elixir = "html-eex",
+                        eelixir = "html-eex",
+                        heex = "html-eex",
+                    },
+                },
+                settings = {
+                    tailwindCSS = {
+                        experimental = {
+                            classRegex = {
+                                'class[:]\\s*"([^"]*)"',
                             },
                         },
-                        settings = {
-                            tailwindCSS = {
-                                experimental = {
-                                    classRegex = {
-                                        'class[:]\\s*"([^"]*)"',
-                                    },
-                                },
-                            },
-                        },
-                    })
-                end,
-                -- ["elixirls"] = function()
-                --     nvim_lsp.elixirls.setup({
-                --         cmd = { vim.fn.expand("~/.local/bin/elixir-ls/language_server.sh") },
-                --         capabilities = my_handlers.capabilities,
-                --         on_attach = my_handlers.on_attach,
-                --         settings = {
-                --             elixirLS = {
-                --                 -- I choose to disable dialyzer for personal reasons, but
-                --                 -- I would suggest you also disable it unless you are well
-                --                 -- acquainted with dialzyer and know how to use it.
-                --                 dialyzerEnabled = false,
-                --                 -- I also choose to turn off the auto dep fetching feature.
-                --                 -- It often get's into a weird state that requires deleting
-                --                 -- the .elixir_ls directory and restarting your editor.
-                --                 fetchDeps = false,
-                --             },
-                --         },
-                --     })
-                -- end,
-                ["dockerls"] = function()
-                    local settings_ok, docker_settings = pcall(require, "plugins.lsp.settings.docker")
-                    if not settings_ok then
-                        return
-                    end
-                    nvim_lsp.dockerls.setup({
-                        on_attach = my_handlers.on_attach,
-                        capabilities = my_handlers.capabilities,
-                        settings = docker_settings,
-                    })
-                end,
-                ["tflint"] = function()
-                    nvim_lsp.tflint.setup({
-                        on_attach = my_handlers.on_attach,
-                        capabilities = my_handlers.capabilities,
-                        root_dir = nvim_lsp.util.root_pattern(".git", ".tflint.hcl"),
-                    })
-                end,
-                ["jsonls"] = function()
-                    nvim_lsp.jsonls.setup({
-                        settings = {
-                            json = {
-                                schemas = require("schemastore").json.schemas(),
-                                validate = { enable = true },
-                            },
-                        },
-                    })
-                end,
-                ["yamlls"] = function()
-                    local settings_ok, yaml_settings = pcall(require, "plugins.lsp.settings.yaml")
-                    if not settings_ok then
-                        return
-                    end
-                    nvim_lsp.yamlls.setup({
-                        settings = yaml_settings,
-                        on_attach = my_handlers.on_attach,
-                        capabilities = my_handlers.capabilities,
-                    })
-                end,
+                    },
+                },
+            })
+
+            local docker_settings = {}
+            local docker_settings_ok, m_docker_settings = pcall(require, "plugins.lsp.settings.docker")
+            if docker_settings_ok then
+                docker_settings = vim.tbl_deep_extend("force", docker_settings, m_docker_settings)
+            end
+            vim.lsp.config("dockerls", {
+                on_attach = my_handlers.on_attach,
+                capabilities = my_handlers.capabilities,
+                settings = docker_settings,
+            })
+
+            vim.lsp.config("tflint", {
+                on_attach = my_handlers.on_attach,
+                capabilities = my_handlers.capabilities,
+                root_dir = nvim_lsp.util.root_pattern(".git", ".tflint.hcl"),
+            })
+
+            vim.lsp.config("jsonls", {
+                settings = {
+                    json = {
+                        schemas = require("schemastore").json.schemas(),
+                        validate = { enable = true },
+                        provideFormatter = false,
+                    },
+                },
+            })
+
+            local yaml_settings = {}
+            local yaml_settings_ok, m_yaml_settings = pcall(require, "plugins.lsp.settings.yaml")
+            if yaml_settings_ok then
+                yaml_settings = vim.tbl_deep_extend("force", yaml_settings, m_yaml_settings)
+            end
+            vim.lsp.config("yamlls", {
+                settings = yaml_settings,
+                on_attach = my_handlers.on_attach,
+                capabilities = my_handlers.capabilities,
             })
         end,
         opts = {
@@ -201,12 +156,13 @@ return {
                 "jsonls",
                 "lua_ls",
                 "nil_ls",
+                -- "postgres_lsp",
                 -- "pylsp",
                 -- "rust_analyzer",
                 "taplo",
                 "terraformls",
                 -- "tflint",
-                --[[ "tsserver", ]]
+                "ts_ls",
                 "v_analyzer",
                 "yamlls",
                 "zls",
@@ -215,7 +171,8 @@ return {
     },
     {
         "MrcJkb/haskell-tools.nvim",
-        version = "^4",
+        version = "^6",
+        lazy = false,
         ft = { "haskell", "lhaskell", "cabal", "cabalproject" },
         config = function()
             local handlers_ok, my_handlers = pcall(require, "plugins.lsp.handlers")
@@ -269,44 +226,44 @@ return {
             }
         end,
     },
-    {
-        "pmizio/typescript-tools.nvim",
-        dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-        opts = function()
-            local handlers_ok, my_handlers = pcall(require, "plugins.lsp.handlers")
-            if not handlers_ok then
-                return
-            end
-            return {
-                on_attach = function(client, bufnr)
-                    -- This removes random characters
-                    -- ts_organize_imports(bufnr)
-                    my_handlers.on_attach(client, bufnr)
-                end,
-                capabilities = my_handlers.capabilities,
-                --[[ handlers = { ... }, ]]
-                settings = {
-                    -- spawn additional tsserver instance to calculate diagnostics on it
-                    separate_diagnostic_server = true,
-                    -- "change"|"insert_leave" determine when the client asks the server about diagnostic
-                    publish_diagnostic_on = "insert_leave",
-                    expose_as_code_action = "all",
-                    -- string|nil -specify a custom path to `tsserver.js` file, if this is nil or file under path
-                    -- not exists then standard path resolution strategy is applied
-                    tsserver_path = nil,
-                    -- specify a list of plugins to load by tsserver, e.g., for support `styled-components`
-                    -- (see 💅 `styled-components` support section)
-                    tsserver_plugins = {},
-                    -- this value is passed to: https://nodejs.org/api/cli.html#--max-old-space-sizesize-in-megabytes
-                    -- memory limit in megabytes or "auto"(basically no limit)
-                    tsserver_max_memory = "auto",
-                    -- described below
-                    tsserver_format_options = {},
-                    tsserver_file_preferences = {},
-                },
-            }
-        end,
-    },
+    -- {
+    --     "pmizio/typescript-tools.nvim",
+    --     dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+    --     opts = function()
+    --         local handlers_ok, my_handlers = pcall(require, "plugins.lsp.handlers")
+    --         if not handlers_ok then
+    --             return
+    --         end
+    --         return {
+    --             on_attach = function(client, bufnr)
+    --                 -- This removes random characters
+    --                 -- ts_organize_imports(bufnr)
+    --                 my_handlers.on_attach(client, bufnr)
+    --             end,
+    --             capabilities = my_handlers.capabilities,
+    --             --[[ handlers = { ... }, ]]
+    --             settings = {
+    --                 -- spawn additional tsserver instance to calculate diagnostics on it
+    --                 separate_diagnostic_server = true,
+    --                 -- "change"|"insert_leave" determine when the client asks the server about diagnostic
+    --                 publish_diagnostic_on = "insert_leave",
+    --                 expose_as_code_action = "all",
+    --                 -- string|nil -specify a custom path to `tsserver.js` file, if this is nil or file under path
+    --                 -- not exists then standard path resolution strategy is applied
+    --                 tsserver_path = nil,
+    --                 -- specify a list of plugins to load by tsserver, e.g., for support `styled-components`
+    --                 -- (see 💅 `styled-components` support section)
+    --                 tsserver_plugins = {},
+    --                 -- this value is passed to: https://nodejs.org/api/cli.html#--max-old-space-sizesize-in-megabytes
+    --                 -- memory limit in megabytes or "auto"(basically no limit)
+    --                 tsserver_max_memory = "auto",
+    --                 -- described below
+    --                 tsserver_format_options = {},
+    --                 tsserver_file_preferences = {},
+    --             },
+    --         }
+    --     end,
+    -- },
     {
         "elixir-tools/elixir-tools.nvim",
         version = "*",
@@ -352,7 +309,7 @@ return {
     {
         "smjonas/inc-rename.nvim",
         config = function()
-            require("inc_rename").setup()
+            require("inc_rename").setup({})
         end,
     },
     "hashivim/vim-terraform",
@@ -370,7 +327,7 @@ return {
     },
     {
         "mrcjkb/rustaceanvim",
-        version = "^5", -- Recommended
+        version = "^6", -- Recommended
         ft = { "rust" },
     },
 }

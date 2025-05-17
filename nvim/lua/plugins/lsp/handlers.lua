@@ -21,17 +21,17 @@ local function lsp_highlight_document(client, bufnr)
 end
 
 local function diag_jump(bufnr, count)
-    vim.diagnostic.jump({ count = count, float = false })
+    vim.diagnostic.jump({ count = count, float = true })
     -- require("tiny-inline-diagnostic").get_diagnostic_under_cursor(bufnr)
 end
 
 -- TODO: register these with which key instead
 local function lsp_keymaps(client, bufnr)
-    vim.keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<cr>", { buffer = bufnr })
-    -- vim.keymap.set("n", "gr", "<cmd>Telescope lsp_references<cr>", { buffer = bufnr })
-    vim.keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<cr>", { buffer = bufnr })
-    vim.keymap.set("n", "gm", "<cmd>Telescope lsp_document_symbols<cr>", { buffer = bufnr })
-    vim.keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<cr>", { buffer = bufnr })
+    vim.keymap.set("n", "gd", "<cmd>FzfLua lsp_definitions<cr>", { buffer = bufnr })
+    vim.keymap.set("n", "gR", "<cmd>FzfLua lsp_references<cr>", { buffer = bufnr })
+    vim.keymap.set("n", "gt", "<cmd>FzfLua lsp_type_defs<cr>", { buffer = bufnr })
+    vim.keymap.set("n", "gm", "<cmd>FzfLua lsp_document_symbols<cr>", { buffer = bufnr })
+    vim.keymap.set("n", "gi", "<cmd>FzfLua lsp_implementations<cr>", { buffer = bufnr })
     -- vim.keymap.set("n", "gD", "<cmd>Lspsaga peek_definition<cr>", { buffer = bufnr })
     vim.keymap.set("n", "K", require("hover").hover, { buffer = bufnr })
     vim.keymap.set("n", "gK", require("hover").hover_select, { buffer = bufnr })
@@ -99,8 +99,8 @@ end
 local capabilities = vim.tbl_deep_extend(
     "force",
     vim.lsp.protocol.make_client_capabilities(),
-    -- require("blink.cmp").get_lsp_capabilities()
-    require("cmp_nvim_lsp").default_capabilities()
+    require("blink.cmp").get_lsp_capabilities()
+    -- require("cmp_nvim_lsp").default_capabilities()
 )
 capabilities.textDocument.foldingRange = {
     dynamicRegistration = false,

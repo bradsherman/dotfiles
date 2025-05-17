@@ -182,7 +182,8 @@ return {
             provider = function(self)
                 -- first, trim the pattern relative to the current directory. For other
                 -- options, see :h filename-modifers
-                local filename = vim.fn.fnamemodify(self.filename, ":t")
+                local filename = vim.fn.fnamemodify(self.filename, ":p:.")
+                -- local filename = vim.fn.fnamemodify(self.filename, ":t")
                 if filename == "" then
                     return "[No Name]"
                 end

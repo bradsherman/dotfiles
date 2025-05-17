@@ -30,9 +30,11 @@ return {
         task_list = {
             max_height = { 0.3 },
             min_height = { 0.3 },
+            max_width = { 0.25 },
         },
         templates = { "builtin", "user.stack_build", "user.stack_test" },
         strategy = {
+            -- "toggleterm",
             "terminal",
         },
     },

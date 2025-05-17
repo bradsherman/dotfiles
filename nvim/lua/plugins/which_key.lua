@@ -18,22 +18,22 @@ return {
 
         -- Miscellaneous Telescope mappings
         wk.add({
-            -- { "<c-f>", "<cmd>FzfLua files<cr>", desc = "Files" },
+            { "<c-f>", "<cmd>FzfLua files<cr>", desc = "Files" },
             -- { "<c-g>", "<cmd>FzfLua live_grep_glob<cr>", desc = "Grep" },
-            -- { "<c-g>", "<cmd>FzfLua live_grep<cr>", desc = "Grep" },
-            -- { "<c-b>", "<cmd>FzfLua buffers<cr>", desc = "Buffers" },
-            -- { "<c-t>", "<cmd>FzfLua tags<cr>", desc = "Tags" },
+            { "<c-g>", "<cmd>FzfLua live_grep<cr>", desc = "Grep" },
+            { "<c-b>", "<cmd>FzfLua buffers<cr>", desc = "Buffers" },
+            { "<c-t>", "<cmd>FzfLua tags<cr>", desc = "Tags" },
             -- { "R", "<cmd>FzfLua resume<cr>", desc = "Resume" },
 
-            { "<c-f>", "<cmd>Telescope find_files<cr>", desc = "Telescope Files" },
-            -- { "<c-g>", "<cmd>Telescope egrepify<cr>", desc = "Telescope Grep" },
-            { "<c-g>", require("plugins.telescope.multigrep").live_multigrep, desc = "Telescope Grep" },
+            -- { "<c-f>", "<cmd>Telescope find_files<cr>", desc = "Telescope Files" },
+            -- { "<c-g>", "<cmd>Telescope live_grep<cr>", desc = "Telescope Grep" },
+            -- { "<c-g>", require("plugins.telescope.multigrep").live_multigrep, desc = "Telescope Grep" },
             -- ["<c-g>"] = {
             --     "<cmd>lua require('telescope').extensions.live_grep_args.live_grep_args()<cr>",
             --     "Telescope Grep",
             -- },
-            { "<c-b>", "<cmd>Telescope buffers<cr>", desc = "Telescope Buffers" },
-            { "<c-t>", "<cmd>Telescope tags<cr>", desc = "Telescope Tags" },
+            -- { "<c-b>", "<cmd>Telescope buffers<cr>", desc = "Telescope Buffers" },
+            -- { "<c-t>", "<cmd>Telescope tags<cr>", desc = "Telescope Tags" },
 
             { "<leader>gd", "<cmd>GrepInDirectory<cr>", desc = "Search In Directory" },
             {
@@ -76,6 +76,12 @@ return {
             { "<leader>br", "<cmd>OverseerRun<cr>", desc = "Run" },
             { "<leader>bs", "<cmd>OverseerRun stack_build_package<cr>", desc = "Build Stack Package" },
             { "<leader>bt", "<cmd>OverseerToggle<cr>", desc = "Toggle" },
+        })
+
+        -- Csv View
+        wk.add({
+            { "<leader>cs", group = "+CsvView" },
+            { "<leader>cst", "<cmd>CsvViewToggle<cr>", desc = "Toggle" },
         })
 
         -- Quickfix
@@ -157,7 +163,7 @@ return {
             {
                 "<c-p>",
                 function()
-                    vim.diagnostic.jump({ count = -1, float = false })
+                    vim.diagnostic.jump({ count = -1, float = true })
                     -- assume current buffer
                     -- require("tiny-inline-diagnostic").get_diagnostic_under_cursor(0)
                 end,
@@ -166,7 +172,7 @@ return {
             {
                 "<c-n>",
                 function()
-                    vim.diagnostic.jump({ count = 1, float = false })
+                    vim.diagnostic.jump({ count = 1, float = true })
                     -- assume current buffer
                     -- require("tiny-inline-diagnostic").get_diagnostic_under_cursor(0)
                 end,
@@ -176,9 +182,9 @@ return {
                 { "g", group = "+LSP Types" },
                 { "gd", "<cmd>FzfLua lsp_definitions<cr>", desc = "Definitions" },
                 { "gi", "<cmd>FzfLua lsp_implementations<cr>", desc = "Implementations" },
-                { "gK", require("hover").hover, desc = "Hover Doc" },
+                -- { "gK", require("hover").hover, desc = "Hover Doc" },
                 { "gm", "<cmd>FzfLua lsp_document_symbols<cr>", desc = "Document Symbols" },
-                -- { "gr", "<cmd>FzfLua lsp_references<cr>", desc = "References" },
+                { "gR", "<cmd>FzfLua lsp_references<cr>", desc = "References" },
                 -- { "gt", "<cmd>Telescope lsp_type_definitions<cr>", desc = "Type Definitions" },
                 { "gt", "<cmd>FzfLua lsp_typedefs<cr>", desc = "Type Definitions" },
             },
@@ -190,17 +196,17 @@ return {
             { "<leader>bg", "<cmd>FzfLua git_branches<cr>", desc = "Git Branches" },
             -- Neogit
             { "<leader>gg", "<cmd>Neogit<cr>", desc = "Neogit" },
-            {
-                { "<leader>gc", group = "+Conflict" },
-                { "<leader>gcb", "<cmd>GitConflictChooseBoth<cr>", desc = "Choose Both" },
-                { "<leader>gcj", "<cmd>GitConflictNextConflict<cr>", desc = "Next Conflict" },
-                { "<leader>gck", "<cmd>GitConflictPrevConflict<cr>", desc = "Previous Conflict" },
-                { "<leader>gcl", "<cmd>GitConflictListQf<cr>", desc = "To Quickfix" },
-                { "<leader>gcn", "<cmd>GitConflictChooseNone<cr>", desc = "Choose None" },
-                { "<leader>gco", "<cmd>GitConflictChooseOurs<cr>", desc = "Choose Ours" },
-                { "<leader>gcr", "<cmd>GitConflictRefresh<cr>", desc = "Refresh" },
-                { "<leader>gct", "<cmd>GitConflictChooseTheirs<cr>", desc = "Choose Theirs" },
-            },
+            -- {
+            --     { "<leader>gc", group = "+Conflict" },
+            --     { "<leader>gcb", "<cmd>GitConflictChooseBoth<cr>", desc = "Choose Both" },
+            --     { "<leader>gcj", "<cmd>GitConflictNextConflict<cr>", desc = "Next Conflict" },
+            --     { "<leader>gck", "<cmd>GitConflictPrevConflict<cr>", desc = "Previous Conflict" },
+            --     { "<leader>gcl", "<cmd>GitConflictListQf<cr>", desc = "To Quickfix" },
+            --     { "<leader>gcn", "<cmd>GitConflictChooseNone<cr>", desc = "Choose None" },
+            --     { "<leader>gco", "<cmd>GitConflictChooseOurs<cr>", desc = "Choose Ours" },
+            --     { "<leader>gcr", "<cmd>GitConflictRefresh<cr>", desc = "Refresh" },
+            --     { "<leader>gct", "<cmd>GitConflictChooseTheirs<cr>", desc = "Choose Theirs" },
+            -- },
             {
                 { "<leader>gd", group = "+Diffview/Gitsigns" },
                 { "<leader>gdc", "<cmd>DiffviewOpen origin/HEAD...HEAD --imply-local<cr>", desc = "Compare Branch" },
@@ -425,10 +431,22 @@ return {
                 python:toggle()
             end
 
-            local ghci = Terminal:new({ cmd = "ghcid", hidden = true })
+            local ghci = Terminal:new({ cmd = "ghci", hidden = true })
 
             function _GHCI_TOGGLE()
                 ghci:toggle()
+            end
+
+            local stack_ghci = Terminal:new({ cmd = "stack ghci", hidden = true })
+
+            function _STACK_GHCI_TOGGLE()
+                stack_ghci:toggle()
+            end
+
+            local lazyjj = Terminal:new({ cmd = "lazyjj", hidden = true })
+
+            function _LAZYJJ_TOGGLE()
+                lazyjj:toggle()
             end
 
             -- ToggleTerm
@@ -436,8 +454,9 @@ return {
                 {
                     { "<leader>t", group = "+ToggleTerm" },
                     { "<leader>tg", _GHCI_TOGGLE, desc = "GHCi" },
+                    { "<leader>tsg", _STACK_GHCI_TOGGLE, desc = "Stack GHCi" },
                     { "<leader>th", _HTOP_TOGGLE, desc = "HTOP" },
-                    { "<leader>tl", _LAZYGIT_TOGGLE, desc = "LazyGit" },
+                    { "<leader>tj", _LAZYJJ_TOGGLE, desc = "LazyJJ" },
                     { "<leader>tn", _NODE_TOGGLE, desc = "Node" },
                     { "<leader>tp", _PYTHON_TOGGLE, desc = "Python" },
                     { "<leader>tt", "<cmd>ToggleTerm direction=horizontal<cr>", desc = "Toggle Term" },
@@ -493,6 +512,7 @@ return {
         wk.add({ { "<leader>uu", "<cmd>UndotreeToggle<cr>", desc = "Undo Tree" } })
         wk.add({ { "<leader>o", "<cmd>Outline<cr>", desc = "Outline" } })
 
+        wk.add({ { "<leader>ng", "<cmd>Neogen<cr>", desc = "Neogen" } })
         wk.add({
             {
                 "<leader>fs",
@@ -504,6 +524,31 @@ return {
             },
         })
 
+        wk.add({
+            {
+                "<leader>nh",
+                function()
+                    require("snacks").notifier.show_history()
+                end,
+                mode = { "n" },
+                desc = "Notification History",
+            },
+        })
+
+        wk.add({
+            { "<leader>cf", "<cmd>lua require('neotest').run.run(vim.fn.expand('%'))<cr>", desc = "Test File" },
+            { "<leader>co", "<cmd>lua require('neotest').output_panel.toggle()<cr>", desc = "Toggle Output" },
+            { "<leader>cs", "<cmd>lua require('neotest').run.stop()<cr>", desc = "Stop Nearest" },
+            { "<leader>ct", "<cmd>lua require('neotest').run.run()<cr>", desc = "Test Nearest" },
+            { "<leader>cw", "<cmd>lua require('neotest').watch.toggle(vim.fn.expand('%'))<cr>", desc = "Watch File" },
+        })
+        wk.add({
+            { "<leader>c", group = "+CodeCompanion" },
+            { "<leader>cc", "<cmd>CodeCompanionChat<cr>", desc = "Chat" },
+            { "<leader>cct", "<cmd>CodeCompanionChat Toggle<cr>", desc = "Toggle Chat" },
+            { "<leader>ci", "<cmd>CodeCompanion<cr>", desc = "Inline Assistant" },
+            { "<leader>cca", "<cmd>CodeCompanionActions<cr>", desc = "Actions" },
+        })
         wk.setup(opts)
     end,
     opts = {},

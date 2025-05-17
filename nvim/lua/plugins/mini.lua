@@ -1,6 +1,32 @@
 return {
-    { "echasnovski/mini.extra", opts = {} },
-    { "echasnovski/mini.ai", opts = {} },
+    {
+        "echasnovski/mini.extra",
+        opts = {},
+        config = function()
+            require("mini.extra").setup()
+        end,
+    },
+    {
+        "echasnovski/mini.ai",
+        opts = {},
+        config = function()
+            require("mini.ai").setup()
+        end,
+    },
+    {
+        "echasnovski/mini.bracketed",
+        opts = {},
+        config = function()
+            require("mini.bracketed").setup()
+        end,
+    },
+    {
+        "echasnovski/mini.pairs",
+        opts = {},
+        config = function()
+            require("mini.pairs").setup()
+        end,
+    },
     {
         "echasnovski/mini.files",
         opts = {
@@ -20,19 +46,19 @@ return {
         },
     },
     {
+        "echasnovski/mini.icons",
+        version = false,
+        config = function()
+            require("mini.icons").setup()
+        end,
+    },
+    {
         "echasnovski/mini.indentscope",
         -- event = { "BufReadPre", "BufNewFile" },
         opts = {
             symbol = "│",
             options = { try_as_border = true },
         },
-    },
-    {
-        "echasnovski/mini.icons",
-        version = false,
-        config = function()
-            require("mini.icons").setup()
-        end,
     },
     {
         "echasnovski/mini.operators",

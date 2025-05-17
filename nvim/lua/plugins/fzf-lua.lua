@@ -5,7 +5,7 @@ return {
     config = function()
         -- calling `setup` is optional for customization
         require("fzf-lua").setup({
-            "telescope",
+            { "ivy", "borderless-full" },
             keymap = {
                 fzf = {
                     ["ctrl-q"] = "select-all+accept",

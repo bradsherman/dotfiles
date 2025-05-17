@@ -118,3 +118,31 @@ vim.api.nvim_create_autocmd("FileType", {
     pattern = "NeogitCommitMessage",
     command = "silent! set filetype=gitcommit",
 })
+
+local floating_diags = vim.api.nvim_create_augroup("floating_diags", {})
+vim.api.nvim_create_autocmd({ "CursorHold", "InsertLeave" }, {
+    group = floating_diags,
+    pattern = nil,
+    callback = function()
+        local opts = {
+            focusable = false,
+            scope = "cursor",
+            close_events = { "BufLeave", "CursorMoved", "InsertEnter" },
+        }
+        vim.diagnostic.open_float(nil, opts)
+    end,
+})
+vim.api.nvim_create_autocmd("InsertEnter", {
+    group = floating_diags,
+    pattern = nil,
+    callback = function()
+        vim.diagnostic.enable(false)
+    end,
+})
+vim.api.nvim_create_autocmd("InsertLeave", {
+    group = floating_diags,
+    pattern = nil,
+    callback = function()
+        vim.diagnostic.enable(true)
+    end,
+})

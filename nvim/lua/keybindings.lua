@@ -8,6 +8,7 @@ vim.keymap.set("n", "<leader>,", "<cmd>noh<cr>")
 -- vim.keymap.set("n", "<leader>,", "<cmd>nohlsearch|diffupdate|normal! <C-l><cr>")
 
 vim.keymap.set("i", "jk", "<esc>")
+-- vim.keymap.set("v", "jk", "<esc>")
 vim.keymap.set("n", ";", ":")
 vim.keymap.set("n", ":", ";")
 
@@ -55,6 +56,12 @@ vim.keymap.set("x", "J", ":move '>+1<CR>gv-gv")
 vim.keymap.set("x", "K", ":move '<-2<CR>gv-gv")
 vim.keymap.set("x", "<A-j>", ":move '>+1<CR>gv-gv")
 vim.keymap.set("x", "<A-k>", ":move '<-2<CR>gv-gv")
+
+-- copy line and comment out original
+vim.keymap.set("n", "ycc", "yygccp", { remap = true })
+
+-- keep line in place when joining lines
+vim.keymap.set("n", "J", "mzJ`z:delmarks z<cr>")
 
 -- vim-cutlass
 -- vim.keymap.set("n", "x", "d")

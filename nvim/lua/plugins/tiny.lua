@@ -1,7 +1,7 @@
 return {
     {
         "rachartier/tiny-inline-diagnostic.nvim",
-        -- enabled = false,
+        enabled = false,
         event = "VeryLazy",
         priority = 10000,
         config = function()

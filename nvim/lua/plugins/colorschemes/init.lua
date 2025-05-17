@@ -5,7 +5,7 @@ return {
             vim.opt.background = "dark"
             vim.opt.termguicolors = true
             require("kanagawa").setup(opts)
-            vim.cmd([[ colorscheme kanagawa-dragon ]])
+            vim.cmd([[ colorscheme kanagawa-wave ]])
         end,
         lazy = false,
         priority = 1000,
@@ -79,7 +79,7 @@ return {
             end,
             -- theme = "lotus", -- "wave", "dragon", "lotus"
             background = { -- map the value of 'background' option to a theme
-                dark = "dragon", -- try "dragon" !
+                dark = "wave", -- try "dragon" !
                 light = "lotus",
             },
         },

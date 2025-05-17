@@ -1,19 +1,9 @@
 return {
     {
-        "L3MON4D3/LuaSnip",
-        enabled = true,
-        build = "make install_jsregexp",
-        dependencies = {
-            "rafamadriz/friendly-snippets",
-            "mrcjkb/haskell-snippets.nvim",
-            "saadparwaiz1/cmp_luasnip",
-        },
-    },
-    {
         -- "hrsh7th/nvim-cmp",
         "iguanacucumber/magazine.nvim",
         name = "nvim-cmp", -- Otherwise highlighting gets messed up
-        enabled = true,
+        enabled = false,
         event = "InsertEnter",
         dependencies = {
             -- "hrsh7th/cmp-buffer",
@@ -240,35 +230,35 @@ return {
             -- require("cmp_r").setup({})
 
             -- Nvim autopairs
-            local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-            local ts_utils = require("nvim-treesitter.ts_utils")
-
-            local ts_node_func_parens_disabled = {
-                -- ecma
-                named_imports = true,
-                -- rust
-                use_declaration = true,
-            }
-
-            local default_handler = cmp_autopairs.filetypes["*"]["("].handler
-            cmp_autopairs.filetypes["*"]["("].handler = function(char, item, bufnr, rules, commit_character)
-                local node_type = ts_utils.get_node_at_cursor():type()
-                if ts_node_func_parens_disabled[node_type] then
-                    if item.data then
-                        item.data.funcParensDisabled = true
-                    else
-                        char = ""
-                    end
-                end
-                default_handler(char, item, bufnr, rules, commit_character)
-            end
-
-            cmp.event:on(
-                "confirm_done",
-                cmp_autopairs.on_confirm_done({
-                    sh = false,
-                })
-            )
+            -- local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+            -- local ts_utils = require("nvim-treesitter.ts_utils")
+            --
+            -- local ts_node_func_parens_disabled = {
+            --     -- ecma
+            --     named_imports = true,
+            --     -- rust
+            --     use_declaration = true,
+            -- }
+            --
+            -- local default_handler = cmp_autopairs.filetypes["*"]["("].handler
+            -- cmp_autopairs.filetypes["*"]["("].handler = function(char, item, bufnr, rules, commit_character)
+            --     local node_type = ts_utils.get_node_at_cursor():type()
+            --     if ts_node_func_parens_disabled[node_type] then
+            --         if item.data then
+            --             item.data.funcParensDisabled = true
+            --         else
+            --             char = ""
+            --         end
+            --     end
+            --     default_handler(char, item, bufnr, rules, commit_character)
+            -- end
+            --
+            -- cmp.event:on(
+            --     "confirm_done",
+            --     cmp_autopairs.on_confirm_done({
+            --         sh = false,
+            --     })
+            -- )
 
             -- this loads friendly snippets
             require("luasnip.loaders.from_vscode").lazy_load()
