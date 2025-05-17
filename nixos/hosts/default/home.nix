@@ -50,6 +50,10 @@
     pkgs.ghostty
     pkgs.xfce.thunar
 
+    # AI
+    pkgs.aider-chat
+    pkgs.llm
+
     # Fonts
     pkgs.nerd-fonts.fira-code
     pkgs.nerd-fonts.hack

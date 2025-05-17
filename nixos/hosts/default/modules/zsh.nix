@@ -55,12 +55,13 @@
       ignoreDups = true;
       path = "$HOME/.zsh_history";
     };
-    initExtra = ''
+    initContent = ''
       bindkey '^H' backward-kill-word
       bindkey -v
       bindkey "^P" up-line-or-search
       bindkey "^N" down-line-or-search
       bindkey -M viins 'jk' vi-cmd-mode
+      bindkey '^ ' autosuggest-accept
 
       keychain $HOME/.ssh/id_ed25519
 
