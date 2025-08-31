@@ -9,7 +9,77 @@ export ZSH="/home/bsherman/.oh-my-zsh"
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 # ZSH_THEME="robbyrussell"
+# ZSH_THEME="sunaku"
 ZSH_THEME="candy"
+# _my_theme_vcs_info() {
+#   jj_prompt_template 'self.change_id().shortest(3)' \
+#   || git_prompt_info
+# }
+#
+#
+#
+#
+#
+# PROMPT='$(_my_theme_vcs_info) $'
+#
+#
+#
+# Mostly copied from https://gist.github.com/hroi/d0dc0e95221af858ee129fd66251897e/
+function _jj_prompt_info() {
+    # Check if jj is installed
+    if ! command -v jj >/dev/null 2>&1; then
+        echo ""
+        return 1
+    fi
+
+    # Check if we're in a jj repo
+    if ! jj root --quiet >/dev/null 2>&1; then
+        echo ""
+        return 1
+    fi
+
+    # Generate prompt and capture the output
+    local jj_status
+    jj_status=$(jj log --ignore-working-copy --no-graph --color always -r @ -T '
+        surround(
+            " (",
+            ")",
+            separate(
+                " ",
+                bookmarks.join(", "),
+                coalesce(
+                    surround(
+                        "\"",
+                        "\"",
+                        if(
+                            description.first_line().substr(0, 24).starts_with(description.first_line()),
+                            description.first_line().substr(0, 24),
+                            description.first_line().substr(0, 23) ++ "…"
+                        )
+                    ),
+                    "(no description set)"
+                ),
+                change_id.shortest(),
+                commit_id.shortest(),
+                if(conflict, "(conflict)"),
+                if(empty, "(empty)"),
+                if(divergent, "(divergent)"),
+                if(hidden, "(hidden)"),
+            )
+        )
+    ')
+
+    # Only output if we got something
+    if [[ -n "$jj_status" ]]; then
+        echo "$jj_status"
+    else
+        echo ""
+    fi
+}
+
+# Set up the prompt
+setopt PROMPT_SUBST
+PROMPT='%n@%m %~$(_jj_prompt_info)$ '
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -72,13 +142,19 @@ ZSH_THEME="candy"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 
-plugins=(git fzf-tab fast-syntax-highlighting zsh-autosuggestions nix-shell nix-zsh-completions)
+plugins=(git jj zsh-vi-mode fzf-tab fast-syntax-highlighting zsh-autosuggestions nix-shell nix-zsh-completions)
+
+# Only changing the escape key to `jk` in insert mode, we still
+# keep using the default keybindings `^[` in other modes
+ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
+
+# Append a command directly
+zvm_after_init_commands+=('[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh; bindkey "^ " autosuggest-accept')
 
 # export VIM_MODE_VICMD_KEY="jk"
 # export _Z_CMD="j"
 # . ~/.local/bin/z.sh
 
-source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
@@ -122,13 +198,23 @@ export PATH="$HOME/code/lua-language-server/bin:${PATH}"
 
 /usr/bin/keychain $HOME/.ssh/id_ed25519
 source $HOME/.keychain/brad-ThinkPadP16-sh
-# fpath+=${ZDOTDIR:-~}/.zsh_functions
 
 if type rg &> /dev/null; then
   export FZF_DEFAULT_COMMAND='rg --files'
 fi
 
-export FZF_DEFAULT_OPTS='
+export FZF_CTRL_R_OPTS='
+  -m --height 50% --layout=reverse
+  --color=fg:#c5c9c5,fg+:#C8C093,bg:-1,bg+:#2d4f67
+  --color=hl:#5f87af,hl+:#5fd7ff,info:#afaf87,marker:#8a9a7b
+  --color=prompt:#c4746e,spinner:#a292a3,pointer:#938AA9,header:#8ea4a2
+  --color=border:#0d0c0c,label:#aeaeae,query:#d9d9d9
+  --border="rounded" --border-label="History" --border-label-pos="0" --preview-window="border-rounded"
+  --padding="1" --prompt="> " --marker=">" --pointer="◆"
+  --separator="" --scrollbar="│"
+  --bind "ctrl-e:execute(echo {+} | xargs -o nvim)"'
+
+export FZF_CTRL_T_OPTS='
   -m --height 50% --layout=reverse
   --color=fg:#c5c9c5,fg+:#C8C093,bg:-1,bg+:#2d4f67
   --color=hl:#5f87af,hl+:#5fd7ff,info:#afaf87,marker:#8a9a7b
@@ -142,6 +228,7 @@ export FZF_DEFAULT_OPTS='
       echo {} 2> /dev/null | head -200"
   --bind "ctrl-e:execute(echo {+} | xargs -o nvim)"
   --bind "?:toggle-preview"'
+
 
 alias vv="pushd ~/.config/nvim; vim; popd;"
 alias vz="vim ~/.zshrc"
@@ -212,7 +299,8 @@ alias man='tldr'
 alias shake='stack exec shake --'
 
 # alias ls='lsd'
-alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"
+alias ls="eza --color=always --long --git --icons=always"
+# alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"
 alias l='ls -l'
 alias la='ls -a'
 alias lla='ls -la'
@@ -281,9 +369,79 @@ function author_lines () {
 	done | sort -f | uniq -ic | sort -n
 }
 
-autoload -U +X bashcompinit && bashcompinit
+# autoload -U +X bashcompinit && bashcompinit
+
+# eval "$(starship init zsh)"
+
+export GPG_TTY=$(tty)
+gpgconf --launch gpg-agent
+
+. "$HOME/.asdf/asdf.sh"
+# append completions to fpath
+fpath=(${ASDF_DIR}/completions $fpath)
+# fpath=(${HOME}/.zsh/completions $fpath)
+fpath=($HOME/.zsh_functions $fpath)
+
+# source <(fzf --zsh)
+# initialise completions with ZSH's compinit
+# autoload -Uz compinit && compinit
+source $ZSH/oh-my-zsh.sh
+
+# bun completions
+[ -s "/home/bsherman/.bun/_bun" ] && source "/home/bsherman/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+
+# fly
+export FLYCTL_INSTALL="/home/bsherman/.fly"
+export PATH="$FLYCTL_INSTALL/bin:$PATH"
+
+[ -f "/home/bsherman/.ghcup/env" ] && . "/home/bsherman/.ghcup/env" # ghcup-env
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+function fzf-kill-processes() {
+  local pid
+  pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
+
+  if [ "x$pid" != "x" ]
+  then
+    echo $pid | xargs kill -${1:-9}
+  fi
+}
+
+alias cursor="~/Applications/cursor.AppImage --no-sandbox"
+alias standard-notes="~/Applications/standard-notes.AppImage"
+
+function stack-packages() {
+  pkg=$(stack ide packages --stdout | fzf)
+  stack build $pkg
+}
+
+
+eval "$(zoxide init --cmd cd zsh)"
+
+# pnpm
+export PNPM_HOME="/home/bsherman/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+bindkey '^ ' autosuggest-accept
+
+export ANTHROPIC_API_KEY=$(op item get "Anthropic API KEY" --fields "notesPlain")
+
+source <(just --completions zsh)
+
 complete -o nospace -C /nix/store/34m359hc8r2r8h9rsavysjmvyk29m0m6-nomad-1.4.4/bin/nomad nomad
-#compdef gt
+
 ###-begin-gt-completions-###
 #
 # yargs command completion script
@@ -302,69 +460,6 @@ _gt_yargs_completions()
 }
 compdef _gt_yargs_completions gt
 ###-end-gt-completions-###
-
-# eval "$(starship init zsh)"
-
-export GPG_TTY=$(tty)
-gpgconf --launch gpg-agent
-
-. "$HOME/.asdf/asdf.sh"
-# append completions to fpath
-fpath=(${ASDF_DIR}/completions $fpath)
-# initialise completions with ZSH's compinit
-# autoload -Uz compinit && compinit
-# source ~/.oh-my-zsh/custom/plugins/fzf-tab/fzf-tab.plugin.zsh
-
-# bun completions
-[ -s "/home/bsherman/.bun/_bun" ] && source "/home/bsherman/.bun/_bun"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-
-
-# fly
-export FLYCTL_INSTALL="/home/bsherman/.fly"
-export PATH="$FLYCTL_INSTALL/bin:$PATH"
-
-# eval "$(/home/bsherman/.local/bin/mise activate zsh)"
-
-
-
-[ -f "/home/bsherman/.ghcup/env" ] && . "/home/bsherman/.ghcup/env" # ghcup-env
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-function fzf-kill-processes() {
-  local pid
-  pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
-
-  if [ "x$pid" != "x" ]
-  then
-    echo $pid | xargs kill -${1:-9}
-  fi
-}
-
-function stack-packages() {
-  pkg=$(stack ide packages --stdout | fzf)
-  stack build $pkg
-}
-
-
-eval "$(zoxide init --cmd cd zsh)"
-
-# pnpm
-export PNPM_HOME="/home/bsherman/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
-
-
-export ANTHROPIC_API_KEY=$(op item get "Anthropic API KEY" --fields "notesPlain")
 
 eval "$(direnv hook zsh)"
 

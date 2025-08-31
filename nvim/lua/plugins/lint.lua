@@ -3,7 +3,7 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     config = function()
         local lint = require("lint")
-        local web_linter = { "eslint_d" }
+        local web_linter = { "biomejs", "eslint_d" }
 
         lint.linters.sqlfluff.args = { "lint", "--format=json", "--dialect=postgres" }
         -- lint.linters.sqlfluff.stdin = true

@@ -5,11 +5,11 @@ if wezterm.config_builder then
 	config = wezterm.config_builder()
 end
 
-config.color_scheme = "Kanagawa (Gogh)"
+-- config.color_scheme = "Kanagawa (Gogh)"
 config.force_reverse_video_cursor = true
 config.window_decorations = "NONE"
 config.colors = {
-	-- Kanagaway Wave
+	-- Kanagawa Wave
 	foreground = "#dcd7ba",
 	background = "#1f1f28",
 
@@ -45,12 +45,13 @@ config.colors = {
 	-- brights = { "#a6a69c", "#E46876", "#87a987", "#e6c384", "#7fb4ca", "#938aa9", "#7aa89f", "#c5c9c5" },
 	-- indexed = { [16] = "#b6927b", [17] = "#b98d7b" },
 }
+-- config.font = wezterm.font("IosevkaTerm Nerd Font Mono")
 config.font = wezterm.font("Berkeley Mono")
 -- config.font = wezterm.font("Victor Mono")
 -- config.font = wezterm.font("Rec Mono Duotone")
 config.term = "wezterm"
-config.window_background_opacity = 0.9
-config.text_background_opacity = 0.9
+-- config.window_background_opacity = 0.9
+-- config.text_background_opacity = 0.9
 config.enable_tab_bar = false
 -- config.default_prog = { "zellij", "-l", "welcome" }
 config.window_padding = {
@@ -69,6 +70,7 @@ config.keys = {
 
 	{ key = "Backspace", mods = "CTRL", action = wezterm.action.SendKey({ key = "w", mods = "CTRL" }) },
 }
-config.enable_kitty_keyboard = true
+-- config.enable_kitty_keyboard = true
+config.default_cursor_style = "SteadyBar"
 
 return config

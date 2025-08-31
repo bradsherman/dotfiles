@@ -2,6 +2,8 @@ require("options")
 require("keybindings")
 require("lazy-plugins")
 require("autocommands")
+-- someday, switch to native lsp
+-- require("lsp")
 
 local rocks_config = {
     rocks_path = "/home/bsherman/.local/share/nvim/rocks",

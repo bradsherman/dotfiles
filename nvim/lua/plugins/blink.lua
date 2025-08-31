@@ -1,3 +1,10 @@
+local source_priority = {
+    snippets = 4,
+    lsp = 3,
+    path = 2,
+    buffer = 1,
+}
+
 return {
     {
         "saghen/blink.cmp",
@@ -84,6 +91,7 @@ return {
                 -- Display a preview of the selected item on the current line
                 ghost_text = { enabled = true },
             },
+
             signature = {
                 enabled = true,
                 window = { border = "single", show_documentation = false },
@@ -102,7 +110,8 @@ return {
             -- Default list of enabled providers defined so that you can extend it
             -- elsewhere in your config, without redefining it, due to `opts_extend`
             sources = {
-                default = { "lsp", "path", "snippets", "codecompanion", "buffer" },
+                default = { snippets = { score_offset = 4 }, "lsp", "path", "codecompanion", "buffer" },
+                min_keyword_length = 3,
             },
 
             snippets = { preset = "luasnip" },

@@ -7,6 +7,8 @@ layout {
                 format_space ""
 
                 hide_frame_for_single_pane "true"
+                hide_frame_except_for_search "true"
+                hide_frame_except_for_fullscreen "true"
 
                 mode_normal  "#[fg=#C8C093] {name} "
                 mode_locked  "#[fg=#E46876] {name} "

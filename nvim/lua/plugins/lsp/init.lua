@@ -60,7 +60,22 @@ return {
             mason_lsp.setup(opts)
             local nvim_lsp = require("lspconfig")
 
-            local lua_settings = {}
+            local lua_settings = {
+                diagnostics = {
+                    globals = { "vim" },
+                },
+                workspace = {
+                    checkThirdParty = false,
+                    library = {
+                        [vim.fn.expand("$VIMRUNTIME/lua")] = true,
+                        [vim.fn.stdpath("config") .. "lua"] = true,
+                        ["/usr/share/nvim/runtime/lua"] = true,
+                        ["/usr/share/nvim/runtime/lua/vim"] = true,
+                        ["/usr/share/nvim/runtime/lua/vim/lsp"] = true,
+                    },
+                },
+            }
+
             local settings_ok, maybe_lua_settings = pcall(require, "plugins.lsp.settings.lua")
             if settings_ok then
                 lua_settings = vim.tbl_deep_extend("force", lua_settings, maybe_lua_settings)

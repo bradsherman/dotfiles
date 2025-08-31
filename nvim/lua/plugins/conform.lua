@@ -1,3 +1,4 @@
+local web_formatters = { "biome", "biome-check", "biome-orgaize-imports" }
 return {
     "stevearc/conform.nvim",
     config = function(_, opts)
@@ -45,12 +46,6 @@ return {
             desc = "Re-enable autoformat-on-save",
         })
 
-        require("conform.formatters.prettier").condition = function()
-            return true
-            -- TODO: skip disabled filetypes
-            -- return vim.fs.basename(ctx.filename)
-            -- disabled_filetypes = { "html", "json", "yaml", "markdown" },
-        end
         require("conform").formatters.injected = {
             -- Set the options field
             options = {
@@ -72,11 +67,12 @@ return {
             -- Conform will run multiple formatters sequentially
             python = { "isort", "black" },
             -- Use a sub-list to run only the first available formatter
-            javascript = { "prettierd" },
-            typescript = { "prettierd" },
-            javascriptreact = { "prettierd" },
-            typescriptreact = { "prettierd" },
+            javascript = web_formatters,
+            typescript = web_formatters,
+            javascriptreact = web_formatters,
+            typescriptreact = web_formatters,
             sql = { "sqlfluff" },
+            terraform = { "terraform_fmt" },
             nix = { "nixfmt" },
             haskell = { "fourmolu" },
             ["*"] = { "trim_whitespace", "trim_newlines" },

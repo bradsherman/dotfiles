@@ -1,4 +1,9 @@
 return {
     "Chaitanyabsprip/fastaction.nvim",
-    opts = {},
+    enabled = true,
+    lazy = true,
+    opts = {
+        register_ui_select = true,
+        fallback_threshold = 26,
+    },
 }

@@ -30,15 +30,11 @@ local opts = {
 
 lazy.setup({
     {
-        "sindrets/diffview.nvim",
+        "Chaitanyabsprip/fastaction.nvim",
+        enabled = true,
         opts = {
-            use_icons = false,
-            file_panel = {
-                win_config = {
-                    position = "right",
-                    width = 25,
-                },
-            },
+            register_ui_select = false,
+            fallback_threshold = 1,
         },
     },
 }, opts)

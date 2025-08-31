@@ -8,7 +8,8 @@ return {
         local package_name = utils.get_haskell_package_name()
         return {
             cmd = { "stack" },
-            args = { "build", package_name },
+            -- stack build --test --bench --no-run-tests --no-run-benchmarks --ghc-options="-j4 +RTS -A256m -I0 -RTS" --no-interleaved-output --keep-going
+            args = { "build", package_name, "--test", "--bench", "--no-run-tests", "--no-run-benchmarks" },
             components = {
                 { "on_output_quickfix", open = false },
                 -- { "on_result_diagnostics_quickfix", open = "true", set_empty_results = "true" },

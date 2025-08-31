@@ -18,11 +18,40 @@ return {
 
         -- Miscellaneous Telescope mappings
         wk.add({
-            { "<c-f>", "<cmd>FzfLua files<cr>", desc = "Files" },
+            {
+                "<c-f>",
+                function()
+                    Snacks.picker.smart()
+                end,
+                desc = "Smart Find Files",
+            },
+            {
+                "<c-g>",
+                function()
+                    Snacks.picker.grep()
+                end,
+                desc = "Smart Find Files",
+            },
+            {
+                "<c-b>",
+                function()
+                    Snacks.picker.buffers()
+                end,
+                desc = "Smart Find Files",
+            },
+            {
+                "<c-t>",
+                function()
+                    Snacks.picker.tags()
+                end,
+                desc = "Smart Find Files",
+            },
+
+            -- { "<c-f>", "<cmd>FzfLua files<cr>", desc = "Files" },
             -- { "<c-g>", "<cmd>FzfLua live_grep_glob<cr>", desc = "Grep" },
-            { "<c-g>", "<cmd>FzfLua live_grep<cr>", desc = "Grep" },
-            { "<c-b>", "<cmd>FzfLua buffers<cr>", desc = "Buffers" },
-            { "<c-t>", "<cmd>FzfLua tags<cr>", desc = "Tags" },
+            -- { "<c-g>", "<cmd>FzfLua live_grep<cr>", desc = "Grep" },
+            -- { "<c-b>", "<cmd>FzfLua buffers<cr>", desc = "Buffers" },
+            -- { "<c-t>", "<cmd>FzfLua tags<cr>", desc = "Tags" },
             -- { "R", "<cmd>FzfLua resume<cr>", desc = "Resume" },
 
             -- { "<c-f>", "<cmd>Telescope find_files<cr>", desc = "Telescope Files" },
@@ -163,30 +192,90 @@ return {
             {
                 "<c-p>",
                 function()
-                    vim.diagnostic.jump({ count = -1, float = true })
+                    vim.diagnostic.jump({ count = -1, float = false })
                     -- assume current buffer
-                    -- require("tiny-inline-diagnostic").get_diagnostic_under_cursor(0)
+                    require("tiny-inline-diagnostic").get_diagnostic_under_cursor(0)
                 end,
                 desc = "Prev Diagnostic",
             },
             {
                 "<c-n>",
                 function()
-                    vim.diagnostic.jump({ count = 1, float = true })
+                    vim.diagnostic.jump({ count = 1, float = false })
                     -- assume current buffer
-                    -- require("tiny-inline-diagnostic").get_diagnostic_under_cursor(0)
+                    require("tiny-inline-diagnostic").get_diagnostic_under_cursor(0)
                 end,
                 desc = "Next Diagnostic",
             },
             {
                 { "g", group = "+LSP Types" },
-                { "gd", "<cmd>FzfLua lsp_definitions<cr>", desc = "Definitions" },
-                { "gi", "<cmd>FzfLua lsp_implementations<cr>", desc = "Implementations" },
-                -- { "gK", require("hover").hover, desc = "Hover Doc" },
-                { "gm", "<cmd>FzfLua lsp_document_symbols<cr>", desc = "Document Symbols" },
-                { "gR", "<cmd>FzfLua lsp_references<cr>", desc = "References" },
-                -- { "gt", "<cmd>Telescope lsp_type_definitions<cr>", desc = "Type Definitions" },
-                { "gt", "<cmd>FzfLua lsp_typedefs<cr>", desc = "Type Definitions" },
+                {
+                    "gd",
+                    function()
+                        Snacks.picker.lsp_definitions()
+                    end,
+                    desc = "Goto Definition",
+                },
+                {
+                    "gD",
+                    function()
+                        Snacks.picker.lsp_declarations()
+                    end,
+                    desc = "Goto Declaration",
+                },
+                {
+                    "gr",
+                    function()
+                        Snacks.picker.lsp_references()
+                    end,
+                    nowait = true,
+                    desc = "References",
+                },
+                {
+                    "gI",
+                    function()
+                        Snacks.picker.lsp_implementations()
+                    end,
+                    desc = "Goto Implementation",
+                },
+                {
+                    "gy",
+                    function()
+                        Snacks.picker.lsp_type_definitions()
+                    end,
+                    desc = "Goto T[y]pe Definition",
+                },
+                {
+                    "<leader>ss",
+                    function()
+                        Snacks.picker.lsp_symbols()
+                    end,
+                    desc = "LSP Symbols",
+                },
+                {
+                    "<leader>sS",
+                    function()
+                        Snacks.picker.lsp_workspace_symbols()
+                    end,
+                    desc = "LSP Workspace Symbols",
+                },
+            },
+        })
+
+        -- JJ
+        wk.add({
+            {
+                { "<leader>j", group = "+JJ" },
+                { "<leader>jj", "<cmd>J status<cr>", desc = "JJ" },
+                { "<leader>ja", "<cmd>J abandon<cr>", desc = "JJ abandon" },
+                { "<leader>jd", "<cmd>J describe<cr>", desc = "JJ describe" },
+                { "<leader>jf", "<cmd>J diff<cr>", desc = "JJ diff" },
+                { "<leader>je", "<cmd>J edit<cr>", desc = "JJ edit" },
+                { "<leader>jl", "<cmd>J log<cr>", desc = "JJ log" },
+                { "<leader>jn", "<cmd>J new<cr>", desc = "JJ new" },
+                { "<leader>jr", "<cmd>J rebase<cr>", desc = "JJ rebase" },
+                { "<leader>js", "<cmd>J status<cr>", desc = "JJ status" },
+                { "<leader>jq", "<cmd>J squash<cr>", desc = "JJ squash" },
             },
         })
 

@@ -12,10 +12,19 @@
   br = branch
   pom = pull origin master
   rom = pull --rebase origin master
-  df = difftool
-  dft = difftool
-  dlog = "!f() { : git log ; GIT_EXTERNAL_DIFF=difft git log -p --ext-diff $@; }; f"
   rblame = !git blame -w -M -C -C -C
+  pfl = push --force-with-lease
+
+  # Difftastic aliases, so `git dlog` is `git log` with difftastic and so on.
+  dlog = -c diff.external=difft log --ext-diff
+  dshow = -c diff.external=difft show --ext-diff
+  ddiff = -c diff.external=difft diff
+  # `git log` with patches shown with difftastic.
+  dl = -c diff.external=difft log -p --ext-diff
+  # Show the most recent commit with difftastic.
+  ds = -c diff.external=difft show --ext-diff
+  # `git diff` with difftastic.
+  dft = -c diff.external=difft diff
 
 [push]
   autoSetupRemote = true
@@ -36,7 +45,8 @@
     external = difft
 
 [difftool "difftastic"]
-        cmd = difft "$LOCAL" "$REMOTE"
+    cmd = difft "$LOCAL" "$REMOTE"
+    ; cmd = difft "$MERGED" "$LOCAL" "abcdef1" "100644" "$REMOTE" "abcdef2" "100644"
 
 [difftool]
     prompt = false

@@ -30,10 +30,12 @@
       "2": " ",
       "3": " ",
       "4": " ",
+      "9": " ",
       "term": " ",
       "web": " ",
       "slack": " ",
-      "spotify": " "
+      "spotify": " ",
+      "notes": " "
     },
     "disable-scroll": true,
     "sort-by-number": true
