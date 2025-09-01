@@ -16,7 +16,7 @@
     "custom/audio_idle_inhibitor",
     "network",
     "battery",
-    "sway/language",
+    // "sway/language",
     "clock",
     "tray"
   ],

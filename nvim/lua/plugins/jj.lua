@@ -1,9 +1,9 @@
 return {
-    -- "nicolasgb/jj.nvim",
+    "nicolasgb/jj.nvim",
     -- "bradsherman/jj.nvim",
     -- branch = "push-rvrkxyyzrynl",
-    "jj.nvim",
-    dir = "/home/bsherman/code/jj.nvim",
+    -- "jj.nvim",
+    -- dir = "/home/bsherman/code/jj.nvim",
     config = function()
         require("jj").setup({})
         local cmd = require("jj.cmd")

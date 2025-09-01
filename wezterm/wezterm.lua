@@ -68,7 +68,7 @@ config.keys = {
 		action = wezterm.action.DisableDefaultAssignment,
 	},
 
-	{ key = "Backspace", mods = "CTRL", action = wezterm.action.SendKey({ key = "w", mods = "CTRL" }) },
+	--{ key = "Backspace", mods = "CTRL", action = wezterm.action.SendKey({ key = "w", mods = "CTRL" }) },
 }
 -- config.enable_kitty_keyboard = true
 config.default_cursor_style = "SteadyBar"

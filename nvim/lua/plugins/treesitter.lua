@@ -45,7 +45,7 @@ return {
                     "nix",
                     "norg",
                     "ocaml",
-                    "org",
+                    -- "org",
                     "python",
                     "query",
                     "regex",
@@ -213,6 +213,7 @@ return {
     },
     {
         "ColinKennedy/cursor-text-objects.nvim",
+        enabled = false,
         config = function()
             local down_description = "Operate from your current cursor to the end of some text-object."
             local up_description = "Operate from the start of some text-object to your current cursor."

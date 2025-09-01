@@ -1,0 +1,42 @@
+"$schema" = "https://jj-vcs.github.io/jj/latest/config-schema.json"
+
+[aliases]
+# Basic Operations
+s = "status"
+l = ["log","--limit", "10"]
+ll = ["log","--limit", "20", "--no-graph"]
+c = "commit"
+cm = ["commit", "-m"]
+d = "describe"
+
+# Navigation & Branching
+e = "edit"
+n = "new"
+co = "edit"  # checkout equivalent
+b = ["bookmark", "list"]
+bc = ["bookmark", "create"]
+bd = ["bookmark", "delete"]
+
+# Advanced Workflows
+sq = "squash"
+sp = "split"
+r = "rebase"
+rd = ["rebase", "-d"]  # rebase with destination
+df = "diff"
+ds = ["diff", "--stat"]
+
+# Git Interop
+gf = "git fetch"
+gp = "git push"
+
+# Helpful Complex Aliases
+wc = ["diff", "--from", "@-", "--to", "@"] # working copy changes
+hist = ["log", "--limit", "20", "--template", "commit_id ++ \" \" ++ description.first_line() ++ \" (\" ++ author.email() ++ \")\""]
+amend = "describe"  # quick amend like git commit --amend
+
+[ui]
+paginate = "never"
+
+[user]
+name = "Brad Sherman"
+email = "brad.sherman@bitnomial.com"

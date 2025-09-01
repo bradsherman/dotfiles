@@ -1,0 +1,86 @@
+# Kanagawa Wave Mako Configuration
+# Notification daemon configuration with Japanese-inspired aesthetics
+
+# Position and geometry
+anchor=top-right
+width=500
+height=100
+margin=10
+padding=15
+
+# Appearance
+font=Source Code Pro 15
+background-color=#1f1f28f0
+text-color=#dcd7ba
+border-size=2
+border-color=#54546d
+border-radius=8
+
+# Behavior
+sort=-time
+layer=overlay
+default-timeout=5000
+ignore-timeout=1
+max-visible=5
+group-by=app-name
+
+# Icon settings
+icon-path=/usr/share/icons/Papirus-Dark
+max-icon-size=48
+
+# Progress bar
+progress-color=over #7e9cd8
+progress-color=source #938aa9aa
+
+# Urgency levels with Kanagawa colors
+[urgency=low]
+background-color=#16161df0
+text-color=#938aa9
+border-color=#54546d
+default-timeout=3000
+
+[urgency=normal]
+background-color=#1f1f28f0
+text-color=#dcd7ba
+border-color=#7e9cd8
+default-timeout=5000
+
+[urgency=critical]
+background-color=#e8274388
+text-color=#dcd7ba
+border-color=#ff9387
+default-timeout=0
+
+# Category-specific styling
+[category=email]
+border-color=#e6c384
+text-color=#e6c384
+
+[category=chat]
+border-color=#7e9cd8
+text-color=#7e9cd8
+
+[category=music]
+border-color=#ff9387
+text-color=#ff9387
+
+[category=volume]
+border-color=#938aa9
+text-color=#938aa9
+
+# Application-specific overrides
+[app-name="Firefox"]
+border-color=#e6c384
+
+[app-name="Discord"]
+border-color=#7e9cd8
+
+[app-name="Spotify"]
+border-color=#ff9387
+
+[app-name="Signal"]
+border-color=#7e9cd8
+
+# Summary notifications (when grouping)
+[grouped=true]
+format=<b>%a</b> (%g)\n%s

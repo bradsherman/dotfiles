@@ -1,0 +1,350 @@
+/* Kanagawa Wave Waybar Theme */
+/* Inspired by the traditional Japanese woodblock print aesthetic */
+
+* {
+    border: none;
+    border-radius: 0;
+    font-family: "JetBrains Mono", "Fira Code", "Source Code Pro", monospace;
+    font-size: 20px;
+    min-height: 0;
+}
+
+window#waybar {
+    background: transparent;
+    color: #DCD7BA;
+}
+
+/* Bar styling */
+#waybar {
+    background-color: #1F1F28;
+    border-bottom: 2px solid #54546D;
+    transition: all 0.3s ease;
+}
+
+/* Workspaces */
+#workspaces {
+    margin: 0 8px;
+}
+
+#workspaces button {
+    padding: 6px 12px;
+    margin: 2px 1px;
+    background-color: #16161D;
+    color: #727169;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+#workspaces button:hover {
+    text-shadow: none; /* Remove predefined text-shadow */
+    background: none; /* Remove predefined background color (white) */
+    background-color: rgba(220, 215, 186, 0.8);
+}
+
+#workspaces button.focused {
+    background-color: #2D4F67;
+    color: #C8C093;
+    font-weight: 600;
+}
+
+#workspaces button.urgent {
+    background-color: #E82424;
+    color: #C8C093;
+    animation: urgent-blink 1s ease-in-out infinite alternate;
+}
+
+@keyframes urgent-blink {
+    to {
+        background-color: #C34043;
+    }
+}
+
+/* Window title */
+#window {
+    margin: 0 12px;
+    padding: 0 12px;
+    background-color: #16161D;
+    color: #727169;
+    border-radius: 6px;
+    font-weight: 500;
+}
+
+/* Mode indicator */
+#mode {
+    background-color: #E6C384;
+    color: #16161D;
+    font-weight: bold;
+    padding: 0 12px;
+    margin: 2px 4px;
+    border-radius: 6px;
+}
+
+/* System tray */
+#tray {
+    background-color: #16161D;
+    color: #727169;
+    padding: 0 12px;
+    margin: 2px 8px 2px 4px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+    background-color: #E82424;
+    border-radius: 7px;
+}
+
+/* Clock */
+#clock {
+    background-color: #16161D;
+    color: #727169;
+    padding: 0 12px;
+    margin: 2px 8px 2px 4px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+/* CPU */
+#cpu {
+    background-color: #16161D;
+    color: #727169;
+    padding: 0 12px;
+    margin: 2px 2px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+/* Memory */
+#memory {
+    background-color: #16161D;
+    color: #727169;
+    padding: 0 12px;
+    margin: 2px 2px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+/* Disk */
+#disk {
+    background-color: #16161D;
+    color: #727169;
+    padding: 0 12px;
+    margin: 2px 2px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+/* Temperature */
+#temperature {
+    background-color: #16161D;
+    color: #727169;
+    padding: 0 12px;
+    margin: 2px 2px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+#temperature.critical {
+    background-color: #E82424;
+    color: #C8C093;
+    animation: temp-critical 1s ease-in-out infinite alternate;
+}
+
+@keyframes temp-critical {
+    to {
+        background-color: #C34043;
+    }
+}
+
+/* Network */
+#network {
+    background-color: #16161D;
+    color: #727169;
+    padding: 0 12px;
+    margin: 2px 2px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+#network.disconnected {
+    background-color: #727169;
+    color: #DCD7BA;
+}
+
+/* Pulseaudio */
+#pulseaudio {
+    background-color: #16161D;
+    color: #727169;
+    padding: 0 12px;
+    margin: 2px 2px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+#pulseaudio.muted {
+    background-color: #727169;
+    color: #DCD7BA;
+}
+
+/* Battery */
+#battery {
+    background-color: #16161D;
+    color: #727169;
+    padding: 0 12px;
+    margin: 2px 2px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+#battery.charging {
+    background-color: #7FB4CA;
+    animation: charging-pulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes charging-pulse {
+    to {
+        background-color: #A3D4D5;
+    }
+}
+
+#battery.warning:not(.charging) {
+    background-color: #FF9E3B;
+    color: #16161D;
+}
+
+#battery.critical:not(.charging) {
+    background-color: #E82424;
+    color: #C8C093;
+    animation: battery-critical 1s ease-in-out infinite alternate;
+}
+
+@keyframes battery-critical {
+    to {
+        background-color: #C34043;
+    }
+}
+
+/* Backlight */
+#backlight {
+    background-color: #16161D;
+    color: #DCD7BA;
+    padding: 0 12px;
+    margin: 2px 2px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+/* Bluetooth */
+#bluetooth {
+    background-color: #16161D;
+    color: #DCD7BA;
+    padding: 0 12px;
+    margin: 2px 2px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+#bluetooth.disabled {
+    background-color: #727169;
+    color: #DCD7BA;
+}
+
+/* Idle inhibitor */
+#idle_inhibitor {
+    background-color: #16161D;
+    color: #DCD7BA;
+    padding: 0 12px;
+    margin: 2px 2px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+#idle_inhibitor.activated {
+    background-color: #C34043;
+    color: #C8C093;
+}
+
+/* MPD/Music */
+#mpd {
+    background-color: #16161D;
+    color: #DCD7BA;
+    padding: 0 12px;
+    margin: 2px 2px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+#mpd.disconnected {
+    background-color: #727169;
+    color: #DCD7BA;
+}
+
+#mpd.stopped {
+    background-color: #54546D;
+    color: #DCD7BA;
+}
+
+#mpd.paused {
+    background-color: #FF9E3B;
+    color: #16161D;
+}
+
+/* Custom modules */
+#custom-power {
+    background-color: #E82424;
+    color: #C8C093;
+    padding: 0 12px;
+    margin: 2px 8px 2px 2px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+#custom-power:hover {
+    background-color: #C34043;
+}
+
+#custom-notification {
+    background-color: #938AA9;
+    color: #16161D;
+    padding: 0 12px;
+    margin: 2px 2px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+/* Tooltip styling */
+tooltip {
+    border-radius: 8px;
+    background-color: #16161D;
+    border: 1px solid #54546D;
+    color: #DCD7BA;
+    padding: 8px;
+    font-size: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+tooltip label {
+    color: #DCD7BA;
+}
+
+/* Special hover effects */
+#cpu:hover,
+#memory:hover,
+#disk:hover,
+#clock:hover,
+#tray:hover,
+#temperature:hover,
+#network:hover,
+#pulseaudio:hover,
+#battery:hover,
+#backlight:hover,
+#bluetooth:hover,
+#idle_inhibitor:hover,
+#mpd:hover {
+    background-color: rgba(220, 215, 186, 0.8);
+}

@@ -1,5 +1,10 @@
+# source <(fzf --zsh)
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
+#
+# if [[ -n $GHOSTTY_RESOURCES_DIR ]]; then
+#   source "$GHOSTTY_RESOURCES_DIR"/shell-integration/zsh/ghostty-integration
+# fi
 
 # Path to your oh-my-zsh installation.
 export ZSH="/home/bsherman/.oh-my-zsh"
@@ -78,8 +83,9 @@ function _jj_prompt_info() {
 }
 
 # Set up the prompt
-setopt PROMPT_SUBST
-PROMPT='%n@%m %~$(_jj_prompt_info)$ '
+# setopt PROMPT_SUBST
+setopt VI
+# PROMPT='%n@%m %~$(_jj_prompt_info)$ '
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -151,10 +157,7 @@ ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
 # Append a command directly
 zvm_after_init_commands+=('[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh; bindkey "^ " autosuggest-accept')
 
-# export VIM_MODE_VICMD_KEY="jk"
-# export _Z_CMD="j"
-# . ~/.local/bin/z.sh
-
+export VIM_MODE_VICMD_KEY="jk"
 
 # User configuration
 
@@ -170,26 +173,13 @@ zvm_after_init_commands+=('[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh; bindkey "^ " 
 #   export EDITOR='mvim'
 # fi
 
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
 # Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
 export PATH="$HOME/nvim/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="/opt/julia/bin:$PATH"
 export EDITOR="nvim"
 alias vim="nvim"
-#
-# source /home/bsherman/.local/venv/bin/activate
-#
-# export PATH="/usr/lib/postgresql/12/bin:${PATH}"
+
 export PATH="$HOME/.tfenv/bin:${PATH}"
 export PATH="$HOME/.pkenv/bin:${PATH}"
 export PATH="$HOME/code/lua-language-server/bin:${PATH}"
@@ -197,7 +187,6 @@ export PATH="$HOME/code/lua-language-server/bin:${PATH}"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 /usr/bin/keychain $HOME/.ssh/id_ed25519
-source $HOME/.keychain/brad-ThinkPadP16-sh
 
 if type rg &> /dev/null; then
   export FZF_DEFAULT_COMMAND='rg --files'
@@ -240,22 +229,12 @@ alias c='clear'
 alias zj='zellij'
 
 
-# define function that retrieves and runs last command
-# function run-again {
-#     # get previous history item
-#     zle up-history
-#     # confirm command
-#     zle accept-line
-# }
-
-# define run-again widget from function of the same name
-# zle -N run-again
-
 # bind widget to Ctrl+X in viins mode
 # bindkey -M viins '^p' run-again
 # bind widget to Ctrl+X in vicmd mode
 # bindkey -M vicmd '^p' run-again
 bindkey '^H' backward-kill-word
+bindkey -v '^?' backward-delete-char
 
 export ANSIBLE_FORCE_COLOR=True
 export ANSIBLE_STDOUT_CALLBACK=yaml
@@ -369,20 +348,15 @@ function author_lines () {
 	done | sort -f | uniq -ic | sort -n
 }
 
-# autoload -U +X bashcompinit && bashcompinit
-
-# eval "$(starship init zsh)"
-
 export GPG_TTY=$(tty)
 gpgconf --launch gpg-agent
 
-. "$HOME/.asdf/asdf.sh"
+[ -f "$HOME/.asdf/asdf.sh" ] && . "$HOME/.asdf/asdf.sh"
 # append completions to fpath
 fpath=(${ASDF_DIR}/completions $fpath)
 # fpath=(${HOME}/.zsh/completions $fpath)
 fpath=($HOME/.zsh_functions $fpath)
 
-# source <(fzf --zsh)
 # initialise completions with ZSH's compinit
 # autoload -Uz compinit && compinit
 source $ZSH/oh-my-zsh.sh
@@ -415,51 +389,13 @@ function fzf-kill-processes() {
   fi
 }
 
-alias cursor="~/Applications/cursor.AppImage --no-sandbox"
-alias standard-notes="~/Applications/standard-notes.AppImage"
-
-function stack-packages() {
-  pkg=$(stack ide packages --stdout | fzf)
-  stack build $pkg
-}
-
-
 eval "$(zoxide init --cmd cd zsh)"
 
-# pnpm
-export PNPM_HOME="/home/bsherman/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
-
 bindkey '^ ' autosuggest-accept
-
-export ANTHROPIC_API_KEY=$(op item get "Anthropic API KEY" --fields "notesPlain")
 
 source <(just --completions zsh)
 
 complete -o nospace -C /nix/store/34m359hc8r2r8h9rsavysjmvyk29m0m6-nomad-1.4.4/bin/nomad nomad
-
-###-begin-gt-completions-###
-#
-# yargs command completion script
-#
-# Installation: gt completion >> ~/.zshrc
-#    or gt completion >> ~/.zprofile on OSX.
-#
-_gt_yargs_completions()
-{
-  local reply
-  local si=$IFS
-  IFS=$'
-' reply=($(COMP_CWORD="$((CURRENT-1))" COMP_LINE="$BUFFER" COMP_POINT="$CURSOR" gt --get-yargs-completions "${words[@]}"))
-  IFS=$si
-  _describe 'values' reply
-}
-compdef _gt_yargs_completions gt
-###-end-gt-completions-###
 
 eval "$(direnv hook zsh)"
 

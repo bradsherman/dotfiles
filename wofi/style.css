@@ -1,0 +1,122 @@
+/* Kanagawa Wave Wofi Theme */
+/* Color palette inspired by the traditional Japanese woodblock print */
+
+* {
+    box-sizing: border-box;
+}
+
+window {
+    margin: 0px;
+    border: 2px solid #54546D;
+    background-color: #1F1F28;
+    border-radius: 12px;
+    font-family: "JetBrains Mono", "Fira Code", "Source Code Pro", monospace;
+    font-size: 28px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+#input {
+    margin: 8px 12px;
+    border: none;
+    background-color: #16161D;
+    border-radius: 8px;
+    padding: 12px 16px;
+    color: #DCD7BA;
+    outline: none;
+    border: 1px solid #2A2A37;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+#input:focus {
+    border: 1px solid #7E9CD8;
+    box-shadow: 0 0 0 2px rgba(126, 156, 216, 0.2);
+}
+
+#inner-box {
+    margin: 8px 12px 12px 12px;
+    border: none;
+    background-color: transparent;
+    border-radius: 8px;
+}
+
+#outer-box {
+    margin: 0px;
+    border: none;
+    background-color: transparent;
+}
+
+#scroll {
+    margin: 0px;
+    border: none;
+    background-color: transparent;
+}
+
+#text {
+    margin: 0px;
+    border: none;
+    padding: 12px 16px;
+    color: #DCD7BA;
+    font-weight: 500;
+}
+
+#entry {
+    background-color: transparent;
+    border: none;
+    border-radius: 6px;
+    margin: 2px 0px;
+    transition: all 0.2s ease;
+}
+
+#entry:selected {
+    background-color: #2D4F67;
+    color: #C8C093;
+    border-left: 3px solid #7FB4CA;
+}
+
+#entry:hover {
+    background-color: rgba(54, 84, 103, 0.5);
+}
+
+#entry:selected #text {
+    color: #C8C093;
+    font-weight: 600;
+}
+
+/* Alternative entry styling for different item types */
+#entry:nth-child(even) {
+    background-color: rgba(22, 22, 29, 0.3);
+}
+
+#entry:nth-child(even):selected {
+    background-color: #2D4F67;
+}
+
+/* Scrollbar styling */
+scrollbar {
+    background-color: transparent;
+    width: 8px;
+}
+
+scrollbar slider {
+    background-color: #54546D;
+    border-radius: 4px;
+    margin: 2px;
+}
+
+scrollbar slider:hover {
+    background-color: #7E9CD8;
+}
+
+/* Custom styling for specific entry types */
+#entry.urgent {
+    border-left: 3px solid #E82424;
+}
+
+#entry.app {
+    border-left: 3px solid #98BB6C;
+}
+
+#entry.file {
+    border-left: 3px solid #FF9E3B;
+}

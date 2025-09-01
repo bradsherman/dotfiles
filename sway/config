@@ -28,7 +28,7 @@ exec_always killall swayidle
 exec_always $HOME/.config/sway/swayidle.sh
 
 # enable lock ($mod+shift+x)
-bindsym $mod+shift+x exec $HOME/.config/swaylock/lock.sh 50
+bindsym $mod+shift+x exec swaylock
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
@@ -37,8 +37,8 @@ exec nm-applet
 # exec ~/.fehbg
 # output * bg /home/bsherman/Pictures/ocean-night.jpg fill
 exec_always killall swaybg
-# exec_always swaybg -o "*" -i "/home/bsherman/Pictures/kanagawa.jpg" -m fill
-exec_always swaybg -o "*" -i "/home/bsherman/Pictures/trees.jpg" -m fill
+exec_always swaybg -o "*" -i "/home/bsherman/Pictures/kanagawa.jpg" -m fill
+# exec_always swaybg -o "*" -i "/home/bsherman/Pictures/trees.jpg" -m fill
 
 set $laptop "Chimei Innolux Corporation 0x14D5 0x00000000"
 bindswitch --reload --locked lid:on output $laptop disable
@@ -68,7 +68,7 @@ bindsym $mod+shift+m exec pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec wezterm
+bindsym $mod+Return exec ghostty
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -295,7 +295,7 @@ exec spotify
 # exec blueman-manager
 # assign [class="Blueman-manager"] $ws4
 
-bindsym $mod+b exec ~/.local/bin/rofi-bluetooth
+bindsym $mod+b exec ~/.local/bin/wofi-bluetooth
 
 exec_always "pkill mako; mako"
 bindsym $mod+Escape exec makoctl dismiss -a
