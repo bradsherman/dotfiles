@@ -1,0 +1,4 @@
+profile home {
+    output eDP-1 mode 3840x2400@60 position 0,960 scale 2.0
+    output DP-2 mode 3840x2160@30 position 1920,720 scale 1.5
+}

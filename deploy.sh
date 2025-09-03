@@ -15,6 +15,7 @@ function usage () {
     echo "  - gitconfig"
     echo "  - i3"
     echo "  - jj"
+    echo "  - kanshi"
     echo "  - mako"
     echo "  - nix"
     echo "  - nvim"
@@ -69,6 +70,7 @@ copy_config "ghostty" ./ghostty ~/.config
 copy_config "gitconfig" ./gitconfig ~/.gitconfig
 copy_config "i3" ./i3 ~/.config
 copy_config "jj" ./jj ~/.config
+copy_config "kanshi" ./kanshi ~/.config
 copy_config "mako" ./mako ~/.config
 copy_config "nix" ./nixos ~/nixos
 copy_config "nvim" ./nvim ~/.config
