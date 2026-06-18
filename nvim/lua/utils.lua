@@ -16,15 +16,6 @@ M.print = function(v)
     return v
 end
 
---[[ if pcall(require, "plenary") then ]]
---[[     RELOAD = require("plenary.reload").reload_module ]]
---[[]]
---[[     M.reload = function(name) ]]
---[[         RELOAD(name) ]]
---[[         return require(name) ]]
---[[     end ]]
---[[ end ]]
-
 M.file_exists = function(name)
     local handle = io.popen("which " .. name)
     if not handle then
@@ -43,13 +34,21 @@ M.file_exists = function(name)
 end
 
 M.update_haskell_tags = function()
-    os.execute("rm tags")
-    local succ, exitcode, code = os.execute("ghc-tags -c")
-    if succ then
-        vim.notify("Tags updated successfully")
-    else
-        vim.notify("Failed to update tags - exitcode = (" .. exitcode .. "), code (" .. code .. ")")
-    end
+    vim.notify("Starting tag generation with 'ghc-tags -c'...")
+
+    -- Remove tags file asynchronously
+    vim.system({ "rm", "-f", "tags" }, {}, function()
+        -- Run ghc-tags asynchronously
+        vim.system({ "ghc-tags", "-c" }, {}, function(result)
+            vim.schedule(function()
+                if result.code == 0 then
+                    vim.notify("Tags updated successfully")
+                else
+                    vim.notify("Failed to update tags - exit code: " .. result.code, vim.log.levels.ERROR)
+                end
+            end)
+        end)
+    end)
 end
 
 M.worktree_workaround = function()
@@ -81,6 +80,7 @@ M.get_haskell_package_name = function()
     if not file_exists(result) then
         vim.notify("Unable to find package.yaml")
     end
+    local directory_path = vim.fn.fnamemodify(result, ":h:p")
 
     local package_name = nil
     for line in io.lines(result) do
@@ -94,6 +94,35 @@ M.get_haskell_package_name = function()
         vim.notify("Unable to find package name.")
     else
         return package_name
+        -- local Terminal = require("toggleterm.terminal").Terminal
+        -- local stack = Terminal:new({ cmd = "stack build " .. package_name })
+        -- -- TODO: figure out how to report result, use overseer?
+        -- stack:toggle()
+    end
+end
+
+M.get_haskell_cabal_file = function()
+    local HtProjectHelpers = require("haskell-tools.project.helpers")
+    local file = vim.api.nvim_buf_get_name(0)
+    local result = HtProjectHelpers.get_package_yaml(file)
+
+    if not file_exists(result) then
+        vim.notify("Unable to find package.yaml")
+    end
+    local directory_path = vim.fn.fnamemodify(result, ":h:p")
+
+    local package_name = nil
+    for line in io.lines(result) do
+        for k, v in string.gmatch(line, "(%a+):%s+(.+)") do
+            if k == "name" then
+                package_name = v
+            end
+        end
+    end
+    if not package_name then
+        vim.notify("Unable to find package name.")
+    else
+        return directory_path .. package_name .. ".cabal"
         -- local Terminal = require("toggleterm.terminal").Terminal
         -- local stack = Terminal:new({ cmd = "stack build " .. package_name })
         -- -- TODO: figure out how to report result, use overseer?

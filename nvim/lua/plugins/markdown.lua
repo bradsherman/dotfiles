@@ -1,9 +1,8 @@
+-- For `plugins/markview.lua` users.
 return {
-    "MeanderingProgrammer/render-markdown.nvim",
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
-    config = function()
-        require("render-markdown").setup({
-            file_types = { "markdown", "Avante" },
-        })
-    end,
+    "OXY2DEV/markview.nvim",
+    lazy = false,
+
+    -- Completion for `blink.cmp`
+    dependencies = { "saghen/blink.cmp" },
 }

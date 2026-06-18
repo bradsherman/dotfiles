@@ -1,86 +1,65 @@
-# Kanagawa Wave Mako Configuration
-# Notification daemon configuration with Japanese-inspired aesthetics
+# ~/.config/mako/config
+# Kanagawa Wave colorscheme
 
-# Position and geometry
-anchor=top-right
-width=500
-height=100
-margin=10
-padding=15
-
-# Appearance
-font=Source Code Pro 15
-background-color=#1f1f28f0
-text-color=#dcd7ba
-border-size=2
-border-color=#54546d
-border-radius=8
-
-# Behavior
+# General
+max-visible=5
 sort=-time
 layer=overlay
-default-timeout=5000
-ignore-timeout=1
-max-visible=5
-group-by=app-name
-
-# Icon settings
+anchor=top-right
+margin=10
+padding=15,20
+width=350
+height=150
+border-size=2
+border-radius=8
+icons=1
 icon-path=/usr/share/icons/Papirus-Dark
 max-icon-size=48
+markup=1
+actions=1
+format=<b>%s</b>\n%b
+default-timeout=5000
+ignore-timeout=0
 
-# Progress bar
-progress-color=over #7e9cd8
-progress-color=source #938aa9aa
+# Colors (Kanagawa Wave)
+background-color=#1F1F28
+text-color=#DCD7BA
+border-color=#54546D
+progress-color=over #7E9CD8
 
-# Urgency levels with Kanagawa colors
+# Urgency: Low
 [urgency=low]
-background-color=#16161df0
-text-color=#938aa9
-border-color=#54546d
+background-color=#1F1F28
+text-color=#727169
+border-color=#363646
 default-timeout=3000
 
+# Urgency: Normal
 [urgency=normal]
-background-color=#1f1f28f0
-text-color=#dcd7ba
-border-color=#7e9cd8
+background-color=#1F1F28
+text-color=#DCD7BA
+border-color=#54546D
 default-timeout=5000
 
+# Urgency: Critical
 [urgency=critical]
-background-color=#e8274388
-text-color=#dcd7ba
-border-color=#ff9387
+background-color=#2D1F21
+text-color=#DCD7BA
+border-color=#C34043
 default-timeout=0
 
-# Category-specific styling
-[category=email]
-border-color=#e6c384
-text-color=#e6c384
+# App-specific overrides
+[app-name=Spotify]
+border-color=#76946A
 
-[category=chat]
-border-color=#7e9cd8
-text-color=#7e9cd8
+[app-name=discord]
+border-color=#7E9CD8
 
-[category=music]
-border-color=#ff9387
-text-color=#ff9387
+[app-name=slack]
+border-color=#957FB8
 
-[category=volume]
-border-color=#938aa9
-text-color=#938aa9
+# Do Not Disturb mode styling
+[mode=do-not-disturb]
+invisible=1
 
-# Application-specific overrides
-[app-name="Firefox"]
-border-color=#e6c384
-
-[app-name="Discord"]
-border-color=#7e9cd8
-
-[app-name="Spotify"]
-border-color=#ff9387
-
-[app-name="Signal"]
-border-color=#7e9cd8
-
-# Summary notifications (when grouping)
-[grouped=true]
 format=<b>%a</b> (%g)\n%s

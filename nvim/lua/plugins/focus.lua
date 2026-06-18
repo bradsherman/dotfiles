@@ -1,6 +1,6 @@
 return {
     "nvim-focus/focus.nvim",
-    enabled = false,
+    enabled = true,
     config = function()
         require("focus").setup()
     end,

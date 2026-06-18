@@ -1,4 +1,32 @@
+output "BOE 0x0B22 Unknown" {
+  alias $LAPTOP
+  mode 3840x2400@60
+  position 0,0
+  scale 2.0
+}
+
+output "Dell Inc. DELL P2725QE FDB7QB4" {
+  alias $WORK_MONITOR
+  mode 3840x2160@60
+  position 1920,0
+  scale 1.3
+}
+
+
+output "Dell Inc. DELL U2720Q B9BVW13" {
+  alias $HOME_MONITOR
+  # for hdmi this can be 30
+  mode 3840x2160@59.997
+  position 1920,0
+  scale 1.3
+}
+
 profile home {
-    output eDP-1 mode 3840x2400@60 position 0,960 scale 2.0
-    output DP-2 mode 3840x2160@30 position 1920,720 scale 1.5
+    output $LAPTOP enable position 0,240
+    output $HOME_MONITOR enable
+}
+
+profile work {
+    output $LAPTOP enable position 0,462
+    output $WORK_MONITOR enable
 }

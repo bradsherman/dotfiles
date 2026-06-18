@@ -12,20 +12,8 @@ gaps bottom 10
 gaps right 10
 gaps inner 5
 
-### Idle configuration
-# This will lock your screen after 300 seconds of inactivity, then turn off
-# your displays after another 300 seconds, and turn your screens back on when
-# resumed. It will also lock your screen before your computer goes to sleep.
-
-# exec swayidle -w \
-#          timeout 300 'swaylock -f -c 000000' \
-#          timeout 600 'swaymsg "output * dpms off"' \
-#               resume 'swaymsg "output * dpms on"' \
-#          before-sleep 'swaylock -f -c 000000' &
-
 # set locker timeout
-exec_always killall swayidle
-exec_always $HOME/.config/sway/swayidle.sh
+bindsym $mod+shift+i exec $HOME/.config/sway/bin/swayidle-toggle.sh
 
 # enable lock ($mod+shift+x)
 bindsym $mod+shift+x exec swaylock
@@ -68,7 +56,10 @@ bindsym $mod+shift+m exec pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec ghostty
+bindsym $mod+Return exec ghostty +new-window
+
+# start firefox
+bindsym $mod+Shift+f exec firefox
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -147,10 +138,10 @@ bindsym $mod+a focus parent
 
 # reload the configuration file
 bindsym $mod+Shift+r reload
-# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+# restart sway inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+c restart
-# exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your X session.' -B 'Yes, exit sway' 'swaymsg exit'"
+# exit sway (logs you out of your session)
+bindsym $mod+Shift+e exec "swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your session.' -B 'Yes, exit sway' 'swaymsg exit'"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -218,7 +209,7 @@ client.urgent           $autumnRed    $autumnRed    $sumiInk1   $waveRed      $a
 
 exec_always ~/.config/waybar/waybar.sh
 
-bindsym $mod+p exec ~/.config/sway/bin/logout
+bindsym $mod+p exec ~/.config/sway/bin/logout.sh
 # bindsym $mod+shift+p exec ~/.config/i3/bin/display
 
 # exec_always setxkbmap -layout us -option ctrl:nocaps
@@ -227,6 +218,7 @@ bindsym $mod+p exec ~/.config/sway/bin/logout
 input "type:keyboard" {
     xkb_layout us,es,de
     xkb_options caps:ctrl_modifier
+    xkb_numlock enabled
 }
 
 input "type:touchpad" {
@@ -277,14 +269,17 @@ bindsym $mod+equal move workspace to output right
 # bindsym --release Shift+Print exec scrot -s 'screenshot_%Y%m%d_%H%M%S.png' -e 'mkdir -p ~/Pictures/screenshots && mv $f ~/Pictures/screenshots && xclip -selection clipboard -t image/png -i ~/Pictures/screenshots/`ls -1 -t ~/Pictures/screenshots | head -1`' # Area selection
 # bindsym Print exec ~/.config/sway/bin/screenshot.sh >> screenshot_output.txt
 bindsym Print exec ~/.nix-profile/bin/grim -g "$(~/.nix-profile/bin/slurp)" - | wl-copy
-bindsym $mod+Shift+p exec ~/.nix-profile/bin/grim -g "$(~/.nix-profile/bin/slurp)" - | wl-copy
+bindsym $mod+Print exec ~/.nix-profile/bin/grim -g "$(~/.nix-profile/bin/slurp)" ~/Pictures/screenshot-$(date +%Y-%m-%d-%H%M%S).png
 bindsym Shift+Print exec ~/.config/sway/bin/screenshot.sh
+bindsym $mod+Shift+p exec ~/.nix-profile/bin/grim -g "$(~/.nix-profile/bin/slurp)" - | wl-copy
 
 
-exec wezterm
+# exec ghostty
+
+exec systemctl enable --user app-com.mitchellh.ghostty.service
 # assign [class="Alacritty"] $ws1
 # assign [app_id="org.wezfurlong.wezterm"] $ws1
-for_window [app_id="org.wezfurlong.wezterm"] opacity 85%
+# for_window [app_id="org.wezfurlong.wezterm"] opacity 85%
 exec firefox
 # assign [class="Firefox"] $ws2
 exec slack
@@ -298,9 +293,8 @@ exec spotify
 bindsym $mod+b exec ~/.local/bin/wofi-bluetooth
 
 exec_always "pkill mako; mako"
-bindsym $mod+Escape exec makoctl dismiss -a
-bindsym $mod+Shift+Escape exec ~/.config/mako/silence.sh
-bindsym $mod+Shift+n exec ~/.config/mako/unsilence.sh
+bindsym $mod+Shift+Escape exec makoctl dismiss -a
+bindsym $mod+Escape exec ~/.config/mako/bin/mako-toggle.sh
 
 # bindsym $mod+Shift+Escape exec makoctl mode -a do-not-disturb
 # bindsym $mod+Shift+n exec makoctl mode -r do-not-disturb
@@ -308,8 +302,13 @@ bindsym $mod+Shift+n exec ~/.config/mako/unsilence.sh
 exec_always killall sway-audio-idle-inhibit
 exec_always sway-audio-idle-inhibit
 
+bindgesture swipe:right workspace prev
+bindgesture swipe:left workspace next
+
 # https://github.com/swaywm/sway/issues/5732
-exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
+# exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
+# exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+exec ~/.config/sway/bin/setup-xdg-desktop-portal.sh
 
 # prevent screen locking while something is full screen
 # for_window [class=".*"] inhibit_idle fullscreen

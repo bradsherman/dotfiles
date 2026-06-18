@@ -25,9 +25,9 @@ return {
                     --         name = "[Neorg]",
                     --     },
                     -- },
-                    ["core.completion"] = {
-                        config = { engine = { module_name = "external.lsp-completion" } },
-                    },
+                    -- ["core.completion"] = {
+                    -- config = { engine = { module_name = "external.lsp-completion" } },
+                    -- },
                     ["core.dirman"] = { -- Manages Neorg workspaces
                         config = {
                             workspaces = {
@@ -48,21 +48,6 @@ return {
                     ["core.ui.calendar"] = {},
                     ["core.integrations.telescope"] = {},
                     ["core.integrations.treesitter"] = {},
-                    ["external.interim-ls"] = {
-                        config = {
-                            -- default config shown
-                            completion_provider = {
-                                -- enable/disable the completion provider. On by default.
-                                enable = true,
-
-                                -- show file contents as documentation when you complete a file name
-                                documentation = true,
-
-                                -- Try to complete categories. Requires benlubas/neorg-se
-                                categories = false,
-                            },
-                        },
-                    },
                 },
             })
 

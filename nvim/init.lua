@@ -2,8 +2,7 @@ require("options")
 require("keybindings")
 require("lazy-plugins")
 require("autocommands")
--- someday, switch to native lsp
--- require("lsp")
+require("lsp")
 
 local rocks_config = {
     rocks_path = "/home/bsherman/.local/share/nvim/rocks",
@@ -26,3 +25,53 @@ local luarocks_cpath = {
 package.cpath = package.cpath .. ";" .. table.concat(luarocks_cpath, ";")
 
 vim.opt.runtimepath:append(vim.fs.joinpath(rocks_config.rocks_path, "lib", "luarocks", "rocks-5.1", "rocks.nvim", "*"))
+
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = {
+        "bash",
+        "clojure",
+        "cpp",
+        "css",
+        "diff",
+        "git_rebase",
+        "gitcommit",
+        "go",
+        "graphql",
+        "haskell",
+        "hcl",
+        "html",
+        "http",
+        "javascript",
+        "json",
+        "lua",
+        "make",
+        "markdown",
+        "markdown_inline",
+        "ninja",
+        "nix",
+        -- "norg",
+        "ocaml",
+        "python",
+        "query",
+        "regex",
+        "rust",
+        "scss",
+        "sql",
+        "toml",
+        "tsx",
+        "typescript",
+        "terraform",
+        "vim",
+        "xml",
+        "yaml",
+        "zig",
+    },
+    callback = function()
+        vim.treesitter.start()
+        vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
+        vim.wo[0][0].foldmethod = "expr"
+        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    end,
+})
+
+require("vim._core.ui2").enable({})

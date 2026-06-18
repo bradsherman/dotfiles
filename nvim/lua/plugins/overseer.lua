@@ -32,9 +32,8 @@ return {
             min_height = { 0.3 },
             max_width = { 0.25 },
         },
-        templates = { "builtin", "user.stack_build", "user.stack_test" },
+        templates = { "builtin", "user.cabal_build", "user.cabal_test" },
         strategy = {
-            -- "toggleterm",
             "terminal",
         },
     },

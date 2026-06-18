@@ -22,7 +22,7 @@ return {
         performance_mode = false, -- Disable "Performance Mode" on all buffers.
     },
     config = function(_, opts)
-        neoscroll = require("neoscroll")
+        local neoscroll = require("neoscroll")
         neoscroll.setup(opts)
         local keymap = {
             ["<C-u>"] = function()

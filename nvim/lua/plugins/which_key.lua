@@ -18,45 +18,43 @@ return {
 
         -- Miscellaneous Telescope mappings
         wk.add({
-            {
-                "<c-f>",
-                function()
-                    Snacks.picker.smart()
-                end,
-                desc = "Smart Find Files",
-            },
-            {
-                "<c-g>",
-                function()
-                    Snacks.picker.grep()
-                end,
-                desc = "Smart Find Files",
-            },
-            {
-                "<c-b>",
-                function()
-                    Snacks.picker.buffers()
-                end,
-                desc = "Smart Find Files",
-            },
-            {
-                "<c-t>",
-                function()
-                    Snacks.picker.tags()
-                end,
-                desc = "Smart Find Files",
-            },
+            -- {
+            --     "<c-f>",
+            --     function()
+            --         Snacks.picker.smart()
+            --     end,
+            --     desc = "Smart Find Files",
+            -- },
+            -- {
+            --     "<c-g>",
+            --     function()
+            --         Snacks.picker.grep()
+            --     end,
+            --     desc = "Smart Find Files",
+            -- },
+            -- {
+            --     "<c-b>",
+            --     function()
+            --         Snacks.picker.buffers()
+            --     end,
+            --     desc = "Smart Find Files",
+            -- },
+            -- {
+            --     "<c-t>",
+            --     function()
+            --         Snacks.picker.tags()
+            --     end,
+            --     desc = "Smart Find Files",
+            -- },
 
-            -- { "<c-f>", "<cmd>FzfLua files<cr>", desc = "Files" },
-            -- { "<c-g>", "<cmd>FzfLua live_grep_glob<cr>", desc = "Grep" },
-            -- { "<c-g>", "<cmd>FzfLua live_grep<cr>", desc = "Grep" },
-            -- { "<c-b>", "<cmd>FzfLua buffers<cr>", desc = "Buffers" },
-            -- { "<c-t>", "<cmd>FzfLua tags<cr>", desc = "Tags" },
+            { "<c-f>", "<cmd>FzfLua files<cr>", desc = "Files" },
+            { "<c-g>", "<cmd>FzfLua live_grep<cr>", desc = "Grep" },
+            { "<c-b>", "<cmd>FzfLua buffers<cr>", desc = "Buffers" },
+            { "<c-t>", "<cmd>FzfLua tags<cr>", desc = "Tags" },
             -- { "R", "<cmd>FzfLua resume<cr>", desc = "Resume" },
 
             -- { "<c-f>", "<cmd>Telescope find_files<cr>", desc = "Telescope Files" },
             -- { "<c-g>", "<cmd>Telescope live_grep<cr>", desc = "Telescope Grep" },
-            -- { "<c-g>", require("plugins.telescope.multigrep").live_multigrep, desc = "Telescope Grep" },
             -- ["<c-g>"] = {
             --     "<cmd>lua require('telescope').extensions.live_grep_args.live_grep_args()<cr>",
             --     "Telescope Grep",
@@ -96,14 +94,35 @@ return {
             { "<leader>far", "<cmd>GrugFar<cr>", desc = "Find And Replace" },
         })
 
+        -- Dbee
+        wk.add({
+            { "<leader>k", group = "+Dbee" },
+            { "<leader>ko", require("dbee").open, desc = "Open" },
+            { "<leader>kc", require("dbee").close, desc = "Close" },
+            { "<leader>kt", require("dbee").toggle, desc = "Toggle" },
+        })
+
         -- Overseer
         wk.add({
             { "<leader>b", group = "+Overseer" },
             { "<leader>ba", "<cmd>OverseerTaskAction<cr>", desc = "Action" },
             { "<leader>bb", "<cmd>OverseerRestartLast<cr>", desc = "Restart Last" },
-            { "<leader>bi", "<cmd>OverseerInfo<cr>", desc = "Info" },
             { "<leader>br", "<cmd>OverseerRun<cr>", desc = "Run" },
-            { "<leader>bs", "<cmd>OverseerRun stack_build_package<cr>", desc = "Build Stack Package" },
+            { "<leader>bp", "<cmd>OverseerRun cabal_build_package<cr>", desc = "Build Cabal Package" },
+            {
+                "<leader>bh",
+                function()
+                    require("overseer").run_task({ name = "just hpack" })
+                end,
+                desc = "Hpack",
+            },
+            {
+                "<leader>bc",
+                function()
+                    require("overseer").run_task({ name = "just cabal-build" })
+                end,
+                desc = "Build All",
+            },
             { "<leader>bt", "<cmd>OverseerToggle<cr>", desc = "Toggle" },
         })
 
@@ -120,11 +139,6 @@ return {
             { "<leader>qk", "<cmd>cprev<cr>", desc = "Quickfix prev" },
             { "<leader>qc", "<cmd>copen<cr>", desc = "Quickfix open" },
             { "<leader>qq", "<cmd>cclose<cr>", desc = "Quickfix close" },
-        })
-
-        -- Colorizer
-        wk.add({
-            { "<leader>ct", "<cmd>HighlightColors Toggle<cr>", desc = "Toggle Colorizer" },
         })
 
         -- Markdown Preview
@@ -152,7 +166,7 @@ return {
         -- Misc
         wk.add({
             { "<leader><tab>", "<cmd>b#<cr>", desc = "Previous Buffer" },
-            { "<leader>tm", "<cmd>TableModeToggle<cr>", desc = "Toggle TableMode" },
+            -- { "<leader>tm", "<cmd>TableModeToggle<cr>", desc = "Toggle TableMode" },
             { "<leader>sw", "<cmd>set list!<cr>", desc = "Show Whitespace Chars" },
             { "<leader>se", "<cmd>Eswpoch<cr>", desc = "Epoch Switcher" },
             {
@@ -263,21 +277,21 @@ return {
         })
 
         -- JJ
-        wk.add({
-            {
-                { "<leader>j", group = "+JJ" },
-                { "<leader>jj", "<cmd>J status<cr>", desc = "JJ" },
-                { "<leader>ja", "<cmd>J abandon<cr>", desc = "JJ abandon" },
-                { "<leader>jd", "<cmd>J describe<cr>", desc = "JJ describe" },
-                { "<leader>jf", "<cmd>J diff<cr>", desc = "JJ diff" },
-                { "<leader>je", "<cmd>J edit<cr>", desc = "JJ edit" },
-                { "<leader>jl", "<cmd>J log<cr>", desc = "JJ log" },
-                { "<leader>jn", "<cmd>J new<cr>", desc = "JJ new" },
-                { "<leader>jr", "<cmd>J rebase<cr>", desc = "JJ rebase" },
-                { "<leader>js", "<cmd>J status<cr>", desc = "JJ status" },
-                { "<leader>jq", "<cmd>J squash<cr>", desc = "JJ squash" },
-            },
-        })
+        -- wk.add({
+        --     {
+        --         { "<leader>j", group = "+JJ" },
+        --         { "<leader>jj", "<cmd>J log<cr>", desc = "JJ" },
+        --         { "<leader>ja", "<cmd>J abandon<cr>", desc = "JJ abandon" },
+        --         { "<leader>jd", "<cmd>J describe<cr>", desc = "JJ describe" },
+        --         { "<leader>jf", "<cmd>J diff<cr>", desc = "JJ diff" },
+        --         { "<leader>je", "<cmd>J edit<cr>", desc = "JJ edit" },
+        --         { "<leader>jl", "<cmd>J log<cr>", desc = "JJ log" },
+        --         { "<leader>jn", "<cmd>J new<cr>", desc = "JJ new" },
+        --         { "<leader>jr", "<cmd>J rebase<cr>", desc = "JJ rebase" },
+        --         { "<leader>js", "<cmd>J status<cr>", desc = "JJ status" },
+        --         { "<leader>jq", "<cmd>J squash<cr>", desc = "JJ squash" },
+        --     },
+        -- })
 
         -- Git
         wk.add({
@@ -458,12 +472,12 @@ return {
                 },
                 {
                     { "<leader>dh", group = "+Hover" },
-                    { "<leader>dhh", "<cmd>lua require('dap.ui.variables').hover()<CR>", desc = "Hover" },
+                    { "<leader>dhh", "<cmd>lua require('dap.ui.variables').open()<CR>", desc = "Hover" },
                     { "<leader>dhv", "<cmd>lua require('dap.ui.variables').visual_hover()<CR>", desc = "Visual Hover" },
                 },
                 {
                     { "<leader>du", group = "+UI" },
-                    { "<leader>duh", "<cmd>lua require('dap.ui.widgets').hover()<CR>", desc = "Hover" },
+                    { "<leader>duh", "<cmd>lua require('dap.ui.widgets').open()<CR>", desc = "Hover" },
                     {
                         "<leader>duf",
                         "<cmd>lua local widgets=require('dap.ui.widgets');widgets.centered_float(widgets.scopes)<CR>",
@@ -498,66 +512,6 @@ return {
             },
         })
 
-        local terminal_ok, toggleterm = pcall(require, "toggleterm.terminal")
-        if terminal_ok then
-            local Terminal = toggleterm.Terminal
-
-            local node = Terminal:new({ cmd = "node", hidden = true })
-
-            function _NODE_TOGGLE()
-                node:toggle()
-            end
-
-            local htop = Terminal:new({ cmd = "htop", hidden = true })
-
-            function _HTOP_TOGGLE()
-                htop:toggle()
-            end
-
-            local python = Terminal:new({ cmd = "python", hidden = true })
-
-            function _PYTHON_TOGGLE()
-                python:toggle()
-            end
-
-            local ghci = Terminal:new({ cmd = "ghci", hidden = true })
-
-            function _GHCI_TOGGLE()
-                ghci:toggle()
-            end
-
-            local stack_ghci = Terminal:new({ cmd = "stack ghci", hidden = true })
-
-            function _STACK_GHCI_TOGGLE()
-                stack_ghci:toggle()
-            end
-
-            local lazyjj = Terminal:new({ cmd = "lazyjj", hidden = true })
-
-            function _LAZYJJ_TOGGLE()
-                lazyjj:toggle()
-            end
-
-            -- ToggleTerm
-            wk.add({
-                {
-                    { "<leader>t", group = "+ToggleTerm" },
-                    { "<leader>tg", _GHCI_TOGGLE, desc = "GHCi" },
-                    { "<leader>tsg", _STACK_GHCI_TOGGLE, desc = "Stack GHCi" },
-                    { "<leader>th", _HTOP_TOGGLE, desc = "HTOP" },
-                    { "<leader>tj", _LAZYJJ_TOGGLE, desc = "LazyJJ" },
-                    { "<leader>tn", _NODE_TOGGLE, desc = "Node" },
-                    { "<leader>tp", _PYTHON_TOGGLE, desc = "Python" },
-                    { "<leader>tt", "<cmd>ToggleTerm direction=horizontal<cr>", desc = "Toggle Term" },
-                },
-            })
-        end
-        wk.add({
-            { "<leader>r", group = "+Rest" },
-            { "<leader>rr", "<cmd>Rest run<CR>", desc = "Run" },
-            { "<leader>rl", "<cmd>Rest run last<CR>", desc = "Rerun" },
-        })
-
         -- Neorg
         wk.add({
             { "<leader>n", group = "+Neorg" },
@@ -584,24 +538,22 @@ return {
         })
 
         wk.add({
-            { "<leader>u", group = "+Neotest" },
-            { "<leader>ua", "<cmd>lua require('neotest').run.attach()<cr>", desc = "Attach Nearest" },
+            { "<leader>t", group = "+Neotest" },
+            { "<leader>ta", "<cmd>lua require('neotest').run.attach()<cr>", desc = "Attach Nearest" },
             {
-                "<leader>ud",
+                "<leader>td",
                 "<cmd>lua require('neotest').run.attach({ strategy = 'dap' })<cr>",
                 desc = "Debug Nearest",
             },
-            { "<leader>uf", "<cmd>lua require('neotest').run.run(vim.fn.expand('%'))<cr>", desc = "Test File" },
-            { "<leader>uo", "<cmd>lua require('neotest').output_panel.toggle()<cr>", desc = "Toggle Output" },
-            { "<leader>us", "<cmd>lua require('neotest').run.stop()<cr>", desc = "Stop Nearest" },
-            { "<leader>ut", "<cmd>lua require('neotest').run.run()<cr>", desc = "Test Nearest" },
-            { "<leader>uw", "<cmd>lua require('neotest').watch.toggle(vim.fn.expand('%'))<cr>", desc = "Watch File" },
+            { "<leader>tf", "<cmd>lua require('neotest').run.run(vim.fn.expand('%'))<cr>", desc = "Test File" },
+            { "<leader>to", "<cmd>lua require('neotest').output_panel.toggle()<cr>", desc = "Toggle Output" },
+            { "<leader>ts", "<cmd>lua require('neotest').run.stop()<cr>", desc = "Stop Nearest" },
+            { "<leader>tt", "<cmd>lua require('neotest').run.run()<cr>", desc = "Test Nearest" },
+            { "<leader>tw", "<cmd>lua require('neotest').watch.toggle(vim.fn.expand('%'))<cr>", desc = "Watch File" },
         })
 
-        wk.add({ { "<leader>uu", "<cmd>UndotreeToggle<cr>", desc = "Undo Tree" } })
         wk.add({ { "<leader>o", "<cmd>Outline<cr>", desc = "Outline" } })
 
-        wk.add({ { "<leader>ng", "<cmd>Neogen<cr>", desc = "Neogen" } })
         wk.add({
             {
                 "<leader>fs",
@@ -625,13 +577,6 @@ return {
         })
 
         wk.add({
-            { "<leader>cf", "<cmd>lua require('neotest').run.run(vim.fn.expand('%'))<cr>", desc = "Test File" },
-            { "<leader>co", "<cmd>lua require('neotest').output_panel.toggle()<cr>", desc = "Toggle Output" },
-            { "<leader>cs", "<cmd>lua require('neotest').run.stop()<cr>", desc = "Stop Nearest" },
-            { "<leader>ct", "<cmd>lua require('neotest').run.run()<cr>", desc = "Test Nearest" },
-            { "<leader>cw", "<cmd>lua require('neotest').watch.toggle(vim.fn.expand('%'))<cr>", desc = "Watch File" },
-        })
-        wk.add({
             { "<leader>c", group = "+CodeCompanion" },
             { "<leader>cc", "<cmd>CodeCompanionChat<cr>", desc = "Chat" },
             { "<leader>cct", "<cmd>CodeCompanionChat Toggle<cr>", desc = "Toggle Chat" },
@@ -641,45 +586,4 @@ return {
         wk.setup(opts)
     end,
     opts = {},
-    --    opts = {
-    --        plugins = {
-    --            marks = true, -- shows a list of your marks on ' and `
-    --            registers = true, -- shows your registers on " in NORMAL or <C-r> in INSERT mode
-    --            spelling = {
-    --                enabled = false, -- enabling this will show WhichKey when pressing z= to select spelling suggestions
-    --                suggestions = 20, -- how many suggestions should be shown in the list?
-    --            },
-    --            -- the presets plugin, adds help for a bunch of default keybindings in Neovim
-    --            -- No actual key bindings are created
-    --            presets = {
-    --                operators = false, -- adds help for operators like d, y, ... and registers them for motion / text object completion
-    --                motions = true, -- adds help for motions
-    --                text_objects = true, -- help for text objects triggered after entering an operator
-    --                windows = true, -- default bindings on <c-w>
-    --                nav = true, -- misc bindings to work with windows
-    --                z = true, -- bindings for folds, spelling and others prefixed with z
-    --                g = true, -- bindings for prefixed with g
-    --            },
-    --        },
-    --        icons = {
-    --            breadcrumb = "»", -- symbol used in the command line area that shows your active key combo
-    --            separator = "➜", -- symbol used between a key and it's label
-    --            group = "+", -- symbol prepended to a group
-    --        },
-    --        layout = {
-    --            height = { min = 4, max = 25 }, -- min and max height of the columns
-    --            width = { min = 20, max = 50 }, -- min and max width of the columns
-    --            spacing = 3, -- spacing between columns
-    --            align = "left", -- align columns left, center or right
-    --        },
-    --        -- show_help = true, -- show help message on the command line when the popup is visible
-    --        -- triggers = "auto", -- automatically setup triggers
-    --        -- triggers = { "<leader>" }, -- or specify a list manually
-    --        -- disable the WhichKey popup for certain buf types and file types.
-    --        -- Disabled by deafult for Telescope
-    --        disable = {
-    --            buftypes = {},
-    --            filetypes = { "TelescopePrompt" },
-    --        },
-    --    },
 }

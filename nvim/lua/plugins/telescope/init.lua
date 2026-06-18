@@ -3,12 +3,6 @@ return {
         "nvim-telescope/telescope.nvim",
         lazy = false,
         enabled = true,
-        keys = {
-            -- { "<c-f>", "<cmd>Telescope find_files<cr>", desc = "Files" },
-            -- { "<c-g>", "<cmd>lua require('telescope').extensions.live_grep_args.live_grep_args()<cr>", desc = "Grep" },
-            -- { "<c-b>", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
-            -- { "<c-t>", "<cmd>Telescope tags<cr>", desc = "Tags" },
-        },
         config = function()
             local actions = require("telescope.actions")
             require("telescope").setup({

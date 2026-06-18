@@ -3,7 +3,7 @@ local methods = vim.lsp.protocol.Methods
 local M = {}
 
 local function lsp_highlight_document(client, bufnr)
-    if client.supports_method(methods.textDocument_documentHighlight) then
+    if client:supports_method(methods.textDocument_documentHighlight) then
         local under_cursor_highlights_group = vim.api.nvim_create_augroup("cursor_highlights", { clear = false })
         vim.api.nvim_create_autocmd({ "CursorHold", "InsertLeave", "BufEnter" }, {
             group = under_cursor_highlights_group,
@@ -27,34 +27,34 @@ end
 
 -- TODO: register these with which key instead
 local function lsp_keymaps(client, bufnr)
-    -- vim.keymap.set("n", "gd", "<cmd>FzfLua lsp_definitions<cr>", { buffer = bufnr })
-    -- vim.keymap.set("n", "gR", "<cmd>FzfLua lsp_references<cr>", { buffer = bufnr })
-    -- vim.keymap.set("n", "gt", "<cmd>FzfLua lsp_type_defs<cr>", { buffer = bufnr })
-    -- vim.keymap.set("n", "gm", "<cmd>FzfLua lsp_document_symbols<cr>", { buffer = bufnr })
-    -- vim.keymap.set("n", "gi", "<cmd>FzfLua lsp_implementations<cr>", { buffer = bufnr })
+    vim.keymap.set("n", "gd", "<cmd>FzfLua lsp_definitions<cr>", { buffer = bufnr })
+    vim.keymap.set("n", "gR", "<cmd>FzfLua lsp_references<cr>", { buffer = bufnr })
+    vim.keymap.set("n", "gt", "<cmd>FzfLua lsp_type_defs<cr>", { buffer = bufnr })
+    vim.keymap.set("n", "gm", "<cmd>FzfLua lsp_document_symbols<cr>", { buffer = bufnr })
+    vim.keymap.set("n", "gi", "<cmd>FzfLua lsp_implementations<cr>", { buffer = bufnr })
 
-    vim.keymap.set("n", "gd", function()
-        Snacks.picker.lsp_definitions()
-    end, { buffer = bufnr })
-    vim.keymap.set("n", "gD", function()
-        Snacks.picker.lsp_declarations()
-    end, { buffer = bufnr })
-    vim.keymap.set("n", "gR", function()
-        Snacks.picker.lsp_references()
-    end, { buffer = bufnr })
-    vim.keymap.set("n", "gt", function()
-        Snacks.picker.lsp_type_definitions()
-    end, { buffer = bufnr })
-    vim.keymap.set("n", "gm", function()
-        Snacks.picker.lsp_symbols()
-    end, { buffer = bufnr })
-    vim.keymap.set("n", "gi", function()
-        Snacks.picker.lsp_implementations()
-    end, { buffer = bufnr })
+    -- vim.keymap.set("n", "gd", function()
+    --     Snacks.picker.lsp_definitions()
+    -- end, { buffer = bufnr })
+    -- vim.keymap.set("n", "gD", function()
+    --     Snacks.picker.lsp_declarations()
+    -- end, { buffer = bufnr })
+    -- vim.keymap.set("n", "gR", function()
+    --     Snacks.picker.lsp_references()
+    -- end, { buffer = bufnr })
+    -- vim.keymap.set("n", "gt", function()
+    --     Snacks.picker.lsp_type_definitions()
+    -- end, { buffer = bufnr })
+    -- vim.keymap.set("n", "gm", function()
+    --     Snacks.picker.lsp_symbols()
+    -- end, { buffer = bufnr })
+    -- vim.keymap.set("n", "gi", function()
+    --     Snacks.picker.lsp_implementations()
+    -- end, { buffer = bufnr })
 
     -- vim.keymap.set("n", "gD", "<cmd>Lspsaga peek_definition<cr>", { buffer = bufnr })
-    vim.keymap.set("n", "K", require("hover").hover, { buffer = bufnr })
-    vim.keymap.set("n", "gK", require("hover").hover_select, { buffer = bufnr })
+    vim.keymap.set("n", "K", require("hover").open, { buffer = bufnr })
+    vim.keymap.set("n", "gK", require("hover").select, { buffer = bufnr })
     vim.keymap.set("n", "<c-p>", function()
         diag_jump(bufnr, -1)
     end, { buffer = bufnr })
@@ -81,7 +81,7 @@ local function lsp_keymaps(client, bufnr)
 end
 
 local lsp_inlay_hints = function(client, bufnr)
-    if client.supports_method(methods.textDocument_inlayHint) then
+    if client:supports_method(methods.textDocument_inlayHint) then
         local inlay_hints_group = vim.api.nvim_create_augroup("toggle_inlay_hints", { clear = false })
 
         -- Initial inlay hint display.

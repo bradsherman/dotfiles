@@ -1,6 +1,7 @@
 return {
     "rebelot/heirline.nvim",
     enabled = true,
+    dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
         local heirline = require("heirline")
         local conditions = require("heirline.conditions")
@@ -182,17 +183,17 @@ return {
             provider = function(self)
                 -- first, trim the pattern relative to the current directory. For other
                 -- options, see :h filename-modifers
-                local filename = vim.fn.fnamemodify(self.filename, ":p:.")
-                -- local filename = vim.fn.fnamemodify(self.filename, ":t")
+                -- local filename = vim.fn.fnamemodify(self.filename, ":p:.")
+                local filename = vim.fn.fnamemodify(self.filename, ":t")
                 if filename == "" then
                     return "[No Name]"
                 end
                 -- now, if the filename would occupy more than 1/4th of the available
                 -- space, we trim the file path to its initials
                 -- See Flexible Components section below for dynamic truncation
-                -- if not conditions.width_percent_below(#filename, 0.25) then
-                --     filename = vim.fn.pathshorten(filename)
-                -- end
+                if not conditions.width_percent_below(#filename, 0.25) then
+                    filename = vim.fn.pathshorten(filename, 3)
+                end
                 return filename
             end,
             hl = { fg = utils.get_highlight("Directory").fg },
@@ -350,6 +351,35 @@ return {
             hl = { fg = "green", bold = true },
         }
 
+        local LspProgress = {
+            provider = function()
+                return require("lsp-progress").progress({
+                    max_size = 80,
+                    format = function(messages)
+                        local active_clients = vim.lsp.get_clients()
+                        if #messages > 0 then
+                            return table.concat(messages, " ")
+                        end
+                        local client_names = {}
+                        for _, client in ipairs(active_clients) do
+                            if client and client.name ~= "" then
+                                table.insert(client_names, 1, client.name)
+                            end
+                        end
+                        return table.concat(client_names, "  ")
+                    end,
+                })
+            end,
+            update = {
+                "User",
+                pattern = "LspProgressStatusUpdated",
+                callback = vim.schedule_wrap(function()
+                    vim.cmd("redrawstatus")
+                end),
+            },
+            hl = { fg = "green", bold = true },
+        }
+
         local Diagnostics = {
 
             condition = conditions.has_diagnostics,
@@ -476,7 +506,8 @@ return {
 
         local WorkDir = {
             provider = function()
-                local icon = (vim.fn.haslocaldir(0) == 1 and "l" or "g") .. " " .. " "
+                local icon = " "
+                -- local icon = (vim.fn.haslocaldir(0) == 1 and "l" or "g") .. " " .. " "
                 local cwd = vim.fn.getcwd(0)
                 cwd = vim.fn.fnamemodify(cwd, ":~")
                 if not conditions.width_percent_below(#cwd, 0.25) then
@@ -542,7 +573,6 @@ return {
         local StatusLine = {
             ViMode,
             Space,
-            -- WorkDir,
             FileNameBlock,
             { provider = "%<" },
             Space,
@@ -553,10 +583,13 @@ return {
             Overseer,
             Align,
             -- { flexible = 3,   { Navic, Space }, { provider = "" } },
-            LSPActive,
+            -- LSPActive,
+            WorkDir,
             Align,
             DAPMessages,
             -- VirtualEnv,
+            Space,
+            LspProgress,
             Space,
             FileType,
             { flexible = 3, { FileEncoding, Space }, { provider = "" } },

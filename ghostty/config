@@ -43,6 +43,13 @@
 # resize-overlay-duration = 4s 200ms
 
 font-size = 19
+font-family = "Berkeley Mono"
+font-family = "Font Awesome 7 Free"
+font-family = "FontAwesome"
 # background-opacity = 0.9
 theme = Kanagawa Wave
 shell-integration = zsh
+
+
+quit-after-last-window-closed = true
+quit-after-last-window-closed-delay = 5m

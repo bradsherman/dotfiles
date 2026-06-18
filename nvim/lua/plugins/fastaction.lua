@@ -1,6 +1,5 @@
 return {
     "Chaitanyabsprip/fastaction.nvim",
-    enabled = true,
     lazy = true,
     opts = {
         register_ui_select = true,

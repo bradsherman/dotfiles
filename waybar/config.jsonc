@@ -5,15 +5,18 @@
   "modules-left": [
     "sway/workspaces",
     "custom/playerctl",
+    "pulseaudio",
     "sway/mode"
   ],
   "modules-center": [
     "sway/window"
   ],
   "modules-right": [
-    "pulseaudio",
     "idle_inhibitor",
     "custom/audio_idle_inhibitor",
+    "custom/mako",
+    "cpu",
+    "memory",
     "network",
     "battery",
     // "sway/language",
@@ -26,16 +29,16 @@
   "sway/workspaces": {
     "format": "{icon} {name}",
     "format-icons": {
-      "1": " ",
-      "2": " ",
-      "3": " ",
-      "4": " ",
-      "9": " ",
-      "term": " ",
-      "web": " ",
-      "slack": " ",
-      "spotify": " ",
-      "notes": " "
+      "1": "",
+      "2": "",
+      "3": "",
+      "4": "",
+      "9": "",
+      "term": "",
+      "web": "",
+      "slack": "",
+      "spotify": "",
+      "notes": ""
     },
     "disable-scroll": true,
     "sort-by-number": true
@@ -43,8 +46,8 @@
   "idle_inhibitor": {
     "format": "{icon}",
     "format-icons": {
-      "activated": " ",
-      "deactivated": " "
+      "activated": "",
+      "deactivated": ""
     }
   },
   "tray": {
@@ -58,17 +61,18 @@
     "offscreen-css": true,
     "offscreen-css-text": "(inactive)",
     "rewrite": {
-      "(.*) (.*) Mozilla Firefox": "  $1",
+      "(.*) (.*) Mozilla Firefox": " $1",
       "(.*) - fish": "> [$1]",
-      "(.*) - vim": "  $1",
-      "(.*) - zsh": "  [$1]",
-      "Zellij(.*)": "Zellij"
+      "(.*) - vim": " $1",
+      "(.*) - zsh": " [$1]",
+      "Zellij(.*)": "Zellij",
+      "(.*) - Nvim": " $1"
     }
   },
   "clock": {
     "locale": "en_US.UTF-8",
-    "format-alt": "  {:%H:%M}",
-    "format": "  {:%a, %b %d, %Y (%R)}",
+    "format-alt": " {:%H:%M}",
+    "format": " {:%a, %b %d, %Y (%R)}",
     "tooltip-format": "<tt><small>{calendar}</small></tt>",
     "calendar": {
       "mode": "year",
@@ -87,31 +91,39 @@
     }
   },
   "cpu": {
-    "format": "{usage}%  "
+    "format": "{usage}% ",
+    "states": {
+      "warning": 80,
+      "critical": 90
+    }
   },
   "memory": {
-    "format": "{}%  "
+    "format": "{}% ",
+    "states": {
+      "warning": 80,
+      "critical": 90
+    }
   },
   "backlight": {
     "format": "{percent}% {icon} ",
     "on-scroll-up": "brightnessctl -c backlight set +1%",
     "on-scroll-down": "brightnessctl -c backlight set 1%-",
     "format-icons": [
-      " ",
-      " "
+      "",
+      ""
     ]
   },
   "battery": {
     "format": "{capacity}% {icon} ",
     "format-alt": "{time} {icon} ",
     "format-icons": [
-      " ",
-      " ",
-      " ",
-      " ",
-      " "
+      "",
+      "",
+      "",
+      "",
+      ""
     ],
-    "format-charging": "{capacity}%  ",
+    "format-charging": "{capacity}% ",
     "interval": 30,
     "states": {
       "warning": 30,
@@ -119,52 +131,43 @@
     }
   },
   "network": {
-    "format-wifi": "{essid}<big>  </big>",
-    // "format-wifi": "<small>{ipaddr}</small> ({signalStrength}%)<big> </big>",
+    "format-wifi": "{essid}<big> </big>",
     "format-ethernet": "{ifname}: {ipaddr}/{cidr}  ",
-    "format-disconnected": "<small>Disconnected ⚠ </small>"
+    "format-disconnected": "<small>Disconnected ⚠</small>"
   },
   "pulseaudio": {
     "format": "{icon} {volume}% ",
-    "format-bluetooth": "{icon} {volume}%  ",
-    "format-muted": " ",
+    "format-bluetooth": "{icon} {volume}% ",
+    "format-muted": "",
     "format-icons": {
-      "headphones": " ",
-      "handsfree": " ",
-      "headset": " ",
-      "phone": " ",
-      "portable": " ",
-      "car": " ",
+      "headphones": "",
+      "handsfree": "",
+      "headset": "",
+      "phone": "",
+      "portable": "",
+      "car": "",
       "default": [
-        " ",
-        " "
+        "",
+        ""
       ]
     },
     "on-click": "pavucontrol",
     "scroll-step": 10
   },
-  "custom/weather": {
-    "format": "{}",
-    "format-alt": "{alt}: {}",
-    "format-alt-click": "click-right",
-    "interval": 1800,
-    "return-type": "json",
-    "exec": "~/.config/waybar/modules/weather.sh",
-    "exec-if": "ping wttr.in -c1"
-  },
-  "image": {
-    "path": "/tmp/waybar-mediaplayer-art",
-    "size": 32,
-    "signal": 4,
-    "on-click": "feh --auto-zoom --borderless --title 'feh-float' /tmp/waybar-mediaplayer-art"
-  },
   "custom/playerctl": {
-    "format": "{}",
+    "format": "{icon} {text}",
     "return-type": "json",
     "max-length": 40,
-    "exec": "$HOME/.config/waybar/playerctl.sh 2> /dev/null",
+    "format-icons": {
+        "spotify": "",
+        "default": "🎜"
+    },
+    "escape": true,
+    "interval": 1,
+    "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null",
     "on-click": "playerctl play-pause",
-    "on-right-click": "sys-notif media",
+    "on-click-right": "playerctl next",
+    "on-click-middle": "playerctl previous",
     "on-scroll-up": "playerctl position 3+",
     "on-scroll-down": "playerctl position 3-"
   },
@@ -174,14 +177,21 @@
     "exec-if": "which sway-audio-idle-inhibit",
     "return-type": "json",
     "format-icons": {
-      "output": " ",
-      "input": " ",
-      "output-input": "   ",
+      "output": "",
+      "input": "",
+      "output-input": " ",
       "none": ""
     }
   },
   "sway/language": {
     "format": "{short} {variant}",
     "on-click": "swaymsg input type:keyboard xkb_switch_layout next"
+  },
+  "custom/mako": {
+    "exec": "~/.config/mako/bin/mako-status.sh",
+    "return-type": "json",
+    "interval": 1,
+    "on-click": "~/.config/mako/bin/mako-toggle.sh",
+    "tooltip": true
   }
 }

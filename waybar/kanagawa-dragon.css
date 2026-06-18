@@ -5,7 +5,7 @@
     border: none;
     border-radius: 0;
     font-family: "JetBrains Mono", "Fira Code", "Source Code Pro", monospace;
-    font-size: 13px;
+    font-size: 10px;
     min-height: 0;
 }
 
@@ -118,6 +118,22 @@ window#waybar {
     font-weight: 600;
 }
 
+#cpu.warning {
+    background-color: #FF9E3B;
+    color: #16161D;
+}
+
+#cpu.critical {
+    background-color: #E82424;
+    color: #C8C093;
+}
+
+@keyframes cpu {
+    to {
+        background-color: #A3536C;
+    }
+}
+
 /* Memory */
 #memory {
     background-color: #0D0C0C;
@@ -126,6 +142,23 @@ window#waybar {
     margin: 2px 2px;
     border-radius: 6px;
     font-weight: 600;
+}
+
+#memory.warning {
+    background-color: #C4B28A;
+    color: #0D0C0C;
+}
+
+#memory.critical {
+    background-color: #C4746E;
+    color: #C8C093;
+    animation: memory-critical 1s ease-in-out infinite alternate;
+}
+
+@keyframes memory {
+    to {
+        background-color: #A3536C;
+    }
 }
 
 /* Disk */
@@ -267,6 +300,23 @@ window#waybar {
 #idle_inhibitor.activated {
     background-color: #A3536C;
     color: #C8C093;
+}
+
+/* Audio idle inhibitor (custom module) */
+#custom-audio_idle_inhibitor {
+    background-color: #0D0C0C;
+    color: #625E5A;
+    padding: 0 12px;
+    margin: 2px 2px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+#custom-audio_idle_inhibitor.output,
+#custom-audio_idle_inhibitor.input,
+#custom-audio_idle_inhibitor.output-input {
+    background-color: #0D0C0C;
+    color: #625E5A;
 }
 
 /* MPD/Music */

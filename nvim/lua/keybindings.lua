@@ -3,73 +3,76 @@ vim.g.mapleader = " "
 vim.g.localleader = ","
 vim.g.maplocalleader = ","
 
-vim.keymap.set("n", "<leader>w", ":w<cr>")
-vim.keymap.set("n", "<leader>,", "<cmd>noh<cr>")
--- vim.keymap.set("n", "<leader>,", "<cmd>nohlsearch|diffupdate|normal! <C-l><cr>")
+local keymap = vim.keymap
+local opts = { noremap = true, silent = true }
 
-vim.keymap.set("i", "jk", "<esc>")
--- vim.keymap.set("v", "jk", "<esc>")
-vim.keymap.set("n", ";", ":")
-vim.keymap.set("n", ":", ";")
+keymap.set("n", "+", "<C-a>")
+keymap.set("n", "_", "<C-x>")
 
-vim.keymap.set("n", "j", "gj")
-vim.keymap.set("n", "k", "gk")
+keymap.set("n", "<C-a>", "gg<S-v>G")
 
-vim.keymap.set("n", "gf", "gF", { silent = true })
+keymap.set("n", "<leader>w", ":w<cr>", opts)
+keymap.set("n", "<leader>x", ":q<cr>", opts)
+keymap.set("n", "<leader>,", "<cmd>noh<cr>", opts)
+-- keymap.set("n", "<leader>,", "<cmd>nohlsearch|diffupdate|normal! <C-l><cr>")
 
-vim.keymap.set("n", "<leader>o", "o<esc>k")
-vim.keymap.set("n", "<leader>O", "O<esc>j")
+keymap.set("n", "te", ":tabedit", opts)
+keymap.set("n", "<tab>", ":tabnext<cr>", opts)
+keymap.set("n", "<s-tab>", ":tabprev<cr>", opts)
+keymap.set("n", "tw", ":tabclose<cr>", opts)
 
-vim.keymap.set("n", "<c-j>", "<c-w><c-j>")
-vim.keymap.set("n", "<c-k>", "<c-w><c-k>")
-vim.keymap.set("n", "<c-l>", "<c-w><c-l>")
-vim.keymap.set("n", "<c-h>", "<c-w><c-h>")
+keymap.set("n", "ss", ":split<cr>", opts)
+keymap.set("n", "sv", ":vsplit<cr>", opts)
 
-vim.keymap.set("n", "<tab>", "%")
+keymap.set("i", "jk", "<esc>")
+-- keymap.set("v", "jk", "<esc>")
+keymap.set("n", ";", ":")
+keymap.set("n", ":", ";")
+
+keymap.set("n", "j", "gj")
+keymap.set("n", "k", "gk")
+
+keymap.set("n", "gf", "gF", { silent = true })
+
+keymap.set("n", "<c-j>", "<c-w><c-j>")
+keymap.set("n", "<c-k>", "<c-w><c-k>")
+keymap.set("n", "<c-l>", "<c-w><c-l>")
+keymap.set("n", "<c-h>", "<c-w><c-h>")
+
+-- keymap.set("n", "<tab>", "%")
 
 -- Go to start or end of line easier
-vim.keymap.set("n", "H", "^")
-vim.keymap.set("x", "H", "^")
-vim.keymap.set("n", "L", "g_")
-vim.keymap.set("x", "L", "g_")
+keymap.set("n", "H", "^")
+keymap.set("x", "H", "^")
+keymap.set("n", "L", "g_")
+keymap.set("x", "L", "g_")
 
-vim.keymap.set("n", "<c-up>", ":resize +2<cr>")
-vim.keymap.set("n", "<c-down>", ":resize -2<cr>")
-vim.keymap.set("n", "<c-left>", ":vertical resize -2<cr>")
-vim.keymap.set("n", "<c-right>", ":vertical resize +2<cr>")
+keymap.set("n", "<c-up>", ":resize +2<cr>")
+keymap.set("n", "<c-down>", ":resize -2<cr>")
+keymap.set("n", "<c-left>", ":vertical resize -2<cr>")
+keymap.set("n", "<c-right>", ":vertical resize +2<cr>")
 
 -- Continuous visual shifting (does not exit Visual mode), `gv` means
 -- to reselect previous visual area, see https://goo.gl/m1UeiT
-vim.keymap.set("v", "<", "<gv")
-vim.keymap.set("v", ">", ">gv")
+keymap.set("v", "<", "<gv")
+keymap.set("v", ">", ">gv")
 
-vim.keymap.set("v", "<A-j>", ":m .+1<cr>==")
-vim.keymap.set("v", "<A-k>", ":m .-2<cr>==")
-vim.keymap.set("v", "p", '"_dP')
+keymap.set("v", "<A-j>", ":m .+1<cr>==")
+keymap.set("v", "<A-k>", ":m .-2<cr>==")
+keymap.set("v", "p", '"_dP')
 
-vim.keymap.set("n", "<A-o>", "O<esc>")
-vim.keymap.set("n", "<A-n>", "$a<cr><esc>")
+keymap.set("n", "<A-o>", "O<esc>")
+keymap.set("n", "<A-n>", "$a<cr><esc>")
 
 -- Visual Block --
 -- Move text up and down
-vim.keymap.set("x", "J", ":move '>+1<CR>gv-gv")
-vim.keymap.set("x", "K", ":move '<-2<CR>gv-gv")
-vim.keymap.set("x", "<A-j>", ":move '>+1<CR>gv-gv")
-vim.keymap.set("x", "<A-k>", ":move '<-2<CR>gv-gv")
+keymap.set("x", "J", ":move '>+1<CR>gv-gv")
+keymap.set("x", "K", ":move '<-2<CR>gv-gv")
+keymap.set("x", "<A-j>", ":move '>+1<CR>gv-gv")
+keymap.set("x", "<A-k>", ":move '<-2<CR>gv-gv")
 
 -- copy line and comment out original
-vim.keymap.set("n", "ycc", "yygccp", { remap = true })
+keymap.set("n", "ycc", "yygccp", { remap = true })
 
 -- keep line in place when joining lines
-vim.keymap.set("n", "J", "mzJ`z:delmarks z<cr>")
-
--- vim-cutlass
--- vim.keymap.set("n", "x", "d")
--- vim.keymap.set("x", "x", "d")
--- vim.keymap.set("n", "xx", "dd")
--- vim.keymap.set("n", "X", "D")
-
--- omap     <silent> m :<C-U>lua require('tsht').nodes()<CR>
--- vnoremap <silent> m :lua require('tsht').nodes()<CR>
--- vim.keymap.set("o", "m", ":<C-U>lua require('tsht').nodes()<cr>", { silent = true, remap = true })
--- vim.keymap.set("v", "m", ":lua require('tsht').nodes()<cr>", { silent = true })
+keymap.set("n", "J", "mzJ`z:delmarks z<cr>")

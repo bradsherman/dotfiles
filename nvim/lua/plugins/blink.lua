@@ -1,10 +1,3 @@
-local source_priority = {
-    snippets = 4,
-    lsp = 3,
-    path = 2,
-    buffer = 1,
-}
-
 return {
     {
         "saghen/blink.cmp",
@@ -19,7 +12,16 @@ return {
         -- build = 'nix run .#build-plugin',
         config = function(_, opts)
             local blink = require("blink.cmp")
+            local luasnip = require("luasnip")
+
+            luasnip.config.setup({ history = false })
+
+            local haskell_snippets = require("haskell-snippets").all
+            luasnip.add_snippets("haskell", haskell_snippets, { key = "haskell" })
+
             blink.setup(opts)
+
+            require("luasnip.loaders.from_vscode").lazy_load()
             -- If we want, we can override the highlight group for the border
             -- vim.api.nvim_set_hl(0, "BlinkCmpMenuBorder", { link = "Pmenu" })
             -- vim.api.nvim_set_hl(0, "BlinkCmpMenuBorder", { link = "PmenuSel" })
@@ -51,34 +53,42 @@ return {
                 accept = { auto_brackets = { enabled = false } },
                 menu = {
                     border = "single",
-                    -- draw = {
-                    --     components = {
-                    --         kind_icon = {
-                    --             ellipsis = false,
-                    --             text = function(ctx)
-                    --                 local kind_icon, _, _ = require("mini.icons").get("lsp", ctx.kind)
-                    --                 return kind_icon
-                    --             end,
-                    --             -- Optionally, you may also use the highlights from mini.icons
-                    --             highlight = function(ctx)
-                    --                 local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
-                    --                 return hl
-                    --             end,
-                    --         },
-                    --     },
-                    -- },
-                    --
                     draw = {
                         -- We don't need label_description now because label and label_description are already
                         -- combined together in label by colorful-menu.nvim.
                         columns = { { "kind_icon" }, { "label", gap = 1 } },
                         components = {
-                            label = {
+                            -- customize the drawing of kind icons
+                            kind_icon = {
                                 text = function(ctx)
-                                    return require("colorful-menu").blink_components_text(ctx)
+                                    -- default kind icon
+                                    local icon = ctx.kind_icon
+                                    -- if LSP source, check for color derived from documentation
+                                    if ctx.item.source_name == "LSP" then
+                                        local color_item = require("nvim-highlight-colors").format(
+                                            ctx.item.documentation,
+                                            { kind = ctx.kind }
+                                        )
+                                        if color_item and color_item.abbr ~= "" then
+                                            icon = color_item.abbr
+                                        end
+                                    end
+                                    return icon .. ctx.icon_gap
                                 end,
                                 highlight = function(ctx)
-                                    return require("colorful-menu").blink_components_highlight(ctx)
+                                    -- default highlight group
+                                    local highlight = "BlinkCmpKind" .. ctx.kind
+                                    -- if LSP source, check for color derived from documentation
+                                    if ctx.item.source_name == "LSP" then
+                                        local color_item = require("nvim-highlight-colors").format(
+                                            ctx.item.documentation,
+                                            { kind = ctx.kind }
+                                        )
+                                        if color_item and color_item.abbr_hl_group then
+                                            highlight = color_item.abbr_hl_group
+                                        end
+                                    end
+                                    return highlight
                                 end,
                             },
                         },
@@ -106,12 +116,13 @@ return {
                 -- Adjusts spacing to ensure icons are aligned
                 nerd_font_variant = "mono",
             },
+            -- fun
 
             -- Default list of enabled providers defined so that you can extend it
             -- elsewhere in your config, without redefining it, due to `opts_extend`
             sources = {
-                default = { snippets = { score_offset = 4 }, "lsp", "path", "codecompanion", "buffer" },
-                min_keyword_length = 3,
+                default = { "snippets", "lsp", "path", "buffer" },
+                min_keyword_length = 2,
             },
 
             snippets = { preset = "luasnip" },
@@ -121,7 +132,28 @@ return {
             -- when the Rust fuzzy matcher is not available, by using `implementation = "prefer_rust"`
             --
             -- See the fuzzy documentation for more information
-            fuzzy = { implementation = "prefer_rust_with_warning" },
+            fuzzy = {
+                -- sorts = {
+                --     function(a, b)
+                --         local source_priority = {
+                --             snippets = 4,
+                --             lsp = 3,
+                --             path = 2,
+                --             buffer = 1,
+                --         }
+                --
+                --         local a_priority = source_priority[a.source_id]
+                --         local b_priority = source_priority[b.source_id]
+                --         if a_priority ~= b_priority then
+                --             return a_priority > b_priority
+                --         end
+                --     end,
+                --     -- defaults
+                --     "score",
+                --     "sort_text",
+                -- },
+                implementation = "prefer_rust_with_warning",
+            },
         },
         opts_extend = { "sources.default" },
     },

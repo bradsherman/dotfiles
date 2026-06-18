@@ -1,42 +1,88 @@
 "$schema" = "https://jj-vcs.github.io/jj/latest/config-schema.json"
 
+[revset-aliases]
+me = "bookmarks(glob:'brad/*'):: ~ bookmarks(exact:home)"
+
+[template-aliases]
+bookmark_info = '''
+separate(" ",
+  pad_end(5, change_id.shortest()),
+  bookmarks.join(""),
+  if(description, description.first_line(), "(no description)"),
+  commit_id.shortest()
+)
+'''
+
 [aliases]
 # Basic Operations
-s = "status"
-l = ["log","--limit", "10"]
+s = ["status"]
+st = ["status"]
+# l = ["log","--limit", "10"]
+l = ["log", "-r", "master::home"]
 ll = ["log","--limit", "20", "--no-graph"]
-c = "commit"
+c = ["commit"]
 cm = ["commit", "-m"]
-d = "describe"
+d = ["describe"]
+lb = ["log", "-r", "bookmarks(glob:'brad/*')"]
+lm = ["log", "-r", "me"] #, "-T", "bookmark_info"]
+eh = ["edit", "home"]
 
 # Navigation & Branching
-e = "edit"
-n = "new"
-co = "edit"  # checkout equivalent
-b = ["bookmark", "list"]
+e = ["edit"]
+n = ["new"]
+nc = ["new", "-A", "master", "-B", "home", "--no-edit"]
+co = ["edit"]  # checkout equivalent
+bl = ["bookmark", "list"]
+bs = ["bookmark", "set"]
 bc = ["bookmark", "create"]
 bd = ["bookmark", "delete"]
+bt = ["bookmark", "track"]
 
 # Advanced Workflows
-sq = "squash"
-sp = "split"
-r = "rebase"
+sq = ["squash"]
+sp = ["split"]
+r = ["rebase"]
 rd = ["rebase", "-d"]  # rebase with destination
-df = "diff"
+df = ["diff"]
 ds = ["diff", "--stat"]
 
 # Git Interop
-gf = "git fetch"
-gp = "git push"
+gf = ["git","fetch"]
+gp = ["git","push"]
+gpm = ["git","push", "-r", "bookmarks(glob:brad/*) & master::home"]
 
 # Helpful Complex Aliases
 wc = ["diff", "--from", "@-", "--to", "@"] # working copy changes
 hist = ["log", "--limit", "20", "--template", "commit_id ++ \" \" ++ description.first_line() ++ \" (\" ++ author.email() ++ \")\""]
-amend = "describe"  # quick amend like git commit --amend
+amend = ["describe"]  # quick amend like git commit --amend
 
 [ui]
+diff-editor = ["nvim", "-c", "DiffEditor $left $right $output"]
+# diff-editor = "meld-3"
+# merge-editor = "meld"
+# diff-editor = "diffedit3"
+diff-formatter = ["difft", "--color=always", "$left", "$right"]
 paginate = "never"
+
+[merge-tools.diffconflicts]
+program = "nvim"
+merge-args = [
+    "-c", "let g:jj_diffconflicts_marker_length=$marker_length",
+    "-c", "JJDiffConflicts!", "$output", "$base", "$left", "$right",
+]
+merge-tool-edits-conflict-markers = true
 
 [user]
 name = "Brad Sherman"
 email = "brad.sherman@bitnomial.com"
+
+[templates]
+git_push_bookmark = '"brad/push-" ++ change_id.short()'
+
+[signing]
+behavior = "own"
+backend = "ssh"
+key = "~/.ssh/id_ed25519.pub"
+
+[remotes.origin]
+auto-track-bookmarks = "glob:*"

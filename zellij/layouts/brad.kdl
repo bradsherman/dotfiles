@@ -1,0 +1,42 @@
+layout {
+    default_tab_template {
+        children
+        pane size=1 borderless=true {
+            plugin location="file:/home/bsherman/.config/zellij/zjstatus.wasm" {
+                format_left   "{mode}"
+                format_center "{command_sessions} #[fg=#727169,bold]┃ {tabs}"
+                format_right  ""
+                format_space  ""
+
+                // NOTE: zjstatus leaks memory under heavy concurrent render churn — it grows
+                // unbounded (tens of GB) with MANY sessions open + the session manager firing
+                // render events. Mitigation is behavioral (fewer sessions; prefer the
+                // cycle-session keybind over the session manager), not config. The command
+                // widget below is NOT the main cause. Keep rendermode "raw" (dynamic also leaks
+                // per-repaint; static shows the codes literally). See memory note for details.
+
+                mode_normal       "#[bg=#98BB6C,fg=#16161D,bold] NORMAL "
+                mode_locked       "#[bg=#E46876,fg=#16161D,bold] LOCKED "
+                mode_tmux         "#[bg=#FF9E3B,fg=#16161D,bold] TMUX "
+                mode_pane         "#[bg=#658594,fg=#16161D,bold] PANE "
+                mode_tab          "#[bg=#658594,fg=#16161D,bold] TAB "
+                mode_resize       "#[bg=#658594,fg=#16161D,bold] RESIZE "
+                mode_move         "#[bg=#658594,fg=#16161D,bold] MOVE "
+                mode_scroll       "#[bg=#957FB8,fg=#16161D,bold] SCROLL "
+                mode_search       "#[bg=#957FB8,fg=#16161D,bold] SEARCH "
+                mode_enter_search "#[bg=#957FB8,fg=#16161D,bold] SEARCH "
+                mode_session      "#[bg=#7AA89F,fg=#16161D,bold] SESSION "
+                mode_rename_tab   "#[bg=#658594,fg=#16161D,bold] RENAME "
+                mode_rename_pane  "#[bg=#658594,fg=#16161D,bold] RENAME "
+
+                tab_normal "#[fg=#727169] {index} "
+                tab_active "#[bg=#98BB6C,fg=#16161D,bold] {index} "
+
+                command_sessions_command    "/home/bsherman/.config/zellij/scripts/zj-session-list.sh"
+                command_sessions_format     "{stdout}"
+                command_sessions_interval   "2"
+                command_sessions_rendermode "raw"
+            }
+        }
+    }
+}

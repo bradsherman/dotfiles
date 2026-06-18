@@ -1,7 +1,19 @@
 return {
     { "williamboman/mason.nvim", build = ":MasonUpdate", config = true },
     {
+        "linrongbin16/lsp-progress.nvim",
+        config = function()
+            require("lsp-progress").setup()
+        end,
+    },
+    {
+        "chrisgrieser/nvim-lsp-endhints",
+        event = "LspAttach",
+        opts = {}, -- required, even if empty
+    },
+    {
         "neovim/nvim-lspconfig",
+        enabled = false,
         dependencies = { "williamboman/mason.nvim" },
         config = function()
             local config = {
@@ -45,6 +57,7 @@ return {
     {
         "williamboman/mason-lspconfig.nvim",
         dependencies = { "williamboman/mason.nvim", "neovim/nvim-lspconfig", "SmiteshP/nvim-navic" },
+        enabled = false,
         config = function(_, opts)
             local handlers_ok, my_handlers = pcall(require, "plugins.lsp.handlers")
             if not handlers_ok then
@@ -232,53 +245,54 @@ return {
                     hoogle = { mode = "auto" },
                     -- hover = {},
                     definition = { hoogle_signature_fallback = true },
-                    repl = { handler = "toggleterm" },
+                    -- repl = { handler = "toggleterm" },
                     -- tags = {},
-                    log = {
-                        level = vim.log.levels.DEBUG,
-                    },
+                    -- log = {
+                    --     level = vim.log.levels.DEBUG,
+                    -- },
                 },
             }
         end,
     },
-    -- {
-    --     "pmizio/typescript-tools.nvim",
-    --     dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-    --     opts = function()
-    --         local handlers_ok, my_handlers = pcall(require, "plugins.lsp.handlers")
-    --         if not handlers_ok then
-    --             return
-    --         end
-    --         return {
-    --             on_attach = function(client, bufnr)
-    --                 -- This removes random characters
-    --                 -- ts_organize_imports(bufnr)
-    --                 my_handlers.on_attach(client, bufnr)
-    --             end,
-    --             capabilities = my_handlers.capabilities,
-    --             --[[ handlers = { ... }, ]]
-    --             settings = {
-    --                 -- spawn additional tsserver instance to calculate diagnostics on it
-    --                 separate_diagnostic_server = true,
-    --                 -- "change"|"insert_leave" determine when the client asks the server about diagnostic
-    --                 publish_diagnostic_on = "insert_leave",
-    --                 expose_as_code_action = "all",
-    --                 -- string|nil -specify a custom path to `tsserver.js` file, if this is nil or file under path
-    --                 -- not exists then standard path resolution strategy is applied
-    --                 tsserver_path = nil,
-    --                 -- specify a list of plugins to load by tsserver, e.g., for support `styled-components`
-    --                 -- (see 💅 `styled-components` support section)
-    --                 tsserver_plugins = {},
-    --                 -- this value is passed to: https://nodejs.org/api/cli.html#--max-old-space-sizesize-in-megabytes
-    --                 -- memory limit in megabytes or "auto"(basically no limit)
-    --                 tsserver_max_memory = "auto",
-    --                 -- described below
-    --                 tsserver_format_options = {},
-    --                 tsserver_file_preferences = {},
-    --             },
-    --         }
-    --     end,
-    -- },
+    {
+        "pmizio/typescript-tools.nvim",
+        dependencies = { "nvim-lua/plenary.nvim" },
+        enabled = false,
+        opts = function()
+            -- local handlers_ok, my_handlers = pcall(require, "plugins.lsp.handlers")
+            -- if not handlers_ok then
+            --     return
+            -- end
+            return {
+                -- on_attach = function(client, bufnr)
+                --     -- This removes random characters
+                --     -- ts_organize_imports(bufnr)
+                --     my_handlers.on_attach(client, bufnr)
+                -- end,
+                -- capabilities = my_handlers.capabilities,
+                --[[ handlers = { ... }, ]]
+                settings = {
+                    -- spawn additional tsserver instance to calculate diagnostics on it
+                    separate_diagnostic_server = true,
+                    -- "change"|"insert_leave" determine when the client asks the server about diagnostic
+                    publish_diagnostic_on = "insert_leave",
+                    expose_as_code_action = "all",
+                    -- string|nil -specify a custom path to `tsserver.js` file, if this is nil or file under path
+                    -- not exists then standard path resolution strategy is applied
+                    tsserver_path = nil,
+                    -- specify a list of plugins to load by tsserver, e.g., for support `styled-components`
+                    -- (see 💅 `styled-components` support section)
+                    tsserver_plugins = {},
+                    -- this value is passed to: https://nodejs.org/api/cli.html#--max-old-space-sizesize-in-megabytes
+                    -- memory limit in megabytes or "auto"(basically no limit)
+                    tsserver_max_memory = "auto",
+                    -- described below
+                    tsserver_format_options = {},
+                    tsserver_file_preferences = {},
+                },
+            }
+        end,
+    },
     {
         "elixir-tools/elixir-tools.nvim",
         version = "*",

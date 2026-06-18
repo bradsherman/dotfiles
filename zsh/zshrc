@@ -148,7 +148,7 @@ setopt VI
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 
-plugins=(git jj zsh-vi-mode fzf-tab fast-syntax-highlighting zsh-autosuggestions nix-shell nix-zsh-completions)
+plugins=(git jj zsh-jj zsh-vi-mode fzf-tab fast-syntax-highlighting zsh-autosuggestions nix-shell nix-zsh-completions)
 
 # Only changing the escape key to `jk` in insert mode, we still
 # keep using the default keybindings `^[` in other modes
@@ -187,6 +187,7 @@ export PATH="$HOME/code/lua-language-server/bin:${PATH}"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 /usr/bin/keychain $HOME/.ssh/id_ed25519
+source $HOME/.keychain/bsherman-thinkpad-sh
 
 if type rg &> /dev/null; then
   export FZF_DEFAULT_COMMAND='rg --files'
@@ -271,19 +272,6 @@ function ghcid_run {
       --run
 }
 
-alias sqlite="rlwrap -a -c -i sqlite3"
-alias sqlite3="rlwrap -a -c -i sqlite3"
-alias htop='btm'
-alias man='tldr'
-alias shake='stack exec shake --'
-
-# alias ls='lsd'
-alias ls="eza --color=always --long --git --icons=always"
-# alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"
-alias l='ls -l'
-alias la='ls -a'
-alias lla='ls -la'
-alias lt='ls --tree'
 
 export LOCAL_CONN_STRING="postgresql://app:password123@localhost:5432/main"
 
@@ -352,13 +340,14 @@ export GPG_TTY=$(tty)
 gpgconf --launch gpg-agent
 
 [ -f "$HOME/.asdf/asdf.sh" ] && . "$HOME/.asdf/asdf.sh"
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 # append completions to fpath
 fpath=(${ASDF_DIR}/completions $fpath)
 # fpath=(${HOME}/.zsh/completions $fpath)
 fpath=($HOME/.zsh_functions $fpath)
 
 # initialise completions with ZSH's compinit
-# autoload -Uz compinit && compinit
+autoload -Uz compinit && compinit
 source $ZSH/oh-my-zsh.sh
 
 # bun completions
@@ -389,8 +378,6 @@ function fzf-kill-processes() {
   fi
 }
 
-eval "$(zoxide init --cmd cd zsh)"
-
 bindkey '^ ' autosuggest-accept
 
 source <(just --completions zsh)
@@ -400,3 +387,27 @@ complete -o nospace -C /nix/store/34m359hc8r2r8h9rsavysjmvyk29m0m6-nomad-1.4.4/b
 eval "$(direnv hook zsh)"
 
 prompt_nix_shell_setup
+
+alias sqlite="rlwrap -a -c -i sqlite3"
+alias sqlite3="rlwrap -a -c -i sqlite3"
+alias htop='btm'
+alias shake='stack exec shake --'
+
+# alias ls='lsd'
+alias ls="eza --color=always --long --git --icons=always"
+# alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"
+alias l='ls -l'
+alias la='ls -a'
+alias lla='ls -la'
+alias lt='ls --tree'
+export PATH="$HOME/.npm-global/bin:$PATH"
+
+# opencode
+export PATH=/home/bsherman/.opencode/bin:$PATH
+
+export CABAL_OPTS="-j24"
+export TF_PLUGIN_CACHE_DIR="$HOME/.cache/terraform"
+ulimit -Sn 1048576
+
+# zoxide must be initialized at the very end of this file
+eval "$(zoxide init --cmd cd zsh)"

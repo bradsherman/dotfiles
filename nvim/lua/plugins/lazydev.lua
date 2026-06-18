@@ -16,14 +16,3 @@ return {
     { "Bilal2453/luvit-meta", lazy = true }, -- optional `vim.uv` typings
     -- { "folke/neodev.nvim", enabled = false }, -- make sure to uninstall or disable neodev.nvim
 }
-
--- return {
---     {
---         "folke/neodev.nvim",
---         config = function()
---             require("neodev").setup({
---                 library = { plugins = { "neotest" }, types = true },
---             })
---         end,
---     },
--- }

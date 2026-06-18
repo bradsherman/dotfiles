@@ -2,17 +2,35 @@ return {
     {
         "lewis6991/hover.nvim",
         config = function()
-            require("hover").setup({
-                init = function()
-                    -- Require providers
-                    require("hover.providers.lsp")
-                    require("hover.providers.fold_preview")
-                    require("hover.providers.gh")
-                    -- require('hover.providers.gh_user')
-                    -- require('hover.providers.jira')
-                    require("hover.providers.man")
-                    -- require('hover.providers.dictionary')
-                end,
+            require("hover").config({
+                providers = {
+                    "hover.providers.diagnostic",
+                    -- "hover.providers.lsp",
+                    {
+                        module = "hover.providers.lsp",
+                        priority = 2000,
+                        name = "LSP",
+                    },
+                    "hover.providers.dap",
+                    "hover.providers.man",
+                    -- "hover.providers.dictionary",
+                    -- Optional, disabled by default:
+                    -- 'hover.providers.gh',
+                    -- 'hover.providers.gh_user',
+                    -- 'hover.providers.jira',
+                    -- 'hover.providers.fold_preview',
+                    -- 'hover.providers.highlight',
+
+                    -- -- Require providers
+                    -- require("hover.providers.diagnostic")
+                    -- require("hover.providers.lsp")
+                    -- require("hover.providers.fold_preview")
+                    -- require("hover.providers.gh")
+                    -- -- require('hover.providers.gh_user')
+                    -- -- require('hover.providers.jira')
+                    -- require("hover.providers.man")
+                    -- -- require('hover.providers.dictionary')
+                },
                 preview_opts = {
                     border = "single",
                 },

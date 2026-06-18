@@ -20,9 +20,13 @@ function usage () {
     echo "  - nix"
     echo "  - nvim"
     echo "  - nvim-rocks"
+    echo "  - nvim-next"
     echo "  - polybar"
     echo "  - rofi-solarized-light"
     echo "  - rofi-nord"
+    echo "  - sway"
+    echo "  - swayidle"
+    echo "  - swaylock"
     echo "  - tmux"
     echo "  - update-nvim"
     echo "  - waybar"
@@ -77,15 +81,17 @@ copy_config "mako" ~/.config/mako .
 copy_config "nix" ~/nixos .
 copy_config "nvim" ~/.config/nvim .
 copy_config "nvim-rocks" ~/.config/nvim-rocks .
+copy_config "nvim-next" ~/.config/nvim-next .
 copy_config "polybar" ~/.config/polybar .
 copy_config "rofi-solarized-light" ~/.local/share/rofi/themes/solarized-light.rasi .
 copy_config "rofi-nord" ~/.local/share/rofi/themes/nord.rasi .
 copy_config "sway" ~/.config/sway .
 copy_config "swaylock" ~/.config/swaylock .
+copy_config "swayidle" ~/.config/swayidle .
 copy_config "tmux" ~/.tmux.conf tmux.conf
 copy_config "update-nvim" ~/.local/bin/update-neovim.sh .
 copy_config "waybar" ~/.config/waybar .
-copy_config "wezterm" ~/.config/wezterm .
+copy_config "wezterm" ~/.wezterm.lua .
 copy_config "wofi" ~/.config/wofi .
 copy_config "wofi-bluetooth" ~/.local/bin/wofi-bluetooth .
 copy_config "zellij" ~/.config/zellij .

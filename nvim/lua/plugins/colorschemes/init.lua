@@ -1,6 +1,7 @@
 return {
     {
         "rebelot/kanagawa.nvim",
+        enabled = true,
         config = function(_, opts)
             vim.opt.background = "dark"
             vim.opt.termguicolors = true
@@ -28,7 +29,7 @@ return {
                     dragon = {},
                     all = {
                         ui = {
-                            bg_gutter = "none",
+                            -- bg_gutter = "none",
                         },
                     },
                 },
@@ -75,6 +76,27 @@ return {
                     DiagnosticVirtualTextInfo = makeDiagnosticColor(theme.diag.info),
                     DiagnosticVirtualTextWarn = makeDiagnosticColor(theme.diag.warning),
                     DiagnosticVirtualTextError = makeDiagnosticColor(theme.diag.error),
+                    -- -- update kanagawa to handle new treesitter highlight captures
+                    -- ["@string.regexp"] = { link = "@string.regex" },
+                    -- ["@variable.parameter"] = { link = "@parameter" },
+                    -- ["@exception"] = { link = "@exception" },
+                    -- ["@string.special.symbol"] = { link = "@symbol" },
+                    -- ["@markup.strong"] = { link = "@text.strong" },
+                    -- ["@markup.italic"] = { link = "@text.emphasis" },
+                    -- ["@markup.heading"] = { link = "@text.title" },
+                    -- ["@markup.raw"] = { link = "@text.literal" },
+                    -- ["@markup.quote"] = { link = "@text.quote" },
+                    -- ["@markup.math"] = { link = "@text.math" },
+                    -- ["@markup.environment"] = { link = "@text.environment" },
+                    -- ["@markup.environment.name"] = { link = "@text.environment.name" },
+                    -- ["@markup.link.url"] = { link = "Special" },
+                    -- ["@markup.link.label"] = { link = "Identifier" },
+                    -- ["@comment.note"] = { link = "@text.note" },
+                    -- ["@comment.warning"] = { link = "@text.warning" },
+                    -- ["@comment.danger"] = { link = "@text.danger" },
+                    -- ["@diff.plus"] = { link = "@text.diff.add" },
+                    -- ["@diff.minus"] = { link = "@text.diff.delete" },
+                    -- ["@comment.todo"] = { link = "@text.todo" },
                 }
             end,
             -- theme = "lotus", -- "wave", "dragon", "lotus"
@@ -85,10 +107,23 @@ return {
         },
     },
     {
+        "sainnhe/everforest",
+        enabled = false,
+        config = function(_, opts)
+            vim.opt.background = "dark"
+            vim.opt.termguicolors = true
+            vim.g.everforest_background = "hard"
+            vim.g.everforest_enable_italic = true
+            -- require("everforest").setup(opts)
+            vim.cmd([[ colorscheme everforest ]])
+        end,
+    },
+    {
         "rachartier/tiny-devicons-auto-colors.nvim",
         dependencies = {
             "nvim-tree/nvim-web-devicons",
         },
+        enabled = true,
         event = "VeryLazy",
         config = function()
             local colors = require("kanagawa.colors").setup()

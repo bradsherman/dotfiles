@@ -1,11 +1,13 @@
 return {
-    { "mrcjkb/neotest-haskell" },
+    "mrcjkb/neotest-haskell",
+    "marilari88/neotest-vitest",
     "jfpedroza/neotest-elixir",
     {
         "nvim-neotest/neotest",
         dependencies = {
             "folke/neodev.nvim",
             "mrcjkb/neotest-haskell",
+            "marilari88/neotest-vitest",
             "jfpedroza/neotest-elixir",
             "nvim-neotest/nvim-nio",
             "antoinemadec/FixCursorHold.nvim",
@@ -17,12 +19,13 @@ return {
             require("neotest").setup({
                 adapters = {
                     require("neotest-haskell"),
+                    require("neotest-vitest"),
                     require("neotest-elixir"),
                     require("rustaceanvim.neotest"),
                 },
-                -- consumers = {
-                --     overseer = require("neotest.consumers.overseer"),
-                -- },
+                consumers = {
+                    overseer = require("neotest.consumers.overseer"),
+                },
             })
         end,
     },

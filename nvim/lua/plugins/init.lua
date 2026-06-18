@@ -1,32 +1,32 @@
 return {
-    "nvim-lua/popup.nvim",
-    "nvim-lua/plenary.nvim",
-    "MunifTanjim/nui.nvim",
+    -- "nvim-lua/popup.nvim",
+    -- "nvim-lua/plenary.nvim",
+    -- "MunifTanjim/nui.nvim",
     "tpope/vim-repeat",
-    {
-        "numToStr/Comment.nvim",
-        lazy = false,
-        dependencies = { "JoosepAlviste/nvim-ts-context-commentstring" },
-        config = function()
-            local comment = require("Comment")
-            comment.setup({
-                pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
-            })
-
-            local get_option = vim.filetype.get_option
-
-            ---@diagnostic disable-next-line: duplicate-set-field
-            vim.filetype.get_option = function(filetype, option)
-                return option == "commentstring"
-                        and require("ts_context_commentstring.internal").calculate_commentstring()
-                    or get_option(filetype, option)
-            end
-        end,
-    },
-    "Aasim-A/scrollEOF.nvim",
+    -- {
+    --     "numToStr/Comment.nvim",
+    --     lazy = false,
+    --     dependencies = { "JoosepAlviste/nvim-ts-context-commentstring" },
+    --     config = function()
+    --         local comment = require("Comment")
+    --         comment.setup({
+    --             pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
+    --         })
+    --
+    --         local get_option = vim.filetype.get_option
+    --
+    --         ---@diagnostic disable-next-line: duplicate-set-field
+    --         vim.filetype.get_option = function(filetype, option)
+    --             return option == "commentstring"
+    --                     and require("ts_context_commentstring.internal").calculate_commentstring()
+    --                 or get_option(filetype, option)
+    --         end
+    --     end,
+    -- },
+    -- "Aasim-A/scrollEOF.nvim",
     {
         "nvim-tree/nvim-web-devicons",
-        commit = "aafa5c187a15701a7299a392b907ec15d9a7075f",
+        -- commit = "aafa5c187a15701a7299a392b907ec15d9a7075f",
         priority = 500,
         opts = {
             -- your personnal icons can go here (to override)
@@ -125,20 +125,20 @@ return {
         opts = {},
     },
     { "kevinhwang91/promise-async" },
-    {
-        "anuvyklack/windows.nvim",
-        dependencies = {
-            "anuvyklack/middleclass",
-            "anuvyklack/animation.nvim",
-        },
-        enabled = true,
-        config = function()
-            vim.o.winwidth = 10
-            vim.o.winminwidth = 10
-            vim.o.equalalways = false
-            require("windows").setup()
-        end,
-    },
+    -- {
+    --     "anuvyklack/windows.nvim",
+    --     dependencies = {
+    --         "anuvyklack/middleclass",
+    --         "anuvyklack/animation.nvim",
+    --     },
+    --     enabled = true,
+    --     config = function()
+    --         vim.o.winwidth = 10
+    --         vim.o.winminwidth = 10
+    --         vim.o.equalalways = false
+    --         require("windows").setup()
+    --     end,
+    -- },
     {
         "luukvbaal/statuscol.nvim",
         config = function()
@@ -161,15 +161,6 @@ return {
     "hiphish/rainbow-delimiters.nvim",
     -- end ui
 
-    {
-        "danymat/neogen",
-        config = true,
-    },
-    {
-        "chrisgrieser/nvim-recorder",
-        dependencies = "rcarriga/nvim-notify", -- optional
-        opts = {}, -- required even with default settings, since it calls `setup()`
-    },
     {
         "max397574/better-escape.nvim",
         config = function()

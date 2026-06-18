@@ -1,5 +1,6 @@
 return {
     "olimorris/codecompanion.nvim",
+    enabled = false,
     dependencies = {
         "nvim-lua/plenary.nvim",
         "nvim-treesitter/nvim-treesitter",
@@ -9,7 +10,7 @@ return {
     opts = {
         strategies = {
             chat = {
-                adapter = "anthropic",
+                adapter = "claude_code",
                 -- tools = {
                 --     ["mcp"] = {
                 --         -- calling it in a function would prevent mcphub from being loaded before it's needed
@@ -21,17 +22,26 @@ return {
                 -- },
             },
             inline = {
-                adapter = "anthropic",
+                adapter = "claude_code",
             },
         },
         adapters = {
-            http = {
-                anthropic = function()
-                    return require("codecompanion.adapters").extend("anthropic", {
-                        env = { api_key = 'cmd:op item get "Anthropic API KEY - Personal" --fields "notesPlain"' },
+            acp = {
+                claude_code = function()
+                    return require("codecompanion.adapters").extend("claude_code", {
+                        env = {
+                            CLAUDE_CODE_OAUTH_TOKEN = 'cmd:op item get "Anthropic API KEY - Personal" --fields "notesPlain"',
+                        },
                     })
                 end,
             },
+            -- http = {
+            --     anthropic = function()
+            --         return require("codecompanion.adapters").extend("anthropic", {
+            --             env = { api_key = 'cmd:op item get "Anthropic API KEY - Personal" --fields "notesPlain"' },
+            --         })
+            --     end,
+            -- },
         },
     },
 }

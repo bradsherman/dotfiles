@@ -25,6 +25,13 @@ return {
         routes = {
             {
                 filter = {
+                    event = "notify",
+                    find = "No information available",
+                },
+                opts = { skip = true },
+            },
+            {
+                filter = {
                     event = "msg_show",
                     kind = "",
                     find = "written",

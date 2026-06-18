@@ -9,7 +9,10 @@ o.hidden = true
 o.visualbell = false
 o.errorbells = false
 o.timeoutlen = 500
+o.title = true
+vim.scriptencoding = "UTF-8"
 o.encoding = "UTF-8"
+o.fileencoding = "UTF-8"
 -- o.fillchars:append("fold:•")
 o.fillchars:append("eob: ")
 o.fillchars:append("fold: ")
@@ -52,10 +55,12 @@ wo.relativenumber = true
 o.showmatch = true
 o.splitright = true
 o.splitbelow = true
-o.splitkeep = "screen"
-o.backspace = "eol,indent,start"
+o.splitkeep = "cursor"
+o.backspace = { "start", "eol", "indent" }
 o.showcmd = false
 o.showmode = false
+o.path:append({ "**" })
+o.wildignore:append({ "*/node_modules/*" })
 wo.cursorline = false
 o.wildmenu = true
 o.cmdheight = 1
@@ -67,8 +72,11 @@ vim.go.laststatus = 3
 o.incsearch = true
 o.hlsearch = false
 o.ignorecase = true
+o.smarttab = true
+o.breakindent = true
 o.smartcase = true
 o.inccommand = "split"
+o.formatoptions:append({ "r" })
 
 o.termguicolors = true
 
