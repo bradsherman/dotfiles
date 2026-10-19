@@ -6,6 +6,7 @@ function usage () {
     echo "-h help"
     echo "-a application to update"
     echo "APPLICATION OPTIONS:"
+    echo "  - aerospace"
     echo "  - alacritty"
     echo "  - display_handler"
     echo "  - dunst"
@@ -106,3 +107,5 @@ copy_config "zsh" ./zsh/zshrc ~/.zshrc
 copy_config "starship" ./starship.toml ~/.config/starship.toml
 copy_config "pgcli" ./pgcli/config ~/.config/pgcli/config
 copy_config "git-ignore" ./git/ignore ~/.config/git/ignore
+
+copy_config "aerospace" ./aerospace.toml ~/.aerospace.toml

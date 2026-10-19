@@ -6,6 +6,7 @@ function usage () {
     echo "-h help"
     echo "-a application to update"
     echo "APPLICATION OPTIONS:"
+    echo "  - aerospace"
     echo "  - alacritty"
     echo "  - display_handler"
     echo "  - dunst"
@@ -108,3 +109,5 @@ copy_config "pgcli" ~/.config/pgcli/config pgcli/config
 copy_config "git-ignore" ~/.config/git/ignore git/ignore
 copy_config "psql" ~/.psqlrc psql/psqlrc
 copy_config "readline" ~/.inputrc readline/inputrc
+
+copy_config "aerospace" ~/.aerospace.toml aerospace.toml
