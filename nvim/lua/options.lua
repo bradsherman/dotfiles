@@ -83,7 +83,7 @@ o.termguicolors = true
 bo.swapfile = false
 o.backup = false
 local undo_dir = os.getenv("HOME") .. "/.vim/undodir"
-os.execute("mkdir -p " .. undo_dir)
+vim.fn.mkdir(undo_dir, "p")
 o.undodir = { undo_dir }
 vim.cmd([[set viewoptions-=curdir]])
 vim.opt.undofile = true

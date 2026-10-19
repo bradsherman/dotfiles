@@ -74,7 +74,22 @@ end
 
 local ls = require("luasnip")
 require("luasnip.loaders.from_vscode").lazy_load()
-ls.add_snippets("haskell", require("haskell-snippets").all, { key = "haskell" })
+local haskell_snippets_loaded = false
+local function load_haskell_snippets()
+	if haskell_snippets_loaded then
+		return
+	end
+	haskell_snippets_loaded = true
+	ls.add_snippets("haskell", require("haskell-snippets").all, { key = "haskell" })
+end
+vim.api.nvim_create_autocmd("FileType", {
+	group = vim.api.nvim_create_augroup("HaskellSnippets", { clear = true }),
+	pattern = "haskell",
+	callback = load_haskell_snippets,
+})
+if vim.bo.filetype == "haskell" then
+	load_haskell_snippets()
+end
 -- Native LSP completion expands server snippets with vim.snippet; local snippet
 -- collections use LuaSnip. These keys navigate either engine without replacing it.
 map({ "i", "s" }, "<C-k>", function()

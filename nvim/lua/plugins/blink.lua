@@ -16,9 +16,6 @@ return {
 
             luasnip.config.setup({ history = false })
 
-            local haskell_snippets = require("haskell-snippets").all
-            luasnip.add_snippets("haskell", haskell_snippets, { key = "haskell" })
-
             blink.setup(opts)
 
             require("luasnip.loaders.from_vscode").lazy_load()

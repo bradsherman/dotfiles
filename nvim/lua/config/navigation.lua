@@ -2,11 +2,6 @@ require("which-key").setup({
 	preset = "modern",
 })
 
-require("neojj").setup({
-	jj_binary = "auto",
-	use_default_keymaps = true,
-})
-
 require("oil").setup({
 	-- Skip the confirmation popup for simple operations
 	skip_confirm_for_simple_edits = true,

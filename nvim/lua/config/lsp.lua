@@ -26,10 +26,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("lsp_keymaps", { clear = true }),
 	callback = function(args)
-		local has_fzf = pcall(require, "fzf-lua")
 		local function pick(cmd, fallback)
 			return function()
-				if has_fzf then
+				if pcall(require, "fzf-lua") then
 					vim.cmd("FzfLua " .. cmd)
 				else
 					fallback()
@@ -93,12 +92,37 @@ local servers = {
 	"dockerls",
 	"rust_analyzer",
 }
-for _, name in ipairs(servers) do
-	local cfg = vim.lsp.config[name]
-	local exe = cfg and cfg.cmd and cfg.cmd[1]
-	if exe and vim.fn.executable(exe) == 1 then
-		vim.lsp.enable(name)
+-- Resolve executable availability only when a matching filetype is opened.
+-- This keeps an empty Neovim session from searching PATH for every server.
+local checked_servers = {}
+local function enable_servers_for(filetype)
+	local enabled = {}
+	for _, name in ipairs(servers) do
+		if not checked_servers[name] then
+			local cfg = vim.lsp.config[name]
+			local matches_filetype = cfg and cfg.filetypes and vim.tbl_contains(cfg.filetypes, filetype)
+			if matches_filetype then
+				checked_servers[name] = true
+				local exe = cfg.cmd and cfg.cmd[1]
+				if exe and vim.fn.executable(exe) == 1 then
+					enabled[#enabled + 1] = name
+				end
+			end
+		end
 	end
+	if #enabled > 0 then
+		vim.lsp.enable(enabled)
+	end
+end
+vim.api.nvim_create_autocmd("FileType", {
+	group = vim.api.nvim_create_augroup("CheckLspExecutables", { clear = true }),
+	callback = function(args)
+		enable_servers_for(args.match)
+	end,
+})
+local current_filetype = vim.bo[vim.api.nvim_get_current_buf()].filetype
+if current_filetype ~= "" then
+	enable_servers_for(current_filetype)
 end
 
 -- Make diagnostics actually visible (virtual_text is OFF by default in Neovim).
