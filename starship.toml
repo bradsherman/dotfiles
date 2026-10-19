@@ -1,0 +1,117 @@
+### Starship config — tuned for brad's mac (no Nerd Font; plain Unicode only)
+### Hook into zsh by adding to ~/.zshrc:  eval "$(starship init zsh)"
+### and emptying ZSH_THEME="" so oh-my-zsh stops drawing its own prompt.
+
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# Two-line prompt: info up top, a clean caret to type on.
+format = """
+$directory\
+$git_branch\
+$git_state\
+$git_status\
+${custom.jj}\
+$haskell\
+$nodejs\
+$python\
+$terraform\
+$nix_shell\
+$docker_context\
+$cmd_duration\
+$line_break\
+$character"""
+
+add_newline = true
+
+[character]
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"
+vimcmd_symbol = "[❮](bold yellow)"   # plays nice with zsh-vi-mode
+
+[directory]
+truncation_length = 4
+truncate_to_repo = true
+style = "bold cyan"
+home_symbol = "~"
+
+[git_branch]
+style = "bold purple"
+format = "[$symbol$branch]($style) "
+
+[git_status]
+style = "bold yellow"
+format = '([$all_status$ahead_behind]($style) )'
+conflicted = "x"
+ahead = "↑${count}"
+behind = "↓${count}"
+diverged = "↕↑${ahead_count}↓${behind_count}"
+untracked = "?${count}"
+stashed = "≡${count}"
+modified = "!${count}"
+staged = "+${count}"
+renamed = "»${count}"
+deleted = "✘${count}"
+
+[git_state]
+format = '\([$state( $progress_current/$progress_total)](bold red)\) '
+
+# jj (jujutsu) — bookmark name if @ has one, else change id + first line of
+# its description. Renders only inside a jj repo. NOTE: in a colocated jj+git
+# repo you'll see BOTH this and git_branch; delete one side if that's noisy.
+[custom.jj]
+description = "current jj change"
+when = "jj root"
+command = "jj log -r @ -n1 --no-graph --ignore-working-copy -T 'if(local_bookmarks, local_bookmarks, change_id.shortest(6) ++ \" \" ++ if(description, description.first_line(), \"(no description)\"))' 2>/dev/null"
+symbol = " "   # nf-cod-source_control (U+EA68) — distinct from git's branch glyph
+style = "bold green"
+format = "[$symbol]($style)[$output](green) "
+
+[haskell]
+# detects *.hs, *.cabal, stack.yaml, package.yaml, cabal.project — the Bitnomial stack
+# symbol left at starship's default Nerd Font glyph
+format = "[$symbol($version)]($style) "
+style = "bold purple"
+
+# nodejs also covers TypeScript: by default it detects .ts/.mts/.cts files as well
+# as package.json, so TS projects light up here (shows the node version).
+[nodejs]
+format = "[$symbol($version)]($style) "
+style = "bold green"
+
+[terraform]
+# detects *.tf / *.tfplan files and a .terraform/ dir. Shows the workspace;
+# version detection is left off (it's slow) — set $version in format to enable.
+format = "[$symbol$workspace]($style) "
+style = "bold blue"
+
+[python]
+format = '[$symbol($version)( \($virtualenv\))]($style) '
+style = "bold yellow"
+
+[nix_shell]
+# Lights up inside `nix-shell` / `nix develop` (uses the IN_NIX_SHELL env var).
+# state is "pure" or "impure"; $name shows the shell name when one is set.
+symbol = "❄️ "           # plain-Unicode snowflake (no Nerd Font needed)
+format = '[$symbol$state( \($name\))]($style) '
+style = "bold blue"
+impure_msg = "impure"
+pure_msg = "pure"
+
+[docker_context]
+disabled = true          # no docker context segment (was showing "🐳 orbstack")
+format = "[$symbol$context]($style) "
+style = "bold blue"
+only_with_files = true   # don't show unless a compose/Dockerfile is around
+
+[cmd_duration]
+min_time = 2000          # only show for commands slower than 2s
+format = "[took ${duration}]($style) "
+style = "bold dimmed white"
+
+# kubectl is installed but a permanent context badge is noisy.
+# Flip disabled = false if you want your current cluster/namespace shown.
+[kubernetes]
+disabled = true
+symbol = "k8s:"
+format = '[$symbol$context( \($namespace\))]($style) '
+style = "bold blue"

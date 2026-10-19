@@ -2,3 +2,8 @@ nvim/plugin/
 nvim/tags
 nvim/TAGS
 nvim/vimlog
+
+# Machine-local metadata and assistant settings
+.jj/
+jj/repos/
+**/.claude/

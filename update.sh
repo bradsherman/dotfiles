@@ -21,6 +21,11 @@ function usage () {
     echo "  - nvim"
     echo "  - nvim-rocks"
     echo "  - nvim-next"
+    echo "  - pgcli"
+    echo "  - starship"
+    echo "  - git-ignore"
+    echo "  - psql"
+    echo "  - readline"
     echo "  - polybar"
     echo "  - rofi-solarized-light"
     echo "  - rofi-nord"
@@ -60,6 +65,7 @@ function copy_config () {
         params+=("$var")
     done
     if [[ -d "$2" || -f "$2" ]]; then
+      mkdir -p "$(dirname "$3")"
       rsync --recursive --delete-after --inplace "${params[@]}" "$2" "$3"
     fi
   else
@@ -75,11 +81,11 @@ copy_config "fonts" ~/.fonts.conf fonts.conf
 copy_config "ghostty" ~/.config/ghostty .
 copy_config "gitconfig" ~/.gitconfig gitconfig
 copy_config "i3" ~/.config/i3 .
-copy_config "jj" ~/.config/jj .
+copy_config "jj" ~/.config/jj . --exclude=repos/
 copy_config "kanshi" ~/.config/kanshi .
 copy_config "mako" ~/.config/mako .
 copy_config "nix" ~/nixos .
-copy_config "nvim" ~/.config/nvim .
+copy_config "nvim" ~/.config/nvim . --exclude=.claude/
 copy_config "nvim-rocks" ~/.config/nvim-rocks .
 copy_config "nvim-next" ~/.config/nvim-next .
 copy_config "polybar" ~/.config/polybar .
@@ -96,3 +102,9 @@ copy_config "wofi" ~/.config/wofi .
 copy_config "wofi-bluetooth" ~/.local/bin/wofi-bluetooth .
 copy_config "zellij" ~/.config/zellij .
 copy_config "zsh" ~/.zshrc zsh/zshrc
+
+copy_config "starship" ~/.config/starship.toml starship.toml
+copy_config "pgcli" ~/.config/pgcli/config pgcli/config
+copy_config "git-ignore" ~/.config/git/ignore git/ignore
+copy_config "psql" ~/.psqlrc psql/psqlrc
+copy_config "readline" ~/.inputrc readline/inputrc

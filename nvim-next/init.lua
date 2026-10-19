@@ -9,6 +9,32 @@ vim.pack.add({
 	{ src = "https://github.com/ibhagwan/fzf-lua" },
 	{ src = "https://github.com/nvim-tree/nvim-web-devicons" },
 	{ src = "https://github.com/stevearc/conform.nvim" },
+
+	-- Ported from the full `nvim` config (setup lives in lua/plugins.lua).
+	-- Treesitter textobjects (main branch, to match nvim-treesitter above).
+	{ src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects", version = "main" },
+	-- Editing
+	{ src = "https://github.com/echasnovski/mini.surround" },
+	{ src = "https://github.com/echasnovski/mini.ai" },
+	-- Snippets (friendly-snippets = content, haskell-snippets needs LuaSnip)
+	{ src = "https://github.com/L3MON4D3/LuaSnip" },
+	{ src = "https://github.com/rafamadriz/friendly-snippets" },
+	{ src = "https://github.com/mrcjkb/haskell-snippets.nvim" },
+	-- Haskell LSP/tooling (owns hls; nvim-next has no other LSP configured)
+	{ src = "https://github.com/mrcjkb/haskell-tools.nvim" },
+	-- Git
+	{ src = "https://github.com/lewis6991/gitsigns.nvim" },
+	-- jj (your VCS): neojj UI + diffconflicts merge tool (referenced by jj config.toml)
+	{ src = "https://github.com/nvim-lua/plenary.nvim" }, -- neojj dependency
+	{ src = "https://github.com/NicholasZolton/neojj" },
+	{ src = "https://github.com/rafikdraoui/jj-diffconflicts" },
+	-- Folds / statuscolumn / quickfix
+	{ src = "https://github.com/chrisgrieser/nvim-origami" },
+	{ src = "https://github.com/luukvbaal/statuscol.nvim" },
+	{ src = "https://github.com/kevinhwang91/nvim-bqf" },
+	-- Discoverability + linting
+	{ src = "https://github.com/folke/which-key.nvim" },
+	{ src = "https://github.com/mfussenegger/nvim-lint" },
 })
 
 vim.cmd("colorscheme kanagawa-wave")
@@ -322,3 +348,6 @@ require("conform").formatters.injected = {
 		},
 	},
 }
+
+-- Setup for plugins ported from the full `nvim` config (sources in vim.pack.add above).
+require("plugins")

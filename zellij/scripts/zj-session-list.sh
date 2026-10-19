@@ -6,12 +6,18 @@
 # (re-parses every bar repaint). raw + ANSI renders the same but doesn't leak.
 set -euo pipefail
 
-# zjstatus runs us with a stripped env; without XDG_RUNTIME_DIR zellij reads a stale
-# socket store where every session looks EXITED. Restore it so we see live sessions.
-export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
+# zjstatus runs us with a stripped env; on Linux, without XDG_RUNTIME_DIR zellij reads
+# a stale socket store where every session looks EXITED. Restore it when the runtime
+# dir actually exists. macOS has no /run/user — zellij finds its socket via TMPDIR
+# there, and forcing a bogus XDG_RUNTIME_DIR would itself make sessions look EXITED.
+if [[ -z "${XDG_RUNTIME_DIR:-}" && -d "/run/user/$(id -u)" ]]; then
+  export XDG_RUNTIME_DIR="/run/user/$(id -u)"
+fi
 
 zj="$(command -v zellij || true)"
-[[ -z "$zj" ]] && zj="/home/bsherman/.cargo/bin/zellij"
+[[ -z "$zj" ]] && for c in /opt/homebrew/bin/zellij /usr/local/bin/zellij "$HOME/.cargo/bin/zellij"; do
+  [[ -x "$c" ]] && zj="$c" && break
+done
 
 cur_name="${ZELLIJ_SESSION_NAME:-}"
 

@@ -1,0 +1,149 @@
+-- ~/.psqlrc
+--
+-- NOTE: psqlrc is read for *every* psql invocation, including `psql -c ...`
+-- inside scripts. Use `psql -X` in scripts to skip this file.
+
+-- Don't echo the output of the settings below while this file is processed.
+\set QUIET 1
+
+-- ---------------------------------------------------------------------------
+-- Behaviour
+-- ---------------------------------------------------------------------------
+
+-- Show how long every query took.
+\timing on
+
+-- In an interactive session, a failed statement no longer poisons the whole
+-- transaction: psql silently rolls back to a savepoint taken before the
+-- statement, so you can fix the typo and carry on instead of losing the work.
+-- (Only applies interactively; scripts still abort the transaction.)
+\set ON_ERROR_ROLLBACK interactive
+
+-- Tab-completion emits keywords in upper case.
+\set COMP_KEYWORD_CASE upper
+
+-- History: per-database file, bigger, no consecutive duplicates.
+\set HISTFILE ~/.psql_history- :DBNAME
+\set HISTSIZE 20000
+\set HISTCONTROL ignoredups
+
+-- Edit queries with \e / \ef in your editor of choice.
+\setenv PSQL_EDITOR nvim
+\setenv PSQL_EDITOR_LINENUMBER_ARG '+'
+
+-- Uncomment to make `psql -f script.sql` abort on the first error
+-- (does nothing interactively):
+-- \set ON_ERROR_STOP on
+
+-- Uncomment for errors that include SQLSTATE and the constraint/source detail:
+-- \set VERBOSITY verbose
+
+-- ---------------------------------------------------------------------------
+-- Output formatting
+-- ---------------------------------------------------------------------------
+
+-- Auto-expand rows that are too wide for the terminal into \x record layout.
+-- This is the single biggest readability win for wide tables.
+\x auto
+
+-- NULL is otherwise indistinguishable from an empty string.
+\pset null '[null]'
+
+-- Box-drawing borders around results.
+\pset linestyle unicode
+\pset border 2
+
+-- Pager: pspg understands tabular data rather than treating it as text --
+-- the header row and the leftmost column stay frozen while you scroll, and
+-- it can search within a column (/) or sort by one (s). Falls back to less
+-- on machines where pspg isn't installed.
+--   -X            leave the table on screen after quitting
+--   -F            skip the pager entirely when output fits one screen
+--   --freezecols  keep N leading columns pinned while scrolling right
+-- less flags: -S no wrapping, -F/-X as above, -i case-insensitive search.
+--   -s 16         "Simple" style: the only one that emits no colour codes of
+--                 its own, so it inherits the terminal theme and marks
+--                 structure with underline/italic/reverse instead. The
+--                 default (-s 1, "Midnight") is a DOS-era blue-on-orange.
+\setenv PAGER `command -v pspg >/dev/null 2>&1 && echo "pspg -X -F --freezecols=1 -s 16" || echo "less -SFXi"`
+\pset pager on
+
+-- Other pspg styles worth a look (-s N, 0..24). Press F9 inside pspg for the
+-- live theme menu. The ones that define a full palette rather than deferring
+-- to the terminal: 17 Solar Dark, 18 Solar Light, 19 Gruvbox Light,
+-- 20 Tao Light, 21 Flatwhite, 23 PaperColor.
+
+-- Uncomment for thousands separators in numbers (breaks copy/paste of values):
+-- \pset numericlocale on
+
+-- ---------------------------------------------------------------------------
+-- Prompt
+-- ---------------------------------------------------------------------------
+--   %n user   %m host (short)   %/ database   %x transaction status
+--   %R  = normal, ^ single-line, ! disconnected
+--   %#  # when superuser, > otherwise
+--
+-- If the target looks like production, the prompt gets a red PROD banner.
+-- Detection is based on the PG* environment variables, so it won't fire for
+-- connection URLs passed on the command line.
+\set is_prod `case "$PGHOST$PGDATABASE$PGSERVICE" in *prod*|*prd*) echo on;; *) echo off;; esac`
+
+\if :is_prod
+  \set PROMPT1 '%[%033[1;37;41m%] PROD %[%033[0m%] %[%033[1;36m%]%n@%m%[%033[0m%]:%[%033[1;32m%]%/%[%033[0m%]%R%x%# '
+\else
+  \set PROMPT1 '%[%033[1;36m%]%n@%m%[%033[0m%]:%[%033[1;32m%]%/%[%033[0m%]%R%x%# '
+\endif
+
+-- Continuation prompt. %R here shows *why* psql wants more input:
+-- - unfinished statement, ' " inside a string, $ inside a dollar quote,
+-- * inside a /* comment. Handy for spotting an unclosed quote.
+\set PROMPT2 '%[%033[1;33m%]%R%[%033[0m%] '
+\set PROMPT3 '>> '
+
+-- ---------------------------------------------------------------------------
+-- Query shortcuts -- type `:name` (no backslash, no semicolon) to run one.
+-- `:menu` lists them all.
+-- ---------------------------------------------------------------------------
+
+-- What is running right now, oldest first.
+\set activity 'SELECT pid, age(clock_timestamp(), query_start) AS running_for, usename, state, coalesce(wait_event_type || \':\' || wait_event, \'-\') AS waiting_on, left(query, 80) AS query FROM pg_stat_activity WHERE state <> \'idle\' AND pid <> pg_backend_pid() ORDER BY running_for DESC;'
+
+-- Sessions that are stuck behind another session, and who is blocking them.
+\set blocking 'SELECT a.pid AS blocked_pid, a.usename AS blocked_user, pg_blocking_pids(a.pid) AS blocked_by, a.wait_event_type, a.wait_event, left(a.query, 60) AS blocked_query FROM pg_stat_activity a WHERE cardinality(pg_blocking_pids(a.pid)) > 0;'
+
+-- Every lock held or awaited, ungranted first.
+\set locks 'SELECT l.pid, l.locktype, l.mode, l.granted, coalesce(c.relname::text, l.locktype) AS object, left(a.query, 60) AS query FROM pg_locks l LEFT JOIN pg_class c ON c.oid = l.relation LEFT JOIN pg_stat_activity a ON a.pid = l.pid ORDER BY l.granted, l.pid;'
+
+-- Connection counts by database / user / state.
+\set conns 'SELECT datname, usename, state, count(*) FROM pg_stat_activity GROUP BY 1, 2, 3 ORDER BY 4 DESC;'
+
+-- Databases by size.
+\set dbsize 'SELECT datname, pg_size_pretty(pg_database_size(datname)) AS size FROM pg_database WHERE NOT datistemplate ORDER BY pg_database_size(datname) DESC;'
+
+-- Biggest tables in the current database, heap vs index split.
+\set tablesize 'SELECT n.nspname || \'.\' || c.relname AS "table", pg_size_pretty(pg_total_relation_size(c.oid)) AS total, pg_size_pretty(pg_relation_size(c.oid)) AS heap, pg_size_pretty(pg_indexes_size(c.oid)) AS indexes, c.reltuples::bigint AS est_rows FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace WHERE c.relkind = \'r\' AND n.nspname NOT IN (\'pg_catalog\', \'information_schema\') ORDER BY pg_total_relation_size(c.oid) DESC LIMIT 25;'
+
+-- Non-unique indexes that have never been scanned -- candidates for dropping.
+\set unused_idx 'SELECT s.relname AS "table", s.indexrelname AS index, s.idx_scan, pg_size_pretty(pg_relation_size(s.indexrelid)) AS size FROM pg_stat_user_indexes s JOIN pg_index i USING (indexrelid) WHERE s.idx_scan = 0 AND NOT i.indisunique ORDER BY pg_relation_size(s.indexrelid) DESC;'
+
+-- Tables taking sequential scans -- candidates for an index.
+\set seq_scans 'SELECT relname AS "table", seq_scan, seq_tup_read, idx_scan, n_live_tup FROM pg_stat_user_tables WHERE seq_scan > 0 ORDER BY seq_scan DESC LIMIT 25;'
+
+-- Buffer cache hit ratio; below ~0.99 on a warm database suggests low shared_buffers.
+\set cache_hit 'SELECT \'table\' AS source, round(sum(heap_blks_hit)::numeric / nullif(sum(heap_blks_hit + heap_blks_read), 0), 4) AS hit_ratio FROM pg_statio_user_tables UNION ALL SELECT \'index\', round(sum(idx_blks_hit)::numeric / nullif(sum(idx_blks_hit + idx_blks_read), 0), 4) FROM pg_statio_user_indexes;'
+
+-- Dead tuples and when autovacuum last ran.
+\set vacuum 'SELECT relname AS "table", n_live_tup, n_dead_tup, last_vacuum, last_autovacuum, last_analyze, last_autoanalyze FROM pg_stat_user_tables ORDER BY n_dead_tup DESC LIMIT 25;'
+
+-- Settings that differ from the compiled-in defaults, and where they came from.
+\set settings 'SELECT name, setting, unit, source, sourcefile FROM pg_settings WHERE source NOT IN (\'default\', \'override\') ORDER BY name;'
+
+-- Slowest statements by total time. Requires the pg_stat_statements extension.
+\set slow 'SELECT round(total_exec_time::numeric, 1) AS total_ms, calls, round(mean_exec_time::numeric, 2) AS mean_ms, rows, left(query, 80) AS query FROM pg_stat_statements ORDER BY total_exec_time DESC LIMIT 20;'
+
+\set version 'SELECT version();'
+
+\set menu 'SELECT * FROM (VALUES (\':activity\', \'queries running right now\'), (\':blocking\', \'who is blocking whom\'), (\':locks\', \'all locks, ungranted first\'), (\':conns\', \'connection counts by db/user/state\'), (\':dbsize\', \'databases by size\'), (\':tablesize\', \'biggest tables, heap vs index\'), (\':unused_idx\', \'never-scanned non-unique indexes\'), (\':seq_scans\', \'tables taking sequential scans\'), (\':cache_hit\', \'buffer cache hit ratio\'), (\':vacuum\', \'dead tuples and last (auto)vacuum\'), (\':settings\', \'non-default server settings\'), (\':slow\', \'slowest statements (pg_stat_statements)\'), (\':version\', \'server version\')) AS t(shortcut, description);'
+
+-- Re-enable normal output and say hello.
+\unset QUIET

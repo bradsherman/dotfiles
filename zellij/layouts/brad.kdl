@@ -2,7 +2,7 @@ layout {
     default_tab_template {
         children
         pane size=1 borderless=true {
-            plugin location="file:/home/bsherman/.config/zellij/zjstatus.wasm" {
+            plugin location="file:/Users/bradsherman/.config/zellij/zjstatus.wasm" {
                 format_left   "{mode}"
                 format_center "{command_sessions} #[fg=#727169,bold]┃ {tabs}"
                 format_right  ""
@@ -32,7 +32,7 @@ layout {
                 tab_normal "#[fg=#727169] {index} "
                 tab_active "#[bg=#98BB6C,fg=#16161D,bold] {index} "
 
-                command_sessions_command    "/home/bsherman/.config/zellij/scripts/zj-session-list.sh"
+                command_sessions_command    "/Users/bradsherman/.config/zellij/scripts/zj-session-list.sh"
                 command_sessions_format     "{stdout}"
                 command_sessions_interval   "2"
                 command_sessions_rendermode "raw"

@@ -43,9 +43,13 @@
 # resize-overlay-duration = 4s 200ms
 
 font-size = 19
-font-family = "Berkeley Mono"
-font-family = "Font Awesome 7 Free"
-font-family = "FontAwesome"
+# Font disabled for now — Berkeley Mono isn't installed on this Mac, and the
+# remaining fallbacks were symbols-only fonts (no text metrics), which broke the
+# grid on zoom. With no font-family set, ghostty uses its built-in monospace.
+# font-family = "Berkeley Mono"
+# font-family = "Symbols Nerd Font Mono"
+# font-family = "Font Awesome 7 Free"
+# font-family = "FontAwesome"
 # background-opacity = 0.9
 theme = Kanagawa Wave
 shell-integration = zsh

@@ -21,7 +21,12 @@ function usage () {
     echo "  - nvim"
     echo "  - nvim-rocks"
     echo "  - nvim-rocks"
+    echo "  - pgcli"
+    echo "  - starship"
+    echo "  - git-ignore"
     echo "  - polybar"
+    echo "  - psql"
+    echo "  - readline"
     echo "  - rofi-solarized-light"
     echo "  - rofi-nord"
     echo "  - sway"
@@ -59,6 +64,7 @@ function copy_config () {
     for var in "${@:4}"; do
         params+=("$var")
     done
+    mkdir -p "$(dirname "$3")"
     rsync --recursive --delete-after --inplace "${params[@]}" "$2" "$3"
   else
     echo "Skipping application: $1"
@@ -73,14 +79,16 @@ copy_config "fonts" ./fonts.conf ~/.fonts.conf
 copy_config "ghostty" ./ghostty ~/.config
 copy_config "gitconfig" ./gitconfig ~/.gitconfig
 copy_config "i3" ./i3 ~/.config
-copy_config "jj" ./jj ~/.config
+copy_config "jj" ./jj ~/.config --exclude=repos/
 copy_config "kanshi" ./kanshi ~/.config
 copy_config "mako" ./mako ~/.config
 copy_config "nix" ./nixos ~/nixos
-copy_config "nvim" ./nvim ~/.config
+copy_config "nvim" ./nvim ~/.config --exclude=.claude/
 copy_config "nvim-rocks" ./nvim-rocks ~/.config/nvim-rocks
 copy_config "nvim-next" ./nvim-next ~/.config/nvim-next
 copy_config "polybar" ./polybar ~/.config
+copy_config "psql" ./psql/psqlrc ~/.psqlrc
+copy_config "readline" ./readline/inputrc ~/.inputrc
 copy_config "rofi-solarized-light" ./solarized-light.rasi ~/.local/share/rofi/themes/
 copy_config "rofi-nord" ./nord.rasi ~/.local/share/rofi/themes/
 copy_config "sway" ./sway ~/.config
@@ -94,3 +102,7 @@ copy_config "wofi" ./wofi ~/.config
 copy_config "wofi-bluetooth" ./wofi-bluetooth ~/.local/bin/
 copy_config "zellij" ./zellij ~/.config
 copy_config "zsh" ./zsh/zshrc ~/.zshrc
+
+copy_config "starship" ./starship.toml ~/.config/starship.toml
+copy_config "pgcli" ./pgcli/config ~/.config/pgcli/config
+copy_config "git-ignore" ./git/ignore ~/.config/git/ignore

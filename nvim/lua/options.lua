@@ -93,7 +93,8 @@ keyset("i", ".", ".<C-g>U")
 keyset("i", "!", "!<C-g>U")
 keyset("i", "?", "?<C-g>U")
 
-o.grepprg = "rg --vimgrep --smart-case --follow --hidden"
+-- --no-require-git: honor .gitignore in jj repos, which have no `.git` dir
+o.grepprg = "rg --vimgrep --smart-case --follow --hidden --no-require-git -g '!.git' -g '!.jj'"
 -- o.grepprg = "rg --vimgrep"
 o.grepformat = "%f:%l:%c:%m"
 -- other useful chars: eol:↲,nbsp:␣

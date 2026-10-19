@@ -1,72 +1,19 @@
--- Settings copied from the starter file.
+-- lua-language-server. Configured for editing your Neovim config (knows `vim`).
 return {
-    cmd = { "lua-language-server" },
-    filetypes = { "lua" },
-    root_markers = {
-        ".luarc.json",
-        ".luarc.jsonc",
-        ".luacheckrc",
-        ".stylua.toml",
-        "stylua.toml",
-        "selene.toml",
-        "selene.yml",
-        ".git",
-    },
-    settings = {
-        Lua = {
-            diagnostics = {
-                globals = { "vim" },
-            },
-            workspace = {
-                checkThirdParty = false,
-                library = {
-                    [vim.fn.expand("$VIMRUNTIME/lua")] = true,
-                    [vim.fn.stdpath("config") .. "lua"] = true,
-                    ["/usr/share/nvim/runtime/lua"] = true,
-                    ["/usr/share/nvim/runtime/lua/vim"] = true,
-                    ["/usr/share/nvim/runtime/lua/vim/lsp"] = true,
-                },
-            },
-        },
-    },
-    on_init = function(client)
-        if client.workspace_folders then
-            local path = client.workspace_folders[1].name
-            if
-                path ~= vim.fn.stdpath("config")
-                and (vim.uv.fs_stat(path .. "/.luarc.json") or vim.uv.fs_stat(path .. "/.luarc.jsonc"))
-            then
-                return
-            end
-        end
-
-        client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {
-            runtime = {
-                -- Tell the language server which version of Lua you're using (most
-                -- likely LuaJIT in the case of Neovim)
-                version = "LuaJIT",
-                -- Tell the language server how to find Lua modules same way as Neovim
-                -- (see `:h lua-module-load`)
-                path = {
-                    "lua/?.lua",
-                    "lua/?/init.lua",
-                },
-            },
-            diagnostics = {
-                globals = { "vim" },
-            },
-            -- Make the server aware of Neovim runtime files
-            workspace = {
-                checkThirdParty = false,
-                library = {
-                    [vim.fn.expand("$VIMRUNTIME/lua")] = true,
-                    [vim.fn.stdpath("config") .. "lua"] = true,
-                    ["/usr/share/nvim/runtime/lua"] = true,
-                    ["/usr/share/nvim/runtime/lua/vim"] = true,
-                    ["/usr/share/nvim/runtime/lua/vim/lsp"] = true,
-                    [vim.env.VIMRUNTIME] = true,
-                },
-            },
-        })
-    end,
+	cmd = { "lua-language-server" },
+	filetypes = { "lua" },
+	root_markers = { ".luarc.json", ".luarc.jsonc", ".stylua.toml", "stylua.toml", ".git" },
+	settings = {
+		Lua = {
+			runtime = { version = "LuaJIT" },
+			diagnostics = { globals = { "vim" } },
+			workspace = {
+				checkThirdParty = false,
+				-- Make the nvim runtime (and plugins) available for completion/hover.
+				library = vim.api.nvim_get_runtime_file("", true),
+			},
+			hint = { enable = true }, -- inlay hints
+			telemetry = { enable = false },
+		},
+	},
 }

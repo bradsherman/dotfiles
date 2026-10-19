@@ -61,7 +61,9 @@ diff-editor = ["nvim", "-c", "DiffEditor $left $right $output"]
 # diff-editor = "meld-3"
 # merge-editor = "meld"
 # diff-editor = "diffedit3"
-diff-formatter = ["difft", "--color=always", "$left", "$right"]
+# diff-formatter requires `difft` (difftastic), not installed yet on this Mac.
+# Leaving it unset falls back to jj's built-in diff. Re-enable after `brew install difftastic`:
+# diff-formatter = ["difft", "--color=always", "$left", "$right"]
 paginate = "never"
 
 [merge-tools.diffconflicts]
@@ -74,7 +76,7 @@ merge-tool-edits-conflict-markers = true
 
 [user]
 name = "Brad Sherman"
-email = "brad.sherman@bitnomial.com"
+email = "brad.sherman@kraken.com"
 
 [templates]
 git_push_bookmark = '"brad/push-" ++ change_id.short()'

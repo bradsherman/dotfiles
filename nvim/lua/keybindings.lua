@@ -1,19 +1,42 @@
-vim.g.leader = " "
 vim.g.mapleader = " "
-vim.g.localleader = ","
 vim.g.maplocalleader = ","
 
 local keymap = vim.keymap
 local opts = { noremap = true, silent = true }
+
+keymap.set("n", "<leader>mp", "<cmd>MarkdownPreviewToggle<cr>", { desc = "Toggle Markdown preview" })
 
 keymap.set("n", "+", "<C-a>")
 keymap.set("n", "_", "<C-x>")
 
 keymap.set("n", "<C-a>", "gg<S-v>G")
 
-keymap.set("n", "<leader>w", ":w<cr>", opts)
-keymap.set("n", "<leader>x", ":q<cr>", opts)
-keymap.set("n", "<leader>,", "<cmd>noh<cr>", opts)
+keymap.set("n", "<leader>w", ":w<cr>", { noremap = true, silent = true, desc = "Write buffer" })
+keymap.set("n", "<leader>x", ":q<cr>", { noremap = true, silent = true, desc = "Quit window" })
+keymap.set("n", "<leader>,", "<cmd>noh<cr>", { noremap = true, silent = true, desc = "Clear search highlight" })
+
+-- Open the Neojj (Jujutsu) UI.
+keymap.set("n", "<leader>jj", "<cmd>Neojj<cr>", { noremap = true, silent = true, desc = "Open Neojj UI" })
+
+-- Format current buffer via conform (falls back to LSP formatting).
+keymap.set("n", "<leader>f", function()
+	require("conform").format({ async = true, lsp_format = "fallback" })
+end, { desc = "Format buffer" })
+
+-- Toggle LSP inlay hints for the current buffer.
+keymap.set("n", "<leader>th", function()
+	local enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = 0 })
+	vim.lsp.inlay_hint.enable(not enabled, { bufnr = 0 })
+end, { desc = "Toggle inlay hints" })
+
+-- Update all plugins that vim.pack manages. This opens a confirmation buffer
+-- in a new tabpage. Read the pending changes there, then :write to apply them
+-- or :quit to discard them. Nothing changes on disk until you :write.
+-- After you apply, :restart to load the new code. Treesitter parsers are
+-- separate artifacts, so run :TSUpdate after a treesitter bump.
+keymap.set("n", "<leader>pu", function()
+	vim.pack.update()
+end, { desc = "Update plugins (vim.pack)" })
 -- keymap.set("n", "<leader>,", "<cmd>nohlsearch|diffupdate|normal! <C-l><cr>")
 
 keymap.set("n", "te", ":tabedit", opts)
@@ -76,3 +99,13 @@ keymap.set("n", "ycc", "yygccp", { remap = true })
 
 -- keep line in place when joining lines
 keymap.set("n", "J", "mzJ`z:delmarks z<cr>")
+
+
+keymap.set("n", "-", "<cmd>Oil<cr>")
+keymap.set("n", "<c-e>", "<cmd>Oil<cr>")
+keymap.set("n", "<leader>e", "<cmd>Oil<cr>", { desc = "Open Oil file explorer" })
+
+keymap.set("n", "<c-f>", "<cmd>FzfLua files<cr>")
+keymap.set("n", "<c-g>", "<cmd>FzfLua live_grep<cr>")
+keymap.set("n", "<c-b>", "<cmd>FzfLua buffers<cr>")
+keymap.set("n", "<c-t>", "<cmd>FzfLua tags<cr>")

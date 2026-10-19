@@ -1,0 +1,94 @@
+# ~/.inputrc -- GNU readline configuration.
+#
+# Read by every readline-linked program: psql, bash, python, gdb, sqlite3, irb...
+# NOT read by zsh, which has its own line editor -- nothing here affects your
+# zsh-vi-mode setup. psql sets its readline application name to "psql", so
+# psql-only tweaks live in the $if psql block at the bottom.
+
+# ---------------------------------------------------------------------------
+# Completion
+# ---------------------------------------------------------------------------
+
+# Complete regardless of case, and treat - and _ as interchangeable.
+# Typing `pg_stat_a<Tab>` now also matches mixed-case identifiers.
+set completion-ignore-case on
+set completion-map-case on
+
+# One Tab shows the candidate list. Stock readline needs two.
+set show-all-if-ambiguous on
+set show-all-if-unmodified on
+
+# Don't nag "Display all 143 possibilities? (y or n)" until the list is
+# genuinely huge, and don't push that list through a pager.
+set completion-query-items 200
+set page-completions off
+
+# Highlight the common prefix in the candidate list, so you can see how far
+# the completion got before it became ambiguous.
+set colored-completion-prefix on
+set colored-stats on
+
+# Don't re-insert text that already sits to the right of the cursor.
+set skip-completed-text on
+
+# Paste multi-line SQL as one chunk instead of executing at every newline.
+set enable-bracketed-paste on
+
+set bell-style none
+
+# ---------------------------------------------------------------------------
+# History
+# ---------------------------------------------------------------------------
+
+# Up/Down filter history by what you have already typed: type
+# `SELECT * FROM u` then press Up to walk only through matching statements.
+# This is the single biggest day-to-day win in this file.
+"\e[A": history-search-backward
+"\e[B": history-search-forward
+
+# ---------------------------------------------------------------------------
+# psql only
+# ---------------------------------------------------------------------------
+$if psql
+
+# vi editing, to match zsh-vi-mode. Comment out the next four lines for
+# emacs-style keys.
+set editing-mode vi
+set show-mode-in-prompt on
+set vi-ins-mode-string "\1\e[6 q\2"
+set vi-cmd-mode-string "\1\e[2 q\2"
+
+# The arrow bindings above landed in the emacs keymap; repeat them for vi
+# insert mode, which is what psql now starts in.
+# How long readline waits to disambiguate a multi-key sequence. This is what
+# lets "jk" below work: after a bare j, readline pauses this many milliseconds
+# to see whether a k follows. Too high and typing a real j feels laggy; too
+# low and a fast jk gets split into two literal characters.
+set keyseq-timeout 200
+
+set keymap vi-insert
+
+# jk leaves insert mode, the usual vim escape. The cursor shape flips to a
+# block via vi-cmd-mode-string above, so you can see it took effect.
+"jk": vi-movement-mode
+
+"\e[A": history-search-backward
+"\e[B": history-search-forward
+"\C-r": reverse-search-history
+
+# vi insert mode has no Ctrl-P/Ctrl-N of its own -- those are emacs bindings,
+# so without these two lines they simply go dead. Bound to *plain* history
+# walk, deliberately different from the arrows above: Ctrl-P/Ctrl-N step
+# through every entry, Up/Down filter by the prefix already typed.
+"\C-p": previous-history
+"\C-n": next-history
+
+# Ctrl-A / Ctrl-E for line start/end, which vi insert mode also lacks.
+"\C-a": beginning-of-line
+"\C-e": end-of-line
+
+# Alt-. inserts the last word of the previous line -- handy for a long
+# schema-qualified table name you just typed.
+"\e.": yank-last-arg
+
+$endif

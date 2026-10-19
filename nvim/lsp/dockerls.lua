@@ -1,11 +1,5 @@
 return {
-    cmd = { "docker-language-server", "start", "--stdio" },
-    filetypes = { "dockerfile" },
-    settings = {
-        languageserver = {
-            formatter = {
-                ignoreMultilineInstructions = true,
-            },
-        },
-    },
+	cmd = { "docker-langserver", "--stdio" },
+	filetypes = { "dockerfile" },
+	root_markers = { "Dockerfile", "compose.yaml", "docker-compose.yml", ".jj", ".git" },
 }
